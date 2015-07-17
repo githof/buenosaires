@@ -1,4 +1,10 @@
 
+- régler le problème du push.sh à partir du git (plutôt que dropbox)
+- réparer Fusion et dissoc (la page s'affiche vide)
+- fonction ajout_personne à partir d'un xml + menu
+- fonction supprime_acte propre
+- cf. DROPBOX/Organisation/tickets.txt
+
 1er juillet 2013
 
 Important :
