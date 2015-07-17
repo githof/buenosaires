@@ -1,0 +1,17 @@
+
+À partir d'un fichier html, 2 fichiers
+
+1 fichier individus :
+- id
+- 2 prénoms
+- 3 noms
+- début+fin période
+
+1 fichier relations :
+- id1
+- 2 prénoms + 3 noms
+- id2
+- 2 prénoms + 3 noms
+- type (comme dans le gdf)
+(- acte)
+- début+fin relation

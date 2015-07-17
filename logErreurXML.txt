@@ -1,0 +1,8 @@
+
+acte 7573 : un attribut en trop
+acte sans numéro à la ligne 2359 (acte ancien numéro : 8708)
+acte 8708 : homonymes 
+acte 5139 : erreur de saisie de date
+acte 8517 : balise date non mise
+acte 513 : ligne 308 : une balise EPOUX en trop
+acte 6628 : un attribut en trop

@@ -1,0 +1,72 @@
+<!ELEMENT document (ACTES)>
+<!ELEMENT ACTES (ACTE)+>
+<!ELEMENT ACTE ( #PCDATA | date | epoux | epouse | parrains | temoins )*>
+<!ATTLIST ACTE
+	  num CDATA #IMPLIED
+	  dispensa (true | false) "false"
+>
+<!ELEMENT date ( #PCDATA )* >
+<!ELEMENT epoux ( #PCDATA | condition | prenom | nom | naissance-lieu | age | veuf-de | pere | mere )*>
+<!ATTLIST epoux
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+>
+<!ELEMENT epouse ( #PCDATA | condition | prenom | nom | naissance-lieu | age | veuve | pere | mere )*>
+<!ATTLIST epouse
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+>
+<!ELEMENT pere ( #PCDATA | condition | prenom | nom | veuf-de )*>
+<!ATTLIST pere
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+	  difunto (true | false) "false"
+	  veuf (true | false) "false"
+>
+<!ELEMENT mere ( #PCDATA | condition | prenom | nom | veuve )*>
+<!ATTLIST mere
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+	  difunto (true | false) "false"
+	  veuve (true | false) "false"
+>
+<!ELEMENT veuve ( #PCDATA | condition | prenom | nom )*>
+<!ATTLIST veuve
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+>
+<!ELEMENT veuf-de ( #PCDATA | condition | prenom | nom )*>
+<!ATTLIST veuf-de
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+>
+<!ELEMENT temoin ( #PCDATA | condition | prenom | nom )*>
+<!ATTLIST temoin
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+	  epouse (true | false) "false"
+>
+<!ELEMENT parrain ( #PCDATA | condition | prenom | nom )*>
+<!ATTLIST parrain
+	  id CDATA #IMPLIED
+	  don (true | false) "false"
+	  epouse (true | false) "false"
+>
+<!ELEMENT prenom ( #PCDATA )*>
+<!ELEMENT nom ( #PCDATA )*>
+<!ATTLIST nom
+	  de (true | false) "false"
+	  la (true | false) "false"
+	  y (true | false) "false"
+>
+<!ELEMENT naissance-lieu ( #PCDATA )*>
+<!ELEMENT age ( #PCDATA )*>
+<!ELEMENT condition ( #PCDATA )*>
+<!ELEMENT temoins ( #PCDATA | temoin )*>
+<!ATTLIST temoins
+	  conjoints (true | false) "false"
+>
+<!ELEMENT parrains ( #PCDATA | parrain )*>
+<!ATTLIST parrains
+	  conjoints (true | false) "false"
+>

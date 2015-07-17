@@ -1,0 +1,36 @@
+nodedef>name VARCHAR, label VARCHAR, periode VARCHAR
+p388,'Domingo  Belgrano Peri','22-12-1765 to 9-8-1820'
+p385,'María Josefa Belgrano Perez','13-6-1785'
+p384,'José María Calderon Barca','13-6-1785'
+p394,'Joaquín  Belgrano Gonzalez','9-5-1808'
+p389,'Maria Josefa González','4-11-1757 to 9-8-1820'
+p402,'Miguel  Belgrano','9-8-1820'
+p434,'Diego  AgÜero','18-9-1769'
+p435,'Petrona De Alcántara Espinosa','18-9-1769'
+p437,'Juana María Belgrano Perez','31-7-1790'
+p404,'Ignacio  Ramos Villamil','31-7-1790 to 9-8-1820'
+p441,'Manuel  Frutos','27-1-1783'
+p442,'María Manuela Quiros','27-1-1783'
+p447,'Juana Francisca Belgrano Perez','24-10-1793'
+p446,'José María Acevedo','24-10-1793'
+p450,'Luis  Cachemalle','22-12-1765'
+p451,'Josefa Antonia Fernandez','22-12-1765'
+p457,'María Florencia Belgrano Perez','14-5-1776'
+edgedef>node1 VARCHAR,node2 VARCHAR,directed BOOLEAN,nature VARCHAR,periode_debut VARCHAR, periode_fin VARCHAR
+p385,p388,true,PT,1785-6-13,1785-6-13
+p384,p388,true,T,1785-6-13,1785-6-13
+p394,p388,true,P,1808-5-9,1808-5-9
+p388,p389,true,E,1776-5-14,1820-8-9
+p389,p388,true,E,1776-5-14,1820-8-9
+p402,p388,true,P,1820-8-9,1820-8-9
+p434,p388,true,T,1769-9-18,1769-9-18
+p435,p388,true,T,1769-9-18,1769-9-18
+p437,p388,true,PT,1790-7-31,1790-7-31
+p404,p388,true,T,1790-7-31,1790-7-31
+p441,p388,true,T,1783-1-27,1783-1-27
+p442,p388,true,T,1783-1-27,1783-1-27
+p447,p388,true,PT,1793-10-24,1793-10-24
+p446,p388,true,T,1793-10-24,1793-10-24
+p450,p388,true,T,1765-12-22,1765-12-22
+p451,p388,true,T,1765-12-22,1765-12-22
+p457,p388,true,P,1776-5-14,1776-5-14

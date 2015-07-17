@@ -1,0 +1,129 @@
+<?php 
+include("../includes/header.php"); 
+include("../includes/restriction.php");
+restriction($compte, 2);
+function date_heure(){
+	return date("d-m-Y H:i:s");	
+}
+$fichier_log_sql = fopen("../data/logSql.bsql", "a");
+function ajouter_fichier_log($string_sql){
+	$date_heure = date_heure();
+	$compte = $GLOBALS['compte'];
+	$string_sql = preg_replace("/(\r\n|\n|\r)/", " ", $date_heure." ".$compte->pseudo." A ".$string_sql);
+	fwrite($GLOBALS['fichier_log_sql'], $string_sql."\n");	
+}
+function existe_acte($acte){
+  foreach($acte->attributes() as $key => $val){
+    if ($key == "num"){
+      $sql = mysql_query("SELECT id_acte FROM actes WHERE id_acte='$val'");
+      if (mysql_num_rows($sql) > 0) return true;	
+    }
+  }
+  return false;
+}
+			    
+function ok_pour_prendre_acte($acte){
+  return
+    (
+     count($acte->children()) > 0
+     and isset($acte->epoux)
+     and isset($acte->epouse)
+     and isset($acte->date)
+     and ((isset($acte->epoux->nom) and isset($acte->epoux->prenom))
+	  or
+	  (isset($acte->epouse->nom) and isset($acte->epouse->prenom)))
+     );
+}
+
+?>
+
+<h1>AJOUTER UN OU DES ACTES</h1>
+
+Uploader un fichier xml contenant des actes &agrave; ajouter : 
+<form name="upload_acte" method="post" action="" enctype="multipart/form-data">
+<input name="fichier_upload" value="" type="file" />
+<input type="hidden" name="MAX_FILE_SIZE" value="20000000">
+<input type="hidden" name="hide" value="fichier" />
+<input type="submit" value="Valider" />
+</form>
+
+Copier les actes &agrave; ajouter : (&lt;acte&gt; ... &lt;/acte&gt;)
+<form name="add_acte" method="post" action="">
+<textarea rows="15" cols="80" name="source"></textarea>
+<input type="hidden" name="hide" value="text_acte" />
+<input type="submit" value="Valider" />
+
+</form>
+
+<?php	
+	
+
+	if (isset($_POST['hide'])){
+	
+		try{
+			include("../info/parametre.php"); // connexion à la base de donnée mysql
+			include("../includes/lireXML.class.php"); // on importe l'objet pour lire le XML
+			include("../includes/periode.class.php"); // on importe l'objet pour lire les dates
+			include("../includes/fonctions_compilation.php"); // des fonctions sur mesures 			
+			
+			$msg = 'Op&eacute;ration r&eacute;ussie.';
+			$flag = true;
+			
+			if ($_POST['hide'] == "fichier"){			
+				$name_fichier = basename($_FILES['fichier_upload']['name']);
+				$tab_ext = preg_split("/\./", $name_fichier);
+				$ext = $tab_ext[count($tab_ext)-1];
+				if ($ext == "xml") {
+					move_uploaded_file($_FILES['fichier_upload']['tmp_name'], "../data/temp.xml");
+				}
+				$lecteur = new LireXML("../data/temp.xml");
+				try {
+					$actes = $lecteur->tabActes();
+				} catch (Exception $e0) {
+					$flag = false;
+					$msg = $e0->getMessage();	
+				}
+			}
+			else if ($_POST['hide'] == "text_acte"){
+				$sources = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<document>\n<ACTES>\n".stripslashes($_POST['source'])."\n</ACTES>\n</document>\n";
+				$file_tmp = fopen("../data/temp.xml", "w");
+				fwrite($file_tmp, $sources);	
+				$lecteur = new LireXML("../data/temp.xml");
+				try {
+					$actes = $lecteur->tabActes();
+				} catch (Exception $e0) {
+					$flag = false;
+					$msg = $e0->getMessage();	
+				}
+			}			
+			
+			// on remplit la table
+			if ($flag){
+				foreach($actes as $acte){
+				  if (ok_pour_prendre_acte($acte))
+						{
+						  echo '<ul>';
+						  add_acte($acte);
+						  echo '</ul>';
+						}
+				}       
+			}
+			
+			
+			mysql_close(); // fin de la connexion à la base de donnée mysql
+			echo '<p>'.$msg.'</p>';
+
+			
+		}
+		catch(Exception $erreur){
+			echo $erreur;
+		}
+	
+	}
+	
+?>
+		
+<?php 
+fclose($fichier_log_sql);
+include("../includes/footer.php"); 
+?>

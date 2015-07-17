@@ -1,0 +1,59 @@
+
+22 juillet 2014
+
+On veut pouvoir sélectionner des personnes pour constituer des groupes, et enregistrer dans la base de données les groupes de personnes sélectionnées.
+
+# Modification des pages existantes
+
+## Dans gestion/viewPersonnes.php
+
+Exemple :
+http://liafa.fr/~buenosaires/gestion/viewPersonnes.php?n=belgrano
+
+Attention : il s'agit de viewPersonnes et non de viewPersonne (ce sont deux scripts différents)
+dans la partie qui affiche les résultats du formulaire de recherche (dans le div class "affiche_table", ajouter un autre formulaire (action="selectPersonnes.php" method="post") pour permettre la sélection des personnes affichées :
+
+- ajouter une fonction affiche_pers_with_check qui appelle la fonction affiche_pers mais en affichant au préalable un
+<input type="checkbox" name="personnes[]" value=l'id de la personne>
+l'id de la personne se trouve dans $pers['id']
+
+- dans tout le div class affiche_table, remplacer l'appel à affiche_pers par un appel à affiche_pers_with_check
+
+- à la fin du formulaire, ajouter un input select/option permettant de choisir à quel groupe on ajoutera les personnes qu'on cochera.  Les options de ce select seront générées par l'appel à une fonction options_groupes que tu écriras plus tard (dans la partie Base de données).  À ce stade, tu dois juste écrire une fonction options_groupes qui ne fait rien, dans un script groupes.php que tu incluras dans viewPersonnes.php
+
+- une fois que tu as vérifié que ça s'affiche correctement, déplacer tout l'affichage du code du select que tu viens d'écrire dans une fonction input_select_groupe du fichier groupes.php (parce qu'on s'en resservira aussi ailleurs)
+
+- ajouter un <input type="checkbox" name="voisins" value="true"> avec un label disant "ajouter également les personnes liées (parents, enfants, témoins, époux)"
+
+- un bouton submit pour valider la sélection, avec le message "ajouter au groupe sélectionné"
+
+- écrire un script selectPersonnes.php qui 
+crée un tableau $personnes pour y recopier les id des personnes sélectionnées, et afficher la liste des id, pour vérifier qu'on récupère bien ce qu'on veut.
+
+- tester le formulaire pour vérifier qu'on récupère bien les id souhaités.  L'ajout dans la base de données sera écrit par la suite.
+
+## Dans viewPersonne.php
+
+Exemple :
+http://liafa.fr/~buenosaires/gestion/viewPersonne.php?id=165
+
+- Après "Dissocier cette personne", ajouter un formulaire contenant les mêmes input que précédemment (le select généré par la fonction input_select_groupe, le checkbox voisins, et le bouton submit), ainsi qu'un input hidden avec pour name "personnes[]" et pour value l'id de la personne.  Le script de traitement du formulaire sera le même que précédemment.
+
+# Ajout d'un menu Sélection
+
+- Ajouter dans la barre latérale un choix "Groupes", qui amènera sur un script viewGroupes.php
+
+Le script viewGroupes.php contiendra :
+
+- un formulaire qui sera traité dans ce même fichier
+- le select de input_select_groupe
+- un input text pour le cas où on veut créer un groupe
+- un input select avec les choix créer, afficher, supprimer, exporter
+
+- pour les choix "créer" et "supprimer", le premier traitement consistera à demander une confirmation, 
+		en demandant de cliquer sur un lien (creerGroupe.php ou supprimerGroupe.php, avec l'id du groupe en paramètre de l'url)
+
+# Base de données
+
+À suivre.
+

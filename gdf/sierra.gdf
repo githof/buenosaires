@@ -1,0 +1,7 @@
+nodedef>name VARCHAR, label VARCHAR, periode VARCHAR
+p328,'Juan Antonio Sierra','30-10-1771'
+p323,'Francisco  De Soria','30-10-1771'
+p324,'Juana Benedicta Fernandez','30-10-1771'
+edgedef>node1 VARCHAR,node2 VARCHAR,directed BOOLEAN,nature VARCHAR,periode_debut VARCHAR, periode_fin VARCHAR
+p323,p328,true,T,1771-10-30,1771-10-30
+p324,p328,true,T,1771-10-30,1771-10-30

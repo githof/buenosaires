@@ -1,0 +1,13 @@
+
+1er juillet 2013
+
+Important :
+- fichiers temporaires pour export dans /tmp
+temp.xml
+tout ce qui est mis dans gdf, sauf all.gdf qu'on peut garder
+
+Autres
+
+- sauvegarde du fichier log précédent en cas de rechargement complet (compiler ou restaurer)
+- csv
+

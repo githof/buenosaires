@@ -1,0 +1,7 @@
+nodedef>name VARCHAR, label VARCHAR, periode VARCHAR
+p6,'Juan  Rodríguez Estela','4-2-1656'
+p1,'Juan  Zacarias Sierra Morales','4-2-1656'
+p2,'María  Caravajal','4-2-1656'
+edgedef>node1 VARCHAR,node2 VARCHAR,directed BOOLEAN,nature VARCHAR,periode_debut VARCHAR, periode_fin VARCHAR
+p1,p6,true,T,1656-2-4,1656-2-4
+p2,p6,true,T,1656-2-4,1656-2-4

@@ -1,0 +1,15 @@
+nodedef>name VARCHAR, label VARCHAR, periode VARCHAR
+p438,'Manuel  Frutos','27-1-1783'
+p439,'Maria Manuela Quiros','27-1-1783'
+p469,'Manuel (pere) Frutos','27-1-1783'
+p440,'Ana  Calvo','27-1-1783'
+p387,'Domingo  Belgrano Peri','22-12-1765 to 9-8-1820'
+p396,'Maria Josefa Gonzalez','4-11-1757 to 9-5-1808'
+edgedef>node1 VARCHAR,node2 VARCHAR,directed BOOLEAN,nature VARCHAR,periode_debut VARCHAR, periode_fin VARCHAR
+p438,p439,true,E,1783-1-27,1783-1-27
+p439,p438,true,E,1783-1-27,1783-1-27
+p438,p469,true,P,1783-1-27,1783-1-27
+p438,p440,true,P,1783-1-27,1783-1-27
+p440,p438,true,E,1783-1-27,1783-1-27
+p438,p387,true,T,1783-1-27,1783-1-27
+p438,p396,true,T,1783-1-27,1783-1-27
