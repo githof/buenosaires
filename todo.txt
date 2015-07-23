@@ -1,5 +1,4 @@
 
-- réparer fusion et dissoc (ajouter_fichier_log() défini deux fois)
 - fonction ajout_personne à partir d'un xml + menu
 - fonction supprime_acte propre
 - cf. DROPBOX/Organisation/tickets.txt
