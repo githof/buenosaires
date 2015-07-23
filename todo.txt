@@ -1,6 +1,4 @@
 
-- régler le problème du push.sh à partir du git (plutôt que dropbox)
-- ignorer infos connexion
 - réparer fusion et dissoc (ajouter_fichier_log() défini deux fois)
 - fonction ajout_personne à partir d'un xml + menu
 - fonction supprime_acte propre
