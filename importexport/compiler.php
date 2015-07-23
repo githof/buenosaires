@@ -8,9 +8,6 @@ include("../includes/fonctions_all.php");
 include_once("../includes/fonctions_copy_fichier.php");
 copy_fichier_bsql();
 
-function date_heure(){
-	return date("d-m-Y H:i:s");	
-}
 ?>
 
 <h1>COMPILER LES INFORMATIONS</h1>
