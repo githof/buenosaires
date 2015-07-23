@@ -1,5 +1,6 @@
 <?php 
 include_once("fonctions_all.php");
+include_once("periode.class.php");
 
 	class Personne{
 
@@ -225,9 +226,13 @@ function add_acte($acte, $only_new = false){
 	*/
 	
 	function add_pers($pers, $acte){
+	  echo '<p>test add_pers</p>';
 		$objDate = new LirePeriode($acte);
+	  echo '<p>test add_pers</p>';
 		$p = new Personne($pers);		
+	  echo '<p>test add_pers</p>';
 		if ($p->nom[0] != "" and $p->prenom[0] != ""){
+	  echo '<p>test add_pers</p>';
 			$sql = mysql_query("SELECT id, periode FROM personnes WHERE nom1noaccent='".mysql_real_escape_string($p->nomnoaccent[0])."' and nom2noaccent='".mysql_real_escape_string($p->nomnoaccent[1])."' and nom3noaccent='".mysql_real_escape_string($p->nomnoaccent[2])."' and prenom1noaccent='".mysql_real_escape_string($p->prenomnoaccent[0])."' and prenom2noaccent='".mysql_real_escape_string($p->prenomnoaccent[1])."'");
 			if (mysql_num_rows($sql) > 0){
 				$sql_r = mysql_fetch_assoc($sql); // je prends le premier résultat, qui n'est pas meilleur qu'un autre
@@ -239,13 +244,16 @@ function add_acte($acte, $only_new = false){
 				return $sql_r['id'];
 			}
 		}
+	  echo '<p>test add_pers</p>';
 		$id_periode = add_periode($objDate->minDebut, $objDate->maxDebut, $objDate->minFin, $objDate->maxFin);
 		$req_sql = "INSERT INTO personnes (id, de1, la1, nom1, de2, la2, nom2, de3, la3, nom3, prenom1, prenom2, nom1noaccent, nom2noaccent, nom3noaccent, prenom1noaccent, prenom2noaccent, periode) VALUES (NULL, '".$p->de[0]."','".$p->la[0]."', '".mysql_real_escape_string($p->nom[0])."', '".$p->de[1]."','".$p->la[1]."', '".mysql_real_escape_string($p->nom[1])."', '".$p->de[2]."','".$p->la[2]."', '".mysql_real_escape_string($p->nom[2])."', '".mysql_real_escape_string($p->prenom[0])."', '".mysql_real_escape_string($p->prenom[1])."', '".mysql_real_escape_string($p->nomnoaccent[0])."', '".mysql_real_escape_string($p->nomnoaccent[1])."', '".mysql_real_escape_string($p->nomnoaccent[2])."', '".mysql_real_escape_string($p->prenomnoaccent[0])."', '".mysql_real_escape_string($p->prenomnoaccent[1])."', '$id_periode')";
 		mysql_query($req_sql);	
 		ajouter_fichier_log($req_sql);
+	  echo '<p>test add_pers</p>';
 		$id_pers = last_id_personnes();
 		add_condition($id_pers, $pers, $acte, $objDate);
 		@$pers->addAttribute("id", $id_pers);
+	  echo '<p>test add_pers</p>';
 		return $id_pers;
 	}
 	
