@@ -13,4 +13,11 @@ echo "<p>Nom : $nom</p>";
 $id = add_pers($epouse, $acte);
 echo "<p>ID : $id</p>";
 
+/*
+  23 juil 2015
+  Requête d'insersion de la personne envoyée, ajoutée dans le fichier de log, mais pas prise en compte, je sais pas pourquoi.  Je l'ai lancée à la main, c'est passé.
+-> id 2045, mais elle n'est reliée à rien.
+  Il va falloir relancer add_acte
+ */
+
 ?>
