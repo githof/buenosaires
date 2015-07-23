@@ -11,13 +11,6 @@ copy_fichier_bsql();
 function date_heure(){
 	return date("d-m-Y H:i:s");	
 }
-$fichier_log_sql = fopen("../data/logSql.bsql", "w");
-function ajouter_fichier_log($string_sql){
-	$date_heure = date_heure();
-	$compte = $GLOBALS['compte'];
-	$string_sql = preg_replace("/(\r\n|\n|\r)/", " ", $date_heure." ".$compte->pseudo." C ".$string_sql);
-	fwrite($GLOBALS['fichier_log_sql'], $string_sql."\n");	
-}
 ?>
 
 <h1>COMPILER LES INFORMATIONS</h1>
