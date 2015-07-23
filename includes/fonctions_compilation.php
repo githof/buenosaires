@@ -232,9 +232,11 @@ function add_acte($acte, $only_new = false){
 		$p = new Personne($pers);		
 	  echo '<p>test add_pers</p>';
 		if ($p->nom[0] != "" and $p->prenom[0] != ""){
-	  echo '<p>test add_pers</p>';
+	  echo '<p>test add_pers in</p>';
 			$sql = mysql_query("SELECT id, periode FROM personnes WHERE nom1noaccent='".mysql_real_escape_string($p->nomnoaccent[0])."' and nom2noaccent='".mysql_real_escape_string($p->nomnoaccent[1])."' and nom3noaccent='".mysql_real_escape_string($p->nomnoaccent[2])."' and prenom1noaccent='".mysql_real_escape_string($p->prenomnoaccent[0])."' and prenom2noaccent='".mysql_real_escape_string($p->prenomnoaccent[1])."'");
+	  echo '<p>test add_pers in</p>';
 			if (mysql_num_rows($sql) > 0){
+	  echo '<p>test add_pers in in</p>';
 				$sql_r = mysql_fetch_assoc($sql); // je prends le premier résultat, qui n'est pas meilleur qu'un autre
 				add_condition($sql_r['id'], $pers, $acte, $objDate);
 				if ($pers->getName()!= "veuf" and $pers->getName()!= "veuve") {
@@ -244,9 +246,11 @@ function add_acte($acte, $only_new = false){
 				return $sql_r['id'];
 			}
 		}
-	  echo '<p>test add_pers</p>';
+	  echo '<p>test add_pers out</p>';
 		$id_periode = add_periode($objDate->minDebut, $objDate->maxDebut, $objDate->minFin, $objDate->maxFin);
+	  echo '<p>test add_pers add_periode</p>';
 		$req_sql = "INSERT INTO personnes (id, de1, la1, nom1, de2, la2, nom2, de3, la3, nom3, prenom1, prenom2, nom1noaccent, nom2noaccent, nom3noaccent, prenom1noaccent, prenom2noaccent, periode) VALUES (NULL, '".$p->de[0]."','".$p->la[0]."', '".mysql_real_escape_string($p->nom[0])."', '".$p->de[1]."','".$p->la[1]."', '".mysql_real_escape_string($p->nom[1])."', '".$p->de[2]."','".$p->la[2]."', '".mysql_real_escape_string($p->nom[2])."', '".mysql_real_escape_string($p->prenom[0])."', '".mysql_real_escape_string($p->prenom[1])."', '".mysql_real_escape_string($p->nomnoaccent[0])."', '".mysql_real_escape_string($p->nomnoaccent[1])."', '".mysql_real_escape_string($p->nomnoaccent[2])."', '".mysql_real_escape_string($p->prenomnoaccent[0])."', '".mysql_real_escape_string($p->prenomnoaccent[1])."', '$id_periode')";
+	  echo "<p>test add_pers\n $req_sql</p>";
 		mysql_query($req_sql);	
 		ajouter_fichier_log($req_sql);
 	  echo '<p>test add_pers</p>';
@@ -367,8 +371,11 @@ function add_acte($acte, $only_new = false){
 		Cette fonction ajoute une periode
 	*/
 	function add_periode($minD, $maxD, $minF, $maxF){
+	  echo '<p>test add_periode</p>';
 		mysql_query("INSERT INTO periodes (id, minDebut, maxDebut, minFin, maxFin) VALUES (NULL, '$minD', '$maxD', '$minF', '$maxF')");	
+	  echo '<p>test add_periode</p>';
 		ajouter_fichier_log("INSERT INTO periodes (id, minDebut, maxDebut, minFin, maxFin) VALUES (NULL, '$minD', '$maxD', '$minF', '$maxF')");
+	  echo '<p>test add_periode</p>';
 		return last_id_periodes();
 	}
 	

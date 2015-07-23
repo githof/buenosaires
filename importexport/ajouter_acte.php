@@ -3,9 +3,6 @@ include("../includes/header.php");
 include("../includes/restriction.php");
 include_once("../includes/fonctions_all.php"); 
 restriction($compte, 2);
-function date_heure(){
-	return date("d-m-Y H:i:s");	
-}
 function existe_acte($acte){
   foreach($acte->attributes() as $key => $val){
     if ($key == "num"){
