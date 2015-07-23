@@ -1,5 +1,6 @@
 
 - fonction ajout_personne à partir d'un xml + menu
+- ajouter épouse de l'acte 5553
 - fonction supprime_acte propre
 - cf. DROPBOX/Organisation/tickets.txt
 
