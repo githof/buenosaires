@@ -3,7 +3,6 @@ include("../includes/header.php");
 include("../includes/restriction.php");
 restriction($compte, 1);
 include("../info/parametre.php");
-include("../includes/addLogSql.php");
 include("../includes/fonctions_all.php");
 
 ?>
