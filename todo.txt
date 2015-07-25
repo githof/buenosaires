@@ -1,4 +1,5 @@
 
+- voir Organisation/programme.txt (interface, témoins)
 - refaire l'ajout de l'acte 5553
 - factoriser requête sql avec log, valeur de retour et message d'erreur :P
 - virer .git de push.sh
