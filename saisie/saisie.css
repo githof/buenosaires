@@ -12,7 +12,7 @@ article.saisie_acte label.toggle_raw
     font-size: smaller;
 }
 
-article.saisie_acte label.raw:after
+article.saisie_acte label.toggle_raw:after
 {
     content: "\a";
     white-space: pre;
