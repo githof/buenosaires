@@ -10,6 +10,7 @@ article.saisie_acte label.toggle_raw
     color: lightgray;
     text-decoration: underline;
     font-size: smaller;
+    cursor: pointer;
 }
 
 article.saisie_acte label.toggle_raw:after
