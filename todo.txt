@@ -1,4 +1,10 @@
 
+19 août 2015
+- saisie : modèle html époux 1er niveau		[30]
+  (sans déplier balises 2ème niveau), cf. livescribe
+- saisie : jquery sur les bouton      [30]
+
+juillet 2015
 - voir Organisation/programme.txt (interface, témoins)
 - refaire l'ajout de l'acte 5553
 - factoriser requête sql avec log, valeur de retour et message d'erreur :P
