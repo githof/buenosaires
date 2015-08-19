@@ -4,7 +4,7 @@ article.saisie_acte ul
     list-style-type: none;
 }
 
-article.saisie_acte label:after
+article.saisie_acte label.raw:after
 {
     content: "\a";
     white-space: pre;
