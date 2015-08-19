@@ -4,6 +4,14 @@ article.saisie_acte ul
     list-style-type: none;
 }
 
+article.saisie_acte label.toggle_raw
+{
+    margin-left: .5em;
+    color: lightgray;
+    text-decoration: underline;
+    font-size: smaller;
+}
+
 article.saisie_acte label.raw:after
 {
     content: "\a";
