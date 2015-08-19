@@ -3,3 +3,9 @@ article.saisie_acte ul
 {
     list-style-type: none;
 }
+
+article.saisie_acte label:after
+{
+    content: "\a";
+    white-space: pre;
+}
