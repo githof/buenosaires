@@ -1,4 +1,7 @@
 
+20 août 2015
+- saisie : exercice selection texte / bouton / balise	[1h]
+
 19 août 2015
 - saisie : modèle html acte 1er niveau		[30]
 - saisie : jquery sur les bouton      [30]
