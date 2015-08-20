@@ -27,13 +27,6 @@ function show_selected()
     show_text(sel.anchorOffset + ':' + sel);
 }
 
-var nb_show = 0;
-
-function test_show()
-{
-    show_text(++nb_show + ' bob');
-}
-
 function stop_selection()
 {
     show_selected();
