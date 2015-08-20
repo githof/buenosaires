@@ -1,17 +1,28 @@
 
-article.saisie_acte section.texte_acte
+article.saisie_acte section.texte
 {
     width: 80%;
-    border: solid thin gray;
-    padding: 3px;
-    font-family: monospace;
+    border: solid thin lightgray;
+    padding: .5ex 1em;
+    margin: 1ex 1em;
 }
 
-#selected
+article.saisie_acte p.texte
 {
+    font-family: monospace;
     border: solid thin gray;
-    width: 40%;
     min-height: 2ex;
+}
+
+article.saisie_acte dt
+{
+    float: left;
+    font-weight: bold;
+}
+
+article.saisie_acte dd
+{
+    margin-left: 5em;
 }
 
 article.saisie_acte ul
