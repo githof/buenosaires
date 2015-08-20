@@ -16,15 +16,28 @@ function selection()
     return sel
 }
 
-function show_text(text)
+function show_text(where, text)
 {
-    $("#selected").text(text);
+    $(where).text(text);
+}
+
+function text_before(sel)
+{
+//    sel.anchorOffset
+    return "";
+}
+
+function text_after(sel)
+{
+    return "";
 }
 
 function show_selected()
 {
     var sel = selection();
-    show_text(sel.anchorOffset + ':' + sel);
+    show_text('#before', text_before(sel));
+    show_text('#sel', sel);
+    show_text('#after', text_after(sel));
 }
 
 function stop_selection()
