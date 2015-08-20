@@ -1,4 +1,6 @@
 
+var element;
+
 function selection()
 {
     var sel;
@@ -35,16 +37,17 @@ function test_show()
 function stop_selection()
 {
     show_selected();
-    $("#acte").off('mousemove mouseup');
+    element.off('mousemove mouseup');
 }
 
 function start_selection()
 {
-    $("#acte").on('mousemove', show_selected);
-    $("#acte").on('mouseup', stop_selection);
+    element.on('mousemove', show_selected);
+    element.on('mouseup', stop_selection);
 }
 
 $(document).ready(function(){
-    $("#acte").on('mousedown', start_selection);
+    element = $("#acte");
+    element.on('mousedown', start_selection);
 });
 
