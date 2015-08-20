@@ -1,7 +1,7 @@
 
-function text_selected()
+function selection()
 {
-    var sel = '';
+    var sel;
     if(window.getSelection){
 	sel = window.getSelection()
     }
@@ -21,7 +21,8 @@ function show_text(text)
 
 function show_selected()
 {
-    show_text(text_selected());
+    var sel = selection();
+    show_text(sel.anchorOffset + ':' + sel);
 }
 
 var nb_show = 0;
