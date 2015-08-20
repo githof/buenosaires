@@ -2,6 +2,11 @@
 var element;
 var text;
 
+/*
+  Attention, ça ne fonctionne que si le texte ne contient aucun double blanc (espaces, sauts de ligne, etc.)
+  cf. innerText vs. textContent
+*/
+
 function selection()
 {
     var sel;
