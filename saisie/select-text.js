@@ -37,11 +37,11 @@ function stop_selection()
 
 function start_selection()
 {
-    $("#acte").bind('mousemove', show_selected);
-    $("#acte").bind('mouseup', stop_selection);
+    $("#acte").on('mousemove', show_selected);
+    $("#acte").on('mouseup', stop_selection);
 }
 
 $(document).ready(function(){
-    $("#acte").bind('mousedown', start_selection);
+    $("#acte").on('mousedown', start_selection);
 });
 
