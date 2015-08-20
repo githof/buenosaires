@@ -33,6 +33,8 @@ function test_show()
 
 function stop_selection()
 {
+    show_selected();
+    $("#acte").off('mousemove mouseup');
 }
 
 function start_selection()
