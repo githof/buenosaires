@@ -14,19 +14,24 @@ function text_selected()
     return sel
 }
 
-function show_selected(text)
+function show_text(text)
 {
     $("#selected").text(text);
+}
+
+function show_selected()
+{
+    show_text(text_selected());
 }
 
 var nb_show = 0;
 
 function test_show()
 {
-    show_selected(++nb_show + ' bob');
+    show_text(++nb_show + ' bob');
 }
 
 $(document).ready(function(){
-    $("#acte").bind('mouseup', test_show);
+    $("#acte").bind('mouseup', show_selected);
 });
 
