@@ -21,13 +21,12 @@ function show_selected(text)
 
 var nb_show = 0;
 
-function test_show(text)
+function test_show()
 {
-    show_selected(++nb_show + ' ' + text);
+    show_selected(++nb_show + ' bob');
 }
 
 $(document).ready(function(){
-    test_show("");
-    $("#acte").bind('mouseup', test_show("hey!"));
+    $("#acte").bind('mouseup', test_show);
 });
 
