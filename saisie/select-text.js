@@ -32,6 +32,6 @@ function test_show()
 }
 
 $(document).ready(function(){
-    $("#acte").bind('mouseup', show_selected);
+    $("#acte").bind('mousemove', show_selected);
 });
 
