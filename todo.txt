@@ -1,6 +1,6 @@
 
 20 août 2015
-- saisie : exercice selection texte / bouton / balise	[1h]
+- saisie : exercice selection texte / split avant, sélection, après	[30]
 
 19 août 2015
 - saisie : modèle html acte 1er niveau		[30]

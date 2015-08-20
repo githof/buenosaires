@@ -1,4 +1,12 @@
 
+var element;
+var text;
+
+/*
+  Attention, ça ne fonctionne que si le texte ne contient aucun double blanc (espaces, sauts de ligne, etc.)
+  cf. innerText vs. textContent
+*/
+
 function selection()
 {
     var sel;
@@ -14,37 +22,45 @@ function selection()
     return sel
 }
 
-function show_text(text)
+function show_text(where, text)
 {
-    $("#selected").text(text);
+    $(where).text(text);
+}
+
+function text_before(sel)
+{
+    return text.slice(0, sel.anchorOffset);
+}
+
+function text_after(sel)
+{
+    seltext = sel.toString();
+    return text.slice(sel.anchorOffset + seltext.length);
 }
 
 function show_selected()
 {
     var sel = selection();
-    show_text(sel.anchorOffset + ':' + sel);
-}
-
-var nb_show = 0;
-
-function test_show()
-{
-    show_text(++nb_show + ' bob');
+    show_text('#before', text_before(sel));
+    show_text('#sel', sel);
+    show_text('#after', text_after(sel));
 }
 
 function stop_selection()
 {
     show_selected();
-    $("#acte").off('mousemove mouseup');
+    element.off('mousemove mouseup');
 }
 
 function start_selection()
 {
-    $("#acte").on('mousemove', show_selected);
-    $("#acte").on('mouseup', stop_selection);
+    element.on('mousemove', show_selected);
+    element.on('mouseup', stop_selection);
 }
 
 $(document).ready(function(){
-    $("#acte").on('mousedown', start_selection);
+    element = $("#acte");
+    text = element.text();
+    element.on('mousedown', start_selection);
 });
 
