@@ -31,7 +31,17 @@ function test_show()
     show_text(++nb_show + ' bob');
 }
 
-$(document).ready(function(){
+function stop_selection()
+{
+}
+
+function start_selection()
+{
     $("#acte").bind('mousemove', show_selected);
+    $("#acte").bind('mouseup', stop_selection);
+}
+
+$(document).ready(function(){
+    $("#acte").bind('mousedown', start_selection);
 });
 
