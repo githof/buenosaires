@@ -30,8 +30,7 @@ function text_before(sel)
 function text_after(sel)
 {
     seltext = sel.toString();
-    return sel.anchorOffset +'+'+ seltext.length + ':' 
-	+ text.slice(sel.anchorOffset + seltext.length);
+    return text.slice(sel.anchorOffset + seltext.length);
 }
 
 function show_selected()
