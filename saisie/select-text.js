@@ -29,7 +29,9 @@ function text_before(sel)
 
 function text_after(sel)
 {
-    return text.slice(sel.anchorOffset + sel.toString().length);
+    seltext = sel.toString();
+    return sel.anchorOffset +'+'+ seltext.length + ':' 
+	+ text.slice(sel.anchorOffset + seltext.length);
 }
 
 function show_selected()
