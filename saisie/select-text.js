@@ -1,5 +1,6 @@
 
 var element;
+var text;
 
 function selection()
 {
@@ -23,13 +24,12 @@ function show_text(where, text)
 
 function text_before(sel)
 {
-//    sel.anchorOffset
-    return "";
+    return text.slice(0, sel.anchorOffset);
 }
 
 function text_after(sel)
 {
-    return "";
+    return text.slice(sel.anchorOffset + sel.toString().length);
 }
 
 function show_selected()
@@ -54,6 +54,7 @@ function start_selection()
 
 $(document).ready(function(){
     element = $("#acte");
+    text = element.text();
     element.on('mousedown', start_selection);
 });
 
