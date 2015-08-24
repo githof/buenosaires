@@ -1,6 +1,15 @@
 
+- saisie : nettoyage des espaces	[30]
++ saisie : ajout d'une balise dans un élément	[1h]
+  (ex : pere dans epoux) 
+  - sélection (cf. exo sélection)
+  - validation au clic ou espace
+  - remplacement
+  - annulation
+- saisie : textarea, option modif manuelle	[30]
+
 20 août 2015
-- saisie : exercice selection texte / split avant, sélection, après	[30]
+x saisie : exercice selection texte / split avant, sélection, après	[30]
 
 19 août 2015
 - saisie : modèle html acte 1er niveau		[30]
