@@ -1,5 +1,6 @@
 
 - saisie : nettoyage des espaces	[30]
+   faire select_all (utiliser SelectText), récupérer la sélection, puis remplacer :)
 + saisie : ajout d'une balise dans un élément	[1h]
   (ex : pere dans epoux) 
   - sélection (cf. exo sélection)
