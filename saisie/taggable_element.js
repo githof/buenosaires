@@ -10,8 +10,8 @@ function create_selectable()
 
 function create_elements()
 {
-    this.selectable = this.create_selectable();
-    this.container.append(
+    this.$selectable = this.create_selectable();
+    this.$container.append(
 	$('<section>',
 	  {
 	      "class": "taggable_element",
@@ -32,7 +32,7 @@ function create_elements()
     );
 }
 
-function taggable_element(id, tag, container)
+function taggable_element(id, tag, $container)
 {
     this.id = id;
     this.tag = tag;
