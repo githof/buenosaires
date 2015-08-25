@@ -1,6 +1,16 @@
 
+function create_selectable()
+{
+    $element = $('<textarea>',
+		 {
+		     disabled: "true"
+		 });
+    return $element;
+}
+
 function create_elements()
 {
+    this.selectable = this.create_selectable();
     this.container.append(
 	$('<section>',
 	  {
@@ -16,10 +26,7 @@ function create_elements()
 		       {
 			   text: this.tag
 		       }),
-		       $('<dd>',
-		       {
-			   text: "test text"
-		       })
+		       $('<dd>').append(this.selectable)
 		   ])
 	  ])
     );
@@ -30,6 +37,7 @@ function taggable_element(id, tag, container)
     this.id = id;
     this.tag = tag;
     this.container = container;
+    this.create_selectable = create_selectable;
     this.create_elements = create_elements;
     this.create_elements();
 }
