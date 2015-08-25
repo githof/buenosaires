@@ -60,7 +60,7 @@ function get_text(id)
 
 function trim_text_in_element(id)
 {
-    $('#'+id).text(get_text(id));
+    return $('#'+id).text(get_text(id));
 }
 
 function show_text(where, text)
@@ -101,7 +101,7 @@ function start_selection()
 
 $(document).ready(function(){
     element = $("#acte");
-    text = element.text();
+    text = trim_text_in_element("acte");
     element.on('mousedown', start_selection);
 });
 
