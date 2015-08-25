@@ -10,24 +10,26 @@ function create_selectable()
 
 function create_elements()
 {
-    this.$selectable = this.create_selectable();
+    this.$selectable = new selectable();
+    this.$selection_display = new selection_display();
     this.$container.append(
 	$('<section>',
 	  {
 	      "class": "taggable_element",
 	      id: this.id
 	  }).append([
-		  $('<dl>',
-		    {
-			"class": "xml"
-		    }
-		   ).append([
-		       $('<dt>',
-		       {
-			   text: this.tag
-		       }),
-		       $('<dd>').append(this.selectable)
-		   ])
+	      $('<dl>',
+		{
+		    "class": "xml"
+		}
+	       ).append([
+		   $('<dt>',
+		     {
+			 text: this.tag
+		     }),
+		   $('<dd>').append(this.selectable)
+	       ]),
+	      this.$selection_display
 	  ])
     );
 }
