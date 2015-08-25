@@ -11,9 +11,9 @@ var text;
   From
   https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse/987376#987376
 */
-function SelectText(element) {
+function select_text(id) {
     var doc = document
-        , text = doc.getElementById(element)
+        , text = doc.getElementById(id)
         , range, selection
     ;    
     if (doc.body.createTextRange) {
@@ -29,6 +29,10 @@ function SelectText(element) {
     }
 }
 
+function unselect_all()
+{
+}
+
 function selection()
 {
     var sel;
@@ -42,6 +46,21 @@ function selection()
 	sel = document.selection.createRange()
     }
     return sel
+}
+
+function get_text(id)
+{
+    var sel;
+
+    select_text(id);
+    sel = selection();
+    unselect_all();
+    return sel.toString();
+}
+
+function trim_text_in_element(id)
+{
+    $('#'+id).text(get_text(id));
 }
 
 function show_text(where, text)
