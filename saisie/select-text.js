@@ -7,6 +7,32 @@ var text;
   cf. innerText vs. textContent
 */
 
+/*
+  From
+  https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse/987376#987376
+*/
+function select_text(id) {
+    var doc = document
+        , text = doc.getElementById(id)
+        , range, selection
+    ;    
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();        
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+
+function unselect_all()
+{
+}
+
 function selection()
 {
     var sel;
@@ -20,6 +46,24 @@ function selection()
 	sel = document.selection.createRange()
     }
     return sel
+}
+
+function get_text(id)
+{
+    var sel;
+
+    select_text(id);
+    sel = selection();
+    unselect_all();
+    return sel.toString();
+}
+
+function trim_text_in_element(id)
+{
+    var text = get_text(id)
+
+    $('#'+id).text(text);
+    return text;
 }
 
 function show_text(where, text)
@@ -60,7 +104,7 @@ function start_selection()
 
 $(document).ready(function(){
     element = $("#acte");
-    text = element.text();
+    text = trim_text_in_element("acte");
     element.on('mousedown', start_selection);
 });
 

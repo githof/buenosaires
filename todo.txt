@@ -1,5 +1,4 @@
 
-- saisie : nettoyage des espaces	[30]
 + saisie : ajout d'une balise dans un élément	[1h]
   (ex : pere dans epoux) 
   - sélection (cf. exo sélection)
