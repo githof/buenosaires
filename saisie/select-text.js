@@ -60,7 +60,10 @@ function get_text(id)
 
 function trim_text_in_element(id)
 {
-    return $('#'+id).text(get_text(id));
+    var text = get_text(id)
+
+    $('#'+id).text(text);
+    return text;
 }
 
 function show_text(where, text)
