@@ -1,17 +1,25 @@
 
-function create_selectable()
+function selectable()
 {
-    $element = $('<textarea>',
-		 {
-		     disabled: "true"
-		 });
-    return $element;
+    this.$element = $('<textarea>',
+		      {
+			  'class': "xml_text",
+			  disabled: "true"
+		      });
+}
+
+function selection_display()
+{
+    this.$element = $('<p>',
+		      {
+			  'class': "xml_text"
+		      });
 }
 
 function create_elements()
 {
-    this.$selectable = new selectable();
-    this.$selection_display = new selection_display();
+    this.selectable = new selectable();
+    this.selection_display = new selection_display();
     this.$container.append(
 	$('<section>',
 	  {
@@ -27,9 +35,9 @@ function create_elements()
 		     {
 			 text: this.tag
 		     }),
-		   $('<dd>').append(this.selectable)
+		   $('<dd>').append(this.selectable.$element)
 	       ]),
-	      this.$selection_display
+	      this.selection_display.$element
 	  ])
     );
 }
@@ -38,8 +46,7 @@ function taggable_element(id, tag, $container)
 {
     this.id = id;
     this.tag = tag;
-    this.container = container;
-    this.create_selectable = create_selectable;
+    this.$container = $container;
     this.create_elements = create_elements;
     this.create_elements();
 }
