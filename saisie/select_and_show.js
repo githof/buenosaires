@@ -19,16 +19,21 @@ function select_and_show($select, $show)
     var that = this;
     this.$select = $select;
     this.$show = $show;
+    this.before = this.select = this.after = "";
 
     this.show_selected = function ()
     {
 	var sel = selection();
 	that.$show.text(sel);
+	return sel;
     }
 
     this.stop_selection = function ()
     {
-	that.show_selected();
+	var sel = that.show_selected();
+	that.before = text.slice(0, sel.anchorOffset);
+	that.select = sel.toString();
+	that.after = text.slice(sel.anchorOffset + seltext.length);
 	that.$select.off('mousemove mouseup');
     }
 
