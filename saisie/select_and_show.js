@@ -18,6 +18,7 @@ function select_and_show($select, $show)
 {
     this.$select = $select;
     this.$show = $show;
+    this.bob = 3;
 
     this.show_selected = function ()
     {
@@ -33,10 +34,13 @@ function select_and_show($select, $show)
 
     this.start_selection = function ()
     {
+	console.log('2');
+	console.log(this.bob);
 	this.$select.on('mousemove', this.show_selected);
 	this.$select.on('mouseup', this.stop_selection);
     }
 
+    console.log('1');
     this.$select.on('mousedown', this.start_selection);
 }
 
