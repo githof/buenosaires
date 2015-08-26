@@ -14,12 +14,45 @@ function selection()
     return sel
 }
 
+/*
+  From
+  https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse/987376#987376
+*/
+function select_text(id) {
+    var doc = document
+        , text = doc.getElementById(id)
+        , range, selection
+    ;    
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();        
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+
+
 function select_and_show($select, $show)
 {
     var that = this;
     this.$select = $select;
     this.$show = $show;
     this.before = this.select = this.after = "";
+
+    this.trim_text = function ()
+    {
+	var sel;
+	var id="id"; // need id of that.$select, or, better, js DOM object
+
+	select_text(id);
+	sel = selection();
+	that.$select.text(sel.toString());
+    }
 
     this.show_selected = function ()
     {
