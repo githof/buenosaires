@@ -21,3 +21,6 @@ function select_and_show($select, $show)
     this.$select.on('mousedown', this.start_selection);
 }
 
+$(document).ready(function(){
+    var S = new select_and_show($("#acte"), $("#sel"));
+});
