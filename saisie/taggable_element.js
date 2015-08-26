@@ -1,18 +1,18 @@
 
+function selection_display()
+{
+    this.$element = $('<p>',
+		      {
+			  'class': "xml_text"
+		      });
+}
+
 function selectable()
 {
     this.$element = $('<textarea>',
 		      {
 			  'class': "xml_text",
 			  disabled: "true"
-		      });
-}
-
-function selection_display()
-{
-    this.$element = $('<p>',
-		      {
-			  'class': "xml_text"
 		      });
 }
 
@@ -42,6 +42,15 @@ function create_elements()
     );
 }
 
+function start_selection()
+{
+}
+
+function prepare_behavior()
+{
+    this.selectable.$element.on('mousedown', this.start_selection);
+}
+
 function taggable_element(id, tag, $container)
 {
     this.id = id;
@@ -49,6 +58,9 @@ function taggable_element(id, tag, $container)
     this.$container = $container;
     this.create_elements = create_elements;
     this.create_elements();
+    this.start_selection = start_selection;
+    this.prepare_behavior = prepare_behavior;
+    this.prepare_behavior();
 }
 
 $(document).ready(function(){
