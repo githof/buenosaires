@@ -1,4 +1,5 @@
 
+- saisie : objet select-and-show	[45]
 + saisie : ajout d'une balise dans un élément	[1h]
   (ex : pere dans epoux) 
   - sélection (cf. exo sélection)
