@@ -76,7 +76,7 @@ function select_and_show($select, $show)
 
 	console.log('before: ' + that.before);
 	console.log('selection: ' + that.select);
-	console.log('after: ' + that.after');
+	console.log('after: ' + that.after);
     }
 
     this.start_selection = function ()
