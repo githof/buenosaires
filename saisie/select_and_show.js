@@ -44,6 +44,8 @@ function select_and_show($select, $show, then_callback)
     this.then_callback = then_callback;
     this.text = this.before = this.select = this.after = "";
 
+    console.log($select.text());
+
     this.trim_text = function ()
     {
 	var select = that.$select.get(0);

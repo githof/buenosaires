@@ -24,6 +24,8 @@ $(document).ready(function(){
 
     $("body").append([ $source, $show ]);
 
+    $source.text("salut Tal, c'est encore moi !");
+    
     var S2 = new select_and_show(
 	$source,
 	$show,
@@ -35,6 +37,4 @@ $(document).ready(function(){
 	}
     );
 
-    $source.text("salut Tal, c'est encore moi !");
-    
 });
