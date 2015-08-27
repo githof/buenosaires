@@ -36,11 +36,12 @@ function select_text(element) {
 }
 
 
-function select_and_show($select, $show)
+function select_and_show($select, $show, then_callback)
 {
     var that = this;
     this.$select = $select;
     this.$show = $show;
+    this.then_callback = then_callback;
     this.text = this.before = this.select = this.after = "";
 
     this.trim_text = function ()
@@ -74,9 +75,7 @@ function select_and_show($select, $show)
 	that.after = that.text.slice(sel.anchorOffset + that.select.length);
 	that.$select.off('mousemove mouseup');
 
-	console.log('before: ' + that.before);
-	console.log('selection: ' + that.select);
-	console.log('after: ' + that.after);
+	if(that.then_callback != null) that.then_callback();
     }
 
     this.start_selection = function ()
@@ -90,5 +89,12 @@ function select_and_show($select, $show)
 }
 
 $(document).ready(function(){
-    var S = new select_and_show($("#acte"), $("#sel"));
+    var S = new select_and_show($("#acte"), $("#sel"), 
+				function ()
+				{
+				    console.log('before: ' + that.before);
+				    console.log('selection: ' + that.select);
+				    console.log('after: ' + that.after);
+				}
+			       );
 });
