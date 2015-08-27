@@ -49,6 +49,8 @@ function select_and_show($select, $show, then_callback)
 	var select = that.$select.get(0);
 	var text;
 
+    console.log(that.$select.text());
+
 	select_text(select);
 	text = selection().toString();
 	that.$select.text(text);
@@ -57,8 +59,6 @@ function select_and_show($select, $show, then_callback)
 
     this.extract_text = function ()
     {
-    console.log(that.$select.text());
-
 	that.text = that.trim_text();
     }
 
