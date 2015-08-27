@@ -50,10 +50,11 @@ function select_and_show($select, $show, then_callback)
 	var text;
 
     console.log(that.$select.text());
-	console.log(select.textContent);
 
 	select_text(select);
 	text = selection().toString();
+	console.log('textContent : ' + select.textContent);
+	console.log('text : ' + text);
 	that.$select.text(text);
 	return text;
     }
