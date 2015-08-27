@@ -41,16 +41,22 @@ function select_and_show($select, $show)
     var that = this;
     this.$select = $select;
     this.$show = $show;
-    this.before = this.select = this.after = "";
+    this.text = this.before = this.select = this.after = "";
 
     this.trim_text = function ()
     {
-	var sel;
-	var select = that.$select.get(0); // need id of that.$select, or, better, js DOM object
+	var select = that.$select.get(0);
+	var text;
 
 	select_text(select);
-	sel = selection();
-	that.$select.text(sel.toString());
+	text = selection().toString();
+	that.$select.text(text);
+	return text;
+    }
+
+    this.extract_text = function ()
+    {
+	that.text = that.trim_text();
     }
 
     this.show_selected = function ()
@@ -75,6 +81,7 @@ function select_and_show($select, $show)
 	that.$select.on('mouseup', that.stop_selection);
     }
 
+    this.extract_text();
     this.$select.on('mousedown', this.start_selection);
 }
 
