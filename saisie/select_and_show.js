@@ -73,6 +73,10 @@ function select_and_show($select, $show)
 	that.select = sel.toString();
 	that.after = that.text.slice(sel.anchorOffset + that.select.length);
 	that.$select.off('mousemove mouseup');
+
+	console.log('before: ' + that.before);
+	console.log('selection: ' + that.select);
+	console.log('after: ' + that.after');
     }
 
     this.start_selection = function ()
