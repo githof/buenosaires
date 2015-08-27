@@ -33,6 +33,7 @@ function select_text(element) {
         selection.removeAllRanges();
         selection.addRange(range);
     }
+    console.log('selection : ' + selection.toString());
 }
 
 
