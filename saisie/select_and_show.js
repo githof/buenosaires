@@ -18,19 +18,18 @@ function selection()
   From
   https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse/987376#987376
 */
-function select_text(id) {
+function select_text(element) {
     var doc = document
-        , text = doc.getElementById(id)
         , range, selection
     ;    
     if (doc.body.createTextRange) {
         range = document.body.createTextRange();
-        range.moveToElementText(text);
+        range.moveToElementText(element);
         range.select();
     } else if (window.getSelection) {
         selection = window.getSelection();        
         range = document.createRange();
-        range.selectNodeContents(text);
+        range.selectNodeContents(element);
         selection.removeAllRanges();
         selection.addRange(range);
     }
@@ -47,9 +46,9 @@ function select_and_show($select, $show)
     this.trim_text = function ()
     {
 	var sel;
-	var id="id"; // need id of that.$select, or, better, js DOM object
+	var select = that.$select.get(0); // need id of that.$select, or, better, js DOM object
 
-	select_text(id);
+	select_text(select);
 	sel = selection();
 	that.$select.text(sel.toString());
     }
