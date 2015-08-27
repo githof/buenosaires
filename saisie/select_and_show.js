@@ -58,7 +58,6 @@ function select_and_show($select, $show, then_callback)
 	}
 	else
 	    that.text = that.$select.text();
-	console.log('that.text: ' + that.text);
     }
 
     this.show_selected = function ()
@@ -81,6 +80,7 @@ function select_and_show($select, $show, then_callback)
 
     this.start_selection = function ()
     {
+	console.log('hop');
 	that.$select.on('mousemove', that.show_selected);
 	that.$select.on('mouseup', that.stop_selection);
     }
