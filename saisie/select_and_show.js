@@ -58,6 +58,7 @@ function select_and_show($select, $show, then_callback)
 	}
 	else
 	    that.text = that.$select.text();
+	console.log('that.text: ' + that.text);
     }
 
     this.show_selected = function ()
