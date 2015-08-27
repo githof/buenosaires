@@ -33,7 +33,6 @@ function select_text(element) {
         selection.removeAllRanges();
         selection.addRange(range);
     }
-    console.log('selection : ' + selection.toString());
 }
 
 
@@ -45,24 +44,20 @@ function select_and_show($select, $show, then_callback)
     this.then_callback = then_callback;
     this.text = this.before = this.select = this.after = "";
 
-    this.trim_text = function ()
+    this.extract_text = function ()
     {
 	var select = that.$select.get(0);
 	var text;
 
-    console.log(that.$select.text());
-
 	select_text(select);
 	text = selection().toString();
-	console.log('textContent : ' + select.textContent);
-	console.log('text : ' + text);
-	that.$select.text(text);
-	return text;
-    }
-
-    this.extract_text = function ()
-    {
-	that.text = that.trim_text();
+	if(text != "")
+	{
+	    that.$select.text(text);
+	    that.text = text;
+	}
+	else
+	    that.text = that.$select.text();
     }
 
     this.show_selected = function ()
