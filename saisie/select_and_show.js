@@ -89,12 +89,14 @@ function select_and_show($select, $show, then_callback)
 }
 
 $(document).ready(function(){
-    var S = new select_and_show($("#acte"), $("#sel"), 
-				function ()
-				{
-				    console.log('before: ' + that.before);
-				    console.log('selection: ' + that.select);
-				    console.log('after: ' + that.after);
-				}
-			       );
+    var S = new select_and_show(
+	$("#acte"),
+	$("#sel"), 
+	function ()
+	{
+	    console.log('before: ' + this.before);
+	    console.log('selection: ' + this.select);
+	    console.log('after: ' + this.after);
+	}
+    );
 });
