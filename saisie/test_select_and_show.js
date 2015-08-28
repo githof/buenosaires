@@ -3,6 +3,9 @@ $(document).ready(function(){
     var $source = $("#acte");
     var $show = $("#sel");
 
+    $show = $('<p>', { 'id': '#add_show', 'class': 'texte' });
+    $('#test').append($show);
+
     var S = new select_and_show(
 	$source,
 	$show, 
