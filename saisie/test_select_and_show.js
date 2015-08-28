@@ -1,7 +1,11 @@
 $(document).ready(function(){
+
+    var $source = $("#acte");
+    var $show = $("#sel");
+
     var S = new select_and_show(
-	$("#acte"),
-	$("#sel"), 
+	$source,
+	$show, 
 	function ()
 	{
 	    console.log('before: ' + this.before);
@@ -10,13 +14,13 @@ $(document).ready(function(){
 	}
     );
 
-    var $source = $('<textarea>',
+    $source = $('<textarea>',
 		     {
 			 'class': "xml_text source",
 			 disabled: "true"
 		     });
 
-    var $show = $('<textarea>',
+    $show = $('<textarea>',
 		     {
 			 'class': "xml_text show",
 			 disabled: "true"
