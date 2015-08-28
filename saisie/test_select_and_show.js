@@ -3,8 +3,10 @@ $(document).ready(function(){
     var $source = $("#acte");
     var $show = $("#sel");
 
+    $source = $('<p>', { 'id': '#add_source', 'class': 'texte',
+			 'text': 'this is a test' });
     $show = $('<textarea>', { 'id': '#add_show', 'class': 'texte' });
-    $('#test').append($show);
+    $('#test').append([$source, $show]);
 
     var S = new select_and_show(
 	$source,
