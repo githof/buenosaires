@@ -3,19 +3,10 @@ $(document).ready(function(){
     var $source = $("#acte");
     var $show = $("#sel");
 
-    $source = $('<textarea>',
-		     {
-			 'class': "xml_text source",
-			 disabled: "true"
-		     });
-    $source.text('this is a test');
-
-    $show = $('<textarea>',
-		     {
-			 'class': "xml_text show",
-			 disabled: "true"
-		     });
-
+    $source = $('<textarea>', { 'id': '#add_source', 'class': 'texte',
+				disabled: 'true',
+				'text': 'this is a test' });
+    $show = $('<textarea>', { 'id': '#add_show', 'class': 'texte' });
     $('#test').append([$source, $show]);
 
     var S = new select_and_show(
