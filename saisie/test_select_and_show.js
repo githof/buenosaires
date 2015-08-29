@@ -3,12 +3,6 @@ $(document).ready(function(){
     var $source = $("#acte");
     var $show = $("#sel");
 
-    $source = $('<textarea>', { 'id': '#add_source', 'class': 'texte',
-				disabled: 'true',
-				'text': 'this is a test' });
-    $show = $('<textarea>', { 'id': '#add_show', 'class': 'texte' });
-    $('#test').append([$source, $show]);
-
     var S = new select_and_show(
 	$source,
 	$show, 
@@ -20,19 +14,17 @@ $(document).ready(function(){
 	}
     );
 
-    $source = $('<textarea>',
+    $source = $('<p>',
 		     {
-			 'class': "xml_text source",
-			 disabled: "true"
+			 'class': "texte",
 		     });
 
-    $show = $('<textarea>',
+    $show = $('<p>',
 		     {
-			 'class': "xml_text show",
-			 disabled: "true"
+			 'class': "texte",
 		     });
 
-    $("body").append([ $source, $show ]);
+    $("#test").append([ $source, $show ]);
 
     $source.text("salut Tal, c'est encore moi !");
     
