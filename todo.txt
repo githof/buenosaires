@@ -7,6 +7,14 @@
   - annulation
 - saisie : textarea, option modif manuelle	[30]
 
++ suite saisie :
+  - choix (radio) à côté des tags (a). texte ; (b). monter d'un niveau
+  - cas des actes à l'intérieur d'un autre acte (cas particulier du
+  choix "monter d'un niveau"
+  - utiliser le panneau de sélection de personnes (quand on balise une
+  personne) pour faire des fusions / dissoc sur les personnes déjà
+  balisées
+
 20 août 2015
 x saisie : exercice selection texte / split avant, sélection, après	[30]
 
