@@ -1,4 +1,18 @@
 
+/*
+
+  A select_and_show object is composed of:
+
+  - an element showing some text
+  - an element showing the content of the selection in the above text
+
+  The elements are given as jquery objects.
+  The text is splitted into three portions, which are defined as attributes of the
+  object: before, select, after.
+  These attributes can be accessed through the callback passed to the constructor.
+
+ */
+
 function selection()
 {
     var sel;
