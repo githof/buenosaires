@@ -1,4 +1,8 @@
 
++ moteur : plan de travail entités (objets ?) -> branche moteur (jan 2016)
++ saisie : modification interactive des balises -> branche saisie (aut. 2015)
+
+juillet 2015
 - voir Organisation/programme.txt (interface, témoins)
 - refaire l'ajout de l'acte 5553
 - factoriser requête sql avec log, valeur de retour et message d'erreur :P
