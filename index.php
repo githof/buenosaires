@@ -16,10 +16,17 @@
         switch($_GET["p"]){
             case "new_account":
                 return "new_account.php";
+            case "disconnect":
+                return "disconnect.php";
         }
 
         return "acceuil.php";
     }
+
+    if($account->is_connected && isset($_GET["p"]) && $_GET["p"] == "disconnect"){
+        $account->disconnect();
+    }
+
 ?>
 
 <!DOCTYPE HTML>

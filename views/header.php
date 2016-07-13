@@ -17,7 +17,7 @@
     <?php if ($account->get_rang() > 1){ ?>
     <button class="btn btn-default btn-sm m-t-3"><a href="accueil/administration.php">Administration</a></button>
     <?php } ?>
-    <button class="btn btn-default btn-sm m-t-3"><a href="accueil/deconnexion.php">Deconnexion</a></button>
+    <button class="btn btn-default btn-sm m-t-3"><a href="?p=disconnect">Deconnexion</a></button>
 </div>
 <?php } else {?>
 <div class="connexion">
