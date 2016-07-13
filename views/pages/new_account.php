@@ -10,30 +10,38 @@
 
 
 
-<h1>
+<h1 class="page-header">
     Création d'un compte
 </h1>
 
-<div>
-    <form name="new_account" action="?p=new_account" method="post">
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<?php echo get_post_var('email'); ?>" />
+<div id="form_new_account">
+    <form class="form-horizontal" name="new_account" action="?p=new_account" method="post">
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="email">Email</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="email" name="email" id="email" value="<?php echo get_post_var('email'); ?>" />
+            </div>
         </div>
-        <div>
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password" />
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="password">Mot de passe</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="password" name="password" id="password" />
+            </div>
         </div>
-        <div>
-            <label for="prenom">Prenom</label>
-            <input type="text" name="prenom" id="prenom" value="<?php echo get_post_var('prenom'); ?>" />
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="prenom">Prenom</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="prenom" id="prenom" value="<?php echo get_post_var('prenom'); ?>" />
+            </div>
         </div>
-        <div>
-            <label for="nom">Nom</label>
-            <input type="text" name="nom" id="nom" value="<?php echo get_post_var('nom'); ?>" />
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="nom">Nom</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="nom" id="nom" value="<?php echo get_post_var('nom'); ?>" />
+            </div>
         </div>
-        <div>
-            <input type="submit" value="Envoyer" />
+        <div class="form-group">
+            <input class="col-sm-offset-5 col-sm-2 btn btn-primary" type="submit" value="Envoyer" />
         </div>
     </form>
 </div>

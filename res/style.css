@@ -1,6 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
+h1{
+	text-align: center;
+}
+
 .sidebar{
 	position: fixed;
 	top: 0px;
@@ -25,6 +29,10 @@
 	background-color: #dcdcdc;
 }
 
+#form_new_account{
+	width: 500px;
+	margin: auto;
+}
 
 /*
 body{
