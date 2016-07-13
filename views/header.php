@@ -8,17 +8,6 @@
 	define("MERE",4);
 	define("TEMOIN",5);
 
-    function affiche_barre_connexion($compte){
-    	echo 'Bonjour '.$compte->pseudo.' | <a href="accueil/deconnexion.php">D&eacute;connexion</a>';
-    	if ($compte->rang > 1) echo ' | <a href="accueil/administration.php">Administration</a>';
-    }
-
-    function affiche_form_connect(){
-    	echo '
-
-    	';
-    }
-
     $compte = identification_cookie();
 
 ?>
