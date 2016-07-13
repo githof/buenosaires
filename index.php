@@ -8,6 +8,18 @@
 
     $mysqli = new Database();
     $account = new Account();
+
+    function get_page(){
+        if(!isset($_GET["p"]))
+            return "acceuil.php";
+
+        switch($_GET["p"]){
+            case "new_account":
+                return "new_account.php";
+        }
+
+        return "acceuil.php";
+    }
 ?>
 
 <!DOCTYPE HTML>
@@ -19,10 +31,10 @@
         <title>Buenos Aires</title>
     </head>
     <body>
-        <?php
-            include("views/header.php");
-            include("views/acceuil.php");
-        ?>
+        <?php include("views/header.php"); ?>
+        <div class="page">
+            <?php include("views/pages/" . get_page()); ?>
+        </div>
     </body>
 </html>
 
