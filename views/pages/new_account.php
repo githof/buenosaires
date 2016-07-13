@@ -29,7 +29,17 @@
         return !$email_error && !$password_error && !$prenom_error && !$nom_error;
     }
 
-    if(isset($_POST['email']) && check_post_values()){
+    if($account->is_connected){
+?>
+<h1 class="page-header">
+    Création d'un compte
+</h1>
+
+<div>
+    Vous êtes déjà connecté avec un compte
+</div>
+<?php
+    }else if(isset($_POST['email']) && check_post_values()){
         $account->set_email(safe($_POST['email']));
         $account->set_password(safe(md5($_POST['password'])));
         $account->set_prenom(safe($_POST['prenom']));
