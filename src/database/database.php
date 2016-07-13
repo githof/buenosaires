@@ -46,7 +46,7 @@
             foreach($values as $key => $value){
                 $keys .= $key;
 
-                if(strcmp($value, "NULL") == 0)
+                if(strcmp($value, "NULL") == 0 || strcmp($value, "now()") == 0)
                     $vals .= $value;
                 else
                     $vals .= "'" . $value . "'";
@@ -76,7 +76,7 @@
             foreach($values as $key => $value){
                 $s .= " " . $key . " = ";
 
-                if(strcmp($value, "NULL") == 0)
+                if(strcmp($value, "NULL") == 0 || strcmp($value, "now()") == 0)
                     $s .= $value;
                 else
                     $s .= "'" . $value . "'";

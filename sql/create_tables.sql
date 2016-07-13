@@ -109,8 +109,7 @@ CREATE TABLE utilisateurs (
     nom text COLLATE utf8_unicode_ci NOT NULL,
     prenom text COLLATE utf8_unicode_ci NOT NULL,
     pwd text COLLATE utf8_unicode_ci NOT NULL,
-    amail char(80) NOT NULL,
+    email char(80) NOT NULL,
     date_inscr date NOT NULL,
-    valid text COLLATE utf8_unicode_ci NOT NULL,
     PRIMARY KEY (id)
 );

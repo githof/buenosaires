@@ -23,10 +23,10 @@
         public function connect(){
             global $mysqli;
 
-            if(isset($this->infos["amail"]) && isset($this->infos["pwd"])){
+            if(isset($this->infos["email"]) && isset($this->infos["pwd"])){
                 $email = $this->get_email();
                 $pass = $this->get_password();
-                $res = $mysqli->select("utilisateurs", "*", "amail = '$email' && pws = '$pass'");
+                $res = $mysqli->select("utilisateurs", "*", "email = '$email' && pws = '$pass'");
 
                 if($res->num_rows == 1){
                     $this->infos = $res->fetch_assoc();
@@ -63,7 +63,7 @@
             if($email == null)
                 return false;
 
-            $res = $mysqli->select("utilisateurs", "id", "email='$email'");
+            $res = $mysqli->select("utilisateurs", ["id"], "email='$email'");
 
             return $res->num_rows != 0;
         }
@@ -79,7 +79,7 @@
         public function add_into_db(){
             global $mysqli;
 
-            if(!$this->is_connected)
+            if($this->is_connected)
                 return false;
 
             if($this->exist_in_db())
@@ -120,7 +120,7 @@
         }
 
         public function get_email(){
-            return $this->get("amail");
+            return $this->get("email");
         }
 
         public function get_password(){
@@ -158,7 +158,7 @@
         }
 
         public function set_email($value, $update_db = false){
-            return $this->set("amail", $value, $update_db);
+            return $this->set("email", $value, $update_db);
         }
 
         public function set_password($value, $update_db = false){
