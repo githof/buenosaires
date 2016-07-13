@@ -1,6 +1,5 @@
 <?php
     include("includes/error_handler.php");
-	include_once("includes/account_log.php");
 
     define("EPOUX",1);
 	define("EPOUSE",2);
@@ -8,14 +7,12 @@
 	define("MERE",4);
 	define("TEMOIN",5);
 
-    $compte = identification_cookie();
-
 ?>
 
 <div class="identifiant">
-	<?php if ($compte != NULL){ ?>
-        Bonjour <?php $compte->pseudo ?> | <a href="accueil/deconnexion.php">D&eacute;connexion</a>
-        <?php if ($compte->rang > 1) ?>
+	<?php if ($account->is_connected){ ?>
+        Bonjour <?php $compte->get_full_name(); ?> | <a href="accueil/deconnexion.php">D&eacute;connexion</a>
+        <?php if ($compte->get_rang() > 1) ?>
             | <a href="accueil/administration.php">Administration</a>
 	<?php } else ?>
         <form name="identification" action="accueil/connexion.php" method="post">

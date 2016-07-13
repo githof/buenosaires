@@ -3,7 +3,7 @@
     include("login.php");
 
 
-    class database extends mysqli{
+    class Database extends mysqli{
 
         public function __construct(){
             parent::__construct(SQL_SERVER,
@@ -16,7 +16,7 @@
             }
         }
 
-        public function select($columns, $table, $where, $more = ""){
+        public function select($table, $columns, $where, $more = ""){
             $s = "SELECT ";
 
             for($i = 0; $i < count($columns); $i++){

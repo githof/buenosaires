@@ -1,5 +1,13 @@
 <?php
+
+    session_start();
+
+    include("src/utils.php");
+    include("src/account/account.php");
     include("src/database/database.php");
+
+    $mysqli = new Database();
+    $account = new Account();
 ?>
 
 <!DOCTYPE HTML>
@@ -17,3 +25,7 @@
         ?>
     </body>
 </html>
+
+<?php
+    $mysqli->close();
+?>

@@ -106,13 +106,11 @@ CREATE TABLE actes_contenu (
 CREATE TABLE utilisateurs (
     id int(11) NOT NULL auto_increment,
     rang int(11) NOT NULL,
-    pseudo char(50) NOT NULL,
     nom text COLLATE utf8_unicode_ci NOT NULL,
     prenom text COLLATE utf8_unicode_ci NOT NULL,
     pwd text COLLATE utf8_unicode_ci NOT NULL,
     amail char(80) NOT NULL,
-    date_inscr int(11) NOT NULL,
+    date_inscr date NOT NULL,
     valid text COLLATE utf8_unicode_ci NOT NULL,
-    PRIMARY KEY (id),
-    INDEX (pseudo,amail)
+    PRIMARY KEY (id)
 );
