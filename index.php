@@ -26,15 +26,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link rel="stylesheet" href="includes/style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="res/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="res/style.css" rel="stylesheet" />
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script type="text/javascript" src="includes/fonctions_js.js"></script>
         <title>Buenos Aires</title>
     </head>
     <body>
-        <?php include("views/header.php"); ?>
-        <div class="page">
-            <?php include("views/pages/" . get_page()); ?>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <?php include("views/header.php"); ?>
+                </div>
+                <div class="col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2 main">
+                    <?php include("views/pages/" . get_page()); ?>
+                </div>
+            </div>
         </div>
+
+        <script src="res/bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>
 
