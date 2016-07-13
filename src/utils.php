@@ -1,7 +1,8 @@
 <?php
 
     function safe($string){
-        return htmlspecialchars(mysql_real_escape_string(trim($string)));
+        global $mysqli;
+        return htmlspecialchars($mysqli->real_escape_string(trim($string)));
     }
 
 ?>

@@ -12,7 +12,7 @@
             $this->infos = [];
 
             if($this->is_connected)
-                get_infos();
+                $this->get_infos();
         }
 
         public function check_connected(){
@@ -26,7 +26,7 @@
             if(isset($this->infos["email"]) && isset($this->infos["pwd"])){
                 $email = $this->get_email();
                 $pass = $this->get_password();
-                $res = $mysqli->select("utilisateurs", "*", "email = '$email' && pws = '$pass'");
+                $res = $mysqli->select("utilisateurs", "*", "email='$email' && pwd='$pass'");
 
                 if($res->num_rows == 1){
                     $this->infos = $res->fetch_assoc();
@@ -45,9 +45,9 @@
 
         private function get_infos(){
             global $mysqli;
-            $user = $_SESSION[SESSION_EMAIL];
+            $id = $_SESSION[SESSION_ID];
 
-            $res = $mysqli->select("utilisateurs", "*", "email='$email'");
+            $res = $mysqli->select("utilisateurs", "*", "id='$id'");
 
             if($res->num_rows != 1)
                 return false;
@@ -112,7 +112,7 @@
         }
 
         public function get_full_name(){
-            return $this->get_prenom . " " . $this->get_nom();
+            return $this->get_prenom() . " " . $this->get_nom();
         }
 
         public function get_rang(){

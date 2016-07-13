@@ -30,10 +30,10 @@
     }
 
     if(isset($_POST['email']) && check_post_values()){
-        $account->set_email($_POST['email']);
-        $account->set_password(md5($_POST['password']));
-        $account->set_prenom($_POST['prenom']);
-        $account->set_nom($_POST['nom']);
+        $account->set_email(safe($_POST['email']));
+        $account->set_password(safe(md5($_POST['password'])));
+        $account->set_prenom(safe($_POST['prenom']));
+        $account->set_nom(safe($_POST['nom']));
 
         $res = $account->add_into_db();
 

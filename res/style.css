@@ -31,6 +31,17 @@ h1{
 	background-color: #dcdcdc;
 }
 
+.connected {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #d8d8d8;
+}
+
+.connected button{
+	margin-bottom: 10px;
+}
+
 #form_new_account{
 	width: 500px;
 	margin: auto;
