@@ -1,22 +1,23 @@
 <?php
 
-    include("login.php");
-
-
     class Database extends mysqli{
 
         public function __construct(){
+            global $log;
+
             parent::__construct(SQL_SERVER,
                                 SQL_USER,
                                 SQL_PASS,
                                 SQL_DATABSE_NAME);
 
             if(mysqli_connect_error()){
-                die("Erreur de connexion (" . mysqli_connect_errno() . ') ' . mysqli_connect_error());
+                $log->e("Erreur de connexion (" . mysqli_connect_errno() . ') ' . mysqli_connect_error());
             }
         }
 
         public function select($table, $columns, $where, $more = ""){
+            global $log;
+
             $s = "SELECT ";
 
             for($i = 0; $i < count($columns); $i++){
@@ -31,12 +32,14 @@
 
             $s .= " " . $more;
 
-            printf("%s\n", $s);
+            $log->i($s);
 
             return parent::query($s);
         }
 
         public function insert($table, $values, $more = ""){
+            global $log;
+
             $s = "INSERT INTO " . $table . " (";
 
             $keys = "";
@@ -63,12 +66,13 @@
 
             $s .= " " . $more;
 
-            printf("%s\n", $s);
+            $log->i($s);
 
             return parent::query($s);
         }
 
         public function update($table, $values, $more = ""){
+            global $log;
             $s = "UPDATE " . $table . " SET ";
 
             $i = 0;
@@ -87,15 +91,17 @@
                 $i++;
             }
 
-            printf("%s\n", $s);
+            $log->i($s);
 
             return parent::query($s);
         }
 
         public function delete($table, $where, $more = ""){
+            global $log;
+
             $s = "DELETE FROM " . $table . " WHERE " . $where . " " . $more;
 
-            printf("%s\n", $s);
+            $log->i($s);
 
             return parent::query($s);
         }

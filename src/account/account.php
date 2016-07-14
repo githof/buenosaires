@@ -21,7 +21,7 @@
         }
 
         public function connect(){
-            global $mysqli;
+            global $mysqli, $log;
 
             if(isset($this->infos["email"]) && isset($this->infos["pwd"])){
                 $email = $this->get_email();
@@ -32,15 +32,21 @@
                     $this->infos = $res->fetch_assoc();
                     $_SESSION[SESSION_ID] = $this->infos["id"];
                     $this->check_connected();
+
+                    $log->i("user " . $this->get_full_name() . " connected");
                 }
             }
         }
 
         public function disconnect(){
+            global $log;
+
             session_destroy();
 
             $this->info = [];
             $this->is_connected = false;
+
+            $log->i("user " . $this->get_full_name() . " disconnected");
         }
 
         private function get_infos(){

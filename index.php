@@ -2,10 +2,13 @@
 
     session_start();
 
+    include("config.php");
+    include("src/log.php");
     include("src/utils.php");
     include("src/account/account.php");
     include("src/database/database.php");
 
+    $log = new Log();
     $mysqli = new Database();
     $account = new Account();
 
@@ -37,7 +40,6 @@
         <link href="res/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="res/style.css" rel="stylesheet" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script type="text/javascript" src="includes/fonctions_js.js"></script>
         <title>Buenos Aires</title>
     </head>
     <body>
@@ -51,11 +53,11 @@
                 </div>
             </div>
         </div>
-
         <script src="res/bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>
 
 <?php
     $mysqli->close();
+    $log->close();
 ?>
