@@ -1,115 +1,350 @@
-DROP TABLE IF EXISTS actes;
-DROP TABLE IF EXISTS personnes;
-DROP TABLE IF EXISTS relations;
-DROP TABLE IF EXISTS mentions;
-DROP TABLE IF EXISTS periodes;
-DROP TABLE IF EXISTS cond;
-DROP TABLE IF EXISTS statuts;
-DROP TABLE IF EXISTS sources;
-DROP TABLE IF EXISTS actes_contenu;
-DROP TABLE IF EXISTS utilisateurs;
+
+-- -----------------------------------------------------
+-- Schema buenosaires
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 ;
+USE `buenosaires` ;
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`periode`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`periode` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`periode` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `debut_min` DATE NOT NULL,
+  `debut_max` DATE NOT NULL,
+  `fin_min` DATE NOT NULL,
+  `fin_max` DATE NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 
-CREATE TABLE actes (
-		id_acte int(11) NOT NULL,
-		epoux text COLLATE utf8_unicode_ci NOT NULL,
-		epouse text COLLATE utf8_unicode_ci NOT NULL,
-		periode int(11) NOT NULL,
-		PRIMARY KEY (id_acte)
-);
+-- -----------------------------------------------------
+-- Table `buenosaires`.`personne`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`personne` ;
 
-CREATE TABLE personnes (
-		id int(11) NOT NULL auto_increment,
-		de1 int(1) NOT NULL,
-		la1 int(1) NOT NULL,
-		nom1 char(50) NOT NULL,
-		de2 int(1) NOT NULL,
-		la2 int(1) NOT NULL,
-		nom2 char(50) NOT NULL,
-		de3 int(1) NOT NULL,
-		la3 int(1) NOT NULL,
-		nom3 char(50) NOT NULL,
-		prenom1 char(50) NOT NULL,
-		prenom2 char(50) NOT NULL,
-		nom1noaccent char(50) NOT NULL,
-		nom2noaccent char(50) NOT NULL,
-		nom3noaccent char(50) NOT NULL,
-		prenom1noaccent char(50) NOT NULL,
-		prenom2noaccent char(50) NOT NULL,
-		periode int(11) NOT NULL,
-		PRIMARY KEY (id),
-		INDEX (nom1noaccent,nom2noaccent,nom3noaccent,prenom1noaccent,prenom2noaccent)
-);
+CREATE TABLE IF NOT EXISTS `buenosaires`.`personne` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `periode_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_personne_periode1`
+    FOREIGN KEY (`periode_id`)
+    REFERENCES `buenosaires`.`periode` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE relations (
-		id int(11) NOT NULL auto_increment,
-		personne1 int(11) NOT NULL,
-		personne2 int(11) NOT NULL,
-		type int(11) NOT NULL,
-		periode int(11) NOT NULL,
-		PRIMARY KEY (id),
-		INDEX (personne1,personne2)
-);
 
-CREATE TABLE mentions (
-		id int(11) NOT NULL auto_increment,
-		relation int(11) NOT NULL,
-		acte int(11) NOT NULL,
-		PRIMARY KEY (id)
-);
+-- -----------------------------------------------------
+-- Table `buenosaires`.`attribut`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`attribut` ;
 
-CREATE TABLE periodes (
-		id int(11) NOT NULL auto_increment,
-		minDebut text COLLATE utf8_unicode_ci NOT NULL,
-		maxDebut text COLLATE utf8_unicode_ci NOT NULL,
-		minFin text COLLATE utf8_unicode_ci NOT NULL,
-		maxFin text COLLATE utf8_unicode_ci NOT NULL,
-		PRIMARY KEY (id)
-);
+CREATE TABLE IF NOT EXISTS `buenosaires`.`attribut` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
-CREATE TABLE cond (
-		id int(11) NOT NULL auto_increment,
-		id_personne int(11) NOT NULL,
-		cond text COLLATE utf8_unicode_ci NOT NULL,
-		source int(11) NOT NULL,
-		periode int(11) NOT NULL,
-		acte int(11) NOT NULL,
-		PRIMARY KEY (id)
-);
 
-CREATE TABLE statuts (
-		id int(11) NOT NULL,
-		statut text COLLATE utf8_unicode_ci NOT NULL,
-		PRIMARY KEY (id)
-);
+-- -----------------------------------------------------
+-- Table `buenosaires`.`nom`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`nom` ;
 
-INSERT INTO statuts (id, statut) VALUES ('1', 'Epoux');
-INSERT INTO statuts (id, statut) VALUES ('2', 'Epouse');
-INSERT INTO statuts (id, statut) VALUES ('3', 'Pere');
-INSERT INTO statuts (id, statut) VALUES ('4', 'Mere');
-INSERT INTO statuts (id, statut) VALUES ('5', 'Temoin');
+CREATE TABLE IF NOT EXISTS `buenosaires`.`nom` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `default` VARCHAR(50) NOT NULL,
+  `no_accent` VARCHAR(50) NOT NULL,
+  `attribut_id` INT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_nom_attribut1`
+    FOREIGN KEY (`attribut_id`)
+    REFERENCES `buenosaires`.`attribut` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE sources (
-		id int(11) NOT NULL,
-		source text COLLATE utf8_unicode_ci NOT NULL,
-		PRIMARY KEY (id)
-);
 
-INSERT INTO sources (id, source) VALUES ('1', 'Matrimonios');
+-- -----------------------------------------------------
+-- Table `buenosaires`.`prenom`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`prenom` ;
 
-CREATE TABLE actes_contenu (
-		id_acte int(11) NOT NULL,
-		contenu text COLLATE utf8_unicode_ci NOT NULL,
-		PRIMARY KEY (id_acte)
-);
+CREATE TABLE IF NOT EXISTS `buenosaires`.`prenom` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `default` VARCHAR(50) NOT NULL,
+  `no_accent` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
-CREATE TABLE utilisateurs (
-    id int(11) NOT NULL auto_increment,
-    rang int(11) NOT NULL,
-    nom text COLLATE utf8_unicode_ci NOT NULL,
-    prenom text COLLATE utf8_unicode_ci NOT NULL,
-    pwd text COLLATE utf8_unicode_ci NOT NULL,
-    email char(80) NOT NULL,
-    date_inscr date NOT NULL,
-    PRIMARY KEY (id)
-);
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`prenom_personne`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`prenom_personne` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`prenom_personne` (
+  `personne_id` INT NOT NULL,
+  `prenom_id` INT NOT NULL,
+  `ordre` INT NOT NULL,
+  PRIMARY KEY (`personne_id`, `prenom_id`),
+  CONSTRAINT `fk_personne_has_prenom_personne`
+    FOREIGN KEY (`personne_id`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_personne_has_prenom_prenom1`
+    FOREIGN KEY (`prenom_id`)
+    REFERENCES `buenosaires`.`prenom` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`nom_personne`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`nom_personne` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`nom_personne` (
+  `personne_id` INT NOT NULL,
+  `nom_id` INT NOT NULL,
+  `ordre` INT NOT NULL,
+  PRIMARY KEY (`personne_id`, `nom_id`),
+  CONSTRAINT `fk_personne_has_nom_personne1`
+    FOREIGN KEY (`personne_id`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_personne_has_nom_nom1`
+    FOREIGN KEY (`nom_id`)
+    REFERENCES `buenosaires`.`nom` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`source`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`source` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`cond`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`cond` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`cond` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` TEXT NOT NULL,
+  `source_id` INT NOT NULL,
+  `periode_id` INT NOT NULL,
+  `personne_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_cond_source1`
+    FOREIGN KEY (`source_id`)
+    REFERENCES `buenosaires`.`source` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cond_periode1`
+    FOREIGN KEY (`periode_id`)
+    REFERENCES `buenosaires`.`periode` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cond_personne1`
+    FOREIGN KEY (`personne_id`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`acte`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`acte` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`acte` (
+  `id` INT NOT NULL,
+  `periode_id` INT NOT NULL,
+  `epoux` INT NOT NULL,
+  `epouse` INT NOT NULL,
+  `contenu` TEXT NOT NULL,
+  `cond_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_acte_periode1`
+    FOREIGN KEY (`periode_id`)
+    REFERENCES `buenosaires`.`periode` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_acte_personne1`
+    FOREIGN KEY (`epoux`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_acte_personne2`
+    FOREIGN KEY (`epouse`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_acte_cond1`
+    FOREIGN KEY (`cond_id`)
+    REFERENCES `buenosaires`.`cond` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`statut`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`statut` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`statut` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`relation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`relation` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`relation` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `source` INT NOT NULL,
+  `destination` INT NOT NULL,
+  `status_id` INT NOT NULL,
+  `periode_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_relation_personne1`
+    FOREIGN KEY (`source`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_relation_personne2`
+    FOREIGN KEY (`destination`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_relation_status1`
+    FOREIGN KEY (`status_id`)
+    REFERENCES `buenosaires`.`statut` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_relation_periode1`
+    FOREIGN KEY (`periode_id`)
+    REFERENCES `buenosaires`.`periode` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`acte_has_relation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`acte_has_relation` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_has_relation` (
+  `acte_id` INT NOT NULL,
+  `relation_id` INT NOT NULL,
+  PRIMARY KEY (`acte_id`, `relation_id`),
+  CONSTRAINT `fk_acte_has_relation_acte1`
+    FOREIGN KEY (`acte_id`)
+    REFERENCES `buenosaires`.`acte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_acte_has_relation_relation1`
+    FOREIGN KEY (`relation_id`)
+    REFERENCES `buenosaires`.`relation` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`utilisateurs`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`utilisateurs` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`utilisateurs` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(50) NOT NULL,
+  `prenom` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `pwd` VARCHAR(100) NOT NULL,
+  `dat_inscr` DATE NOT NULL,
+  `rang` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`categorie`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`categorie` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`categorie` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`tag`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`tag` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`tag` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(45) NOT NULL,
+  `categorie_id` INT NOT NULL,
+  `parent_tag` INT NOT NULL,
+  `attribut_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_tag_categorie1`
+    FOREIGN KEY (`categorie_id`)
+    REFERENCES `buenosaires`.`categorie` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tag_tag1`
+    FOREIGN KEY (`parent_tag`)
+    REFERENCES `buenosaires`.`tag` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tag_attribut1`
+    FOREIGN KEY (`attribut_id`)
+    REFERENCES `buenosaires`.`attribut` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`acte_contenu`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
+  `contenu` TEXT NOT NULL,
+  `acte_id` INT NOT NULL,
+  PRIMARY KEY (`acte_id`),
+  CONSTRAINT `fk_acte_contenu_acte1`
+    FOREIGN KEY (`acte_id`)
+    REFERENCES `buenosaires`.`acte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
