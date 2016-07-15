@@ -1,5 +1,6 @@
 <?php 
 include_once("fonctions_all.php");
+include_once("periode.class.php");
 
 	class Personne{
 

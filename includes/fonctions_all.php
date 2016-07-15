@@ -12,6 +12,9 @@ function ajouter_fichier_log($string_sql){
 	$string_sql = preg_replace("/(\r\n|\n|\r)/", " ", $date_heure." ".$compte->pseudo." A ".$string_sql);
 	fwrite($GLOBALS['fichier_log_sql'], $string_sql."\n");	
 }
+function date_heure(){
+	return date("d-m-Y H:i:s");	
+}
 
 /*
   CP 01/11/14

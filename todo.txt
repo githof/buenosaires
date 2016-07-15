@@ -1,5 +1,35 @@
 
-- fonction ajout_personne à partir d'un xml + menu
+- saisie : objet select-and-show	[45]
++ saisie : ajout d'une balise dans un élément	[1h]
+  (ex : pere dans epoux) 
+  - sélection (cf. exo sélection)
+  - validation au clic ou espace
+  - remplacement
+  - annulation
+- saisie : textarea, option modif manuelle	[30]
+
++ suite saisie :
+  - choix (radio) à côté des tags (a). texte ; (b). monter d'un niveau
+  - cas des actes à l'intérieur d'un autre acte (cas particulier du
+  choix "monter d'un niveau"
+  - utiliser le panneau de sélection de personnes (quand on balise une
+  personne) pour faire des fusions / dissoc sur les personnes déjà
+  balisées
+
+20 août 2015
+x saisie : exercice selection texte / split avant, sélection, après	[30]
+
+19 août 2015
+- saisie : modèle html acte 1er niveau		[30]
+- saisie : jquery sur les bouton      [30]
+- saisie : html époux 1er niveau, cf. livescribe
+
+
+juillet 2015
+- voir Organisation/programme.txt (interface, témoins)
+- refaire l'ajout de l'acte 5553
+- factoriser requête sql avec log, valeur de retour et message d'erreur :P
+- virer .git de push.sh
 - fonction supprime_acte propre
 - cf. DROPBOX/Organisation/tickets.txt
 

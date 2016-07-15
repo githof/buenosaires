@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf8" />
+    <title></title>
+    <meta name="author" content="Christophe Prieur" />		
+    <link rel="stylesheet" href="../includes/html5.css" />
+    <link rel="stylesheet" href="saisie.css" />
+
+    <script type="text/javascript" src="../includes/HOMELIB/jquery.js"></script>
+    <!--    <script type="text/javascript" src="taggable_element.js"></script>-->
+    <script type="text/javascript" src="select_and_show.js"></script>
+    <script type="text/javascript" src="test_select_and_show.js"></script>
+  </head>
+
+<body>
+
+  <article class="saisie_acte" id="test">
+
+    <section id="raw" class="texte">
+      <p class="texte" id="acte">
+Left Munich at 8:35 P. M, 
+on 1st May, arriving at Vienna early next morning; should have arrived at 6:46, but train was an hour late. Buda-Pesth seems a wonderful place, from the glimpse which I got of it from the train and the little I could walk through the streets. I feared to go very far from the station, as we had arrived late and would start as near the correct time as possible.
+      </p>
+    </section>
+
+    <section id="resultat" class="texte">
+      <dl>
+	<dt>avant</dt>
+	<dd><p id="before" class="texte"></p></dd>
+	<dt>sélection</dt>
+	<dd><p id="sel" class="texte"></p></dd>
+	<dt>après</dt>
+	<dd><p id="after" class="texte"></p></dd>
+      </dl>
+    </section>
+
+  <form>
+    <ul>
+      <li>
+	<label>acte</label>
+	<label class="toggle_raw">cacher les détails</label>
+	<ul>
+	  <li>
+	    <label for="saisie_epoux_raw" class="raw">époux</label>
+	    <label class="toggle_raw">détails</label>
+	    <textarea name="saisie_epoux_raw">
+	    </textarea>
+	  </li>
+	  <li>
+	    <label for="saisie_epouse_raw">épouse</label>
+	  </li>
+	  <li>
+	    <label for="saisie_temoins_raw">témoins</label>
+	  </li>
+	</ul>
+      </li>
+    </ul>
+  </form>
+  </article>
+
+</body>
+  
+</html>
+ 
