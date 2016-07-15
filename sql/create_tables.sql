@@ -285,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`utilisateurs` (
   `prenom` VARCHAR(50) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `pwd` VARCHAR(100) NOT NULL,
-  `dat_inscr` DATE NOT NULL,
+  `date_inscr` DATE NOT NULL,
   `rang` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
