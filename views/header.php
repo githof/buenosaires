@@ -28,15 +28,16 @@
         <div class="form-group">
             <input class="form-control" type="password" name="connect_pass" placeholder="Password" />
         </div>
-        <input type="hidden" name="url_courant" value="http://<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>" />
         <input class="btn btn-primary btn-sm" type="submit" value="Connexion" />
     </form>
-    <button class="btn btn-default btn-sm m-t-3"><a href="?p=new_account">Créer un compte</a></button>
+    <div class="btn btn-default btn-sm m-t-3"><a href="./?p=new_account">Créer un compte</a></div>
 </div>
 <?php } ?>
 <ul class="nav nav-sidebar">
+    <li><a href="./">Acceuil</a></li>
 	<li><a href="accueil/console.php">Console</a></li>
-	<li><a href="importexport/">Import / Export</a></li>
+	<li><a href="./?p=import">Import</a></li>
+    <li><a href="./?p=export">Export</a></li>
     <li><a href="gestion/viewActes.php">Rechercher un acte</a></li>
     <li><a href="gestion/viewPersonnes.php">Rechercher une personne</a></li>
     <li><a href="gestion/fusion.php">Fusionner deux personnes</a></li>

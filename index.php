@@ -12,6 +12,9 @@
     $mysqli = new Database();
     $account = new Account();
 
+    if(!is_dir(TMP_DIRECTORY))
+        mkdir(TMP_DIRECTORY, 0777);
+
     function get_page(){
         if(!isset($_GET["p"]))
             return "acceuil.php";
@@ -21,6 +24,10 @@
                 return "new_account.php";
             case "disconnect":
                 return "disconnect.php";
+            case "import":
+                return "import.php";
+            case "export":
+                return "export.php";
         }
 
         return "acceuil.php";

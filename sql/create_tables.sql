@@ -2,6 +2,11 @@
 -- -----------------------------------------------------
 -- Schema buenosaires
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `buenosaires` ;
+
+-- -----------------------------------------------------
+-- Schema buenosaires
+-- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 ;
 USE `buenosaires` ;
 
@@ -36,6 +41,8 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`personne` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_personne_periode1_idx` ON `buenosaires`.`personne` (`periode_id` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`attribut`
@@ -66,6 +73,8 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`nom` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_nom_attribut1_idx` ON `buenosaires`.`nom` (`attribut_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -103,6 +112,10 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`prenom_personne` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_personne_has_prenom_prenom1_idx` ON `buenosaires`.`prenom_personne` (`prenom_id` ASC);
+
+CREATE INDEX `fk_personne_has_prenom_personne_idx` ON `buenosaires`.`prenom_personne` (`personne_id` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`nom_personne`
@@ -125,6 +138,10 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`nom_personne` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_personne_has_nom_nom1_idx` ON `buenosaires`.`nom_personne` (`nom_id` ASC);
+
+CREATE INDEX `fk_personne_has_nom_personne1_idx` ON `buenosaires`.`nom_personne` (`personne_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -168,6 +185,12 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`cond` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_cond_source1_idx` ON `buenosaires`.`cond` (`source_id` ASC);
+
+CREATE INDEX `fk_cond_periode1_idx` ON `buenosaires`.`cond` (`periode_id` ASC);
+
+CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires`.`cond` (`personne_id` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`acte`
@@ -176,11 +199,10 @@ DROP TABLE IF EXISTS `buenosaires`.`acte` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires`.`acte` (
   `id` INT NOT NULL,
-  `periode_id` INT NOT NULL,
-  `epoux` INT NOT NULL,
-  `epouse` INT NOT NULL,
-  `contenu` TEXT NOT NULL,
-  `cond_id` INT NOT NULL,
+  `periode_id` INT NULL,
+  `epoux` INT NULL,
+  `epouse` INT NULL,
+  `cond_id` INT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_acte_periode1`
     FOREIGN KEY (`periode_id`)
@@ -204,6 +226,14 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`acte` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_acte_periode1_idx` ON `buenosaires`.`acte` (`periode_id` ASC);
+
+CREATE INDEX `fk_acte_personne1_idx` ON `buenosaires`.`acte` (`epoux` ASC);
+
+CREATE INDEX `fk_acte_personne2_idx` ON `buenosaires`.`acte` (`epouse` ASC);
+
+CREATE INDEX `fk_acte_cond1_idx` ON `buenosaires`.`acte` (`cond_id` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`statut`
@@ -215,6 +245,8 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`statut` (
   `value` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `value_UNIQUE` ON `buenosaires`.`statut` (`value` ASC);
 
 
 -- -----------------------------------------------------
@@ -251,6 +283,14 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`relation` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_relation_personne1_idx` ON `buenosaires`.`relation` (`source` ASC);
+
+CREATE INDEX `fk_relation_personne2_idx` ON `buenosaires`.`relation` (`destination` ASC);
+
+CREATE INDEX `fk_relation_status1_idx` ON `buenosaires`.`relation` (`status_id` ASC);
+
+CREATE INDEX `fk_relation_periode1_idx` ON `buenosaires`.`relation` (`periode_id` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`acte_has_relation`
@@ -272,6 +312,10 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_has_relation` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_acte_has_relation_relation1_idx` ON `buenosaires`.`acte_has_relation` (`relation_id` ASC);
+
+CREATE INDEX `fk_acte_has_relation_acte1_idx` ON `buenosaires`.`acte_has_relation` (`acte_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -302,6 +346,8 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`categorie` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
+CREATE UNIQUE INDEX `value_UNIQUE` ON `buenosaires`.`categorie` (`value` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`tag`
@@ -331,6 +377,12 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`tag` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_tag_categorie1_idx` ON `buenosaires`.`tag` (`categorie_id` ASC);
+
+CREATE INDEX `fk_tag_tag1_idx` ON `buenosaires`.`tag` (`parent_tag` ASC);
+
+CREATE INDEX `fk_tag_attribut1_idx` ON `buenosaires`.`tag` (`attribut_id` ASC);
 
 
 -- -----------------------------------------------------

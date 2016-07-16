@@ -28,7 +28,8 @@
 
             $s .= " FROM " . $table;
 
-            $s .= " WHERE " . $where;
+            if(strlen($where) > 0)
+                $s .= " WHERE " . $where;
 
             $s .= " " . $more;
 
@@ -64,7 +65,8 @@
 
             $s .= $keys . ") VALUES (" . $vals . ")";
 
-            $s .= " " . $more;
+            if(strlen($more) > 0)
+                $s .= " " . $more;
 
             $log->i($s);
 
@@ -91,6 +93,9 @@
                 $i++;
             }
 
+            if(strlen($more) > 0)
+                $s .= " " . $more;
+
             $log->i($s);
 
             return parent::query($s);
@@ -99,7 +104,13 @@
         public function delete($table, $where, $more = ""){
             global $log;
 
-            $s = "DELETE FROM " . $table . " WHERE " . $where . " " . $more;
+            $s = "DELETE FROM " . $table;
+
+            if(strlen($where) > 0)
+                $s .= " WHERE " . $where;
+
+            if(strlen($more) > 0)
+                $s .= " " . $more;
 
             $log->i($s);
 
