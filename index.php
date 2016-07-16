@@ -5,10 +5,12 @@
     include("config.php");
     include("src/log.php");
     include("src/utils.php");
+    include("src/Alert.php");
     include("src/account/account.php");
     include("src/database/database.php");
 
     $log = new Log();
+    $alert = new Alert();
     $mysqli = new Database();
     $account = new Account();
 
@@ -37,6 +39,19 @@
         $account->disconnect();
     }
 
+
+    // HEADER
+    include_once("views/header.php");
+    $header_output = ob_get_clean();
+    ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
+
+    // CURRENT PAGE
+    include_once("views/pages/" . get_page());
+    $page_output = ob_get_clean();
+
+    // ALERTS
+    $alerts_output = $alert->html_all();
+
 ?>
 
 <!DOCTYPE HTML>
@@ -53,10 +68,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
-                    <?php include("views/header.php"); ?>
+                    <?php echo $header_output; ?>
                 </div>
                 <div class="col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2 main">
-                    <?php include("views/pages/" . get_page()); ?>
+                    <?php echo $alerts_output; ?>
+                    <?php echo $page_output; ?>
                 </div>
             </div>
         </div>

@@ -7,6 +7,10 @@ h1{
 	font-size: 30px;
 }
 
+.row {
+	margin-top: 20px;
+}
+
 .sidebar{
 	position: fixed;
 	top: 0px;

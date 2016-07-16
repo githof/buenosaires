@@ -34,8 +34,10 @@
                     $this->check_connected();
 
                     $log->i("user " . $this->get_full_name() . " connected");
+                    return true;
                 }
             }
+            return false;
         }
 
         public function disconnect(){

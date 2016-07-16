@@ -4,7 +4,10 @@
         $account->set_email(safe($_POST['connect_email']));
         $account->set_password(safe(md5($_POST['connect_pass'])));
 
-        $account->connect();
+        if($account->connect())
+            $alert->add_success("Connecté avec succès");
+        else
+            $alert->add_warning("Echec de la connexion");
     }
 
 ?>

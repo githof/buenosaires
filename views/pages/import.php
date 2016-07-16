@@ -15,7 +15,8 @@
     }
 
     function receive_text(){
-        $sources = "<ACTES>\n".stripslashes($_POST['import_text'])."\n</ACTES>";
+        $sources = '<?xml version="1.0" encoding="UTF-8"?>';
+        $sources = "<document><ACTES>\n".stripslashes($_POST['import_text'])."\n</ACTES></document>";
 
         $filename = TMP_DIRECTORY . "/new_actes.xml";
         $tmp_file = fopen($filename, "w");
@@ -26,7 +27,7 @@
     function add_actes($actes, $only_new){
         foreach($actes as $acte){
             $do_it = true;
-            
+
             if($only_new){
                 $num = $acte->attributes()["num"];
                 if(isset($num) && $num != FALSE)
