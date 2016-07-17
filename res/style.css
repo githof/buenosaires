@@ -7,18 +7,25 @@ h1{
 	font-size: 30px;
 }
 
-.row {
-	margin-top: 20px;
+.main {
+	margin-left: 200px;
+	padding: 20px;
+	padding-right: 40px;
+	width: 100%;
 }
 
 .sidebar{
 	position: fixed;
 	top: 0px;
 	bottom: 0px;
+	left: 0px;
 	background-color: #eaeaea;
 	height: 100%;
 	border-right: 1px solid #d8d8d8;
-	max-width: 200px;
+	width: 200px;
+	padding-left: 15px;
+	padding-right: 15px;
+	float: left;
 }
 
 .connexion{
