@@ -63,7 +63,7 @@
     </li>
     <li>
         <a href="gestion/viewActes.php">
-            <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
             Rechercher un acte
         </a>
     </li>

@@ -97,7 +97,7 @@
                 <input type="file" id="import_file" name="import_file">
             </div>
             <div class="form-group">
-                <input type="checkbox" id="import_file_only_new" checked="checked" name="import_file_only_new">
+                <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
                 <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
             </div>
             <div class="form-group">
@@ -115,7 +115,7 @@
                 <textarea class="form-control" name="import_text"></textarea>
             </div>
             <div class="form-group">
-                <input type="checkbox" id="import_text_only_new" checked="checked" name="import_text_only_new">
+                <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
                 <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
             </div>
             <div class="form-group">
