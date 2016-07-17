@@ -31,6 +31,7 @@
 
         $success_nb = 0;
         $i = 0;
+        $num;
         foreach($actes as $acte){
             $do_it = true;
 
@@ -40,8 +41,15 @@
                     $do_it = db_has_acte($num);
             }
 
+            $num = $acte->attributes()["num"];
+            if(!isset($num)){
+                $alert->e("L'acte en position $i n'a pas de num");
+                continue;
+            }
+
             if($do_it){
-                $obj = new Acte($acte);
+                $obj = new Acte($num);
+                $obj->set_xml($acte);
                 if($obj->into_db())
                     $success_nb++;
                 else

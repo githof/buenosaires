@@ -1,28 +1,32 @@
 <?php
 
     include_once("src/database/Periode.php");
+    include_once("src/database/Table.php");
 
-    class Acte {
+    class Acte extends Table{
 
         var $xml;
-        var $periode_id;
-        var $epoux;
-        var $epouse;
-        var $cond_id;
-        var $id;
 
-        var $values;
+        function __construct($id){
+            parent::__construct("acte", $id);
+        }
 
-        function Acte($xml){
+        function set_xml($xml){
             $this->xml = $xml;
 
-            $this->values = [];
+            if($xml == NULL)
+                return;
 
-            $num = $this->get_num();
-            if($num != FALSE){
-                $this->id = intval($num);
-                $this->from_db();
+            foreach($this->xml->children() as $child){
+                switch($child->getName()){
+                    case "date":
+                        $this->set_date_xml($child);
+                        break;
+                }
             }
+
+            if(!isset($this->values["periode_id"]))
+                $this->set_date_xml(NULL);
         }
 
         function get_num(){
@@ -31,26 +35,10 @@
             return FALSE;
         }
 
-        function read_xml(){
-            $date = NULL;
-            if(!isset($this->xml))
-                return;
-
-            foreach($this->xml->children() as $child){
-                switch($child->getName()){
-                    case "date":
-                        $date = $child;
-                        break;
-                }
-            }
-
-            $this->set_date_xml($date);
-        }
-
         function set_date_xml($xml){
             $periode;
-            if(isset($this->periode_id)){
-                $periode = new Periode(intval($this->periode_id));
+            if(isset($this->values["periode_id"])){
+                $periode = new Periode(intval($this->values["periode_id"]));
             }else{
                 $periode = new Periode();
             }
@@ -64,23 +52,7 @@
             $tmp = $periode->into_db();
 
             if($tmp !== FALSE)
-                $this->set_periode_id($tmp);
-        }
-
-        function from_db(){
-            global $mysqli;
-
-            $rep = $mysqli->select("acte", ["*"], "id='$this->id'");
-
-            if($rep->num_rows == 1){
-                $row = $rep->fetch_assoc();
-                $this->periode_id = $row["periode_id"];
-                $this->epoux = $row["epoux"];
-                $this->epouse = $row["epouse"];
-                $this->cond_id = $row["cond_id"];
-                return TRUE;
-            }
-            return FALSE;
+                $this->set_var("periode_id", $tmp);
         }
 
         function into_db(){
@@ -91,16 +63,14 @@
                 return FALSE;
             }
 
-            $this->read_xml();
-
             $rep = TRUE;
             if(db_has_acte($this->id)){
-                if(count($this->values) > 0)
-                    $rep =  $mysqli->update("acte", $this->values, "id='$this->id'");
+                if(count($this->updated) > 0)
+                    $rep =  $mysqli->update($this->table_name, $this->updated, "id='$this->id'");
             }else{
-                if(count($this->values) > 0){
-                    $this->values["id"] = $this->id;
-                    $rep = $mysqli->insert("acte", $this->values);
+                if(count($this->updated) > 0){
+                    $this->updated["id"] = $this->id;
+                    $rep = $mysqli->insert("acte", $this->updated);
                 }
             }
 
@@ -122,41 +92,6 @@
                 "acte_contenu",
                 $values,
                 " ON DUPLICATE KEY UPDATE contenu='$contenu'");
-        }
-
-        function set_id($new){
-            if(!isset($this->id) || $this->id != $new){
-                $this->id = $new;
-                $this->values["id"] = $new;
-            }
-        }
-
-        function set_epoux($new){
-            if(!isset($this->epoux) || $this->epoux != $new){
-                $this->epoux = $new;
-                $this->values["epoux"] = $new;
-            }
-        }
-
-        function set_epouse($new){
-            if(!isset($this->epouse) || $this->epouse != $new){
-                $this->epouse = $new;
-                $this->values["epouse"] = $new;
-            }
-        }
-
-        function set_periode_id($new){
-            if(!isset($this->periode_id) || $this->periode_id != $new){
-                $this->periode_id = $new;
-                $this->values["periode_id"] = $new;
-            }
-        }
-
-        function set_cond_id($new){
-            if(!isset($this->cond_id) || $this->cond_id != $new){
-                $this->cond_id = $new;
-                $this->values["cond_id"] = $new;
-            }
         }
     }
 
