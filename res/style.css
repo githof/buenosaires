@@ -18,6 +18,7 @@ h1{
 	background-color: #eaeaea;
 	height: 100%;
 	border-right: 1px solid #d8d8d8;
+	max-width: 200px;
 }
 
 .connexion{
@@ -31,12 +32,23 @@ h1{
 	margin-bottom: 10px;
 }
 
+.sidebar li a{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 .sidebar li a:hover{
 	background-color: #dcdcdc;
 }
 
 .sidebar li a span{
-	margin-right: 10px;
+	display: inline;
+}
+
+.nav_item{
+	font-size: 12px;
+	padding-left: 10px;
 }
 
 .connected {
@@ -46,8 +58,8 @@ h1{
 	border-bottom: 1px solid #d8d8d8;
 }
 
-.connected button{
-	margin-bottom: 10px;
+.connexion_btn{
+	width: 100%;
 }
 
 #form_new_account{
