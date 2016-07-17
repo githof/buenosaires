@@ -35,6 +35,10 @@ h1{
 	background-color: #dcdcdc;
 }
 
+.sidebar li a span{
+	margin-right: 10px;
+}
+
 .connected {
 	margin-top: 20px;
 	margin-bottom: 20px;

@@ -73,7 +73,7 @@
             return parent::query($s);
         }
 
-        public function update($table, $values, $more = ""){
+        public function update($table, $values, $where, $more = ""){
             global $log;
             $s = "UPDATE " . $table . " SET ";
 
@@ -92,6 +92,9 @@
 
                 $i++;
             }
+
+            if(strlen($where) > 0)
+                $s .= " WHERE " . $where;
 
             if(strlen($more) > 0)
                 $s .= " " . $more;

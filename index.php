@@ -37,6 +37,7 @@
 
     if($account->is_connected && isset($_GET["p"]) && $_GET["p"] == "disconnect"){
         $account->disconnect();
+        $alert->add_success("Déconnexion réussie");
     }
 
 

@@ -71,7 +71,12 @@
         }
 
         function into_db(){
-            global $mysqli;
+            global $mysqli, $alert;
+
+            if(!isset($this->id)){
+                $alert->add_error("L'acte ne contient pas de num");
+                return false;
+            }
 
             $this->read_xml();
 
@@ -87,18 +92,11 @@
                 $values["cond_id"] = $this->cond_id;
 
             $rep;
-            if(!isset($this->id)){
-                $this->get_next_available_id();
+            if(db_has_acte($this->id))
+                $rep =  $mysqli->update("acte", $values, "id='$this->id'");
+            else{
                 $values["id"] = $this->id;
-
                 $rep = $mysqli->insert("acte", $values);
-            }else{
-                if(db_has_acte($this->id))
-                    $rep =  $mysqli->update("acte", $values, "id='$this->id'");
-                else{
-                    $values["id"] = $this->id;
-                    $rep = $mysqli->insert("acte", $values);
-                }
             }
 
             $this->contenu_into_db();

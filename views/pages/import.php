@@ -4,13 +4,15 @@
     include_once("src/database/Acte.php");
 
     function receive_file(){
+        global $alert;
+
         $infos = pathinfo($_FILES["import_file"]["name"]);
         if($infos["extension"] === "xml"){
-            $uploadfile = TMP_DIRECTORY . "/" . basename($_FILE["import_file"]["name"]);
-            move_uploaded_file($_FILE["import_file"]["tmp_name"], $uploadfile);
+            $uploadfile = TMP_DIRECTORY . "/" . basename($_FILES["import_file"]["name"]);
+            move_uploaded_file($_FILES["import_file"]["tmp_name"], $uploadfile);
             return $uploadfile;
         }else{
-
+            $alert->add_error("Le fichier doit être au format XML");
         }
     }
 
@@ -25,6 +27,10 @@
     }
 
     function add_actes($actes, $only_new){
+        global $alert;
+
+        $success_nb = 0;
+        $i = 0;
         foreach($actes as $acte){
             $do_it = true;
 
@@ -36,9 +42,17 @@
 
             if($do_it){
                 $obj = new Acte($acte);
-                $obj->into_db();
+                if($obj->into_db())
+                    $success_nb++;
+                else
+                    $alert->add_error("Erreur lors de l'ajout de l'acte en position $i");
             }
+
+            $i++;
         }
+
+        if($success_nb > 0)
+            $alert->add_success("$success_nb acte(s) ajouté(s)");
     }
 
 
@@ -60,7 +74,7 @@
         if($actes != FALSE){
             add_actes($actes, $only_new);
         }else{
-
+            $alert->add_error("Impossible de lire la source envoyée");
         }
     }
 

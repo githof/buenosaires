@@ -5,7 +5,7 @@
         $account->set_password(safe(md5($_POST['connect_pass'])));
 
         if($account->connect())
-            $alert->add_success("Connecté avec succès");
+            $alert->add_success("Connexion réussie");
         else
             $alert->add_warning("Echec de la connexion");
     }
@@ -37,14 +37,64 @@
 </div>
 <?php } ?>
 <ul class="nav nav-sidebar">
-    <li><a href="./">Acceuil</a></li>
-	<li><a href="accueil/console.php">Console</a></li>
-	<li><a href="./?p=import">Import</a></li>
-    <li><a href="./?p=export">Export</a></li>
-    <li><a href="gestion/viewActes.php">Rechercher un acte</a></li>
-    <li><a href="gestion/viewPersonnes.php">Rechercher une personne</a></li>
-    <li><a href="gestion/fusion.php">Fusionner deux personnes</a></li>
-    <li><a href="gestion/dissocier.php">Dissocier deux personnes</a></li>
-    <li><a href="tables/viewTables.php">Voir les tables</a></li>
-    <li><a href="gestion/viewGroupes.php">Groupe</a></li>
+    <li>
+        <a href="./">
+            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            Acceuil
+        </a>
+    </li>
+	<li>
+        <a href="accueil/console.php">
+            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            Console
+        </a>
+    </li>
+	<li>
+        <a href="./?p=import">
+            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+            Import
+        </a>
+    </li>
+    <li>
+        <a href="./?p=export">
+            <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+            Export
+        </a>
+    </li>
+    <li>
+        <a href="gestion/viewActes.php">
+            <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+            Rechercher un acte
+        </a>
+    </li>
+    <li>
+        <a href="gestion/viewPersonnes.php">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            Rechercher une personne
+        </a>
+    </li>
+    <li>
+        <a href="gestion/fusion.php">
+            <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+            Fusionner deux personnes
+        </a>
+    </li>
+    <li>
+        <a href="gestion/dissocier.php">
+            <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+            Dissocier deux personnes
+        </a>
+    </li>
+    <li>
+        <a href="tables/viewTables.php">
+            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+            Voir les tables
+        </a>
+    </li>
+    <li>
+        <a href="gestion/viewGroupes.php">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            Groupe
+        </a>
+    </li>
 </ul>

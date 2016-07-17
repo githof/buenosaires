@@ -59,7 +59,7 @@
             if($this->id < 0)
                 return false;
 
-            $rep = $mysqli->select("periode", ["id"=>$this->id], "id='$this->id'");
+            $rep = $mysqli->select("periode", ["*"], "id='$this->id'");
             if($rep->num_rows == 1){
                 $row = $rep->fetch_assoc();
                 $this->start_min = $row["debut_min"];
