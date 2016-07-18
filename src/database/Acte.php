@@ -36,6 +36,11 @@
             }
         }
 
+        function set_relation($source, $destination, $statu, $periode_id){
+            $relation = new Relation();
+            
+        }
+
         function set_epoux($xml){
             $epoux_id = NULL;
 

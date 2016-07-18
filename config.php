@@ -21,4 +21,12 @@ define("TMP_DIRECTORY", "./tmp");
 // default periode
 define("PERIODE_DEFAULT", "0000-00-00");
 
+
+// statut relation
+define("STATUT_EPOUX", "epoux");
+define("STATUT_EPOUSE", "epouse");
+define("STATUT_PERE", "pere");
+define("STATUT_MERE", "mere");
+define("STATUT_TEMOIN", "temoin");
+
  ?>

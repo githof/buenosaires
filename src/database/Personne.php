@@ -35,31 +35,6 @@
             }
         }
 
-        function set_periode($acte_periode_id = NULL){
-            $periode;
-
-            $acte_periode = NULL;
-            if(isset($acte_periode_id))
-                $acte_periode = new Periode($acte_periode_id);
-
-            if(isset($this->values["periode_id"])){
-                $periode = new Periode($this->values["periode_id"]);
-                if(isset($acte_periode))
-                    $periode->add_periode($acte_periode);
-            }else{
-                $periode = new Periode();
-                $periode->default_periode();
-                if(isset($acte_periode))
-                    $periode->copy($acte_periode);
-            }
-            $rep = $periode->into_db();
-            if($rep != FALSE){
-                $this->set_var("periode_id", $rep);
-                return TRUE;
-            }
-            return TRUE;
-        }
-
         function set_xml($xml, $acte_periode_id = NULL){
             if($xml == NULL)
                 return;
