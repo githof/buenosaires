@@ -2,6 +2,7 @@
 
     include_once("src/database/Periode.php");
     include_once("src/database/Table.php");
+    include_once("src/database/Personne.php");
 
     class Acte extends Table{
 
@@ -17,16 +18,56 @@
             if($xml == NULL)
                 return;
 
+            if(isset($this->xml->date)){
+                $this->set_date_xml($this->xml->date);
+            }else{
+                $this->set_date_xml(NULL);
+            }
+
             foreach($this->xml->children() as $child){
                 switch($child->getName()){
-                    case "date":
-                        $this->set_date_xml($child);
+                    case "epoux":
+                        $this->set_epoux($child);
+                        break;
+                    case "epouse":
+                        $this->set_epouse($child);
                         break;
                 }
             }
+        }
 
-            if(!isset($this->values["periode_id"]))
-                $this->set_date_xml(NULL);
+        function set_epoux($xml){
+            $epoux_id = NULL;
+
+            if(isset($this->values["epoux"]))
+                $epoux_id = $this->values["epoux"];
+
+            $obj = new Personne($epoux_id);
+            $obj->set_xml($xml, $this->values["periode_id"]);
+            $rep = $obj->into_db();
+
+            if($rep != FALSE){
+                $this->set_var("epoux", $rep);
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        function set_epouse($xml){
+            $epouse_id = NULL;
+
+            if(isset($this->values["epouse"]))
+                $epouse_id = $this->values["epouse"];
+
+            $obj = new Personne($epouse_id);
+            $obj->set_xml($xml, $this->values["periode_id"]);
+            $rep = $obj->into_db();
+
+            if($rep != FALSE){
+                $this->set_var("epouse", $rep);
+                return TRUE;
+            }
+            return FALSE;
         }
 
         function get_num(){

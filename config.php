@@ -17,4 +17,8 @@ define("LOG_DEFAULT_LEVEL", 4);
 // tmp Directory
 define("TMP_DIRECTORY", "./tmp");
 
+
+// default periode
+define("PERIODE_DEFAULT", "0000-00-00");
+
  ?>

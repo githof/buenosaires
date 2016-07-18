@@ -2,12 +2,12 @@
 
     session_start();
 
-    include("config.php");
-    include("src/log.php");
-    include("src/utils.php");
-    include("src/Alert.php");
-    include("src/account/account.php");
-    include("src/database/database.php");
+    include_once("config.php");
+    include_once("src/log.php");
+    include_once("src/utils.php");
+    include_once("src/Alert.php");
+    include_once("src/account/account.php");
+    include_once("src/database/database.php");
 
     $log = new Log();
     $alert = new Alert();

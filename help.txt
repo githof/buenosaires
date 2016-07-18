@@ -1,0 +1,5 @@
+
+    - tout <acte> a un num ?
+    - renommer num de <acte> en id
+    - toute <personne> (epoux, epouse, ...) a un id ? Comment gere si y en a pas ?
+    - attribut <nom> au lieu de de="true" plutot attr="de"

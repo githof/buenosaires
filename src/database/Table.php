@@ -34,7 +34,6 @@
                 }
                 return TRUE;
             }
-            $log->e("Le nombre de résultat n'est pas de 1 : $rep->num_rows");
             return FALSE;
         }
 
@@ -56,6 +55,28 @@
             return FALSE;
         }
 
+        function get_same($values){
+            global $mysqli;
+
+            $s = "";
+            $i = 0;
+            foreach ($values as $k => $v) {
+                $s .= $k . "='" . $v . "'";
+                if($i < count($values) -1)
+                    $s .= " AND ";
+                $i++;
+            }
+
+            $rep = $mysqli->select($this->table_name, ["id"], $s);
+            if($rep->num_rows == 1){
+                $row = $rep->fetch_assoc();
+                $this->id = $row["id"];
+                $this->from_db();
+                return TRUE;
+            }
+            return FALSE;
+        }
+
         function get_last_id(){
             global $mysqli;
 
@@ -69,7 +90,7 @@
 
         function set_var($name, $value){
             if(!isset($this->values[$name]) || $this->values[$name] != $value){
-                $this->value[$name] = $value;
+                $this->values[$name] = $value;
                 $this->updated[$name] = $value;
             }
         }
