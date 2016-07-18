@@ -85,7 +85,7 @@
     // $a  > $b : -1
     function cmp_date($a, $b){
         $split_a = explode('-', $a);
-        $split_b = explose('-', $b);
+        $split_b = explode('-', $b);
 
         $y_a = intval($split_a[0]);
         $y_b = intval($split_b[0]);
