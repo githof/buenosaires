@@ -6,6 +6,7 @@
     }
 
     function no_accent($string){
+      /*
         $unwanted_array = array(
             'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A',
             'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E',
@@ -19,6 +20,10 @@
             'þ'=>'b', 'ÿ'=>'y'
         );
         return strtr($string, $unwanted_array);
+      */
+      return strtr(utf8_decode($string),
+		   utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'),
+		   'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY')
     }
 
 
