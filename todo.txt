@@ -3,5 +3,6 @@
 - conditions
 - relations
 - parents
-
+- temoins
+- parrains, sur le modèle de temoins
 
