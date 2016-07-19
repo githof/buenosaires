@@ -1,3 +1,7 @@
 
 - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
+- conditions
+- relations
+- parents
+
 

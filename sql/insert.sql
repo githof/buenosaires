@@ -1,22 +1,9 @@
-/*
-INSERT INTO utilisateurs (rang, pseudo, nom, prenom, pwd, amail, date_inscr, valid)
-  VALUES
-  (2, 'Axelle', 'Piot', 'Axelle','3ab9071536d62f29aa8b3fd39141f6ad',
-  'axelle.piot@lyart.fr',1372655717, 'in')
-;
 
-INSERT INTO utilisateurs (rang, pseudo, nom, prenom, pwd, amail, date_inscr, valid)
-  VALUES
-  (2, 'Prieur', 'Prieur', 'Christophe','19854811c214c4f8226e2d6ee9008015',
-  'prieur@liafa.fr',1372655717, 'in')
-;
-*/
+INSERT INTO statut (id, value) VALUES
+    (1, 'epoux'),
+    (2, 'epouse'),
+    (3, 'pere'),
+    (4, 'mere'),
+    (5, 'temoin');
 
-INSERT INTO statut (value) VALUES
-    ('epoux'),
-    ('epouse'),
-    ('pere'),
-    ('mere'),
-    ('temoin');
-
-INSERT INTO source (value) VALUES ('Matrimonios');
+INSERT INTO source (id, value) VALUES (1, 'Matrimonios');
