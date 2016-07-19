@@ -7,6 +7,18 @@
   - temoins
   - parrains, sur le modèle de temoins
 
++ optimisation
+  - vérifier pourquoi 2 fois requête personne au moment de l'ajout
+
 + consultation
   - personne
   - acte
+
++ tests
+  - 10 actes Belgrano
+  - acte sans les ids
+  - acte sans balises nom / prenom, puis le même acte, avec un nom / prenom
+  - 100 actes
+
++ gestion d'erreurs
+  - fichiers

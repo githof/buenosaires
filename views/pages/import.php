@@ -10,6 +10,7 @@
         if($infos["extension"] === "xml"){
             $uploadfile = TMP_DIRECTORY . "/" . basename($_FILES["import_file"]["name"]);
             move_uploaded_file($_FILES["import_file"]["tmp_name"], $uploadfile);
+	    // TODO : test erreur (la fonction renvoie FALSE)
             return $uploadfile;
         }else{
             $alert->add_error("Le fichier doit être au format XML");
