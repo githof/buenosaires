@@ -1,8 +1,12 @@
 
-- id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
-- conditions
-- relations
-- parents
-- temoins
-- parrains, sur le modèle de temoins
++ création
+  - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
+  - conditions
+  - relations
+  - parents
+  - temoins
+  - parrains, sur le modèle de temoins
 
++ consultation
+  - personne
+  - acte
