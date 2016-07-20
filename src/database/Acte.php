@@ -8,8 +8,10 @@
     class Acte extends Table{
 
         var $xml;
+        var $relations;
 
         function __construct($id){
+            $this->relations = [];
             parent::__construct("acte", $id);
         }
 
@@ -25,53 +27,103 @@
                 $this->set_date_xml(NULL);
             }
 
+            $temoins;
             foreach($this->xml->children() as $child){
                 switch($child->getName()){
                     case "epoux":
-                        $this->set_epoux($child);
+                        $rep = $this->set_personne($child, "epoux");
+                        if($rep != FALSE){
+                            $this->set_var("epoux", $rep);
+                        }
                         break;
                     case "epouse":
-                        $this->set_epouse($child);
+                        $rep = $this->set_personne($child, "epouse");
+                        if($rep != FALSE){
+                            $this->set_var("epouse", $rep);
+                        }
                         break;
+                    case "temoins":
+                        $temoins = $child;
+                        break;
+                }
+            }
+
+            if(isset($this->values["epoux"], $this->values["epouse"])){
+                $this->set_relation(
+                    $this->values["epoux"],
+                    $this->values["epouse"],
+                    STATUT_EPOUX
+                );
+
+                $this->set_relation(
+                    $this->values["epouse"],
+                    $this->values["epoux"],
+                    STATUT_EPOUSE
+                );
+            }
+
+            if(isset($temoins)){
+                foreach ($temoins->children() as $child) {
+                    if($child->getName() === "temoin"){
+                        $rep = $this->set_personne($child);
+                        if($rep != FALSE){
+                            if(isset($this->values["epoux"]))
+                                $this->set_relation(
+                                    $rep,
+                                    $this->values["epoux"],
+                                    STATUT_TEMOIN
+                                );
+
+                            if(isset($this->values["epouse"]))
+                                $this->set_relation(
+                                    $rep,
+                                    $this->values["epouse"],
+                                    STATUT_TEMOIN
+                                );
+                        }
+                    }
                 }
             }
         }
 
-        function set_relation($source, $destination, $statu, $periode_id){
+        function set_relation($source, $destination, $statut){
+            global $log;
+
             $relation = new Relation();
+            $relation->get_same([
+                "source" => $source,
+                "destination" => $destination,
+                "statut_id" => $statut
+            ]);
+            $relation->set_relation(
+                $source,
+                $destination,
+                $statut,
+                $this->values["periode_id"]
+            );
+            $rep = $relation->into_db();
 
-        }
-
-        function set_epoux($xml){
-            $epoux_id = NULL;
-
-            if(isset($this->values["epoux"]))
-                $epoux_id = $this->values["epoux"];
-
-            $obj = new Personne($epoux_id);
-            $obj->set_xml($xml, $this->values["periode_id"]);
-            $rep = $obj->into_db();
-
-            if($rep != FALSE){
-                $this->set_var("epoux", $rep);
-                return TRUE;
+            if($rep === FALSE){
+                $log->e("Erreur lors de l'ajout de la relation source=$source, destination=$destination, statut=$statut");
+                return FALSE;
             }
-            return FALSE;
+
+            $this->relations[] = $rep;
+            return $rep;
         }
 
-        function set_epouse($xml){
-            $epouse_id = NULL;
+        function set_personne($xml){
+            $id_pers = NULL;
 
-            if(isset($this->values["epouse"]))
-                $epouse_id = $this->values["epouse"];
+            if(isset($this->values[$xml->getName()]))
+                $id_pers = $this->values[$xml->getName()];
 
-            $obj = new Personne($epouse_id);
-            $obj->set_xml($xml, $this->values["periode_id"]);
-            $rep = $obj->into_db();
+            $pers = new Personne($id_pers);
+            $pers->set_xml($xml, $this->values["periode_id"]);
+            $rep = $pers->into_db();
 
             if($rep != FALSE){
-                $this->set_var("epouse", $rep);
-                return TRUE;
+                return $rep;
             }
             return FALSE;
         }
@@ -121,9 +173,27 @@
                 }
             }
 
+            $this->link_relation_to_acte();
+
             if($rep)
                 return $this->contenu_into_db();
             return FALSE;
+        }
+
+        function link_relation_to_acte(){
+            global $mysqli, $log;
+
+            foreach ($this->relations as $k) {
+                $values = [
+                    "acte_id" => $this->id,
+                    "relation_id" => $k
+                ];
+                $rep = $mysqli->insert("acte_has_relation", $values);
+
+                if($rep === FALSE){
+                    $log->e("Erreur lors du lien entre relation=$k et acte=$this->id dans acte_has_relation");
+                }
+            }
         }
 
         function contenu_into_db(){
