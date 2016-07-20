@@ -119,6 +119,17 @@ h1{
 	background-color: #d8d8d8;
 }
 
+.import_form h4{
+	margin-top: 30px;
+}
+
+.import_form form {
+	background-color : #eee;
+	padding: 20px;
+	border: 1px solid #ccc;
+}
+
+
 /*
 body{
 	margin:0px;

@@ -89,46 +89,43 @@
 
 ?>
 
-
-<div>
-    <h3>
-        Ajouter un ou des actes
-    </h3>
-    <div>
-        <h4>
-            Avec un fichier
-        </h4>
-        <form method="post" enctype="multipart/form-data" action="">
-            <div class="form-group">
-                <label for="import_file">Fichier</label>
-                <input type="file" id="import_file" name="import_file">
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
-                <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Envoyer">
-            </div>
-            <input type="hidden" name="form_type" value="file">
-        </form>
-    </div>
-    <div>
-        <h4>
-            En le(s) copiant ici
-        </h4>
-        <form method="post" action="">
-            <div class="form-group">
-                <textarea class="form-control" name="import_text"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
-                <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Envoyer">
-            </div>
-            <input type="hidden" name="form_type" value="text">
-        </form>
-    </div>
+<h3>
+    Ajouter un ou des actes
+</h3>
+<div class="import_form">
+    <h4>
+        Avec un fichier
+    </h4>
+    <form method="post" enctype="multipart/form-data" action="">
+        <div class="form-group">
+            <label for="import_file">Fichier</label>
+            <input type="file" id="import_file" name="import_file">
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
+            <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Envoyer">
+        </div>
+        <input type="hidden" name="form_type" value="file">
+    </form>
+</div>
+<div class="import_form">
+    <h4>
+        En le(s) copiant ici
+    </h4>
+    <form method="post" action="">
+        <div class="form-group">
+            <textarea class="form-control" rows="6" name="import_text"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
+            <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Envoyer">
+        </div>
+        <input type="hidden" name="form_type" value="text">
+    </form>
 </div>
