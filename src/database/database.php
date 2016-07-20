@@ -35,7 +35,12 @@
 
             $log->i($s);
 
-            return parent::query($s);
+            $rep = parent::query($s);
+            if($rep === FALSE){
+                $log->e("SQL error : $this->error");
+                return FALSE;
+            }
+            return $rep;
         }
 
         public function insert($table, $values, $more = ""){
@@ -70,7 +75,12 @@
 
             $log->i($s);
 
-            return parent::query($s);
+            $rep = parent::query($s);
+            if($rep === FALSE){
+                $log->e("SQL error : $this->error");
+                return FALSE;
+            }
+            return $rep;
         }
 
         public function update($table, $values, $where, $more = ""){
@@ -101,7 +111,12 @@
 
             $log->i($s);
 
-            return parent::query($s);
+            $rep = parent::query($s);
+            if($rep === FALSE){
+                $log->e("SQL error : $this->error");
+                return FALSE;
+            }
+            return $rep;
         }
 
         public function delete($table, $where, $more = ""){
@@ -117,7 +132,12 @@
 
             $log->i($s);
 
-            return parent::query($s);
+            $rep = parent::query($s);
+            if($rep === FALSE){
+                $log->e("SQL error : $this->error");
+                return FALSE;
+            }
+            return $rep;
         }
     }
 
