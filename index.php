@@ -6,8 +6,8 @@
     include_once("src/log.php");
     include_once("src/utils.php");
     include_once("src/Alert.php");
-    include_once("src/account/account.php");
-    include_once("src/database/database.php");
+    include_once("src/account/Account.php");
+    include_once("src/database/Database.php");
 
     $log = new Log();
     $alert = new Alert();
