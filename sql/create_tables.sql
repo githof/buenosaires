@@ -258,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`relation` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `source` INT NOT NULL,
   `destination` INT NOT NULL,
-  `status_id` INT NOT NULL,
+  `statut_id` INT NOT NULL,
   `periode_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_relation_personne1`
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`relation` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_relation_status1`
-    FOREIGN KEY (`status_id`)
+    FOREIGN KEY (`statut_id`)
     REFERENCES `buenosaires`.`statut` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -287,7 +287,7 @@ CREATE INDEX `fk_relation_personne1_idx` ON `buenosaires`.`relation` (`source` A
 
 CREATE INDEX `fk_relation_personne2_idx` ON `buenosaires`.`relation` (`destination` ASC);
 
-CREATE INDEX `fk_relation_status1_idx` ON `buenosaires`.`relation` (`status_id` ASC);
+CREATE INDEX `fk_relation_status1_idx` ON `buenosaires`.`relation` (`statut_id` ASC);
 
 CREATE INDEX `fk_relation_periode1_idx` ON `buenosaires`.`relation` (`periode_id` ASC);
 
