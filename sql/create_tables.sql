@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS `buenosaires`.`nom` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires`.`nom` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(50) NOT NULL,
+  `nom` VARCHAR(50) NOT NULL,
   `no_accent` VARCHAR(50) NOT NULL,
   `attribut_id` INT NULL,
   PRIMARY KEY (`id`),
@@ -84,7 +84,7 @@ DROP TABLE IF EXISTS `buenosaires`.`prenom` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires`.`prenom` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(50) NOT NULL,
+  `prenom` VARCHAR(50) NOT NULL,
   `no_accent` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
