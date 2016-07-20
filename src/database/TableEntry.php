@@ -1,6 +1,6 @@
 <?php
 
-    class Table {
+    class TableEntry {
 
         var $table_name;
 

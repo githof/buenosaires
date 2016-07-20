@@ -1,8 +1,8 @@
 <?php
 
-    include_once("src/database/Table.php");
+    include_once("src/database/TableEntry.php");
 
-    class Relation extends Table {
+    class Relation extends TableEntry {
 
 
         function __construct($id = NULL){

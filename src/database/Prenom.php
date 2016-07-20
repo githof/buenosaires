@@ -1,6 +1,8 @@
 <?php
 
-    class Prenom extends Table {
+    include_once("src/database/TableEntry.php");
+
+    class Prenom extends TableEntry {
 
         function __construct($id = NULL){
             parent::__construct("prenom", $id);

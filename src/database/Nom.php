@@ -1,8 +1,9 @@
 <?php
 
     include_once("src/database/Attribut.php");
+    include_once("src/database/TableEntry.php");
 
-    class Nom extends Table {
+    class Nom extends TableEntry{
 
         function __construct($id = NULL){
             parent::__construct("nom", $id);

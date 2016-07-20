@@ -1,11 +1,11 @@
 <?php
 
     include_once("src/database/Periode.php");
-    include_once("src/database/Table.php");
+    include_once("src/database/TableEntry.php");
     include_once("src/database/Personne.php");
     include_once("src/database/Relation.php");
 
-    class Acte extends Table{
+    class Acte extends TableEntry{
 
         var $xml;
 

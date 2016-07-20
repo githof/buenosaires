@@ -1,8 +1,8 @@
 <?php
 
-    include_once("src/database/Table.php");
+    include_once("src/database/TableEntry.php");
 
-    class Periode extends Table{
+    class Periode extends TableEntry{
 
         function __construct($id = NULL){
             parent::__construct("periode", $id);

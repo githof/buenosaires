@@ -1,10 +1,10 @@
 <?php
 
-    include_once("src/database/Table.php");
+    include_once("src/database/TableEntry.php");
     include_once("src/database/Nom.php");
     include_once("src/database/Prenom.php");
 
-    class Personne extends Table{
+    class Personne extends TableEntry{
 
         var $list_prenom;
         var $list_nom;
