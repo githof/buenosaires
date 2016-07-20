@@ -45,7 +45,7 @@
     </li>
 	<li>
         <a href="accueil/console.php">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
             <span class="nav_item">Console</span>
         </a>
     </li>
@@ -95,6 +95,12 @@
         <a href="gestion/viewGroupes.php">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
             <span class="nav_item">Groupe</span>
+        </a>
+    </li>
+    <li>
+        <a href="./?p=logs">
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            <span class="nav_item">Logs</span>
         </a>
     </li>
 </ul>

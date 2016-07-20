@@ -10,6 +10,7 @@
 
         var $output;
         var $level;
+        var $filename;
 
         function Log($filename = LOG_DEFAULT_OUTPUT, $lvl = LOG_DEFAULT_LEVEL){
             $this->set_file($filename);
@@ -20,7 +21,7 @@
             if(!$this->output = fopen($filename, 'a')){
                 return false;
             }
-
+            $this->filename = $filename;
             return true;
         }
 
@@ -29,8 +30,14 @@
         }
 
         private function write($lvl, $lvl_message, $message){
+            global $account;
+
             if($this->level >= $lvl){
-                $m = date("Y m d  H:i:s") . " [" . $lvl_message . "] " . $message . "\n";
+                $email = "";
+                if(isset($account, $account->is_connected) && $account->is_connected){
+                    $email = " " . $account->infos["email"] . " >";
+                }
+                $m = date("Y m d  H:i:s") . " [" . $lvl_message . "]" . $email ." ". $message . "\n";
                 fwrite($this->output, $m);
             }
         }

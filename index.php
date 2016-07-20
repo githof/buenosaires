@@ -30,9 +30,31 @@
                 return "import.php";
             case "export":
                 return "export.php";
+            case "logs":
+                return "logs.php";
         }
 
         return "acceuil.php";
+    }
+
+    function get_title(){
+        if(!isset($_GET["p"]))
+            return "Acceuil";
+
+        switch($_GET["p"]){
+            case "new_account":
+                return "Création d'un compte";
+            case "disconnect":
+                return "Déconnexion";
+            case "import":
+                return "Import";
+            case "export":
+                return "Export";
+            case "logs":
+                return "Logs";
+        }
+
+        return "Acceuil";
     }
 
     if($account->is_connected && isset($_GET["p"]) && $_GET["p"] == "disconnect"){
@@ -72,7 +94,10 @@
             </div>
             <div class="main">
                 <?php echo $alerts_output; ?>
-                <?php echo $page_output; ?>
+                <h1><?php echo get_title(); ?></h1>
+                <div class="page">
+                    <?php echo $page_output; ?>
+                </div>
             </div>
         </div>
         <script src="res/bootstrap/js/bootstrap.min.js"></script>

@@ -31,9 +31,6 @@
 
     if($account->is_connected){
 ?>
-<h1 class="page-header">
-    Création d'un compte
-</h1>
 
 <div>
     Vous êtes déjà connecté avec un compte
@@ -49,9 +46,6 @@
 
         if($res){
 ?>
-<h1 class="page-header">
-    Création d'un compte
-</h1>
 
 <div>
     Compte crée avec succès !
@@ -59,9 +53,6 @@
 <?php
         }else{
 ?>
-<h1 class="page-header">
-    Création d'un compte
-</h1>
 
 <div>
     Erreur lors de la création du compte
@@ -70,12 +61,6 @@
         }
     }else{
 ?>
-
-
-
-<h1 class="page-header">
-    Création d'un compte
-</h1>
 
 <div id="form_new_account">
     <form class="form-horizontal" name="new_account" action="?p=new_account" method="post">

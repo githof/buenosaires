@@ -89,9 +89,7 @@
 
 ?>
 
-<h1 class="page-header">
-    Import
-</h1>
+
 <div>
     <h3>
         Ajouter un ou des actes
