@@ -9,7 +9,7 @@
             parent::__construct("relation", $id);
         }
 
-        function set_relation($source, $destination, $statut, $ref_periode_id){
+        function setup($source, $destination, $statut, $ref_periode_id){
             $this->set_var("source", $source);
             $this->set_var("destination", $destination);
             $this->set_var("statut_id", $statut);

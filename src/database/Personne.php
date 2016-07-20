@@ -8,6 +8,8 @@
 
         var $list_prenom;
         var $list_nom;
+        var $id_pere;
+        var $id_mere;
 
         function __construct($id = NULL){
             $this->list_prenom = [];
@@ -35,9 +37,12 @@
             }
         }
 
-        function set_xml($xml, $acte_periode_id = NULL){
+        function set_xml($xml, $id_periode_ref = NULL, $acte_relations = NULL){
             if($xml == NULL)
                 return;
+
+            $this->id_periode_ref = $id_periode_ref;
+            $this->acte_relations = $acte_relations;
 
             $id = $xml->attributes()["id"];
             if(isset($id)){
@@ -45,7 +50,7 @@
                 $this->from_db();
             }
 
-            $this->set_periode($acte_periode_id);
+            $this->set_periode($this->id_periode_ref);
 
             $prenoms = [];
             $noms = [];
@@ -60,6 +65,18 @@
                         $rep = $this->set_nom($child->__toString());
                         if($rep != FALSE)
                             $noms[] = $rep;
+                        break;
+                    case "pere":
+                        $rep = $this->set_personne($child);
+                        if($rep != FALSE){
+                            $this->id_pere = $rep;
+                        }
+                        break;
+                    case "mere":
+                        $rep = $this->set_personne($child);
+                        if($rep != FALSE){
+                            $this->id_mere = $rep;
+                        }
                         break;
                 }
             }
@@ -85,12 +102,31 @@
                 }
             }
 
-            $this->update_nom_prenom();
+            if($rep === FALSE)
+                return FALSE;
 
-            if($rep != FALSE){
-                return $this->id;
+            if(isset($this->id_pere, $this->acte_relations)){
+                $id_rela = $this->set_relation(
+                    $this->id,
+                    $this->id_pere,
+                    STATUT_PERE
+                );
+                if($id_rela != FALSE)
+                    $this->acte_relations[] = $id_rela;
             }
-            return FALSE;
+
+            if(isset($this->id_mere, $this->acte_relations)){
+                $id_rela = $this->set_relation(
+                    $this->id,
+                    $this->id_mere,
+                    STATUT_MERE
+                );
+                if($id_rela != FALSE)
+                    $this->acte_relations[] = $id_rela;
+            }
+
+            $this->update_nom_prenom();
+            return $this->id;
         }
 
         function update_nom_prenom(){

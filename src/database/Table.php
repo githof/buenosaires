@@ -8,11 +8,16 @@
         var $values;
         var $updated;
 
+        var $id_periode_ref;
+        var $acte_relations;
+
         function __construct($table_name, $id = NULL){
             $this->table_name = $table_name;
             $this->id = $id;
             $this->values = [];
             $this->updated = [];
+            $this->id_periode_ref = NULL;
+            $this->acte_relations = [];
 
             if($this->id != NULL)
                 $this->from_db();
@@ -118,6 +123,46 @@
                 return TRUE;
             }
             return TRUE;
+        }
+
+        function set_personne($xml){
+            $id_pers = NULL;
+
+            if(isset($this->values[$xml->getName()]))
+                $id_pers = $this->values[$xml->getName()];
+
+            $pers = new Personne($id_pers);
+            $pers->set_xml($xml, $this->id_periode_ref, $this->acte_relations);
+            $rep = $pers->into_db();
+
+            if($rep != FALSE){
+                return $rep;
+            }
+            return FALSE;
+        }
+
+        function set_relation($source, $destination, $statut){
+            global $log;
+
+            $relation = new Relation();
+            $relation->get_same([
+                "source" => $source,
+                "destination" => $destination,
+                "statut_id" => $statut
+            ]);
+            $relation->setup(
+                $source,
+                $destination,
+                $statut,
+                $this->id_periode_ref
+            );
+            $rep = $relation->into_db();
+
+            if($rep === FALSE){
+                $log->e("Erreur lors de l'ajout de la relation source=$source, destination=$destination, statut=$statut");
+                return FALSE;
+            }
+            return $rep;
         }
     }
 
