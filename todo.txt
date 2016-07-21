@@ -32,3 +32,4 @@
   - attributs nom
   - table contenu acte afficher avec balise xml ?
   - bouton loading add actes
+  - prenom & nom similaires

@@ -63,7 +63,7 @@
 ?>
 
 <div id="form_new_account">
-    <form class="form-horizontal" name="new_account" action="?p=new_account" method="post">
+    <form class="form-horizontal" name="new_account" action="./new-account" method="post">
         <div class="form-group">
             <label class="col-sm-3 control-label" for="email">Email</label>
             <div class="col-sm-9">

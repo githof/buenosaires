@@ -1,5 +1,9 @@
 <?php
 
+// base URL for all relative URLs
+define("BASE_URL", "http://localhost/buenosaires/");
+
+
 //  Server MYSQL
 define("SQL_SERVER", "localhost");
 define("SQL_DATABSE_NAME", "buenosaires");

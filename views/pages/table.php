@@ -30,13 +30,15 @@
     }
 
     function button_table($text, $nom_table){
+        global $url_parsed;
+
         $class = "btn";
-        if(isset($_GET["t"]) && $_GET["t"] === $nom_table)
+        if(isset($url_parsed["table"]) && $url_parsed["table"] === $nom_table)
             $class .= " btn-primary";
         else
             $class .= " btn-default";
 
-        return "<a href='./?p=tables&t=$nom_table'><div class='$class'>$text</div></a>";
+        return "<a href='./table/$nom_table'><div class='$class'>$text</div></a>";
     }
 
     $tables_available = [
@@ -64,8 +66,8 @@
 </div>
 <div id="table_container" class="table-responsive">
     <?php
-        if(isset($_GET["t"])){
-            print_table($_GET["t"]);
+        if(isset($url_parsed["table"])){
+            print_table($url_parsed["table"]);
         }
     ?>
 </div>

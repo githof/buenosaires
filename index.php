@@ -2,6 +2,11 @@
 
     session_start();
 
+    $url_parsed = [];
+    $page_title;
+    $RACINE = $_SERVER['DOCUMENT_ROOT'];
+
+    include_once("src/URLRewritter.php");
     include_once("config.php");
     include_once("src/log.php");
     include_once("src/utils.php");
@@ -17,33 +22,8 @@
     if(!is_dir(TMP_DIRECTORY))
         mkdir(TMP_DIRECTORY, 0777);
 
-    function get_page(){
-        if(!isset($_GET["p"]))
-            return "acceuil.php";
-
-        switch($_GET["p"]){
-            case "new_account":
-                return "new_account.php";
-            case "disconnect":
-                return "disconnect.php";
-            case "import":
-                return "import.php";
-            case "export":
-                return "export.php";
-            case "logs":
-                return "logs.php";
-            case "tables":
-                return "tables.php";
-        }
-
-        return "acceuil.php";
-    }
-
-    function get_title(){
-        if(!isset($_GET["p"]))
-            return "Acceuil";
-
-        switch($_GET["p"]){
+    function get_title($value){
+        switch($value){
             case "new_account":
                 return "Création d'un compte";
             case "disconnect":
@@ -61,7 +41,7 @@
         return "Acceuil";
     }
 
-    if($account->is_connected && isset($_GET["p"]) && $_GET["p"] == "disconnect"){
+    if($account->is_connected && isset($url_parsed["page"]) && $url_parsed["page"] == "disconnect"){
         $account->disconnect();
         $alert->add_success("Déconnexion réussie");
     }
@@ -73,7 +53,14 @@
     ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
 
     // CURRENT PAGE
-    include_once("views/pages/" . get_page());
+    if(isset($url_parsed["page"])){
+        include_once("views/pages/" . $url_parsed["page"] . ".php");
+        $page_title = get_title($url_parsed["page"]);
+    }else{
+        include_once("views/pages/acceuil.php");
+        $page_title = "Acceuil";
+    }
+
     $page_output = ob_get_clean();
 
     // ALERTS
@@ -84,6 +71,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <base href="<?php echo BASE_URL; ?>">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="res/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -98,7 +86,7 @@
             </div>
             <div class="main">
                 <?php echo $alerts_output; ?>
-                <h1><?php echo get_title(); ?></h1>
+                <h1><?php echo $page_title ?></h1>
                 <div class="page">
                     <?php echo $page_output; ?>
                 </div>
