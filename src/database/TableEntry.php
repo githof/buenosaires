@@ -1,8 +1,8 @@
 <?php
 
-    include_once("src/database/Condition.php");
-    include_once("src/database/Relation.php");
-    include_once("src/database/Personne.php");
+    include_once(ROOT."src/database/Condition.php");
+    include_once(ROOT."src/database/Relation.php");
+    include_once(ROOT."src/database/Personne.php");
 
     class TableEntry {
 

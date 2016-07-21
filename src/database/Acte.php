@@ -1,9 +1,9 @@
 <?php
 
-    include_once("src/database/Periode.php");
-    include_once("src/database/TableEntry.php");
-    include_once("src/database/Personne.php");
-    include_once("src/database/Relation.php");
+    include_once(ROOT."src/database/Periode.php");
+    include_once(ROOT."src/database/TableEntry.php");
+    include_once(ROOT."src/database/Personne.php");
+    include_once(ROOT."src/database/Relation.php");
 
     class Acte extends TableEntry{
 

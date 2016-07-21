@@ -1,8 +1,8 @@
 <?php
 
-    include_once("src/database/TableEntry.php");
-    include_once("src/database/Nom.php");
-    include_once("src/database/Prenom.php");
+    include_once(ROOT."src/database/TableEntry.php");
+    include_once(ROOT."src/database/Nom.php");
+    include_once(ROOT."src/database/Prenom.php");
 
     class Personne extends TableEntry{
 

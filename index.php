@@ -1,18 +1,19 @@
 <?php
 
+    define("ROOT", __DIR__ . "/");
+
     session_start();
 
     $url_parsed = [];
     $page_title;
-    $RACINE = $_SERVER['DOCUMENT_ROOT'];
 
-    include_once("src/URLRewritter.php");
-    include_once("config.php");
-    include_once("src/log.php");
-    include_once("src/utils.php");
-    include_once("src/Alert.php");
-    include_once("src/account/Account.php");
-    include_once("src/database/Database.php");
+    include_once(ROOT."src/URLRewritter.php");
+    include_once(ROOT."config.php");
+    include_once(ROOT."src/log.php");
+    include_once(ROOT."src/utils.php");
+    include_once(ROOT."src/Alert.php");
+    include_once(ROOT."src/account/Account.php");
+    include_once(ROOT."src/database/Database.php");
 
     $log = new Log();
     $alert = new Alert();
@@ -48,16 +49,16 @@
 
 
     // HEADER
-    include_once("views/header.php");
+    include_once(ROOT."views/header.php");
     $header_output = ob_get_clean();
     ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
 
     // CURRENT PAGE
     if(isset($url_parsed["page"])){
-        include_once("views/pages/" . $url_parsed["page"] . ".php");
+        include_once(ROOT."views/pages/" . $url_parsed["page"] . ".php");
         $page_title = get_title($url_parsed["page"]);
     }else{
-        include_once("views/pages/acceuil.php");
+        include_once(ROOT."views/pages/acceuil.php");
         $page_title = "Acceuil";
     }
 
@@ -71,6 +72,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <meta charset="utf-8">
         <base href="<?php echo BASE_URL; ?>">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">

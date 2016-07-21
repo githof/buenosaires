@@ -8,5 +8,7 @@ function stripAccents($str) {
 
 
 echo stripAccents('María') . "\n";
-
+echo get_include_path() . "<br>";
+echo $_SERVER['DOCUMENT_ROOT'] . "<br>";
+echo __DIR__ . "<br>";
 ?>

@@ -1,7 +1,7 @@
 <?php
 
-    include_once("src/XMLDecoder.php");
-    include_once("src/database/Acte.php");
+    include_once(ROOT."src/XMLDecoder.php");
+    include_once(ROOT."src/database/Acte.php");
 
     function receive_file(){
         global $alert;

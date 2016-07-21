@@ -1,6 +1,6 @@
 <?php
 
-    include_once("src/database/TableEntry.php");
+    include_once(ROOT."src/database/TableEntry.php");
 
     class Relation extends TableEntry {
 

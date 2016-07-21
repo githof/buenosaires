@@ -8,7 +8,7 @@ define("BASE_URL", "http://localhost/buenosaires/");
 define("SQL_SERVER", "localhost");
 define("SQL_DATABSE_NAME", "buenosaires");
 define("SQL_USER", "root");
-define("SQL_PASS", "");
+define("SQL_PASS", "root");
 
 //  log default output file
 define("LOG_DEFAULT_OUTPUT", "log.txt");

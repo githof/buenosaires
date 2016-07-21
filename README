@@ -1,0 +1,18 @@
+
+INSTALL
+
+Activer mod_rewrite de Apache2
+
+    cmd: a2enmod rewrite
+    cmd: service apache2 restart
+
+
+
+Fichier de config Apache2 (site-enebled/000-default.conf)
+Nécessite l'option AllowOverride All
+
+    DocumentRoot /var/www
+    <Directory "/var/www">
+        Options +FollowSymLinks
+        AllowOverride All
+    </Directory>
