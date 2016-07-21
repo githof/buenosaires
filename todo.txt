@@ -30,3 +30,5 @@
   - ecrire news id dans xml
   - veuf/veuve
   - attributs nom
+  - table contenu acte afficher avec balise xml ?
+  - bouton loading add actes

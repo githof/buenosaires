@@ -391,8 +391,8 @@ CREATE INDEX `fk_tag_attribut1_idx` ON `buenosaires`.`tag` (`attribut_id` ASC);
 DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
-  `contenu` TEXT NOT NULL,
   `acte_id` INT NOT NULL,
+  `contenu` TEXT NOT NULL,
   PRIMARY KEY (`acte_id`),
   CONSTRAINT `fk_acte_contenu_acte1`
     FOREIGN KEY (`acte_id`)

@@ -20,8 +20,7 @@
         while($row = $rep->fetch_row()){
             echo "<tr>";
             foreach($row as $col){
-                $c = safe($col);
-                echo "<td>$c</td>";
+                echo "<td>$col</td>";
             }
             echo "</tr>";
         }
