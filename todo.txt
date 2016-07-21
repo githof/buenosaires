@@ -29,3 +29,4 @@
   - condition décès
   - ecrire news id dans xml
   - veuf/veuve
+  - attributs nom

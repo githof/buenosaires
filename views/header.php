@@ -86,7 +86,7 @@
         </a>
     </li>
     <li>
-        <a href="tables/viewTables.php">
+        <a href="./?p=tables">
             <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
             <span class="nav_item">Tables</span>
         </a>

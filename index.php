@@ -32,6 +32,8 @@
                 return "export.php";
             case "logs":
                 return "logs.php";
+            case "tables":
+                return "tables.php";
         }
 
         return "acceuil.php";
@@ -52,6 +54,8 @@
                 return "Export";
             case "logs":
                 return "Logs";
+            case "tables":
+                return "Tables";
         }
 
         return "Acceuil";
