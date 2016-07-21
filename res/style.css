@@ -111,12 +111,11 @@ h1{
 
 .log-line {
 	padding: 5px;
-	text-align: justify;
 	border-bottom: 1px dashed #d8d8d8;
 }
 
 .log-line:hover {
-	background-color: #d8d8d8;
+	background-color: rgba(60, 0, 130, 0.15);
 }
 
 .import_form h4{

@@ -1,5 +1,9 @@
 <?php
 
+    include_once("src/database/Condition.php");
+    include_once("src/database/Relation.php");
+    include_once("src/database/Personne.php");
+
     class TableEntry {
 
         var $table_name;
@@ -8,16 +12,18 @@
         var $values;
         var $updated;
 
-        var $id_periode_ref;
-        var $acte_relations;
+        var $acte_parent;
+        var $relations;
+        var $conditions;
 
         function __construct($table_name, $id = NULL){
             $this->table_name = $table_name;
             $this->id = $id;
             $this->values = [];
             $this->updated = [];
-            $this->id_periode_ref = NULL;
-            $this->acte_relations = [];
+            $this->acte_parent = NULL;
+            $this->relations = [];
+            $this->conditions = [];
 
             if($this->id != NULL)
                 $this->from_db();
@@ -132,7 +138,10 @@
                 $id_pers = $this->values[$xml->getName()];
 
             $pers = new Personne($id_pers);
-            $pers->set_xml($xml, $this->id_periode_ref, $this->acte_relations);
+            $pers->set_xml(
+                $xml,
+                $this->acte_parent
+            );
             $rep = $pers->into_db();
 
             if($rep != FALSE){
@@ -154,12 +163,38 @@
                 $source,
                 $destination,
                 $statut,
-                $this->id_periode_ref
+                $this->acte_parent->values["periode_id"]
             );
             $rep = $relation->into_db();
 
             if($rep === FALSE){
                 $log->e("Erreur lors de l'ajout de la relation source=$source, destination=$destination, statut=$statut");
+                return FALSE;
+            }
+            return $rep;
+        }
+
+        function set_condition($text, $source, $personne, $acte){
+            global $log;
+
+            $condition = new Condition();
+            $condition->get_same([
+                "text" => $text,
+                "source_id" => $source,
+                "personne_id" => $personne,
+                "acte_id" => $acte
+            ]);
+            $condition->setup(
+                $text,
+                $source,
+                $personne,
+                $acte,
+                $this->acte_parent->values["periode_id"]
+            );
+            $rep = $condition->into_db();
+
+            if($rep === FALSE){
+                $log->e("Erreur lors de l'ajout de la condition text=$text, source=$source, personne=$personne, acte=$acte");
                 return FALSE;
             }
             return $rep;

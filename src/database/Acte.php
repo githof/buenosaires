@@ -11,6 +11,7 @@
 
         function __construct($id){
             parent::__construct("acte", $id);
+            $this->acte_parent = $this;
         }
 
         function set_xml($xml){
@@ -119,7 +120,6 @@
 
             if($tmp !== FALSE){
                 $this->set_var("periode_id", $tmp);
-                $this->id_periode_ref = $tmp;
                 return TRUE;
             }
             return FALSE;
@@ -145,16 +145,28 @@
             }
 
             $this->link_relation_to_acte();
+            $this->create_conditions();
 
             if($rep)
                 return $this->contenu_into_db();
             return FALSE;
         }
 
+        function create_conditions(){
+            foreach ($this->conditions as $k) {
+                $this->set_condition(
+                    $k[1],
+                    1,
+                    $k[0],
+                    $this->id
+                );
+            }
+        }
+
         function link_relation_to_acte(){
             global $mysqli, $log;
 
-            foreach ($this->acte_relations as $k) {
+            foreach ($this->relations as $k) {
                 $values = [
                     "acte_id" => $this->id,
                     "relation_id" => $k

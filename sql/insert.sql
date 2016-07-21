@@ -7,4 +7,4 @@ INSERT INTO `buenosaires`.`statut` (id, value) VALUES
     (5, 'temoin'),
     (6, 'parrain');
 
-INSERT INTO `buenosaires`.`source` (id, value) VALUES (1, 'Matrimonios');
+INSERT INTO `buenosaires`.`source` (id, source) VALUES (1, 'Matrimonios');

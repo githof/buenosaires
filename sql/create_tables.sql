@@ -145,54 +145,6 @@ CREATE INDEX `fk_personne_has_nom_personne1_idx` ON `buenosaires`.`nom_personne`
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`source`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`source` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` TEXT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`cond`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`cond` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`cond` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` TEXT NOT NULL,
-  `source_id` INT NOT NULL,
-  `periode_id` INT NOT NULL,
-  `personne_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_cond_source1`
-    FOREIGN KEY (`source_id`)
-    REFERENCES `buenosaires`.`source` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cond_periode1`
-    FOREIGN KEY (`periode_id`)
-    REFERENCES `buenosaires`.`periode` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cond_personne1`
-    FOREIGN KEY (`personne_id`)
-    REFERENCES `buenosaires`.`personne` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE INDEX `fk_cond_source1_idx` ON `buenosaires`.`cond` (`source_id` ASC);
-
-CREATE INDEX `fk_cond_periode1_idx` ON `buenosaires`.`cond` (`periode_id` ASC);
-
-CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires`.`cond` (`personne_id` ASC);
-
-
--- -----------------------------------------------------
 -- Table `buenosaires`.`acte`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`acte` ;
@@ -202,7 +154,6 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`acte` (
   `periode_id` INT NULL,
   `epoux` INT NULL,
   `epouse` INT NULL,
-  `cond_id` INT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_acte_periode1`
     FOREIGN KEY (`periode_id`)
@@ -218,11 +169,6 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`acte` (
     FOREIGN KEY (`epouse`)
     REFERENCES `buenosaires`.`personne` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_acte_cond1`
-    FOREIGN KEY (`cond_id`)
-    REFERENCES `buenosaires`.`cond` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -231,8 +177,6 @@ CREATE INDEX `fk_acte_periode1_idx` ON `buenosaires`.`acte` (`periode_id` ASC);
 CREATE INDEX `fk_acte_personne1_idx` ON `buenosaires`.`acte` (`epoux` ASC);
 
 CREATE INDEX `fk_acte_personne2_idx` ON `buenosaires`.`acte` (`epouse` ASC);
-
-CREATE INDEX `fk_acte_cond1_idx` ON `buenosaires`.`acte` (`cond_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -316,6 +260,62 @@ ENGINE = InnoDB;
 CREATE INDEX `fk_acte_has_relation_relation1_idx` ON `buenosaires`.`acte_has_relation` (`relation_id` ASC);
 
 CREATE INDEX `fk_acte_has_relation_acte1_idx` ON `buenosaires`.`acte_has_relation` (`acte_id` ASC);
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`source`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`source` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `source` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`cond`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`cond` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`cond` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `text` TEXT NOT NULL,
+  `source_id` INT NOT NULL,
+  `periode_id` INT NOT NULL,
+  `personne_id` INT NOT NULL,
+  `acte_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_cond_source1`
+    FOREIGN KEY (`source_id`)
+    REFERENCES `buenosaires`.`source` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cond_periode1`
+    FOREIGN KEY (`periode_id`)
+    REFERENCES `buenosaires`.`periode` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cond_personne1`
+    FOREIGN KEY (`personne_id`)
+    REFERENCES `buenosaires`.`personne` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cond_acte1`
+    FOREIGN KEY (`acte_id`)
+    REFERENCES `buenosaires`.`acte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_cond_source1_idx` ON `buenosaires`.`cond` (`source_id` ASC);
+
+CREATE INDEX `fk_cond_periode1_idx` ON `buenosaires`.`cond` (`periode_id` ASC);
+
+CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires`.`cond` (`personne_id` ASC);
+
+CREATE INDEX `fk_cond_acte1_idx` ON `buenosaires`.`cond` (`acte_id` ASC);
 
 
 -- -----------------------------------------------------

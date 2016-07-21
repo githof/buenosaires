@@ -22,3 +22,10 @@
 
 + gestion d'erreurs
   - fichiers
+
+
+
++ Ced
+  - condition décès
+  - ecrire news id dans xml
+  - veuf/veuve
