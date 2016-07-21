@@ -20,6 +20,7 @@
         while($row = $rep->fetch_row()){
             echo "<tr>";
             foreach($row as $col){
+                $col = htmlspecialchars($col);
                 echo "<td>$col</td>";
             }
             echo "</tr>";
