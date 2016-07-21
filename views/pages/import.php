@@ -27,7 +27,7 @@
         return $filename;
     }
 
-    function add_actes($actes, $only_new){
+    function add_actes($actes, $only_new, $id_source){
         global $alert;
 
         $success_nb = 0;
@@ -50,6 +50,7 @@
 
             if($do_it){
                 $obj = new Acte($num);
+                $obj->id_source = $id_source;
                 $obj->set_xml($acte);
                 if($obj->into_db())
                     $success_nb++;
@@ -64,24 +65,43 @@
             $alert->add_success("$success_nb acte(s) ajouté(s)");
     }
 
+    function all_sources_available(){
+        global $mysqli, $alert;
+
+        $rep = $mysqli->select("source", ["*"]);
+        if($rep === FALSE){
+            $alert->e("Impossible de récupérer les sources");
+            return;
+        }
+
+        if($rep->num_rows > 0){
+            while($row = $rep->fetch_assoc()){
+                echo "<option value='{$row["id"]}'>{$row["source"]}</option>";
+            }
+        }
+    }
+
 
 
     if(isset($_POST["form_type"])){
         $filename;
         $only_new;
+        $id_source;
 
         if($_POST["form_type"] === "file"){
             $filename = receive_file();
             $only_new = isset($_POST["import_file_only_new"]);
+            $id_source = $_POST["import_file_source"];
         }else if($_POST["form_type"] === "text"){
             $filename = receive_text();
             $only_new = isset($_POST["import_text_only_new"]);
+            $id_source = $_POST["import_text_source"];
         }
 
         $decoder = new XMLDecoder($filename);
         $actes = $decoder->get_actes();
         if($actes != FALSE){
-            add_actes($actes, $only_new);
+            add_actes($actes, $only_new, $id_source);
         }else{
             $alert->add_error("Impossible de lire la source envoyée");
         }
@@ -97,6 +117,12 @@
         Avec un fichier
     </h4>
     <form method="post" enctype="multipart/form-data" action="">
+        <div class="form-group">
+            <label for="import_file_source">Source du/des actes(s) : </label>
+            <select name="import_file_source" id="import_file_source">
+                <?php all_sources_available(); ?>
+            </select>
+        </div>
         <div class="form-group">
             <label for="import_file">Fichier</label>
             <input type="file" id="import_file" name="import_file">
@@ -116,6 +142,12 @@
         En le(s) copiant ici
     </h4>
     <form method="post" action="">
+        <div class="form-group">
+            <label for="import_text_source">Source du/des actes(s) : </label>
+            <select name="import_text_source" id="import_text_source">
+                <?php all_sources_available(); ?>
+            </select>
+        </div>
         <div class="form-group">
             <textarea class="form-control" rows="6" name="import_text"></textarea>
         </div>

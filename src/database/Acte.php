@@ -8,10 +8,12 @@
     class Acte extends TableEntry{
 
         var $xml;
+        var $id_source;
 
         function __construct($id){
             parent::__construct("acte", $id);
             $this->acte_parent = $this;
+            $this->id_source = SOURCE_DEFAULT_ID;
         }
 
         function set_xml($xml){
@@ -156,7 +158,7 @@
             foreach ($this->conditions as $k) {
                 $this->set_condition(
                     $k[1],
-                    1,
+                    $this->id_source,
                     $k[0],
                     $this->id
                 );
@@ -193,6 +195,7 @@
                 $values,
                 " ON DUPLICATE KEY UPDATE contenu='$contenu'");
         }
+
     }
 
     function db_has_acte($id){

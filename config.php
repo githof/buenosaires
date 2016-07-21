@@ -30,4 +30,8 @@ define("STATUT_MERE", 4);
 define("STATUT_TEMOIN", 5);
 define("STATUT_PARRAIN", 6);
 
+
+// default id source
+define("SOURCE_DEFAULT_ID", 1);
+
  ?>
