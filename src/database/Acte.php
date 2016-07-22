@@ -155,11 +155,11 @@
         }
 
         function create_conditions(){
-            foreach ($this->conditions as $k) {
+            foreach ($this->conditions as $c) {
                 $this->set_condition(
-                    $k[1],
+                    $c[1],
                     $this->id_source,
-                    $k[0],
+                    $c[0],
                     $this->id
                 );
             }

@@ -131,8 +131,8 @@
                     $this->acte->relations[] = $id_rela;
             }
 
-            foreach ($this->conditions as $k) {
-                $this->acte->conditions[] = [$this->id, $k];
+            foreach ($this->conditions as $texte_cond) {
+                $this->acte->conditions[] = [$this->id, $texte_cond];
             }
 
             $this->update_nom_prenom();
