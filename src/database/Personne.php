@@ -37,7 +37,7 @@
             }
         }
 
-        function set_xml($xml, $acte_parent){
+        function from_xml($xml, $acte_parent){
             if($xml == NULL)
                 return;
 

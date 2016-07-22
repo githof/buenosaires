@@ -50,7 +50,7 @@
             if($do_it){
                 $acte = new Acte($num);
                 $acte->id_source = $id_source;
-                $acte->set_xml($acteXML);
+                $acte->from_xml($acteXML);
                 if($acte->into_db())
                     $success_nb++;
                 else

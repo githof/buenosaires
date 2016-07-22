@@ -138,7 +138,7 @@
                 $id_pers = $this->values[$xml->getName()];
 
             $pers = new Personne($id_pers);
-            $pers->set_xml(
+            $pers->from_xml(
                 $xml,
                 $this->acte_parent
             );

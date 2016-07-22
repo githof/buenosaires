@@ -16,7 +16,7 @@
             $this->id_source = SOURCE_DEFAULT_ID;
         }
 
-        function set_xml($xml){
+        function from_xml($xml){
             $this->xml = $xml;
 
             if($xml == NULL)
