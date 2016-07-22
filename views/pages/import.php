@@ -27,32 +27,31 @@
         return $filename;
     }
 
-    function add_actes($actes, $only_new, $id_source){
+    function add_actes($actesXML, $only_new, $id_source){
         global $alert;
 
         $success_nb = 0;
         $i = 0;
         $num;
-        foreach($actes as $acte){
+        foreach($actesXML as $acteXML){
             $do_it = true;
+	    $num = $acteXML->attributes()["num"];
 
             if($only_new){
-                $num = $acte->attributes()["num"];
                 if(isset($num) && $num != FALSE)
                     $do_it = db_has_acte($num);
             }
 
-            $num = $acte->attributes()["num"];
             if(!isset($num)){
                 $alert->e("L'acte en position $i n'a pas de num");
                 continue;
             }
 
             if($do_it){
-                $obj = new Acte($num);
-                $obj->id_source = $id_source;
-                $obj->set_xml($acte);
-                if($obj->into_db())
+                $acte = new Acte($num);
+                $acte->id_source = $id_source;
+                $acte->set_xml($acteXML);
+                if($acte->into_db())
                     $success_nb++;
                 else
                     $alert->add_error("Erreur lors de l'ajout de l'acte en position $i");
