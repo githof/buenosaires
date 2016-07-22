@@ -1,5 +1,8 @@
 
 + structure
+  + dans les fonctions set_* (personne, acte, relation etc.)
+    renvoyer l'objet php et non l'id mysql
+
   + dans l'objet Acte
     - champ $personnes contenant la liste des personnes mentionnées dans l'acte
     - dans into_db, une fois que l'acte est enregistré dans la base,
