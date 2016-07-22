@@ -57,32 +57,32 @@
 
             $prenoms = [];
             $noms = [];
-            foreach($xml->children() as $child){
-                switch($child->getName()){
+            foreach($xml->children() as $childXML){
+                switch($childXML->getName()){
                     case "prenom":
-                        $rep = $this->set_prenom($child->__toString());
+                        $rep = $this->set_prenom($childXML->__toString());
                         if($rep != FALSE)
                             $prenoms[] = $rep;
                         break;
                     case "nom":
-                        $rep = $this->set_nom($child->__toString());
+                        $rep = $this->set_nom($childXML->__toString());
                         if($rep != FALSE)
                             $noms[] = $rep;
                         break;
                     case "pere":
-                        $rep = $this->set_personne($child);
+                        $rep = $this->set_personne($childXML);
                         if($rep != FALSE){
                             $this->id_pere = $rep;
                         }
                         break;
                     case "mere":
-                        $rep = $this->set_personne($child);
+                        $rep = $this->set_personne($childXML);
                         if($rep != FALSE){
                             $this->id_mere = $rep;
                         }
                         break;
                     case "condition":
-                        $this->conditions[] = $child->__toString();
+                        $this->conditions[] = $childXML->__toString();
                         break;
                 }
             }

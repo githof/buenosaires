@@ -28,7 +28,6 @@
                 $this->set_date_xml(NULL);
             }
 
-            $temoins;
             foreach($this->xml->children() as $child){
                 switch($child->getName()){
                     case "epoux":

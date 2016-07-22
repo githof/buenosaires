@@ -7,7 +7,7 @@
       leurs relations
       
   + seulement dans l'objet Personne,
-    - champ $conditions et $relations
+    - champs $conditions et $relations
       contenant la liste des conditions / relations de cette personne définies dans l'acte courant
     - methodes enregister_relations / conditions qui appellent les
       into_db des relations et conditions
