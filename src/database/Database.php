@@ -80,8 +80,7 @@
                 $log->e("SQL error : $this->error");
                 return FALSE;
             }
-
-            return self::insert_id;
+            return $rep;
         }
 
         public function update($table, $values, $where, $more = ""){
@@ -139,6 +138,26 @@
                 return FALSE;
             }
             return $rep;
+        }
+
+        public function next_id($table){
+            global $log;
+
+            $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table_name' AND table_schema='SQL_DATABSE_NAME'";
+
+            $log->i($s);
+
+            $result = parent::query($s);
+            if($rep === FALSE){
+                $log->e("SQL error : $this->error");
+                return FALSE;
+            }
+
+            if($result->num_rows != 1)
+                return FALSE;
+
+            $row = $result->fetch_assoc();
+            return $row["id"];
         }
     }
 
