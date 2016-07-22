@@ -48,24 +48,6 @@
             return FALSE;
         }
 
-        function into_db(){
-            global $mysqli;
-
-            if(count($this->updated) == 0)
-                return $this->id;
-
-            if(isset($this->id)){
-                $rep = $mysqli->update($this->table_name, $this->updated, "id='$this->id'");
-                if($rep === TRUE)
-                    return $this->id;
-            }else{
-                $rep = $mysqli->insert($this->table_name, $this->updated);
-                if($rep === TRUE)
-                    return $this->get_last_id();
-            }
-            return FALSE;
-        }
-
         function into_db($id_require = FALSE){
             global $mysqli, $log;
             $result = FALSE;
@@ -91,7 +73,7 @@
             }else{
                 if($id_require)
                     $this->updated["id"] = $this->id;
-                    
+
                 $result = $mysqli->insert(
                     $this->table_name,
                     $this->updated
