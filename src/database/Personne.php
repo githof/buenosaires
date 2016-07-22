@@ -111,6 +111,16 @@
             if($rep === FALSE)
                 return FALSE;
 
+            foreach ($this->conditions as $texte_cond) {
+                $this->acte->conditions[] = [$this->id, $texte_cond];
+            }
+
+            $this->update_nom_prenom();
+            return $this->id;
+        }
+
+	function set_relations()
+	{
             if(isset($this->id_pere, $this->acte)){
                 $id_rela = $this->set_relation(
                     $this->id,
@@ -129,16 +139,9 @@
                 );
                 if($id_rela != FALSE)
                     $this->acte->relations[] = $id_rela;
-            }
-
-            foreach ($this->conditions as $texte_cond) {
-                $this->acte->conditions[] = [$this->id, $texte_cond];
-            }
-
-            $this->update_nom_prenom();
-            return $this->id;
-        }
-
+            }	  
+	}
+	    
         function update_nom_prenom(){
             global $mysqli;
 

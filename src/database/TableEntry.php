@@ -143,6 +143,8 @@
                 $this->acte
             );
             $rep = $pers->into_db();
+	    $pers->set_relations();
+	    $pers->set_conditions();
 
             if($rep != FALSE){
                 return $rep;
