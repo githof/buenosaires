@@ -42,8 +42,9 @@
                 return;
 
             $this->acte_parent = $acte_parent->acte_parent;
-
-            $id = $xml->attributes()["id"];
+	    $attr = $xml->attributes();
+	    
+            $id = $attr["id"];
             if(isset($id)){
                 $this->id = $id;
                 $this->from_db();
@@ -51,11 +52,8 @@
 
             $this->set_periode($this->acte_parent->values["periode_id"]);
 
-            foreach ($xml->attributes() as $k) {
-                if($k === "don"){
-                    $this->conditions[] = "don";
-                }
-            }
+            if(isset($attr["don"]) && ($attr["don"] === "true")
+	       $this->conditions[] = "don";
 
             $prenoms = [];
             $noms = [];
