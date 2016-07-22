@@ -14,7 +14,9 @@
       contenant la liste des conditions / relations de cette personne définies dans l'acte courant
     - methodes enregister_relations / conditions qui appellent les
       into_db des relations et conditions
-    
+    - si pas d'id, chercher d'abord une personne avec les mêmes
+      prénoms et noms avant de créer une nouvelle personne
+
 + création
   - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
   - parrains, sur le modèle de temoins
@@ -41,10 +43,10 @@
 
 
 + Ced
-  - condition décès
   - ecrire news id dans xml
+  - attributs nom 
+  - condition décès
   - veuf/veuve
-  - attributs nom
   - table contenu acte afficher avec balise xml ?
   - bouton loading add actes
   - prenom & nom similaires
