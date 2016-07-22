@@ -1,13 +1,6 @@
 
--- -----------------------------------------------------
--- Schema buenosaires
--- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `buenosaires` ;
-
--- -----------------------------------------------------
--- Schema buenosaires
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `buenosaires` ;
 
 -- -----------------------------------------------------
@@ -391,12 +384,25 @@ CREATE INDEX `fk_tag_attribut1_idx` ON `buenosaires`.`tag` (`attribut_id` ASC);
 DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
-  `acte_id` INT NOT NULL,
   `contenu` TEXT NOT NULL,
+  `acte_id` INT NOT NULL,
   PRIMARY KEY (`acte_id`),
   CONSTRAINT `fk_acte_contenu_acte1`
     FOREIGN KEY (`acte_id`)
     REFERENCES `buenosaires`.`acte` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`variable`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`variable` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`variable` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `key` VARCHAR(100) NOT NULL,
+  `val` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;

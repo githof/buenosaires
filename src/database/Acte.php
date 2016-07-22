@@ -127,30 +127,26 @@
         }
 
         function into_db(){
-            global $mysqli, $alert;
+            global $alert;
 
             if(!isset($this->id)){
                 $alert->add_error("L'acte ne contient pas de num");
                 return FALSE;
             }
 
-            $rep = TRUE;
-            if(db_has_acte($this->id)){
-                if(count($this->updated) > 0)
-                    $rep =  $mysqli->update($this->table_name, $this->updated, "id='$this->id'");
-            }else{
-                if(count($this->updated) > 0){
-                    $this->updated["id"] = $this->id;
-                    $rep = $mysqli->insert("acte", $this->updated);
-                }
-            }
+            $result = parent::into_db(TRUE);
+
+            if($result === FALSE)
+                return FALSE;
+
+            $result = $this->contenu_into_db();
 
             $this->link_relation_to_acte();
             $this->create_conditions();
 
-            if($rep)
-                return $this->contenu_into_db();
-            return FALSE;
+            if($result === FALSE)
+                return FALSE;
+            return $this->id;
         }
 
         function create_conditions(){

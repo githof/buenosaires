@@ -66,6 +66,43 @@
             return FALSE;
         }
 
+        function into_db($id_require = FALSE){
+            global $mysqli, $log;
+            $result = FALSE;
+
+            if(count($this->updated) == 0)
+                return $this->id;
+
+            if(isset($this->id) && $id_require){
+                $new_id = $mysqli->next_id($this->table_name);
+                if($new_id == 0){
+                    $log->e("Aucun nouvel id trouvé pour l'insert dans $this->table_name");
+                    return FALSE;
+                }
+                $this->id = $new_id;
+            }
+
+            if(isset($this->id)){
+                $result = $mysqli->update(
+                    $this->table_name,
+                    $this->updated,
+                    "id='$this->id'"
+                );
+            }else{
+                if($id_require)
+                    $this->updated["id"] = $this->id;
+                    
+                $result = $mysqli->insert(
+                    $this->table_name,
+                    $this->updated
+                );
+            }
+
+            if($result === TRUE)
+                return $this->id;
+            return FALSE;
+        }
+
         function get_same($values){
             global $mysqli;
 
@@ -133,9 +170,10 @@
 
         function set_personne($xml){
             $id_pers = NULL;
+            $xml_attr = $xml->attributes();
 
-            if(isset($this->values[$xml->getName()]))
-                $id_pers = $this->values[$xml->getName()];
+            if(isset($xml_attr["id"]))
+                $id_pers = $xml_attr["id"];
 
             $pers = new Personne($id_pers);
             $pers->from_xml(
@@ -143,11 +181,9 @@
                 $this->acte
             );
             $rep = $pers->into_db();
-	    $pers->set_relations();
-	    $pers->set_conditions();
 
             if($rep != FALSE){
-                return $rep;
+                return $pers;
             }
             return FALSE;
         }

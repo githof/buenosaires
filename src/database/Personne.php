@@ -42,8 +42,8 @@
                 return;
 
             $this->acte = $acte;
-	    $attr = $xml->attributes();
-	    
+            $attr = $xml->attributes();
+
             $id = $attr["id"];
             if(isset($id)){
                 $this->id = $id;
@@ -53,7 +53,7 @@
             $this->set_periode($this->acte->values["periode_id"]);
 
             if(isset($attr["don"]) && ($attr["don"] === "true")
-	       $this->conditions[] = "don";
+                $this->conditions[] = "don";
 
             $prenoms = [];
             $noms = [];
@@ -92,25 +92,7 @@
         }
 
         function into_db(){
-            global $mysqli;
-
-            if(!isset($this->id))
-                $this->id = intval($this->get_last_id()) +1;
-
-            $rep = TRUE;
-            if(db_has_personne($this->id)){
-                if(count($this->updated) > 0)
-                    $rep =  $mysqli->update($this->table_name, $this->updated, "id='$this->id'");
-            }else{
-                if(count($this->updated) > 0){
-                    $this->updated["id"] = $this->id;
-                    $rep = $mysqli->insert($this->table_name, $this->updated);
-                }
-            }
-
-            if($rep === FALSE)
-                return FALSE;
-
+            $result = parent::into_db(TRUE);
             $this->update_nom_prenom();
             return $this->id;
         }
@@ -135,7 +117,7 @@
                 );
                 if($id_rela != FALSE)
                     $this->acte->relations[] = $id_rela;
-            }	  
+            }
 	}
 
 	function set_conditions()
@@ -144,7 +126,7 @@
                 $this->acte->conditions[] = [$this->id, $texte_cond];
             }
 	}
-	    
+
         function update_nom_prenom(){
             global $mysqli;
 

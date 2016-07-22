@@ -143,6 +143,18 @@
         public function next_id($table){
             global $log;
 
+            if($table === "personne"){
+                $result = $mysqli->select(
+                    $table,
+                    ["*"],
+                    "key='PERSONNE_MAX_ID'"
+                );
+                if($result != FALSE && $result->num_rows == 1){
+                    $row = $result->fetch_assoc();
+                    return intval($row["val"]);
+                }
+            }
+
             $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table_name' AND table_schema='SQL_DATABSE_NAME'";
 
             $log->i($s);
