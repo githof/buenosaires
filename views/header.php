@@ -40,7 +40,7 @@
     <li>
         <a href="./">
             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-            <span class="nav_item">Acceuil</span>
+            <span class="nav_item">Accueil</span>
         </a>
     </li>
 	<li>

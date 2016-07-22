@@ -7,7 +7,7 @@
         'logs'          =>  "/(?'page'logs{1})",                    // /logs
         'new_account'   =>  "/(?'page'new-account{1})",             // /new-account
         'disconnect'    =>  "/(?'page'disconnect{1})",              // /disconnect
-        'acceuil'       =>  "/"
+        'accueil'       =>  "/"
     ];
 
 

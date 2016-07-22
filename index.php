@@ -39,7 +39,7 @@
                 return "Tables";
         }
 
-        return "Acceuil";
+        return "Accueil";
     }
 
     if($account->is_connected && isset($url_parsed["page"]) && $url_parsed["page"] == "disconnect"){
@@ -58,8 +58,8 @@
         include_once(ROOT."views/pages/" . $url_parsed["page"] . ".php");
         $page_title = get_title($url_parsed["page"]);
     }else{
-        include_once(ROOT."views/pages/acceuil.php");
-        $page_title = "Acceuil";
+        include_once(ROOT."views/pages/accueil.php");
+        $page_title = "Accueil";
     }
 
     $page_output = ob_get_clean();
