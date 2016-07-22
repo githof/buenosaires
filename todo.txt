@@ -1,13 +1,25 @@
 
++ structure
+  + dans l'objet Acte
+    - champ $personnes contenant la liste des personnes mentionnées dans l'acte
+    - dans into_db, une fois que l'acte est enregistré dans la base,
+      donner le signal aux personne d'enregistrer leurs conditions et
+      leurs relations
+      
+  + seulement dans l'objet Personne,
+    - champ $conditions et $relations
+      contenant la liste des conditions / relations de cette personne définies dans l'acte courant
+    - methodes enregister_relations / conditions qui appellent les
+      into_db des relations et conditions
+    
 + création
   - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
-  - conditions
-  - relations
-  - parents
-  - temoins
   - parrains, sur le modèle de temoins
 
 + optimisation
+  - SELECT LAST_INSERT_ID() (au lieu de ORDER BY dans get_last_id), et
+  dans la même fonction que le INSERT (et dans une seule fonction ou
+  alors appelé une seule fois)
   - vérifier pourquoi 2 fois requête personne au moment de l'ajout
 
 + consultation
