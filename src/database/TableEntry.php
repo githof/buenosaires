@@ -151,6 +151,8 @@
         }
 
         function set_personne($xml){
+            global $log;
+
             $id_pers = NULL;
             $xml_attr = $xml->attributes();
 
@@ -162,12 +164,13 @@
                 $xml,
                 $this->acte
             );
-            $rep = $pers->into_db();
+            $result = $pers->into_db();
 
-            if($rep != FALSE){
-                return $pers;
+            if($result === FALSE){
+                $log->e("Erreur lors de l'ajout de la personne xml=$xml");
+                return FALSE;
             }
-            return FALSE;
+            return pers;
         }
 
         function set_relation($source, $destination, $statut){
@@ -185,13 +188,13 @@
                 $statut,
                 $this->acte->values["periode_id"]
             );
-            $rep = $relation->into_db();
+            $result = $relation->into_db();
 
-            if($rep === FALSE){
+            if($result === FALSE){
                 $log->e("Erreur lors de l'ajout de la relation source=$source, destination=$destination, statut=$statut");
-                return FALSE;
+                return NULL;
             }
-            return $rep;
+            return $relation;
         }
 
         function set_condition($text, $source, $personne, $acte){
@@ -211,13 +214,13 @@
                 $acte,
                 $this->acte->values["periode_id"]
             );
-            $rep = $condition->into_db();
+            $result = $condition->into_db();
 
-            if($rep === FALSE){
+            if($result === FALSE){
                 $log->e("Erreur lors de l'ajout de la condition text=$text, source=$source, personne=$personne, acte=$acte");
-                return FALSE;
+                return NULL;
             }
-            return $rep;
+            return $condition;
         }
     }
 

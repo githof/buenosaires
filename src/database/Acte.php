@@ -9,98 +9,66 @@
 
         var $xml;
         var $id_source;
+        var $personnes;
 
         function __construct($id){
             parent::__construct("acte", $id);
             $this->acte = $this;
             $this->id_source = SOURCE_DEFAULT_ID;
+            $this->personnes = [];
         }
 
         function from_xml($xml){
+            $temoinsXML = NULL;
             $this->xml = $xml;
 
             if($xml == NULL)
                 return;
 
-            if(isset($this->xml->date)){
+            if(isset($this->xml->date))
                 $this->set_date_xml($this->xml->date);
-            }else{
+            else
                 $this->set_date_xml(NULL);
-            }
 
-            foreach($this->xml->children() as $child){
-                switch($child->getName()){
+            foreach($this->xml->children() as $childXML){
+                switch($childXML->getName()){
                     case "epoux":
-                        $rep = $this->set_personne($child);
-                        if($rep != FALSE){
-                            $this->set_var("epoux", $rep);
+                        $epoux = $this->set_personne($childXML);
+                        if($epoux != NULL){
+                            $this->personnes[] = $epoux;
+                            $this->set_var("epoux", $epouse->id);
                         }
                         break;
                     case "epouse":
-                        $rep = $this->set_personne($child);
-                        if($rep != FALSE){
-                            $this->set_var("epouse", $rep);
+                        $epouse = $this->set_personne($childXML);
+                        if($epouse != NULL){
+                            $this->personnes[] = $epouse;
+                            $this->set_var("epouse", $epouse->id);
                         }
                         break;
                     case "temoins":
-                        $temoins = $child;
+                        $temoinsXML = $childXML;
                         break;
                 }
             }
 
-            if(isset($this->values["epoux"], $this->values["epouse"])){
-                $id_rela = $this->set_relation(
-                    $this->values["epoux"],
-                    $this->values["epouse"],
-                    STATUT_EPOUX
-                );
-                if($id_rela != FALSE)
-                    $this->relations[] = $id_rela;
+            $this->create_relations_epoux_epouse();
+            $this->from_xml_temoins($temoinsXML);
+        }
 
-                $id_rela = $this->set_relation(
-                    $this->values["epouse"],
-                    $this->values["epoux"],
-                    STATUT_EPOUSE
-                );
-                if($id_rela != FALSE)
-                    $this->relations[] = $id_rela;
-            }
+        function from_xml_temoins($temoinsXML){
+            if(!isset($temoinsXML))
+                return;
 
-            if(isset($temoins)){
-                foreach ($temoins->children() as $child) {
-                    if($child->getName() === "temoin"){
-                        $rep = $this->set_personne($child);
-                        if($rep != FALSE){
-                            if(isset($this->values["epoux"])){
-                                $id_rela = $this->set_relation(
-                                    $rep,
-                                    $this->values["epoux"],
-                                    STATUT_TEMOIN
-                                );
-                                if($id_rela != FALSE)
-                                    $this->relations[] = $id_rela;
-                            }
-
-
-                            if(isset($this->values["epouse"])){
-                                $id_rela = $this->set_relation(
-                                    $rep,
-                                    $this->values["epouse"],
-                                    STATUT_TEMOIN
-                                );
-                                if($id_rela != FALSE)
-                                    $this->relations[] = $id_rela;
-                            }
-                        }
+            foreach($temoinsXML->children() as $childXML) {
+                if($childXML->getName() === "temoin"){
+                    $temoin = $this->set_personne($childXML);
+                    if($temoin != NULL){
+                        $this->personnes[] = $temoin;
+                        $this->create_relations_temoin_epoux_epouse($temoin);
                     }
                 }
             }
-        }
-
-        function get_num(){
-            if(isset($this->xml->attributes()["num"]))
-                return $this->xml->attributes()["num"];
-            return FALSE;
         }
 
         function set_date_xml($xml){
@@ -160,20 +128,76 @@
             }
         }
 
-        function link_relation_to_acte(){
-            global $mysqli, $log;
+        function create_relations_epoux_epouse(){
+            if(isset($this->values["epoux"], $this->values["epouse"])){
+                $relation = $this->set_relation(
+                    $this->values["epoux"],
+                    $this->values["epouse"],
+                    STATUT_EPOUX
+                );
+                if($relation != NULL)
+                    $this->relations[] = $relation;
 
-            foreach ($this->relations as $k) {
-                $values = [
-                    "acte_id" => $this->id,
-                    "relation_id" => $k
-                ];
-                $rep = $mysqli->insert("acte_has_relation", $values);
+                $relation = $this->set_relation(
+                    $this->values["epouse"],
+                    $this->values["epoux"],
+                    STATUT_EPOUSE
+                );
+                if($relation != NULL)
+                    $this->relations[] = $relation;
+            }
+        }
 
-                if($rep === FALSE){
-                    $log->e("Erreur lors du lien entre relation=$k et acte=$this->id dans acte_has_relation");
+        function create_relations_temoin_epoux_epouse($temoin){
+            if(isset($this->values["epoux"])){
+                $relation = $this->set_relation(
+                    $temoin->id,
+                    $this->values["epoux"],
+                    STATUT_TEMOIN
+                );
+                if($relation != NULL)
+                    $this->relations[] = $relation
+            }
+
+            if(isset($this->values["epouse"])){
+                $relation = $this->set_relation(
+                    $temoin->id,
+                    $this->values["epouse"],
+                    STATUT_TEMOIN
+                );
+                if($relation != NULL)
+                    $this->relations[] = $relation;
+            }
+        }
+
+        function link_all_relations_to_acte(){
+            global $mysqli;
+
+            foreach($this->relations as $relation) {
+                $this->link_relation_to_acte($relation);
+            }
+
+            foreach($this->personnes as $personne){
+                foreach($personne->relations as $relation){
+                    $this->link_relation_to_acte($relation);
                 }
             }
+        }
+
+        function link_relation_to_acte($relation){
+            global $log;
+
+            $values = [
+                "acte_id" => $this->id,
+                "relation_id" => $relation->id
+            ];
+            $result = $mysqli->insert("acte_has_relation", $values);
+
+            if($result === FALSE){
+                $log->e("Erreur lors du lien entre relation=$relation->id et acte=$this->id dans acte_has_relation");
+                return FALSE;
+            }
+            return TRUE;
         }
 
         function contenu_into_db(){
@@ -181,7 +205,7 @@
 
             $contenu = $mysqli->real_escape_string($this->xml->asXML());
             $values = [
-                "acte_id" => $this->get_num(),
+                "acte_id" => $this->id,
                 "contenu" => $contenu
             ];
 
