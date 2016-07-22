@@ -111,10 +111,6 @@
             if($rep === FALSE)
                 return FALSE;
 
-            foreach ($this->conditions as $texte_cond) {
-                $this->acte->conditions[] = [$this->id, $texte_cond];
-            }
-
             $this->update_nom_prenom();
             return $this->id;
         }
@@ -140,6 +136,13 @@
                 if($id_rela != FALSE)
                     $this->acte->relations[] = $id_rela;
             }	  
+	}
+
+	function set_conditions()
+	{
+            foreach ($this->conditions as $texte_cond) {
+                $this->acte->conditions[] = [$this->id, $texte_cond];
+            }
 	}
 	    
         function update_nom_prenom(){
