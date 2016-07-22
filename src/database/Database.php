@@ -80,7 +80,8 @@
                 $log->e("SQL error : $this->error");
                 return FALSE;
             }
-            return $rep;
+
+            return self::insert_id;
         }
 
         public function update($table, $values, $where, $more = ""){
@@ -140,6 +141,5 @@
             return $rep;
         }
     }
-
 
 ?>
