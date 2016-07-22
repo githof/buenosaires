@@ -12,7 +12,7 @@
 
         function __construct($id){
             parent::__construct("acte", $id);
-            $this->acte_parent = $this;
+            $this->acte = $this;
             $this->id_source = SOURCE_DEFAULT_ID;
         }
 

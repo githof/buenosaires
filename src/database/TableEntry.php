@@ -12,7 +12,7 @@
         var $values;
         var $updated;
 
-        var $acte_parent;
+        var $acte;
         var $relations;
         var $conditions;
 
@@ -21,7 +21,7 @@
             $this->id = $id;
             $this->values = [];
             $this->updated = [];
-            $this->acte_parent = NULL;
+            $this->acte = NULL;
             $this->relations = [];
             $this->conditions = [];
 
@@ -140,7 +140,7 @@
             $pers = new Personne($id_pers);
             $pers->from_xml(
                 $xml,
-                $this->acte_parent
+                $this->acte
             );
             $rep = $pers->into_db();
 
@@ -163,7 +163,7 @@
                 $source,
                 $destination,
                 $statut,
-                $this->acte_parent->values["periode_id"]
+                $this->acte->values["periode_id"]
             );
             $rep = $relation->into_db();
 
@@ -189,7 +189,7 @@
                 $source,
                 $personne,
                 $acte,
-                $this->acte_parent->values["periode_id"]
+                $this->acte->values["periode_id"]
             );
             $rep = $condition->into_db();
 

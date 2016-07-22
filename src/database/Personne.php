@@ -37,11 +37,11 @@
             }
         }
 
-        function from_xml($xml, $acte_parent){
+        function from_xml($xml, $acte){
             if($xml == NULL)
                 return;
 
-            $this->acte_parent = $acte_parent->acte_parent;
+            $this->acte = $acte;
 	    $attr = $xml->attributes();
 	    
             $id = $attr["id"];
@@ -50,7 +50,7 @@
                 $this->from_db();
             }
 
-            $this->set_periode($this->acte_parent->values["periode_id"]);
+            $this->set_periode($this->acte->values["periode_id"]);
 
             if(isset($attr["don"]) && ($attr["don"] === "true")
 	       $this->conditions[] = "don";
@@ -111,28 +111,28 @@
             if($rep === FALSE)
                 return FALSE;
 
-            if(isset($this->id_pere, $this->acte_parent)){
+            if(isset($this->id_pere, $this->acte)){
                 $id_rela = $this->set_relation(
                     $this->id,
                     $this->id_pere,
                     STATUT_PERE
                 );
                 if($id_rela != FALSE)
-                    $this->acte_parent->relations[] = $id_rela;
+                    $this->acte->relations[] = $id_rela;
             }
 
-            if(isset($this->id_mere, $this->acte_parent)){
+            if(isset($this->id_mere, $this->acte)){
                 $id_rela = $this->set_relation(
                     $this->id,
                     $this->id_mere,
                     STATUT_MERE
                 );
                 if($id_rela != FALSE)
-                    $this->acte_parent->relations[] = $id_rela;
+                    $this->acte->relations[] = $id_rela;
             }
 
             foreach ($this->conditions as $k) {
-                $this->acte_parent->conditions[] = [$this->id, $k];
+                $this->acte->conditions[] = [$this->id, $k];
             }
 
             $this->update_nom_prenom();
