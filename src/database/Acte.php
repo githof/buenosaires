@@ -8,13 +8,12 @@
     class Acte extends TableEntry{
 
         var $xml;
-        var $id_source;
+        var $source_id;
         var $personnes;
 
         function __construct($id){
             parent::__construct("acte", $id);
-            $this->acte = $this;
-            $this->id_source = SOURCE_DEFAULT_ID;
+            $this->source_id = SOURCE_DEFAULT_ID;
             $this->personnes = [];
         }
 
@@ -33,14 +32,14 @@
             foreach($this->xml->children() as $childXML){
                 switch($childXML->getName()){
                     case "epoux":
-                        $epoux = $this->set_personne($childXML);
+                        $epoux = $this->personne_from_xml($childXML);
                         if($epoux != NULL){
                             $this->personnes[] = $epoux;
                             $this->set_var("epoux", $epouse->id);
                         }
                         break;
                     case "epouse":
-                        $epouse = $this->set_personne($childXML);
+                        $epouse = $this->personne_from_xml($childXML);
                         if($epouse != NULL){
                             $this->personnes[] = $epouse;
                             $this->set_var("epouse", $epouse->id);
@@ -51,9 +50,6 @@
                         break;
                 }
             }
-
-            $this->create_relations_epoux_epouse();
-            $this->from_xml_temoins($temoinsXML);
         }
 
         function from_xml_temoins($temoinsXML){
@@ -62,7 +58,7 @@
 
             foreach($temoinsXML->children() as $childXML) {
                 if($childXML->getName() === "temoin"){
-                    $temoin = $this->set_personne($childXML);
+                    $temoin = $this->personne_from_xml($childXML);
                     if($temoin != NULL){
                         $this->personnes[] = $temoin;
                         $this->create_relations_temoin_epoux_epouse($temoin);
@@ -109,23 +105,12 @@
 
             $result = $this->contenu_into_db();
 
-            $this->link_relation_to_acte();
-            $this->create_conditions();
+            $this->set_relations();
+            $this->set_conditions();
 
             if($result === FALSE)
                 return FALSE;
             return $this->id;
-        }
-
-        function create_conditions(){
-            foreach ($this->conditions as $c) {
-                $this->set_condition(
-                    $c[1],
-                    $this->id_source,
-                    $c[0],
-                    $this->id
-                );
-            }
         }
 
         function create_relations_epoux_epouse(){
@@ -170,34 +155,25 @@
             }
         }
 
-        function link_all_relations_to_acte(){
+        function set_relations(){
             global $mysqli;
 
+            $this->create_relations_epoux_epouse();
+            $this->create_relations_temoin_epoux_epouse();
+
             foreach($this->relations as $relation) {
-                $this->link_relation_to_acte($relation);
+                link_relation_acte_into_db($this, $relation);
             }
 
             foreach($this->personnes as $personne){
-                foreach($personne->relations as $relation){
-                    $this->link_relation_to_acte($relation);
-                }
+                $personne->set_relations($this);
             }
         }
 
-        function link_relation_to_acte($relation){
-            global $log;
-
-            $values = [
-                "acte_id" => $this->id,
-                "relation_id" => $relation->id
-            ];
-            $result = $mysqli->insert("acte_has_relation", $values);
-
-            if($result === FALSE){
-                $log->e("Erreur lors du lien entre relation=$relation->id et acte=$this->id dans acte_has_relation");
-                return FALSE;
+        function set_conditions(){
+            foreach($this->personnes as $personne){
+                $personne->set_conditions($this);
             }
-            return TRUE;
         }
 
         function contenu_into_db(){
@@ -215,13 +191,6 @@
                 " ON DUPLICATE KEY UPDATE contenu='$contenu'");
         }
 
-    }
-
-    function db_has_acte($id){
-        global $mysqli;
-
-        $rep = $mysqli->select("acte", ["id"], "id='$id'");
-        return $rep->num_rows > 0;
     }
 
 ?>

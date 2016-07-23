@@ -10,13 +10,51 @@
             parent::__construct("cond", $id);
         }
 
-        function setup($text, $source, $personne, $acte, $id_periode_ref){
+        function set_text($text){
             $this->set_var("text", $text);
-            $this->set_var("source_id", $source);
-            $this->set_var("personne_id", $personne);
-            $this->set_var("acte_id", $acte);
-            $this->set_periode($id_periode_ref);
         }
+
+        function set_source($source_id){
+            $this->set_var("source_id", $source_id);
+        }
+
+        function set_personne($personne_id){
+            $this->set_var("personne_id", $personne_id);
+        }
+
+        function set_acte($acte_id){
+            $this->set_var("acte_id", $acte_id);
+        }
+    }
+
+    function create_condition($text, $source_id, $personne, $acte){
+        global $log;
+
+        $condition = new Condition();
+        $condition->get_same([
+            "text" => $text,
+            "source_id" => $source_id,
+            "personne_id" => $personne->id,
+            "acte_id" => $acte->id
+        ]);
+
+        $condition->set_text($text);
+        $condition->set_source($source_id);
+        $condition->set_personne($personne->id);
+        $condition->set_acte($acte->id);
+
+        $periode_id_ref = NULL;
+        if(isset($acte->values["periode_id"]))
+            $periode_id_ref = $acte->values["periode_id"];
+        $condition->set_periode($periode_id_ref);
+
+        $result = $condition->into_db();
+
+        if($result === FALSE){
+            $log->e("Erreur lors de l'ajout de la condition text=$text, source=$source, personne=$personne, acte=$acte");
+            return NULL;
+        }
+        return $condition;
     }
 
 ?>

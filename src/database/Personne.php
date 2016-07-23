@@ -3,17 +3,25 @@
     include_once(ROOT."src/database/TableEntry.php");
     include_once(ROOT."src/database/Nom.php");
     include_once(ROOT."src/database/Prenom.php");
+    include_once(ROOT."src/database/Relation.php");
+    include_once(ROOT."src/database/Condition.php");
 
     class Personne extends TableEntry{
 
         var $list_prenom;
         var $list_nom;
-        var $id_pere;
-        var $id_mere;
+
+        var $pere;
+        var $mere;
+
+        var $relations;
+        var $texte_conditions;
 
         function __construct($id = NULL){
             $this->list_prenom = [];
             $this->list_nom = [];
+            $this->relations = [];
+            $this->texte_conditions = [];
             parent::__construct("personne", $id);
         }
 
@@ -37,7 +45,7 @@
             }
         }
 
-        function from_xml($xml, $acte){
+        function from_xml($xml){
             if($xml == NULL)
                 return;
 
@@ -50,7 +58,8 @@
                 $this->from_db();
             }
 
-            $this->set_periode($this->acte->values["periode_id"]);
+            // FIX PERIODE !!!
+            $this->set_periode(NULL);
 
             if(isset($attr["don"]) && ($attr["don"] === "true")
                 $this->conditions[] = "don";
@@ -70,19 +79,19 @@
                             $noms[] = $rep;
                         break;
                     case "pere":
-                        $rep = $this->set_personne($childXML);
-                        if($rep != FALSE){
-                            $this->id_pere = $rep;
+                        $pere = personne_from_xml($childXML);
+                        if($pere != NULL){
+                            $this->id_pere = $pere
                         }
                         break;
                     case "mere":
-                        $rep = $this->set_personne($childXML);
-                        if($rep != FALSE){
-                            $this->id_mere = $rep;
+                        $mere = personne_from_xml($childXML);
+                        if($mere != NULL){
+                            $this->id_mere = $mere
                         }
                         break;
                     case "condition":
-                        $this->conditions[] = $childXML->__toString();
+                        $this->texte_conditions[] = $childXML->__toString();
                         break;
                 }
             }
@@ -97,35 +106,45 @@
             return $this->id;
         }
 
-	function set_relations()
-	{
-            if(isset($this->id_pere, $this->acte)){
-                $id_rela = $this->set_relation(
-                    $this->id,
-                    $this->id_pere,
-                    STATUT_PERE
+        function set_relations($acte = NULL){
+            $periode_id_ref = NULL;
+
+            if(isset($acte->values["periode_id"]))
+                $periode_id_ref = $acte->values["periode_id"];
+
+            if(isset($this->pere)){
+                $relation = create_relation(
+                    $this,
+                    $this->pere,
+                    STATUT_PERE,
+                    $periode_id_ref
                 );
-                if($id_rela != FALSE)
-                    $this->acte->relations[] = $id_rela;
+                if($relation != NULL && $acte != NULL)
+                    link_relation_acte_into_db($acte, $relation);
             }
 
-            if(isset($this->id_mere, $this->acte)){
-                $id_rela = $this->set_relation(
-                    $this->id,
-                    $this->id_mere,
-                    STATUT_MERE
+            if(isset($this->mere)){
+                $relation = create_relation(
+                    $this,
+                    $this->mere,
+                    STATUT_MERE,
+                    $periode_id_ref
                 );
-                if($id_rela != FALSE)
-                    $this->acte->relations[] = $id_rela;
+                if($relation != NULL && $acte != NULL)
+                    link_relation_acte_into_db($acte, $relation);
             }
-	}
+        }
 
-	function set_conditions()
-	{
-            foreach ($this->conditions as $texte_cond) {
-                $this->acte->conditions[] = [$this->id, $texte_cond];
+        function set_conditions($acte){
+            foreach ($this->texte_conditions as $texte_cond) {
+                $condition = create_condition(
+                    $texte_cond,
+                    $acte->source_id,
+                    $this,
+                    $acte
+                );
             }
-	}
+        }
 
         function update_nom_prenom(){
             global $mysqli;
@@ -191,12 +210,24 @@
 
     }
 
-    function db_has_personne($id){
-        global $mysqli;
+    function personne_from_xml($xml){
+        global $log;
 
-        $rep = $mysqli->select("personne", ["id"], "id='$id'");
-        return $rep->num_rows > 0;
+        $id_pers = NULL;
+        $xml_attr = $xml->attributes();
+
+        if(isset($xml_attr["id"]))
+            $id_pers = $xml_attr["id"];
+
+        $pers = new Personne($id_pers);
+        $pers->from_xml($xml);
+        $result = $pers->into_db();
+
+        if($result === FALSE){
+            $log->e("Erreur lors de l'ajout de la personne xml=$xml");
+            return FALSE;
+        }
+        return pers;
     }
-
 
 ?>
