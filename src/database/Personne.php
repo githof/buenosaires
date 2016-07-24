@@ -45,23 +45,19 @@
             }
         }
 
-        function from_xml($xml){
+        function from_xml($xml, $acte = NULL){
             if($xml == NULL)
                 return;
 
             $this->acte = $acte;
             $attr = $xml->attributes();
 
-            $id = $attr["id"];
-            if(isset($id)){
-                $this->id = $id;
-                $this->from_db();
-            }
+            if(isset($acte))
+                $this->set_periode($acte->values["periode_id"]);
+            else
+                $this->set_periode(NULL);
 
-            // FIX PERIODE !!!
-            $this->set_periode(NULL);
-
-            if(isset($attr["don"]) && ($attr["don"] === "true")
+            if(isset($attr["don"]) && ($attr["don"] === "true"))
                 $this->conditions[] = "don";
 
             $prenoms = [];
@@ -79,15 +75,15 @@
                             $noms[] = $rep;
                         break;
                     case "pere":
-                        $pere = personne_from_xml($childXML);
+                        $pere = personne_from_xml($childXML, $acte);
                         if($pere != NULL){
-                            $this->id_pere = $pere
+                            $this->pere = $pere;
                         }
                         break;
                     case "mere":
-                        $mere = personne_from_xml($childXML);
+                        $mere = personne_from_xml($childXML, $acte);
                         if($mere != NULL){
-                            $this->id_mere = $mere
+                            $this->mere = $mere;
                         }
                         break;
                     case "condition":
@@ -100,7 +96,7 @@
             $this->list_nom = $noms;
         }
 
-        function into_db(){
+        function into_db($id_require = FALSE){
             $result = parent::into_db(TRUE);
             $this->update_nom_prenom();
             return $this->id;
@@ -186,21 +182,25 @@
         function set_nom($nom, $attribut = NULL){
             $obj = new Nom();
 
-            $id_attribut;
+            /*
+            $id_attribut = NULL;
             if(isset($attribut))
                 $id_attribut = db_has_attribut($attribut);
 
             if(isset($id_attribut)){
                 if($obj->get_same([
-                    "no_accent" => no_accent($nom),
+                    "no_accent" => no_accent($nom)
                     "attribut_id" => $id_attribut
                 ])){
                     return $obj->into_db();
                 }
-            }
+            }*/
 
-            if(!$obj->set_nom($nom))
-                return FALSE;
+            $obj->get_same([
+                "no_accent" => no_accent($nom)
+            ]);
+
+            $obj->set_nom($nom);
 
             if(isset($attribut) && !$obj->set_attribut($attribut))
                 return FALSE;
@@ -210,24 +210,26 @@
 
     }
 
-    function personne_from_xml($xml){
+    function personne_from_xml($xml, $acte = NULL){
         global $log;
 
         $id_pers = NULL;
         $xml_attr = $xml->attributes();
 
+        $log->i("Ajout d'une personne à partir d'xml");
+
         if(isset($xml_attr["id"]))
             $id_pers = $xml_attr["id"];
 
         $pers = new Personne($id_pers);
-        $pers->from_xml($xml);
+        $pers->from_xml($xml, $acte);
         $result = $pers->into_db();
 
         if($result === FALSE){
             $log->e("Erreur lors de l'ajout de la personne xml=$xml");
             return FALSE;
         }
-        return pers;
+        return $pers;
     }
 
 ?>

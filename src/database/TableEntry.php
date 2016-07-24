@@ -12,11 +12,14 @@
         var $values;
         var $updated;
 
+        var $is_in_db;
+
         function __construct($table_name, $id = NULL){
             $this->table_name = $table_name;
             $this->id = $id;
             $this->values = [];
             $this->updated = [];
+            $this->is_in_db = FALSE;
 
             if($this->id != NULL)
                 $this->from_db();
@@ -36,36 +39,42 @@
                 foreach ($row as $k => $v) {
                     $this->values[$k] = $v;
                 }
+                $this->is_in_db = TRUE;
                 return TRUE;
             }
+            $this->is_in_db = FALSE;
             return FALSE;
         }
 
         function into_db($id_require = FALSE){
             global $mysqli, $log;
             $result = FALSE;
+            $new_id = NULL;
 
             if(count($this->updated) == 0)
                 return $this->id;
 
-            if(isset($this->id) && $id_require){
+            if(!isset($this->id)){
                 $new_id = $mysqli->next_id($this->table_name);
                 if($new_id == 0){
                     $log->e("Aucun nouvel id trouvé pour l'insert dans $this->table_name");
                     return FALSE;
                 }
-                $this->id = $new_id;
             }
 
-            if(isset($this->id)){
+            if($this->is_in_db && isset($this->id)){
                 $result = $mysqli->update(
                     $this->table_name,
                     $this->updated,
                     "id='$this->id'"
                 );
             }else{
-                if($id_require)
+                if($id_require){
+                    if(isset($new_id))
+                        $this->id = $new_id;
                     $this->updated["id"] = $this->id;
+                }else
+                    $this->id = $new_id;
 
                 $result = $mysqli->insert(
                     $this->table_name,
@@ -84,7 +93,11 @@
             $s = "";
             $i = 0;
             foreach ($values as $k => $v) {
-                $s .= $k . "='" . $v . "'";
+                if($v == NULL)
+                    $s .= "$k IS NULL";
+                else
+                    $s .= $k . "='" . $v . "'";
+
                 if($i < count($values) -1)
                     $s .= " AND ";
                 $i++;

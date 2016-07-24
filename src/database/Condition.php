@@ -51,7 +51,7 @@
         $result = $condition->into_db();
 
         if($result === FALSE){
-            $log->e("Erreur lors de l'ajout de la condition text=$text, source=$source, personne=$personne, acte=$acte");
+            $log->e("Erreur lors de l'ajout de la condition text=$text, source=$source_id, personne=$personne->id, acte=$acte->id");
             return NULL;
         }
         return $condition;

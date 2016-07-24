@@ -36,19 +36,19 @@
         $relation->set_source($personne_source->id);
         $relation->set_destination($personne_destination->id);
         $relation->set_statut($statut_id);
-        $relation->set_periode($periode_ref_id)
+        $relation->set_periode($periode_ref_id);
 
         $result = $relation->into_db();
 
         if($result === FALSE){
-            $log->e("Erreur lors de l'ajout de la relation source=$source, destination=$destination, statut=$statut");
+            $log->e("Erreur lors de l'ajout de la relation source=$personne_source->id, destination=$personne_destination->id, statut=$statut_id");
             return NULL;
         }
         return $relation;
     }
 
     function link_relation_acte_into_db($acte, $relation){
-        global $log;
+        global $log, $mysqli;
 
         $values = [
             "acte_id" => $acte->id,

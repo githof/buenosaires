@@ -10,5 +10,5 @@ INSERT INTO `buenosaires`.`statut` (id, value) VALUES
 INSERT INTO `buenosaires`.`source` (id, source) VALUES
     (1, 'Matrimonios');
 
-INSERT INTO `buenosaires`.`variable` (key, val) VALUES
-    ("PERSONNE_ID_MAX", "10000");
+INSERT INTO `buenosaires`.`variable` (nom, valeur) VALUES
+    ('PERSONNE_ID_MAX', '100000');

@@ -1,6 +1,13 @@
 
+-- -----------------------------------------------------
+-- Schema buenosaires
+-- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `buenosaires` ;
-CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+
+-- -----------------------------------------------------
+-- Schema buenosaires
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 ;
 USE `buenosaires` ;
 
 -- -----------------------------------------------------
@@ -402,7 +409,7 @@ DROP TABLE IF EXISTS `buenosaires`.`variable` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires`.`variable` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `key` VARCHAR(100) NOT NULL,
-  `val` VARCHAR(100) NOT NULL,
+  `nom` VARCHAR(100) NOT NULL,
+  `valeur` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

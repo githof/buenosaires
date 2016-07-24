@@ -14,19 +14,19 @@
             $this->success_list = [];
         }
 
-        public function add_success($message){
+        public function success($message){
             $this->success_list[] = $message;
         }
 
-        public function add_error($message){
+        public function error($message){
             $this->error_list[] = $message;
         }
 
-        public function add_info($message){
+        public function info($message){
             $this->info_list[] = $message;
         }
 
-        public function add_warning($message){
+        public function warning($message){
             $this->warning_list[] = $message;
         }
 

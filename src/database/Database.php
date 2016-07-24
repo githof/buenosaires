@@ -8,7 +8,7 @@
             parent::__construct(SQL_SERVER,
                                 SQL_USER,
                                 SQL_PASS,
-                                SQL_DATABSE_NAME);
+                                SQL_DATABASE_NAME);
 
             if(mysqli_connect_error()){
                 $log->e("Erreur de connexion (" . mysqli_connect_errno() . ') ' . mysqli_connect_error());
@@ -55,7 +55,7 @@
             foreach($values as $key => $value){
                 $keys .= $key;
 
-                if(strcmp($value, "NULL") == 0 || strcmp($value, "now()") == 0)
+                if(strcmp($value, "now()") == 0)
                     $vals .= $value;
                 else
                     $vals .= "'" . $value . "'";
@@ -92,7 +92,7 @@
             foreach($values as $key => $value){
                 $s .= " " . $key . " = ";
 
-                if(strcmp($value, "NULL") == 0 || strcmp($value, "now()") == 0)
+                if(strcmp($value, "now()") == 0)
                     $s .= $value;
                 else
                     $s .= "'" . $value . "'";
@@ -141,26 +141,29 @@
         }
 
         public function next_id($table){
-            global $log;
+            global $log, $mysqli;
 
             if($table === "personne"){
                 $result = $mysqli->select(
-                    $table,
+                    "variable",
                     ["*"],
-                    "key='PERSONNE_MAX_ID'"
+                    "nom='PERSONNE_ID_MAX'"
                 );
                 if($result != FALSE && $result->num_rows == 1){
                     $row = $result->fetch_assoc();
-                    return intval($row["val"]);
+                    $value = intval($row["valeur"]) +1;
+                    $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
+                    return $row["valeur"];
                 }
             }
 
-            $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table_name' AND table_schema='SQL_DATABSE_NAME'";
+            $database_name = SQL_DATABASE_NAME;
+            $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
 
             $log->i($s);
 
             $result = parent::query($s);
-            if($rep === FALSE){
+            if($result === FALSE){
                 $log->e("SQL error : $this->error");
                 return FALSE;
             }

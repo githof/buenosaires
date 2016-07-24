@@ -6,9 +6,9 @@ define("BASE_URL", "http://localhost/buenosaires/");
 
 //  Server MYSQL
 define("SQL_SERVER", "localhost");
-define("SQL_DATABSE_NAME", "buenosaires");
+define("SQL_DATABASE_NAME", "buenosaires");
 define("SQL_USER", "root");
-define("SQL_PASS", "root");
+define("SQL_PASS", "");
 
 //  log default output file
 define("LOG_DEFAULT_OUTPUT", "log.txt");
@@ -23,7 +23,8 @@ define("TMP_DIRECTORY", "./tmp");
 
 
 // default periode
-define("PERIODE_DEFAULT", "0000-00-00");
+// 0000-00-00 n'est pas une date valide pour MySQL
+define("PERIODE_DEFAULT", "0001-01-01");
 
 
 // statut relation
