@@ -14,7 +14,7 @@
       contenant la liste des conditions / relations de cette personne définies dans l'acte courant
     # methodes enregister_relations / conditions qui appellent les
       into_db des relations et conditions
-    - si pas d'id, chercher d'abord une personne avec les mêmes
+    # si pas d'id, chercher d'abord une personne avec les mêmes
       prénoms et noms avant de créer une nouvelle personne
 
 + création
@@ -43,7 +43,6 @@
 
 
 + Ced
-  - ecrire news id dans xml
   - condition décès
   - veuf/veuve
   - bouton loading add actes
