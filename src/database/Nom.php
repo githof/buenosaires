@@ -1,6 +1,6 @@
 <?php
 
-    include_once(ROOT."src/database/Attribut.php");
+    include_once(ROOT."src/database/Attribute.php");
     include_once(ROOT."src/database/TableEntry.php");
 
     class Nom extends TableEntry{
@@ -16,17 +16,36 @@
             return TRUE;
         }
 
-        function set_attribut($attribut){
-            $obj = new Attribut();
-            $obj->get_same(["value" => $attribut]);
-            $obj->set_attribut($attribut);
+        function set_attribute($attribute_text){
+            global $log;
 
-            $rep = $obj->into_db();
-            if($rep != FALSE){
-                $this->set_var("attribut_id", $rep);
+            if($attribute_text == NULL)
+                return TRUE;
+
+            $attribute = new Attribute();
+            $attribute->set_attribute($attribute_text);
+            $attribute->get_same();
+
+            $result = $attribute->into_db();
+            if($result != FALSE){
+                $this->set_var("attribut_id", $result);
                 return TRUE;
             }
+
+            $log->e("Erreur lors de l'ajout de l'attribut $attribute_text");
             return FALSE;
+        }
+
+        function get_same($values = NULL){
+            $vals = [];
+            $vals["no_accent"] = $this->values["no_accent"];
+
+            if(isset($this->values["attribut_id"]))
+                $vals["attribut_id"] = $this->values["attribut_id"];
+            else
+                $vals["attribut_id"] = "NULL";
+
+            return parent::get_same($vals);
         }
     }
 

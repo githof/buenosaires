@@ -38,6 +38,8 @@
                 $row = $rep->fetch_assoc();
                 foreach ($row as $k => $v) {
                     $this->values[$k] = $v;
+                    if(isset($this->updated[$k]))
+                        unset($this->updated[$k]);
                 }
                 $this->is_in_db = TRUE;
                 return TRUE;
@@ -75,7 +77,7 @@
                     $this->updated["id"] = $this->id;
                 }else
                     $this->id = $new_id;
-                    
+
                 $result = $mysqli->insert(
                     $this->table_name,
                     $this->updated
@@ -93,7 +95,7 @@
             $s = "";
             $i = 0;
             foreach ($values as $k => $v) {
-                if($v == NULL)
+                if(strcmp($v, "NULL") == 0)
                     $s .= "$k IS NULL";
                 else
                     $s .= $k . "='" . $v . "'";

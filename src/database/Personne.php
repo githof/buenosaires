@@ -70,7 +70,7 @@
                             $prenoms[] = $rep;
                         break;
                     case "nom":
-                        $rep = $this->set_nom($childXML->__toString());
+                        $rep = $this->set_nom($childXML);
                         if($rep != FALSE)
                             $noms[] = $rep;
                         break;
@@ -179,33 +179,47 @@
             return $obj->into_db();
         }
 
-        function set_nom($nom, $attribut = NULL){
-            $obj = new Nom();
+        function set_nom($nomXML){
+            $attribute_text = NULL;
 
-            /*
-            $id_attribut = NULL;
-            if(isset($attribut))
-                $id_attribut = db_has_attribut($attribut);
+            $this->all_nom_attributes_in_one($nomXML);
+            if(isset($nomXML->attributes()["attr"]))
+                $attribute_text = $nomXML->attributes()["attr"];
 
-            if(isset($id_attribut)){
-                if($obj->get_same([
-                    "no_accent" => no_accent($nom)
-                    "attribut_id" => $id_attribut
-                ])){
-                    return $obj->into_db();
+            $nom = new Nom();
+            $nom->set_attribute($attribute_text);
+            $nom->set_nom($nomXML->__toString());
+            $nom->get_same();
+
+            return $nom->into_db();
+        }
+
+        function all_nom_attributes_in_one($nomXML){
+            $new_attr = "";
+            $attrs = $nomXML->attributes();
+            $attrs_to_unset = [];
+            $i = 0;
+
+            if(isset($attrs["attr"]))
+                return;
+
+            foreach ($attrs as $key => $value){
+                if(strcmp($key, "id") != 0 && strcmp($value, "true") == 0){
+                    $new_attr .= "$key";
+                    $attrs_to_unset[] = $key;
+                    if($i < count($attrs) -1)
+                        $new_attr .= " ";
                 }
-            }*/
+            }
 
-            $obj->get_same([
-                "no_accent" => no_accent($nom)
-            ]);
+            foreach($attrs_to_unset as $key => $value){
+                unset($attrs[$value]);
+            }
 
-            $obj->set_nom($nom);
+            if(strlen($new_attr) == 0)
+                return;
 
-            if(isset($attribut) && !$obj->set_attribut($attribut))
-                return FALSE;
-
-            return $obj->into_db();
+            $nomXML->addAttribute("attr", $new_attr);
         }
 
     }
