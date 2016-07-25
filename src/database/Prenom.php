@@ -14,11 +14,11 @@
             $this->set_var("no_accent", no_accent($default));
         }
 
-        function get_same($vals = NULL){
+        function looking_for_same_in_db($vals = NULL){
             $values = [
                 "no_accent" => $this->values["no_accent"]
             ];
-            return parent::get_same($values);
+            return parent::looking_for_same_in_db($values);
         }
     }
 

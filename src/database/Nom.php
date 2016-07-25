@@ -25,7 +25,7 @@
 
             $attribute = new Attribute();
             $attribute->set_attribute($attribute_text);
-            $attribute->get_same();
+            $attribute->looking_for_same_in_db();
 
             $result = $attribute->into_db();
             if($result != FALSE){
@@ -37,7 +37,7 @@
             return FALSE;
         }
 
-        function get_same($values = NULL){
+        function looking_for_same_in_db($values = NULL){
             $vals = [];
             $vals["no_accent"] = $this->values["no_accent"];
 
@@ -46,7 +46,7 @@
             else
                 $vals["attribut_id"] = "NULL";
 
-            return parent::get_same($vals);
+            return parent::looking_for_same_in_db($vals);
         }
     }
 

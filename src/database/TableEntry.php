@@ -89,7 +89,7 @@
             return FALSE;
         }
 
-        function get_same($values){
+        function looking_for_same_in_db($values){
             global $mysqli;
 
             $s = "";

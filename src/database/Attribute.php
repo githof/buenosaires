@@ -12,12 +12,12 @@
             $this->set_var("value", $attribute);
         }
 
-        function get_same($values = NULL){
+        function looking_for_same_in_db($values = NULL){
             $vals = [
                 "value" => $this->values["value"]
             ];
 
-            return parent::get_same($vals);
+            return parent::looking_for_same_in_db($vals);
         }
     }
 

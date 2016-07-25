@@ -26,14 +26,14 @@
             $this->set_var("acte_id", $acte_id);
         }
 
-        function get_same($vals = NULL){
+        function looking_for_same_in_db($vals = NULL){
             $values = [
                 "text" => $this->values["text"],
                 "source_id" => $this->values["source_id"],
                 "personne_id" => $this->values["personne_id"],
                 "acte_id" => $this->values["acte_id"]
             ];
-            return parent::get_same($values);
+            return parent::looking_for_same_in_db($values);
         }
     }
 
@@ -45,7 +45,7 @@
         $condition->set_source($source_id);
         $condition->set_personne($personne->id);
         $condition->set_acte($acte->id);
-        $condition->get_same();
+        $condition->looking_for_same_in_db();
 
         $periode_id_ref = NULL;
         if(isset($acte->values["periode_id"]))

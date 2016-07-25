@@ -102,7 +102,7 @@
             $this->noms_id = array_intersect($this->noms_id, $noms_id);
         }
 
-        function get_same($vals = NULL){
+        function looking_for_same_in_db($vals = NULL){
             global $mysqli;
             $ids = NULL;
             $ids_tmp = NULL;
@@ -246,7 +246,7 @@
         function set_prenom($prenom_text){
             $prenom = new Prenom();
             $prenom->set_prenom($prenom_text);
-            $prenom->get_same();
+            $prenom->looking_for_same_in_db();
 
             return $prenom->into_db();
         }
@@ -261,7 +261,7 @@
             $nom = new Nom();
             $nom->set_attribute($attribute_text);
             $nom->set_nom($nomXML->__toString());
-            $nom->get_same();
+            $nom->looking_for_same_in_db();
 
             return $nom->into_db();
         }
@@ -309,7 +309,7 @@
 
         $pers = new Personne($id_pers);
         $pers->from_xml($xml, $acte);
-        $pers->get_same();
+        $pers->looking_for_same_in_db();
         $result = $pers->into_db();
 
         if($result === FALSE){
