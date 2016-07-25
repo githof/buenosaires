@@ -10,8 +10,8 @@
 
         var $xml;
 
-        var $list_prenom;
-        var $list_nom;
+        var $prenoms_id;
+        var $noms_id;
 
         var $pere;
         var $mere;
@@ -20,8 +20,8 @@
         var $texte_conditions;
 
         function __construct($id = NULL){
-            $this->list_prenom = [];
-            $this->list_nom = [];
+            $this->prenoms_id = [];
+            $this->noms_id = [];
             $this->relations = [];
             $this->texte_conditions = [];
             $this->xml = NULL;
@@ -33,17 +33,20 @@
 
             parent::from_db();
 
+            $this->prenoms_id = [];
+            $this->noms_id = [];
+
             $rep = $mysqli->select("prenom_personne", ["*"], "personne_id='$this->id'", "ORDER BY ordre ASC");
             if($rep->num_rows > 0){
                 while($row = $rep->fetch_assoc()){
-                    $this->list_prenom[] = $row["prenom_id"];
+                    $this->prenoms_id[] = $row["prenom_id"];
                 }
             }
 
             $rep = $mysqli->select("nom_personne", ["*"], "personne_id='$this->id'", "ORDER BY ordre ASC");
             if($rep->num_rows > 0){
                 while($row = $rep->fetch_assoc()){
-                    $this->list_nom[] = $row["nom_id"];
+                    $this->noms_id[] = $row["nom_id"];
                 }
             }
         }
@@ -63,19 +66,19 @@
             if(isset($attr["don"]) && ($attr["don"] === "true"))
                 $this->conditions[] = "don";
 
-            $prenoms = [];
-            $noms = [];
+            $prenoms_id = [];
+            $noms_id = [];
             foreach($xml->children() as $childXML){
                 switch($childXML->getName()){
                     case "prenom":
                         $rep = $this->set_prenom($childXML->__toString());
                         if($rep != FALSE)
-                            $prenoms[] = $rep;
+                            $prenoms_id[] = $rep;
                         break;
                     case "nom":
                         $rep = $this->set_nom($childXML);
                         if($rep != FALSE)
-                            $noms[] = $rep;
+                            $noms_id[] = $rep;
                         break;
                     case "pere":
                         $pere = personne_from_xml($childXML, $acte);
@@ -95,8 +98,63 @@
                 }
             }
 
-            $this->list_prenom = $prenoms;
-            $this->list_nom = $noms;
+            $this->prenoms_id = array_intersect($this->prenoms_id, $prenoms_id);
+            $this->noms_id = array_intersect($this->noms_id, $noms_id);
+        }
+
+        function get_same($vals = NULL){
+            global $mysqli;
+            $ids = NULL;
+            $ids_tmp = NULL;
+
+            if(isset($this->id))
+                return FALSE;
+
+            foreach($this->noms_id as $k => $nom_id){
+                $result = $mysqli->query("SELECT personne_id FROM nom_personne WHERE nom_id='$nom_id'");
+                if($result === FALSE || $result->num_rows == 0)
+                    return FALSE;
+
+                $ids_tmp = [];
+                while($row = $result->fetch_assoc()){
+                    $ids_tmp[] = $row["personne_id"];
+                }
+
+                if(isset($ids))
+                    $ids = array_intersect($ids, $ids_tmp);
+                else
+                    $ids = $ids_tmp;
+
+                if(count($ids) == 0)
+                    return FALSE;
+            }
+
+            foreach($this->prenoms_id as $k => $prenom_id){
+                $result = $mysqli->query("SELECT personne_id FROM prenom_personne WHERE prenom_id='$prenom_id'");
+                if($result === FALSE || $result->num_rows == 0)
+                    return FALSE;
+
+                $ids_tmp = [];
+                while($row = $result->fetch_assoc()){
+                    $ids_tmp[] = $row["personne_id"];
+                }
+
+                if(isset($ids))
+                    $ids = array_intersect($ids, $ids_tmp);
+                else
+                    $ids = $ids_tmp;
+
+                if(count($ids) == 0)
+                    return FALSE;
+            }
+
+            if(isset($ids)){
+                $this->id = array_shift($ids);
+                $this->from_db();
+                return TRUE;
+            }
+
+            return FALSE;
         }
 
         function into_db($id_require = FALSE){
@@ -154,38 +212,43 @@
         function update_nom_prenom(){
             global $mysqli;
 
-            $mysqli->delete("prenom_personne", "personne_id='$this->id'");
-            $mysqli->delete("nom_personne", "personne_id='$this->id'");
-
             $i = 1;
-            foreach ($this->list_prenom as $k) {
+            foreach ($this->prenoms_id as $k) {
                 $values = [
                     "personne_id" => $this->id,
                     "prenom_id" => $k,
                     "ordre" => $i
                 ];
-                $mysqli->insert("prenom_personne", $values);
+                $mysqli->insert(
+                    "prenom_personne",
+                    $values,
+                    "ON DUPLICATE KEY UPDATE ordre='$i'"
+                );
                 $i++;
             }
 
             $i = 1;
-            foreach ($this->list_nom as $k) {
+            foreach ($this->noms_id as $k) {
                 $values = [
                     "personne_id" => $this->id,
                     "nom_id" => $k,
                     "ordre" => $i
                 ];
-                $mysqli->insert("nom_personne", $values);
+                $mysqli->insert(
+                    "nom_personne",
+                    $values,
+                    "ON DUPLICATE KEY UPDATE ordre='$i'"
+                );
                 $i++;
             }
         }
 
-        function set_prenom($prenom){
-            $obj = new Prenom();
-            $obj->set_prenom($prenom);
-            $obj->get_same();
+        function set_prenom($prenom_text){
+            $prenom = new Prenom();
+            $prenom->set_prenom($prenom_text);
+            $prenom->get_same();
 
-            return $obj->into_db();
+            return $prenom->into_db();
         }
 
         function set_nom($nomXML){
@@ -246,6 +309,7 @@
 
         $pers = new Personne($id_pers);
         $pers->from_xml($xml, $acte);
+        $pers->get_same();
         $result = $pers->into_db();
 
         if($result === FALSE){

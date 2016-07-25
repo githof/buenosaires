@@ -140,6 +140,17 @@
             return $rep;
         }
 
+        public function query($requete){
+            global $log;
+            
+            $result = parent::query($requete);
+            if($result === FALSE){
+                $log->e("SQL error : $this->error");
+                return FALSE;
+            }
+            return $result;
+        }
+
         public function next_id($table){
             global $log, $mysqli;
 
