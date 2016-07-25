@@ -25,23 +25,27 @@
         function set_acte($acte_id){
             $this->set_var("acte_id", $acte_id);
         }
+
+        function get_same($vals = NULL){
+            $values = [
+                "text" => $this->values["text"],
+                "source_id" => $this->values["source_id"],
+                "personne_id" => $this->values["personne_id"],
+                "acte_id" => $this->values["acte_id"]
+            ];
+            return parent::get_same($values);
+        }
     }
 
     function create_condition($text, $source_id, $personne, $acte){
         global $log;
 
         $condition = new Condition();
-        $condition->get_same([
-            "text" => $text,
-            "source_id" => $source_id,
-            "personne_id" => $personne->id,
-            "acte_id" => $acte->id
-        ]);
-
         $condition->set_text($text);
         $condition->set_source($source_id);
         $condition->set_personne($personne->id);
         $condition->set_acte($acte->id);
+        $condition->get_same();
 
         $periode_id_ref = NULL;
         if(isset($acte->values["periode_id"]))

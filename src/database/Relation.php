@@ -21,21 +21,25 @@
             $this->set_var("statut_id", $statut_id);
         }
 
+        function get_same($vals = NULL){
+            $values = [
+                "source" => $this->values["source"],
+                "destination" => $this->values["destination"],
+                "statut_id" => $this->values["statut_id"]
+            ];
+            return parent::get_same($values);
+        }
+
     }
 
     function create_relation($personne_source, $personne_destination, $statut_id, $periode_ref_id){
         global $log;
 
         $relation = new Relation();
-        $relation->get_same([
-            "source" => $personne_source->id,
-            "destination" => $personne_destination->id,
-            "statut_id" => $statut_id
-        ]);
-
         $relation->set_source($personne_source->id);
         $relation->set_destination($personne_destination->id);
         $relation->set_statut($statut_id);
+        $relation->get_same();
         $relation->set_periode($periode_ref_id);
 
         $result = $relation->into_db();

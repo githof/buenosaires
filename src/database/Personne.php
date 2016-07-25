@@ -173,8 +173,8 @@
 
         function set_prenom($prenom){
             $obj = new Prenom();
-            $obj->get_same(["no_accent" => no_accent($prenom)]);
             $obj->set_prenom($prenom);
+            $obj->get_same();
 
             return $obj->into_db();
         }
