@@ -20,7 +20,7 @@
     <?php if ($account->get_rang() > 1){ ?>
     <a href="accueil/administration.php"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
-    <a href="disconnect"><button class="connexion_btn btn btn-default btn-sm m-t-3">Deconnexion</button></a>
+    <a href="./disconnect"><button class="connexion_btn btn btn-default btn-sm m-t-3">Deconnexion</button></a>
 </div>
 <?php } else {?>
 <div class="connexion">

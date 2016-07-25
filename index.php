@@ -23,25 +23,6 @@
     if(!is_dir(TMP_DIRECTORY))
         mkdir(TMP_DIRECTORY, 0777);
 
-    function get_title($value){
-        switch($value){
-            case "new_account":
-                return "Création d'un compte";
-            case "disconnect":
-                return "Déconnexion";
-            case "import":
-                return "Import";
-            case "export":
-                return "Export";
-            case "logs":
-                return "Logs";
-            case "tables":
-                return "Tables";
-        }
-
-        return "Accueil";
-    }
-
     if($account->is_connected && isset($url_parsed["page"]) && $url_parsed["page"] == "disconnect"){
         $account->disconnect();
         $alert->add_success("Déconnexion réussie");
@@ -55,11 +36,11 @@
 
     // CURRENT PAGE
     if(isset($url_parsed["page"])){
-        include_once(ROOT."views/pages/" . $url_parsed["page"] . ".php");
-        $page_title = get_title($url_parsed["page"]);
+        include_once(ROOT."views/pages/" . $url_parsed["include"] . ".php");
+        $page_title = $url_parsed["title"];
     }else{
-        include_once(ROOT."views/pages/accueil.php");
-        $page_title = "Accueil";
+        include_once(ROOT."views/pages/404.php");
+        $page_title = "404";
     }
 
     $page_output = ob_get_clean();
