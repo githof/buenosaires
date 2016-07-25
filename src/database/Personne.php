@@ -8,6 +8,8 @@
 
     class Personne extends TableEntry{
 
+        var $xml;
+
         var $list_prenom;
         var $list_nom;
 
@@ -22,6 +24,7 @@
             $this->list_nom = [];
             $this->relations = [];
             $this->texte_conditions = [];
+            $this->xml = NULL;
             parent::__construct("personne", $id);
         }
 
@@ -49,7 +52,7 @@
             if($xml == NULL)
                 return;
 
-            $this->acte = $acte;
+            $this->xml = $xml;
             $attr = $xml->attributes();
 
             if(isset($acte))
@@ -99,6 +102,12 @@
         function into_db($id_require = FALSE){
             $result = parent::into_db(TRUE);
             $this->update_nom_prenom();
+
+            if(isset($this->xml)){
+                $attributesXML = $this->xml->attributes();
+                if(!isset($attributesXML["id"]))
+                    $this->xml->addAttribute("id", "$this->id");
+            }
             return $this->id;
         }
 
