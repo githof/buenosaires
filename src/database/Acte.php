@@ -30,6 +30,7 @@
         function from_xml($xml){
             $temoinsXML = NULL;
             $this->xml = $xml;
+            $xml_attr = $xml->attributes();
 
             if($xml == NULL)
                 return;
@@ -64,6 +65,12 @@
             }
 
             $this->from_xml_temoins($temoinsXML);
+
+            if(isset($xml_attr["num"])){
+                $this->id = "".intval($this->id);
+                unset($xml_attr["num"]);
+                $this->xml->addAttribute("id", "$this->id");
+            }
         }
 
         function from_xml_temoins($temoinsXML){

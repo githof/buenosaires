@@ -75,7 +75,7 @@
                     $this->updated["id"] = $this->id;
                 }else
                     $this->id = $new_id;
-
+                    
                 $result = $mysqli->insert(
                     $this->table_name,
                     $this->updated
