@@ -9,6 +9,7 @@
         }
 
         function set_prenom($default){
+            $default = trim($default);
             $this->set_var("prenom", $default);
             $this->set_var("no_accent", no_accent($default));
         }

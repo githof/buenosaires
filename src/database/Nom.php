@@ -10,6 +10,7 @@
         }
 
         function set_nom($default){
+            $default = trim($default);
             $this->set_var("nom", $default);
             $this->set_var("no_accent", no_accent($default));
 
