@@ -28,8 +28,8 @@
   # vérifier pourquoi 2 fois requête personne au moment de l'ajout
 
 + consultation
-  - personne
-  - acte
+  # personne
+  # acte
 
 + tests
   - 10 actes Belgrano
