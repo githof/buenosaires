@@ -171,13 +171,16 @@
     }
 
     function html_personne_small($personne){
-        $str = "<div class='personne_small'><a href='./personne/$personne->id'>";
-
-        $str .= html_personne_prenoms($personne);
-        $str .= html_personne_noms($personne);
-
-        $str .= "</a></div>";
-        return $str;
+        $prenoms = html_personne_prenoms($personne);
+        $noms = html_personne_noms($personne);
+        return "
+        <div class='personne_small'>
+            <a href='./personne/$personne->id'>
+                $prenoms
+                $noms
+                ($personne->id)
+            </a>
+        </div>";
     }
 
     function html_personne_prenoms($personne){
