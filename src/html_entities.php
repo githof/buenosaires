@@ -3,6 +3,8 @@
     include_once(ROOT."src/database/Personne.php");
     include_once(ROOT."src/database/Periode.php");
     include_once(ROOT."src/database/Condition.php");
+    include_once(ROOT."src/database/Acte.php");
+    include_once(ROOT."src/database/Relation.php");
 
     $memory = [
         "personne" => [],
@@ -74,14 +76,14 @@
         </div>";
     }
 
-    function html_personne_relation($relation){
+    function html_relation($relation){
         $statut_name = $relation->get_statut_name();
         $source = html_personne_small(personne_memory($relation->values["source"]));
         $destination = html_personne_small(personne_memory($relation->values["destination"]));
         $periode = html_periode(periode_memory($relation->values["periode_id"]));
 
         return "
-        <div class='personne_relation'>
+        <div class='relation'>
             <div class='relation_source'>
                 $source
             </div>
@@ -97,12 +99,24 @@
         </div>";
     }
 
-    function html_personne_condition($condition){
+    function html_relations($relations){
+        $str = "";
+        foreach($relations as $relation){
+            $str .= html_relation($relation);
+        }
+        return $str;
+    }
+
+    function html_condition($condition){
+        $personne = html_personne_small(personne_memory($condition->values["personne_id"]));
+        $acte = html_acte_small(acte_memory($condition->values["acte_id"]));
         $source_name = $condition->get_source_name();
         return "
-        <div class='personne_condition'>
+        <div class='condition'>
+            <div class='condition_personne'>
+                $personne
+            </div>
             <div class='condition_text'>
-                <span>></span>
                 {$condition->values["text"]}
             </div>
             <div class='condition_source'>
@@ -113,7 +127,18 @@
                     $source_name
                 </div>
             </div>
+            <div class='condition_acte'>
+                acte: $acte
+            </div>
         </div>";
+    }
+
+    function html_conditions($conditions){
+        $str = "";
+        foreach($conditions as $condition){
+            $str .= html_condition($condition);
+        }
+        return $str;
     }
 
     function html_periode($periode){

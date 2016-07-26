@@ -30,27 +30,19 @@
         <div class="detail_div_title">
             PERIODE
         </div>
-        <?php echo html_periode(new Periode($personne->values["periode_id"])); ?>
+        <?php echo html_periode(periode_memory($personne->values["periode_id"])); ?>
     </div>
     <div class="detail_div">
         <div class="detail_div_title">
             CONDITIONS
         </div>
-        <?php
-            $conditions = $personne->get_conditions();
-            foreach($conditions as $condition)
-                echo html_personne_condition($condition);
-         ?>
+        <?php echo html_conditions($personne->get_conditions()); ?>
     </div>
     <div class="detail_div">
         <div class="detail_div_title">
             RELATIONS
         </div>
-        <?php
-            $relations = $personne->get_relations();
-            foreach($relations as $relation)
-                echo html_personne_relation($relation);
-        ?>
+        <?php echo html_relations($personne->get_relations()); ?>
     </div>
 </div>
 <?php

@@ -218,6 +218,32 @@
                 " ON DUPLICATE KEY UPDATE contenu='$contenu'");
         }
 
+        function get_conditions(){
+            global $mysqli;
+            $conditions = [];
+
+            $result = $mysqli->select("cond", ["id"], "acte_id='$this->id'");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $conditions[] = new Condition($row["id"]);
+                }
+            }
+            return $conditions;
+        }
+
+        function get_relations(){
+            global $mysqli;
+            $relations = [];
+
+            $result = $mysqli->select("acte_has_relation", ["relation_id"], "acte_id='$this->id'");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $relations[] = new Relation($row["relation_id"]);
+                }
+            }
+            return $relations;
+        }
+
     }
 
 ?>

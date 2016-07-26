@@ -201,7 +201,7 @@ h1{
 	color: #9c9c9c;
 }
 
-.personne_condition {
+.condition {
 	display: flex;
 	flex-direction: row;
 	margin: 5px;
@@ -221,7 +221,7 @@ h1{
 	margin-right: 5px;
 }
 
-.personne_relation {
+.relation {
 	display: flex;
 	flex-direction: row;
 	border-bottom: 1px solid #ababab;
