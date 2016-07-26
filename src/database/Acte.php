@@ -244,6 +244,16 @@
             return $relations;
         }
 
+        function get_contenu(){
+            global $mysqli;
+
+            $result = $mysqli->select("acte_contenu", ["contenu"], "acte_id='$this->id'");
+            if($result != FALSE && $result->num_rows == 1){
+                $row = $result->fetch_assoc();
+                return $row["contenu"];
+            }
+            return "";
+        }
     }
 
 ?>

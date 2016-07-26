@@ -60,6 +60,8 @@
         <link href="res/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="res/style.css" rel="stylesheet" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+        <!-- <script src="res/js/indent_xml.js"></script> -->
         <title>Buenos Aires</title>
     </head>
     <body>

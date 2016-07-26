@@ -48,6 +48,14 @@
         </div>
         <?php echo html_relations($acte->get_relations()); ?>
     </div>
+    <div class="detail_div">
+        <div class="detail_div_title">
+            CONTENU
+        </div>
+        <pre class="prettyprint">
+            <?php echo htmlspecialchars($acte->get_contenu()); ?>
+        </pre>
+    </div>
 </div>
 <?php
     }
