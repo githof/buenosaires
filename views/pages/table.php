@@ -1,5 +1,59 @@
 <?php
 
+
+    function add_link($table_name, $column_name, $value){
+        $link = NULL;
+        switch($table_name){
+            case "acte":
+                switch($column_name){
+                    case "id":
+                        $link = "./acte/$value";
+                        break;
+                    case "epoux":
+                    case "epouse":
+                        $link = "./personne/$value";
+                        break;
+                }
+                break;
+            case "acte_contenu":
+                switch($column_name){
+                    case "acte_id":
+                        $link = "./acte/$value";
+                        break;
+                }
+                break;
+            case "personne":
+                switch($column_name){
+                    case "id":
+                        $link = "./personne/$value";
+                        break;
+                }
+                break;
+            case "relation":
+                switch($column_name){
+                    case "source":
+                    case "destination":
+                        $link = "./personne/$value";
+                        break;
+                }
+                break;
+            case "cond":
+                switch($column_name){
+                    case "personne_id":
+                        $link = "./personne/$value";
+                        break;
+                    case "acte_id";
+                        $link = "./acte/$value";
+                        break;
+                }
+                break;
+        }
+
+        if(isset($link))
+            return "<a href='$link'>$value</a>";
+        return $value;
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
@@ -19,9 +73,10 @@
 
         while($row = $rep->fetch_row()){
             echo "<tr>";
-            foreach($row as $col){
-                $col = htmlspecialchars($col);
-                echo "<td>$col</td>";
+            for($i = 0; $i < count($row); $i++){
+                $value = htmlspecialchars($row[$i]);
+                $value = add_link($table_name, $fields[$i]->name, $value);
+                echo "<td>$value</td>";
             }
             echo "</tr>";
         }
