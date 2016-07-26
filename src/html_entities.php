@@ -83,28 +83,36 @@
         $periode = html_periode(periode_memory($relation->values["periode_id"]));
 
         return "
-        <div class='relation'>
-            <div class='relation_source'>
-                $source
-            </div>
-            <div class='relation_statut'>
-                > $statut_name >
-            </div>
-            <div class='relation_destination'>
-                $destination
-            </div>
-            <div class='relation_periode'>
-                $periode
-            </div>
-        </div>";
+        <tr>
+            <td>$source</td>
+            <td class='relation_statut'>$statut_name</td>
+            <td>$destination</td>
+            <td>$periode</td>
+        </tr>";
     }
 
     function html_relations($relations){
-        $str = "";
-        foreach($relations as $relation){
-            $str .= html_relation($relation);
-        }
-        return $str;
+        $rows = "";
+        foreach($relations as $relation)
+            $rows .= html_relation($relation);
+
+        if(strlen($rows) == 0)
+            return "";
+
+        return  "
+        <table class='table table-bordered table-striped table-hover'>
+            <thead>
+                <tr>
+                    <th>Personne source</th>
+                    <th>Statut</th>
+                    <th>Personne destination</th>
+                    <th>Période</th>
+                </tr>
+            </thead>
+            <tbody>
+                $rows
+            </tbody>
+        </table>";
     }
 
     function html_condition($condition){
@@ -112,33 +120,36 @@
         $acte = html_acte_small(acte_memory($condition->values["acte_id"]));
         $source_name = $condition->get_source_name();
         return "
-        <div class='condition'>
-            <div class='condition_personne'>
-                $personne
-            </div>
-            <div class='condition_text'>
-                {$condition->values["text"]}
-            </div>
-            <div class='condition_source'>
-                <div class='condition_source_title'>
-                    source :
-                </div>
-                <div class='condition_source_value'>
-                    $source_name
-                </div>
-            </div>
-            <div class='condition_acte'>
-                acte: $acte
-            </div>
-        </div>";
+        <tr>
+            <td>$personne</td>
+            <td>{$condition->values["text"]}</td>
+            <td>$source_name</td>
+            <td>$acte</td>
+        </tr>";
     }
 
     function html_conditions($conditions){
-        $str = "";
-        foreach($conditions as $condition){
-            $str .= html_condition($condition);
-        }
-        return $str;
+        $rows = "";
+        foreach($conditions as $condition)
+            $rows .= html_condition($condition);
+
+        if(strlen($rows) == 0)
+            return "";
+
+        return  "
+        <table class='table table-striped table-hover'>
+            <thead>
+                <tr>
+                    <th>Personne</th>
+                    <th>Condition</th>
+                    <th>Source</th>
+                    <th>Acte</th>
+                </tr>
+            </thead>
+            <tbody>
+                $rows
+            </tbody>
+        </table>";
     }
 
     function html_periode($periode){

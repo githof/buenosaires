@@ -16,6 +16,12 @@
 <div class="detail_container">
     <div class="detail_div">
         <div class="detail_div_title">
+            ID
+        </div>
+        <?php echo $personne->id; ?>
+    </div>
+    <div class="detail_div">
+        <div class="detail_div_title">
             PRENOM(S)
         </div>
         <?php echo html_personne_prenoms($personne); ?>

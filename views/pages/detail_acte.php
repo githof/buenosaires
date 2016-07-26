@@ -18,7 +18,7 @@
         <div class="detail_div_title">
             ID
         </div>
-        <?php echo html_acte_small($acte); ?>
+        <?php echo $acte->id ?>
     </div>
     <div class="detail_div">
         <div class="detail_div_title">

@@ -144,16 +144,16 @@ h1{
 }
 
 .detail_div {
-	margin-top: 10px;
+	margin-top: 20px;
 	padding-bottom: 10px;
 	display: flex;
 	flex-direction: column;
-	border-bottom: 1px dashed #dadada;
 }
 
 .detail_div_title {
 	font-weight: bold;
 	font-size: 16px;
+	margin-bottom: 7px;
 }
 
 .personne_prenom, .personne_nom {
@@ -201,49 +201,8 @@ h1{
 	color: #9c9c9c;
 }
 
-.condition {
-	display: flex;
-	flex-direction: row;
-	margin: 5px;
-}
-
-.condition_text {
-	margin-right: 20px;
-}
-
-.condition_source {
-	display: flex;
-	flex-direction: row;
-	color: #ababab;
-}
-
-.condition_source_title {
-	margin-right: 5px;
-}
-
-.relation {
-	display: flex;
-	flex-direction: row;
-	border-bottom: 1px solid #ababab;
-	margin-bottom: 10px;
-	padding-bottom: 10px;
-	align-items: center;
-}
-
-.relation_source, .relation_destination {
-	width: 30%;
-}
-
 .relation_statut {
-	margin-right: 10px;
 	text-transform: uppercase;
-	white-space: nowrap;
-	background-color: #a0baff;
-	color: white;
-	padding: 5px;
-	border-radius: 7px;
-	text-align: center;
-	width: 100px;
 }
 
 /*
