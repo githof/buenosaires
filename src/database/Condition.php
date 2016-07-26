@@ -26,6 +26,17 @@
             $this->set_var("acte_id", $acte_id);
         }
 
+        function get_source_name(){
+            global $mysqli;
+
+            $result = $mysqli->select("source", ["source"], "id='{$this->values["source_id"]}'");
+            if($result != FALSE && $result->num_rows > 0){
+                $row = $result->fetch_assoc();
+                return $row["source"];
+            }
+            return "";
+        }
+
         function looking_for_same_in_db($vals = NULL){
             $values = [
                 "text" => $this->values["text"],

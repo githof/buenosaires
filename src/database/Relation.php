@@ -21,6 +21,17 @@
             $this->set_var("statut_id", $statut_id);
         }
 
+        function get_statut_name(){
+            global $mysqli;
+
+            $result = $mysqli->select("statut", ["value"], "id='{$this->values["statut_id"]}'");
+            if($result != FALSE && $result->num_rows > 0){
+                $row = $result->fetch_assoc();
+                return $row["value"];
+            }
+            return "";
+        }
+
         function looking_for_same_in_db($vals = NULL){
             $values = [
                 "source" => $this->values["source"],

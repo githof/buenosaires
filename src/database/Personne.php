@@ -98,8 +98,8 @@
                 }
             }
 
-            $this->prenoms_id = array_intersect($this->prenoms_id, $prenoms_id);
-            $this->noms_id = array_intersect($this->noms_id, $noms_id);
+            $this->prenoms_id = $prenoms_id;
+            $this->noms_id = $noms_id;
         }
 
         function looking_for_same_in_db($vals = NULL){
@@ -177,8 +177,8 @@
 
             if(isset($this->pere)){
                 $relation = create_relation(
-                    $this,
                     $this->pere,
+                    $this,
                     STATUT_PERE,
                     $periode_id_ref
                 );
@@ -188,8 +188,8 @@
 
             if(isset($this->mere)){
                 $relation = create_relation(
-                    $this,
                     $this->mere,
+                    $this,
                     STATUT_MERE,
                     $periode_id_ref
                 );
@@ -294,6 +294,73 @@
             $nomXML->addAttribute("attr", $new_attr);
         }
 
+        function get_prenoms(){
+            global $mysqli;
+            $prenoms = [];
+
+            $result = $mysqli->query(
+                "SELECT prenom
+                FROM prenom INNER JOIN prenom_personne
+                ON prenom.id = prenom_personne.prenom_id
+                WHERE prenom_personne.personne_id = '$this->id'
+                ORDER BY prenom_personne.ordre"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc())
+                    $prenoms[] = $row["prenom"];
+            }
+            return $prenoms;
+        }
+
+        function get_noms(){
+            global $mysqli;
+            $noms = [];
+
+            $result = $mysqli->query(
+                "SELECT nom, value
+                FROM nom INNER JOIN nom_personne
+                ON nom.id = nom_personne.nom_id
+                LEFT JOIN attribut
+                ON attribut.id = nom.attribut_id
+                WHERE nom_personne.personne_id = '$this->id'
+                ORDER BY nom_personne.ordre"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $nom = $row["nom"];
+                    if(isset($row["value"]))
+                        $nom = $row["value"] . " " . $nom;
+                    $noms[] = $nom;
+                }
+            }
+            return $noms;
+        }
+
+        function get_conditions(){
+            global $mysqli;
+            $conditions = [];
+
+            $result = $mysqli->select("cond", ["id"], "personne_id='$this->id'");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $conditions[] = new Condition($row["id"]);
+                }
+            }
+            return $conditions;
+        }
+
+        function get_relations(){
+            global $mysqli;
+            $relations = [];
+
+            $result = $mysqli->select("relation", ["id"], "source='$this->id' OR destination='$this->id'");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $relations[] = new Relation($row["id"]);
+                }
+            }
+            return $relations;
+        }
     }
 
     function personne_from_xml($xml, $acte = NULL){

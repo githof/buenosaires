@@ -46,3 +46,7 @@
   - condition décès
   - veuf/veuve
   - bouton loading add actes
+  - mettre tous les nom en majuscule ou minuscule (de même pour prenom tous en
+    minuscule) ?
+  - renommer table cond -> condition
+  - même personne qui apparait pas avec les mêmes prenoms/noms (404)
