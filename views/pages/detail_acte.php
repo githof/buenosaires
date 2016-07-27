@@ -38,6 +38,12 @@
     </div>
     <div class="detail_div">
         <div class="detail_div_title">
+            PERIODE
+        </div>
+        <?php echo html_periode(periode_memory($acte->values["periode_id"])); ?>
+    </div>
+    <div class="detail_div">
+        <div class="detail_div_title">
             CONDITIONS
         </div>
         <?php echo html_conditions($acte->get_conditions()); ?>
