@@ -1,5 +1,9 @@
 
 + structure
+  - base : toujours mettre l'id dans insert
+    attention à récupérer le return d'insert si erreur (parce que l'id
+    a pu être déjà attrivué par la base), avec un while +1 par ex
+
   # dans les fonctions set_* (personne, acte, relation etc.)
     renvoyer l'objet php et non l'id mysql
 

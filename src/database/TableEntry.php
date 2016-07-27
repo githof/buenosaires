@@ -56,14 +56,6 @@
             if(count($this->updated) == 0)
                 return $this->id;
 
-            if(!isset($this->id)){
-                $new_id = $mysqli->next_id($this->table_name);
-                if($new_id == 0){
-                    $log->e("Aucun nouvel id trouvé pour l'insert dans $this->table_name");
-                    return FALSE;
-                }
-            }
-
             if($this->is_in_db && isset($this->id)){
                 $result = $mysqli->update(
                     $this->table_name,
@@ -71,17 +63,24 @@
                     "id='$this->id'"
                 );
             }else{
-                if($id_require){
-                    if(isset($new_id))
-                        $this->id = $new_id;
-                    $this->updated["id"] = $this->id;
-                }else
-                    $this->id = $new_id;
+	      if(!isset($this->id)){
+                $new_id = $mysqli->next_id($this->table_name);
+                if($new_id == 0){
+		  $log->e("Aucun nouvel id trouvé pour l'insert dans $this->table_name");
+		  return FALSE;
+                }
+	      }
 
-                $result = $mysqli->insert(
-                    $this->table_name,
-                    $this->updated
-                );
+	      if($id_require){
+		$this->id = $new_id;
+		$this->updated["id"] = $this->id;
+	      }else
+		$this->id = $new_id;
+
+	      $result = $mysqli->insert(
+					$this->table_name,
+					$this->updated
+					);
             }
 
             if($result === TRUE)
