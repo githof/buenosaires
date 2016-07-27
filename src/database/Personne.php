@@ -170,6 +170,10 @@
         }
 
         function set_relations($acte = NULL){
+	  /*
+	    Acte gère les relations epoux/se et temoin
+	    Personne gère les relations père/mère
+	   */
             $periode_id_ref = NULL;
 
             if(isset($acte->values["periode_id"]))

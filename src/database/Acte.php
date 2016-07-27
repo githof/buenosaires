@@ -183,6 +183,10 @@
         }
 
         function set_relations(){
+	  /*
+	    Acte gère les relations epoux/se et temoin
+	    Personne gère les relations père/mère
+	   */
             global $mysqli;
 
             $this->create_relations_epoux_epouse();
