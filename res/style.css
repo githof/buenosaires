@@ -205,9 +205,8 @@ h1{
 	text-transform: uppercase;
 }
 
-pre {
-	white-space: normal;
-	word-break: normal;
+.code_indent {
+	margin-left: 10px;
 }
 
 /*

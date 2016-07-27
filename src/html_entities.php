@@ -65,6 +65,11 @@
         return has_memory("periode", $id);
     }
 
+    function html_acte_contenu($acte_contenu){
+        return $acte_contenu;
+    }
+
+
     function html_acte_small($acte){
         $periode = html_periode(periode_memory($acte->values["periode_id"]));
 

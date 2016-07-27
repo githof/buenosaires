@@ -58,9 +58,7 @@
         <div class="detail_div_title">
             CONTENU
         </div>
-        <pre class="prettyprint">
-            <?php echo htmlspecialchars($acte->get_contenu()); ?>
-        </pre>
+        <?php echo html_acte_contenu($acte->get_contenu()); ?>
     </div>
 </div>
 <?php
