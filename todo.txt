@@ -50,3 +50,6 @@
     minuscule) ?
   - renommer table cond -> condition
   - même personne qui apparait pas avec les mêmes prenoms/noms (404)
+
+Captures d'écran :
+DROPBOX/Belgrano/Chris/Captures*.png
