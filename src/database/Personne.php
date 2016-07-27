@@ -172,30 +172,28 @@
         function set_relations($acte = NULL){
             $periode_id_ref = NULL;
 
+            if(isset($this->pere))
+                $this->add_relation($this->pere, STATUT_PERE, $periode_id_ref);
+
+            if(isset($this->mere))
+                $this->add_relation($this->mere, STATUT_MERE, $periode_id_ref);
+        }
+
+        function add_relation($personne_destination, $statut, $acte){
+            $periode_id_ref = NULL;
+
             if(isset($acte->values["periode_id"]))
                 $periode_id_ref = $acte->values["periode_id"];
 
-            if(isset($this->pere)){
-                $relation = create_relation(
-                    $this->pere,
-                    $this,
-                    STATUT_PERE,
-                    $periode_id_ref
-                );
-                if($relation != NULL && $acte != NULL)
-                    link_relation_acte_into_db($acte, $relation);
-            }
+            $relation = create_relation(
+                $this,
+                $personne_destination,
+                $statut,
+                $periode_id_ref
+            );
 
-            if(isset($this->mere)){
-                $relation = create_relation(
-                    $this->mere,
-                    $this,
-                    STATUT_MERE,
-                    $periode_id_ref
-                );
-                if($relation != NULL && $acte != NULL)
-                    link_relation_acte_into_db($acte, $relation);
-            }
+            if($relation != NULL && $acte ! = NULL)
+                link_relation_acte_into_db($acte, $relation);
         }
 
         function set_conditions($acte){
