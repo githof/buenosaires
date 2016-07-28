@@ -46,5 +46,16 @@ filter_csv ()
 	| sort -t ',' $optfield_sort \
 	| join -t ',' $optfield_join $f_ids -
 }
-filter_csv $bids $relations 2
+# filter_csv $bids $relations 2
 
+filter_and_cut ()
+{
+    f_ids=$1
+    csv=$2
+    field_in=$3
+    field_out=$4
+    filter_csv $* \
+	| cut -d ',' -f $field_out \
+	| sort -u
+}
+filter_csv $bids $relations 2 2
