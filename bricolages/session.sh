@@ -39,9 +39,12 @@ filter_csv ()
     field=$3
     if [ "$field" != "" ]
     then
-	optfield="-2 $field"
+	optfield_join="-2 $field"
+	optfield_sort="-k $field,$field"
     fi
-    join -t ',' $optfield $f_ids $csv
+    cat $csv \
+	| sort $optfield_sort \
+	| join -t ',' $optfield_join $f_ids $csv
 }
 filter_csv $bids $relations 2
 
