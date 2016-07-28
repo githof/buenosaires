@@ -23,14 +23,12 @@ grep_ids ()
 {
     ids=$1
     f=$2
-    regexp=`echo $ids | sed 's# #\\\\\\\\|#g'`
-    regexp='\\('$regexp'\\)'
+    regexp=`echo $ids | sed 's# #-e id="#g'`
     echo "$regexp"
-    # Bon, j'y arrive pas :(
     cat $f \
 	| grep "$regexp"
 }
-# grep_ids "404 413"
+grep_ids "404 413" $xml_belgrano
 
 filter_csv ()
 {
@@ -66,4 +64,4 @@ actes_from_relations ()
     ) \
 	| sort
 }
-actes_from_relations > actes-belgrano.ids
+# actes_from_relations > actes-belgrano.ids
