@@ -1,5 +1,3 @@
 RewriteEngine on
-RewriteCond %{REQUEST_URI} !^/old(/|$)
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/buenosaires/old(/|$)
 RewriteRule ^(.*)$ index.php [QSA,L]
