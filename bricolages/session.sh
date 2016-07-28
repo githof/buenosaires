@@ -1,5 +1,7 @@
 
 xml_belgrano=DATA/grep-belgrano.xml
+actes=DATAWEB/actes.csv
+bids=belgrano.ids
 
 get_ids ()
 {
@@ -10,7 +12,8 @@ get_ids ()
 	| grep '^[0-9][0-9]*$' \
 	| sort -u
 }
-ids=`get_ids $xml_belgrano`
+# ids=`get_ids $xml_belgrano`
+get_ids $xml_belgrano > $bids
 
 grep_ids ()
 {
@@ -24,3 +27,17 @@ grep_ids ()
 	| grep "$regexp"
 }
 # grep_ids "404 413"
+
+filter_csv ()
+{
+    f_ids=$1
+    csv=$2
+    field=$3
+    if [ "$field" != "" ]
+    then
+	optfield="-2 $field"
+    fi
+    join -t ';' $optfield $f_ids $csv
+}
+filter_csv $bids $actes 2
+
