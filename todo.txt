@@ -4,36 +4,14 @@
     attention à récupérer le return d'insert si erreur (parce que l'id
     a pu être déjà attrivué par la base), avec un while +1 par ex
 
-  # dans les fonctions set_* (personne, acte, relation etc.)
-    renvoyer l'objet php et non l'id mysql
-
-  + dans l'objet Acte
-    # champ $personnes contenant la liste des personnes mentionnées dans l'acte
-    # dans into_db, une fois que l'acte est enregistré dans la base,
-      donner le signal aux personne d'enregistrer leurs conditions et
-      leurs relations
-
-  + seulement dans l'objet Personne,
-    # champs $conditions et $relations
-      contenant la liste des conditions / relations de cette personne définies dans l'acte courant
-    # methodes enregister_relations / conditions qui appellent les
-      into_db des relations et conditions
-    # si pas d'id, chercher d'abord une personne avec les mêmes
-      prénoms et noms avant de créer une nouvelle personne
+  - base : virer les périodes \o/
 
 + création
   - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
   - parrains, sur le modèle de temoins
-
-+ optimisation
-  # SELECT LAST_INSERT_ID() (au lieu de ORDER BY dans get_last_id), et
-  dans la même fonction que le INSERT (et dans une seule fonction ou
-  alors appelé une seule fois)
-  # vérifier pourquoi 2 fois requête personne au moment de l'ajout
-
-+ consultation
-  # personne
-  # acte
+  - quand on ajoute un acte, n'ajouter les personnes que si elles ont
+    au moins un nom ou un prénom (mais il peut y avoir un nom ou un
+    prénom seul), pour pouvoir faire le test d'homonymie
 
 + tests
   - 10 actes Belgrano
@@ -42,9 +20,7 @@
   - 100 actes
 
 + gestion d'erreurs
-  # fichiers
-
-
+  - log en partant de la fin
 
 + Ced
   - condition décès
