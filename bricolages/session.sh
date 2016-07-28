@@ -43,8 +43,8 @@ filter_csv ()
 	optfield_sort="-k $field,$field"
     fi
     cat $csv \
-	| sort $optfield_sort \
-	| join -t ',' $optfield_join $f_ids $csv
+	| sort -t ',' $optfield_sort \
+	| join -t ',' $optfield_join $f_ids -
 }
 filter_csv $bids $relations 2
 
