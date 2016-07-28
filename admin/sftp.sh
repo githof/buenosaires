@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rsync -Cavuz $BAHOME BA:www/
+rsync -Cavuz "$BAHOME" BA:www/
