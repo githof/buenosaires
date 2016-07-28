@@ -1,4 +1,5 @@
 
+xml=DATA/"buenosaires (7).xml"
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
 # id_acte,epoux,epouse,periode
@@ -25,7 +26,7 @@ grep_ids ()
     f=$2
     regexp=`echo " $ids" | sed 's# # -e id="#g'`
     echo "$regexp"
-    cat $f \
+    cat "$f" \
 	| grep $regexp
 }
 # grep_ids "404 413" $xml_belgrano
@@ -36,10 +37,10 @@ extract_actes ()
     f=$2
     regexp=`echo " $ids" | sed 's# # -e num="#g'`
     echo "$regexp"
-    cat $f \
+    cat "$f" \
 	| grep $regexp
 }
-extract_actes "925 927 929"
+extract_actes "925 927" "$xml"
 
 filter_csv ()
 {
