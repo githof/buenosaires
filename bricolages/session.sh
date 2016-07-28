@@ -22,13 +22,14 @@ get_ids ()
 grep_ids ()
 {
     ids=$1
-    f=$2
-    regexp=`echo $ids | sed 's# #-e id="#g'`
+    attr=$2
+    f=$"
+    regexp=`echo $ids | sed 's# # -e id="#g'`
     echo "$regexp"
     cat $f \
-	| grep "$regexp"
+	| grep -e $regexp
 }
-grep_ids "404 413" $xml_belgrano
+grep_ids "404 413" num $xml_belgrano
 
 filter_csv ()
 {
