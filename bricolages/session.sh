@@ -58,4 +58,4 @@ filter_and_cut ()
 	| cut -d ',' -f $field_out \
 	| sort -u
 }
-filter_csv $bids $relations 2 2
+filter_and_cut $bids $relations 2 2
