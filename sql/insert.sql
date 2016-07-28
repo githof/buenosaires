@@ -12,3 +12,4 @@ INSERT INTO `buenosaires_TPT`.`source` (id, source) VALUES
 
 INSERT INTO `buenosaires_TPT`.`variable` (nom, valeur) VALUES
     ('PERSONNE_ID_MAX', '100000');
+    
