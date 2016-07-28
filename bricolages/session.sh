@@ -66,4 +66,4 @@ actes_from_relations ()
     ) \
 	| sort
 }
-actes_from_relations
+actes_from_relations > actes-belgrano.ids
