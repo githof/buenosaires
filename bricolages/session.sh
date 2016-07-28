@@ -19,7 +19,8 @@ grep_ids ()
     regexp=`echo $ids | sed 's# #\\\\\\\\|#g'`
     regexp='\\('$regexp'\\)'
     echo "$regexp"
+    # Bon, j'y arrive pas :(
     cat $f \
 	| grep "$regexp"
 }
-grep_ids "404 413"
+# grep_ids "404 413"
