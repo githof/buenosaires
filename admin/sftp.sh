@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rsync -Cavuz "$BAHOME" BA:www/
+rsync -Cavuz --filter=":- .gitignore" "$BAHOME" BA:www/
