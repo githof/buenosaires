@@ -55,7 +55,15 @@ filter_and_cut ()
     field_in=$3
     field_out=$4
     filter_csv $* \
-	| cut -d ',' -f $field_out \
-	| sort -u
+	| cut -d ',' -f $field_out
 }
-filter_and_cut $bids $relations 2 2
+
+actes_from_relations ()
+{
+    (
+	filter_and_cut $bids $relations 2 2
+	filter_and_cut $bids $relations 3 2
+    ) \
+	| sort
+}
+actes_from_relations
