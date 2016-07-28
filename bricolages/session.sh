@@ -24,10 +24,10 @@ grep_ids ()
     ids=$1
     attr=$2
     f=$3
-    regexp=`echo $ids | sed 's# # -e id="#g'`
+    regexp=`echo " $ids" | sed 's# # -e id="#g'`
     echo "$regexp"
     cat $f \
-	| grep -e $regexp
+	| grep $regexp
 }
 grep_ids "404 413" num $xml_belgrano
 
