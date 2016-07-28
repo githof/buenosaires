@@ -1,0 +1,46 @@
+
+article.saisie_acte section.texte
+{
+    width: 80%;
+    border: solid thin lightgray;
+    padding: .5ex 1em;
+    margin: 1ex 1em;
+}
+
+article.saisie_acte p.texte
+{
+    font-family: monospace;
+    border: solid thin gray;
+    min-height: 2ex;
+}
+
+article.saisie_acte dt
+{
+    float: left;
+    font-weight: bold;
+}
+
+article.saisie_acte dd
+{
+    margin-left: 5em;
+}
+
+article.saisie_acte ul
+{
+    list-style-type: none;
+}
+
+article.saisie_acte label.toggle_raw
+{
+    margin-left: .5em;
+    color: lightgray;
+    text-decoration: underline;
+    font-size: smaller;
+    cursor: pointer;
+}
+
+article.saisie_acte label.toggle_raw:after
+{
+    content: "\a";
+    white-space: pre;
+}
