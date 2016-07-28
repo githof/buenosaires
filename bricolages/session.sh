@@ -23,7 +23,7 @@ grep_ids ()
 {
     ids=$1
     attr=$2
-    f=$"
+    f=$3
     regexp=`echo $ids | sed 's# # -e id="#g'`
     echo "$regexp"
     cat $f \
