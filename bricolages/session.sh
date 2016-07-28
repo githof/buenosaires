@@ -1,6 +1,10 @@
 
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
+# id_acte,epoux,epouse,periode
+relations=DATAWEB/relations.csv
+# id,personne1,personne2,type,periode
+
 bids=belgrano.ids
 
 get_ids ()
