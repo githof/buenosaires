@@ -92,7 +92,7 @@
     function all_sources_available(){
         global $mysqli, $alert;
 
-        $rep = $mysqli->select("source", ["*"]);
+        $rep = $mysqli->select("source", ["*"], "");
         if($rep === FALSE){
             $alert->error("Impossible de récupérer les sources");
             return;

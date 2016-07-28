@@ -1,14 +1,21 @@
 <?php
 
 // base URL for all relative URLs
-define("BASE_URL", "http://localhost/buenosaires/");
+define("BASE_URL", "https://buenosaires.telecom-paristech.fr/");
+
+// define("BASE_URL", "http://localhost/buenosaires/");
 
 
 //  Server MYSQL
-define("SQL_SERVER", "localhost");
-define("SQL_DATABASE_NAME", "buenosaires");
-define("SQL_USER", "root");
-define("SQL_PASS", "");
+define("SQL_SERVER", "mysql-projet.enst.fr");
+define("SQL_DATABASE_NAME", "buenosaires_TPT");
+define("SQL_USER", "buenosaires.TPT");
+define("SQL_PASS", "UvPsQ8RrB3OuDApImf5Y");
+
+// define("SQL_SERVER", "localhost");
+// define("SQL_DATABASE_NAME", "buenosaires");
+// define("SQL_USER", "root");
+// define("SQL_PASS", "root");
 
 //  log default output file
 define("LOG_DEFAULT_OUTPUT", "log.txt");

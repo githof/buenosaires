@@ -196,7 +196,7 @@
                 $periode_id_ref
             );
 
-            if($relation != NULL && $acte ! = NULL)
+            if($relation != NULL && $acte != NULL)
                 link_relation_acte_into_db($acte, $relation);
         }
 
