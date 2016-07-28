@@ -1,5 +1,5 @@
 
-INSERT INTO `buenosaires`.`statut` (id, value) VALUES
+INSERT INTO `buenosaires_TPT`.`statut` (id, value) VALUES
     (1, 'epoux'),
     (2, 'epouse'),
     (3, 'pere'),
@@ -7,8 +7,9 @@ INSERT INTO `buenosaires`.`statut` (id, value) VALUES
     (5, 'temoin'),
     (6, 'parrain');
 
-INSERT INTO `buenosaires`.`source` (id, source) VALUES
+INSERT INTO `buenosaires_TPT`.`source` (id, source) VALUES
     (1, 'Matrimonios');
 
-INSERT INTO `buenosaires`.`variable` (nom, valeur) VALUES
+INSERT INTO `buenosaires_TPT`.`variable` (nom, valeur) VALUES
     ('PERSONNE_ID_MAX', '100000');
+    
