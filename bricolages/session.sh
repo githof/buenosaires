@@ -17,7 +17,7 @@ get_ids ()
 	| sort -u
 }
 # ids=`get_ids $xml_belgrano`
-get_ids $xml_belgrano > $bids
+# get_ids $xml_belgrano > $bids
 
 grep_ids ()
 {
@@ -41,7 +41,7 @@ filter_csv ()
     then
 	optfield="-2 $field"
     fi
-    join -t ';' $optfield $f_ids $csv
+    join -t ',' $optfield $f_ids $csv
 }
-filter_csv $bids $actes 2
+filter_csv $bids $relations 2
 
