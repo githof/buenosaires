@@ -4,37 +4,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 -- -----------------------------------------------------
--- Table `buenosaires_TPT`.`periode`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires_TPT`.`periode` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`periode` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `debut_min` DATE NOT NULL,
-  `debut_max` DATE NOT NULL,
-  `fin_min` DATE NOT NULL,
-  `fin_max` DATE NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `buenosaires_TPT`.`personne`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires_TPT`.`personne` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`personne` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `periode_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_personne_periode1`
-    FOREIGN KEY (`periode_id`)
-    REFERENCES `buenosaires_TPT`.`periode` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_personne_periode1_idx` ON `buenosaires_TPT`.`personne` (`periode_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -144,15 +121,9 @@ DROP TABLE IF EXISTS `buenosaires_TPT`.`acte` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`acte` (
   `id` INT NOT NULL,
-  `periode_id` INT NULL,
   `epoux` INT NULL,
   `epouse` INT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_acte_periode1`
-    FOREIGN KEY (`periode_id`)
-    REFERENCES `buenosaires_TPT`.`periode` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_acte_personne1`
     FOREIGN KEY (`epoux`)
     REFERENCES `buenosaires_TPT`.`personne` (`id`)
@@ -164,8 +135,6 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`acte` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_acte_periode1_idx` ON `buenosaires_TPT`.`acte` (`periode_id` ASC);
 
 CREATE INDEX `fk_acte_personne1_idx` ON `buenosaires_TPT`.`acte` (`epoux` ASC);
 
@@ -179,11 +148,11 @@ DROP TABLE IF EXISTS `buenosaires_TPT`.`statut` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`statut` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(50) NOT NULL,
+  `valeur` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `value_UNIQUE` ON `buenosaires_TPT`.`statut` (`value` ASC);
+CREATE UNIQUE INDEX `value_UNIQUE` ON `buenosaires_TPT`.`statut` (`valeur` ASC);
 
 
 -- -----------------------------------------------------
@@ -193,18 +162,17 @@ DROP TABLE IF EXISTS `buenosaires_TPT`.`relation` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`relation` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `source` INT NOT NULL,
-  `destination` INT NOT NULL,
+  `pers_source_id` INT NOT NULL,
+  `pers_destination_id` INT NOT NULL,
   `statut_id` INT NOT NULL,
-  `periode_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_relation_personne1`
-    FOREIGN KEY (`source`)
+    FOREIGN KEY (`pers_source_id`)
     REFERENCES `buenosaires_TPT`.`personne` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_relation_personne2`
-    FOREIGN KEY (`destination`)
+    FOREIGN KEY (`pers_destination_id`)
     REFERENCES `buenosaires_TPT`.`personne` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -212,21 +180,14 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`relation` (
     FOREIGN KEY (`statut_id`)
     REFERENCES `buenosaires_TPT`.`statut` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_relation_periode1`
-    FOREIGN KEY (`periode_id`)
-    REFERENCES `buenosaires_TPT`.`periode` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_relation_personne1_idx` ON `buenosaires_TPT`.`relation` (`source` ASC);
+CREATE INDEX `fk_relation_personne1_idx` ON `buenosaires_TPT`.`relation` (`pers_source_id` ASC);
 
-CREATE INDEX `fk_relation_personne2_idx` ON `buenosaires_TPT`.`relation` (`destination` ASC);
+CREATE INDEX `fk_relation_personne2_idx` ON `buenosaires_TPT`.`relation` (`pers_destination_id` ASC);
 
 CREATE INDEX `fk_relation_status1_idx` ON `buenosaires_TPT`.`relation` (`statut_id` ASC);
-
-CREATE INDEX `fk_relation_periode1_idx` ON `buenosaires_TPT`.`relation` (`periode_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -262,53 +223,37 @@ DROP TABLE IF EXISTS `buenosaires_TPT`.`source` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`source` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `source` TEXT NOT NULL,
+  `valeur` TEXT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `buenosaires_TPT`.`cond`
+-- Table `buenosaires_TPT`.`condition`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires_TPT`.`cond` ;
+DROP TABLE IF EXISTS `buenosaires_TPT`.`condition` ;
 
-CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`cond` (
+CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`condition` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `text` TEXT NOT NULL,
   `source_id` INT NOT NULL,
-  `periode_id` INT NOT NULL,
   `personne_id` INT NOT NULL,
-  `acte_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_cond_source1`
     FOREIGN KEY (`source_id`)
     REFERENCES `buenosaires_TPT`.`source` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cond_periode1`
-    FOREIGN KEY (`periode_id`)
-    REFERENCES `buenosaires_TPT`.`periode` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_cond_personne1`
     FOREIGN KEY (`personne_id`)
     REFERENCES `buenosaires_TPT`.`personne` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cond_acte1`
-    FOREIGN KEY (`acte_id`)
-    REFERENCES `buenosaires_TPT`.`acte` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_cond_source1_idx` ON `buenosaires_TPT`.`cond` (`source_id` ASC);
+CREATE INDEX `fk_cond_source1_idx` ON `buenosaires_TPT`.`condition` (`source_id` ASC);
 
-CREATE INDEX `fk_cond_periode1_idx` ON `buenosaires_TPT`.`cond` (`periode_id` ASC);
-
-CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires_TPT`.`cond` (`personne_id` ASC);
-
-CREATE INDEX `fk_cond_acte1_idx` ON `buenosaires_TPT`.`cond` (`acte_id` ASC);
+CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires_TPT`.`condition` (`personne_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -384,8 +329,8 @@ CREATE INDEX `fk_tag_attribut1_idx` ON `buenosaires_TPT`.`tag` (`attribut_id` AS
 DROP TABLE IF EXISTS `buenosaires_TPT`.`acte_contenu` ;
 
 CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`acte_contenu` (
-  `contenu` TEXT NOT NULL,
   `acte_id` INT NOT NULL,
+  `contenu` TEXT NOT NULL,
   PRIMARY KEY (`acte_id`),
   CONSTRAINT `fk_acte_contenu_acte1`
     FOREIGN KEY (`acte_id`)
@@ -408,6 +353,66 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`variable` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `buenosaires_TPT`.`acte_has_condition`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires_TPT`.`acte_has_condition` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`acte_has_condition` (
+  `acte_id` INT NOT NULL,
+  `condition_id` INT NOT NULL,
+  PRIMARY KEY (`acte_id`, `condition_id`),
+  CONSTRAINT `fk_acte_has_condition_acte1`
+    FOREIGN KEY (`acte_id`)
+    REFERENCES `buenosaires_TPT`.`acte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_acte_has_condition_condition1`
+    FOREIGN KEY (`condition_id`)
+    REFERENCES `buenosaires_TPT`.`condition` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_acte_has_condition_condition1_idx` ON `buenosaires_TPT`.`acte_has_condition` (`condition_id` ASC);
+
+CREATE INDEX `fk_acte_has_condition_acte1_idx` ON `buenosaires_TPT`.`acte_has_condition` (`acte_id` ASC);
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `buenosaires_TPT`.`statut`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `buenosaires_TPT`;
+INSERT INTO `buenosaires_TPT`.`statut` (`id`, `valeur`) VALUES (1, 'epoux');
+INSERT INTO `buenosaires_TPT`.`statut` (`id`, `valeur`) VALUES (2, 'epouse');
+INSERT INTO `buenosaires_TPT`.`statut` (`id`, `valeur`) VALUES (3, 'pere');
+INSERT INTO `buenosaires_TPT`.`statut` (`id`, `valeur`) VALUES (4, 'mere');
+INSERT INTO `buenosaires_TPT`.`statut` (`id`, `valeur`) VALUES (5, 'temoin');
+INSERT INTO `buenosaires_TPT`.`statut` (`id`, `valeur`) VALUES (6, 'parrain');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `buenosaires_TPT`.`source`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `buenosaires_TPT`;
+INSERT INTO `buenosaires_TPT`.`source` (`id`, `valeur`) VALUES (1, 'Matrimonios');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `buenosaires_TPT`.`variable`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `buenosaires_TPT`;
+INSERT INTO `buenosaires_TPT`.`variable` (`id`, `nom`, `valeur`) VALUES (NULL, 'PERSONNE_ID_MAX', '10000');
+
+COMMIT;

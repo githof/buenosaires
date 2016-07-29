@@ -5,7 +5,7 @@
     include_once(ROOT."src/database/Personne.php");
     include_once(ROOT."src/database/Relation.php");
 
-    class Acte extends TableEntry{
+    class Acte {
 
         var $xml;
         var $source_id;
@@ -16,6 +16,11 @@
 
         var $temoins;
         var $relations;
+
+        var $contenu;
+        var $id;
+        var $epoux;
+        var $epouse;
 
         function __construct($id){
             parent::__construct("acte", $id);
