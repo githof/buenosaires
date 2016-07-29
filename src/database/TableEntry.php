@@ -63,24 +63,25 @@
                     "id='$this->id'"
                 );
             }else{
-	      if(!isset($this->id)){
-                $new_id = $mysqli->next_id($this->table_name);
-                if($new_id == 0){
-		  $log->e("Aucun nouvel id trouvé pour l'insert dans $this->table_name");
-		  return FALSE;
+                if(!isset($this->id)){
+                    $new_id = $mysqli->next_id($this->table_name);
+                    if($new_id == 0){
+                        $log->e("Aucun nouvel id trouvé pour l'insert dans $this->table_name");
+                        return FALSE;
+                    }
                 }
-	      }
 
-	      if($id_require){
-		$this->id = $new_id;
-		$this->updated["id"] = $this->id;
-	      }else
-		$this->id = $new_id;
+                if($id_require){
+                    if(isset($new_id))
+                        $this->id = $new_id;
+                    $this->updated["id"] = $this->id;
+                }else
+                    $this->id = $new_id;
 
-	      $result = $mysqli->insert(
-					$this->table_name,
-					$this->updated
-					);
+                $result = $mysqli->insert(
+                    $this->table_name,
+                    $this->updated
+                );
             }
 
             if($result === TRUE)
@@ -119,31 +120,6 @@
                 $this->values[$name] = $value;
                 $this->updated[$name] = $value;
             }
-        }
-
-        function set_periode($ref_periode_id = NULL){
-            $periode;
-
-            $ref_periode = NULL;
-            if(isset($ref_periode_id))
-                $ref_periode = new Periode($ref_periode_id);
-
-            if(isset($this->values["periode_id"])){
-                $periode = new Periode($this->values["periode_id"]);
-                if(isset($ref_periode))
-                    $periode->add_periode($ref_periode);
-            }else{
-                $periode = new Periode();
-                $periode->default_periode();
-                if(isset($ref_periode))
-                    $periode->copy($ref_periode);
-            }
-            $rep = $periode->into_db();
-            if($rep != FALSE){
-                $this->set_var("periode_id", $rep);
-                return TRUE;
-            }
-            return TRUE;
         }
     }
 
