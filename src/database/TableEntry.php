@@ -16,12 +16,15 @@
 
         function __construct($table_name, $id = NULL){
             $this->table_name = $table_name;
-            $this->id = $id;
             $this->values = [];
             $this->updated = [];
             $this->is_in_db = FALSE;
+            $this->set_id($id);
+        }
 
-            if($this->id != NULL)
+        function set_id($id){
+            $this->id = $id;
+            if($id != NULL)
                 $this->from_db();
         }
 

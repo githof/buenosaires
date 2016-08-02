@@ -1,53 +1,88 @@
 <?php
 
-    include_once(ROOT."src/database/Attribute.php");
-    include_once(ROOT."src/database/TableEntry.php");
+    include_once(ROOT."src/database/Attribut.php");
+    include_once(ROOT."src/database/DatabaseIO.php");
+    include_once(ROOT."src/database/Database.php");
 
-    class Nom extends TableEntry{
+    class Nom implements DatabaseIO{
 
-        function __construct($id = NULL){
-            parent::__construct("nom", $id);
+        var $id;
+
+        var $attribut;
+        var $nom;
+        var $no_accent;
+
+        function __construct($id = NULL, $nom = NULL, $attribut = NULL){
+            $this->id = $id;
+            $this->set_attribut($attribut);
+            $this->set_nom($nom);
         }
 
-        function set_nom($default){
+        function set_nom($default, $no_accent = NULL){
+            if($default == NULL)
+                return;
+
             $default = trim($default);
-            $this->set_var("nom", $default);
-            $this->set_var("no_accent", no_accent($default));
+            if(!isset($no_accent))
+                $this->no_accent = no_accent($default);
 
-            return TRUE;
+            $this->nom = $nom;
+            $this->no_accent = $no_accent;
         }
 
-        function set_attribute($attribute_text){
-            global $log;
-
-            if($attribute_text == NULL)
-                return TRUE;
-
-            $attribute = new Attribute();
-            $attribute->set_attribute($attribute_text);
-            $attribute->looking_for_same_in_db();
-
-            $result = $attribute->into_db();
-            if($result != FALSE){
-                $this->set_var("attribut_id", $result);
-                return TRUE;
-            }
-
-            $log->e("Erreur lors de l'ajout de l'attribut $attribute_text");
-            return FALSE;
+        function set_attribut($attribut){
+            $this->attribut = $attribut;
         }
 
-        function looking_for_same_in_db($values = NULL){
-            $vals = [];
-            $vals["no_accent"] = $this->values["no_accent"];
 
-            if(isset($this->values["attribut_id"]))
-                $vals["attribut_id"] = $this->values["attribut_id"];
+        // DATABASE IO
+
+        public function get_table_name(){
+            return "nom";
+        }
+
+        public function get_same_values(){
+            $values = [];
+            $values["no_accent"] = $this->no_accent;
+
+            if(isset($this->attribut, $this->attribut->id))
+                $vals["attribut_id"] = $this->attribut->id;
             else
                 $vals["attribut_id"] = "NULL";
 
-            return parent::looking_for_same_in_db($vals);
+            return $values;
         }
+
+        public function result_from_db($row){
+            if($row == NULL)
+                return;
+
+            $this->id = $row["id"];
+            $this->set_nom($row["nom"], $row["no_accent"]);
+            if(isset($row["attribut_id"]) && $row["attribut_id"] != "NULL")
+                $this->set_attribut(new Attribut($row["attribut_id"]));
+            else
+                $this->attribut = NULL;
+        }
+
+        public function values_into_db(){
+            $values = [];
+            $values["nom"] = $this->nom;
+            $values["no_accent"] = $this->no_accent;
+            if(isset($this->attribut, $this->attribut->id))
+                $values["attribut_id"] = $this->attribut->id;
+
+            return $values;
+        }
+
+        public function pre_into_db(){
+            global $mysqli;
+
+            if(isset($this->attribut))
+                $mysqli->into_db($this->attribut);
+        }
+
+        public function post_into_db(){}
     }
 
 ?>

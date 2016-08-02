@@ -1,5 +1,12 @@
 <?php
 
+    include_once(ROOT."src/database/Acte.php");
+    include_once(ROOT."src/database/Personne.php");
+    include_once(ROOT."src/database/Relation.php");
+    include_once(ROOT."src/database/Condition.php");
+    include_once(ROOT."src/database/Nom.php");
+    include_once(ROOT."src/database/Prenom.php");
+
     class Database extends mysqli{
 
         public function __construct(){
@@ -142,7 +149,7 @@
 
         public function query($requete){
             global $log;
-            
+
             $result = parent::query($requete);
             if($result === FALSE){
                 $log->e("SQL error : $this->error");
@@ -184,6 +191,272 @@
 
             $row = $result->fetch_assoc();
             return $row["id"];
+        }
+
+
+
+        public function from_db($obj){
+            $row = NULL;
+            if(isset($obj->id)){
+                $row = $this->from_db_by_id($obj);
+                if($obj instanceof Personne)
+                    $this->from_db_personne_noms_prenoms($obj);
+            }else{
+                if($obj instanceof Personne)
+                    $row = $this->from_db_by_same_personne($obj);
+                else
+                    $row = $this->from_db_by_same($obj);
+            }
+
+            return $row;
+        }
+
+        private function from_db_by_id($obj){
+            $row = NULL;
+            $result = $this->select(
+                $obj->get_table_name(),
+                ["*"],
+                "id='$obj->id'"
+            );
+            id($result->num_rows == 1)
+                $row = $result->fetch_assoc();
+            return $row;
+        }
+
+        private function from_db_by_same($obj){
+            $row = NULL;
+            $s = "";
+            $i = 0;
+            $values = $obj->get_same_values();
+            if($values == NULL){
+                $row = NULL;
+                break;
+            }
+
+            foreach ($values as $k => $v) {
+                if(strcmp($v, "NULL") == 0)
+                    $s .= "$k IS NULL";
+                else
+                    $s .= $k . "='" . $v . "'";
+
+                if($i < count($values) -1)
+                    $s .= " AND ";
+                $i++;
+            }
+
+            $result = $this->select(
+                $obj->get_table_name(),
+                ["*"],
+                $s
+            );
+            if($result->num_rows == 1)
+                $row = $result->fetch_assoc();
+            return $row;
+        }
+
+        private function from_db_personne_noms_prenoms($personne){
+            $result = $this->query("
+                SELECT prenom
+                FROM prenom_personne INNER JOIN prenom
+                ON prenom_personne.prenom_id = prenom.id
+                WHERE prenom_personne.personne_id = '$personne->id'
+                ORDER BY prenom_personne.ordre"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc())
+                    $personne->add_prenom($row["prenom"]);
+            }
+
+            $result = $this->query("
+                SELECT nom, value
+                FROM nom_personne INNER JOIN nom
+                ON nom_personne.nom_id = nom.id
+                LEFT JOIN attribut
+                ON attribut.id = nom.attribut_id
+                WHERE nom_personne.personne_id = '$personne->id'
+                ORDER BY nom_personne.ordre"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $attribut_str = NULL;
+                    if(isset($row["value"]))
+                        $attribut_str = $row["value"];
+                    $personne->add_nom($row["nom"], $attribut_str);
+                }
+            }
+        }
+
+        private function from_db_by_same_personne($personne){
+            $ids = NULL;
+            $ids_tmp = NULL;
+
+            foreach($personne->noms as $k => $nom){
+                $result = $this->query("
+                SELECT personne_id
+                FROM nom_personne INNER JOIN nom
+                ON nom_personne.nom_id = nom.id
+                WHERE nom.no_accent = '$nom->no_accent'
+                ");
+                if($result === FALSE || $result->num_rows == 0)
+                    return FALSE;
+
+                $ids_tmp = [];
+                while($row = $result->fetch_assoc())
+                    $ids_tmp[] = $row["personne_id"];
+
+                if(isset($ids))
+                    $ids = array_intersect($ids, $ids_tmp);
+                else
+                    $ids = $ids_tmp;
+
+                if(count($ids) == 0)
+                    return FALSE;
+            }
+
+            foreach($personne->prenoms as $k => $prenom){
+                $result = $this->query("
+                SELECT personne_id
+                FROM prenom_personne INNER JOIN prenom
+                ON prenom_personne.prenom_id = prenom.id
+                WHERE prenom.no_accent = '$prenom->no_accent'
+                ");
+                if($result === FALSE || $result->num_rows == 0)
+                    return NULL;
+
+                $ids_tmp = [];
+                while($row = $result->fetch_assoc())
+                    $ids_tmp[] = $row["personne_id"];
+
+                if(isset($ids))
+                    $ids = array_intersect($ids, $ids_tmp);
+                else
+                    $ids = $ids_tmp;
+
+                if(count($ids) == 0)
+                    return NULL;
+            }
+
+            if(isset($ids)){
+                return ["id" => array_shift($ids)];
+            }
+            return NULL;
+        }
+
+        private function updated_values($values_db, $values_obj){
+            $updated = [];
+
+            if($values_db == NULL)
+                return $values_obj;
+
+            foreach($values_db as $key => $val){
+                if(isset($values_obj[$key]) && $values_obj[$key] != $val)
+                    $updated[$key] = $values_obj[$key];
+            }
+
+            return $updated;
+        }
+
+        public function into_db($obj){
+            $result = FALSE;
+            $new_id = NULL;
+
+            if(!$obj->pre_into_db())
+                return;
+
+            $values_db = $this->from_db($obj);
+            $values_obj = $obj->values_into_db();
+            $values_updated = $this->updated_values($values_db, $values_obj);
+
+            if(count($values_updated) == 0)
+                return isset($obj->id)? $obj->id : FALSE;
+
+            if(isset($values_db, $this->id))
+                $result = $this->into_db_update($obj, $values);
+            else
+                $result = $this->into_db_insert($obj, $values);
+
+            $obj->post_into_db();
+
+            if($result === FALSE)
+                return FALSE;
+            return $obj->id;
+        }
+
+        private function into_db_update($obj, $values){
+            return $this->update(
+                $obj->get_table_name(),
+                $values,
+                "id='$obj->id'"
+            );
+        }
+
+        private function into_db_insert($obj, $values){
+            global $log;
+            $new_id = NULL;
+            $result = FALSE;
+
+            while($result === FALSE){
+                if(!isset($obj->id)){
+                    $new_id = $this->next_id($obj->table_name);
+                    if($new_id == 0){
+                        $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");
+                        return FALSE;
+                    }
+                    $obj->id = $new_id;
+                }
+
+                $values["id"] = $obj->id;
+                $result = $this->insert($obj->get_table_name(), $values);
+            }
+            return $result;
+        }
+
+        public function into_db_prenom_personne($personne, $prenom, $ordre){
+            $values = [
+                "personne_id" => $personne->id,
+                "prenom_id" => $prenom_id,
+                "ordre" => $ordre
+            ];
+            return $this->insert(
+                "prenom_personne",
+                $values,
+                "ON DUPLICATE KEY UPDATE ordre='$ordre'"
+            );
+        }
+
+        public function into_db_nom_personne($personne, $nom, $ordre){
+            $values = [
+                "personne_id" => $personne->id,
+                "nom_id" => $nom->id,
+                "ordre" => $ordre
+            ];
+            return $this->insert(
+                "nom_personne",
+                $values,
+                "ON DUPLICATE KEY UPDATE ordre='$ordre'"
+            );
+        }
+
+        public function into_db_acte_has_relation($acte, $relation){
+            $values = [
+                "acte_id" => $acte->id,
+                "relation_id" => $relation->id
+            ];
+            return $this->insert(
+                "acte_has_relation",
+                $values
+            );
+        }
+
+        public function into_db_acte_has_condition($acte, $condition){
+            $values = [
+                "acte_id" => $acte->id,
+                "condition_id" => $condition->id
+            ];
+            return $this->insert(
+                "acte_has_condition",
+                $values
+            );
         }
     }
 

@@ -1,81 +1,102 @@
 <?php
 
-    include_once(ROOT."src/database/TableEntry.php");
+    include_once(ROOT."src/database/DatabaseIO.php");
+    include_once(ROOT."src/database/Personne.php");
 
-    class Relation extends TableEntry {
+    class Relation implements DatabaseIO {
 
+        var $id;
 
-        function __construct($id = NULL){
-            parent::__construct("relation", $id);
+        var $personne_source;
+        var $personne_destination;
+        var $statut_id;
+
+        function __construct($id = NULL, $personne_source = NULL, $personne_destination = NULL, $statut_id = NULL){
+            $this->id = $id;
+            $this->set_personne_source($personne_source);
+            $this->set_personne_destination($personne_destination);
+            $this->set_statut_id($statut_id);
         }
 
-        function set_source($source_id){
-            $this->set_var("source", $source_id);
+        function set_personne_source($personne_source){
+            $this->personne_source = $personne_source;
         }
 
-        function set_destination($destination_id){
-            $this->set_var("destination", $destination_id);
+        function set_personne_destination($personne_destination){
+            $this->personne_destination = $personne_destination;
         }
 
-        function set_statut($statut_id){
-            $this->set_var("statut_id", $statut_id);
+        function set_statut_id($statut_id){
+            $this->statut_id = $statut_id;
         }
 
         function get_statut_name(){
             global $mysqli;
 
-            $result = $mysqli->select("statut", ["value"], "id='{$this->values["statut_id"]}'");
+            $result = $mysqli->select(
+                "statut",
+                ["valeur"],
+                "id='$this->statut_id'"
+            );
             if($result != FALSE && $result->num_rows > 0){
                 $row = $result->fetch_assoc();
-                return $row["value"];
+                return $row["valeur"];
             }
             return "";
         }
 
-        function looking_for_same_in_db($vals = NULL){
-            $values = [
-                "source" => $this->values["source"],
-                "destination" => $this->values["destination"],
-                "statut_id" => $this->values["statut_id"]
+
+        // DATABASE IO
+
+        public function get_table_name(){
+            return "relation";
+        }
+
+        public function get_same_values(){
+            return [
+                "pers_source_id" => $this->personne_source->id,
+                "pers_destination_id" => $this->personne_destination->id,
+                "statut_id" => $this->statut_id
             ];
-            return parent::looking_for_same_in_db($values);
         }
 
-    }
+        public function result_from_db($row){
+            if($row == NULL)
+                return;
 
-    function create_relation($personne_source, $personne_destination, $statut_id, $periode_ref_id){
-        global $log;
-
-        $relation = new Relation();
-        $relation->set_source($personne_source->id);
-        $relation->set_destination($personne_destination->id);
-        $relation->set_statut($statut_id);
-        $relation->looking_for_same_in_db();
-        $relation->set_periode($periode_ref_id);
-
-        $result = $relation->into_db();
-
-        if($result === FALSE){
-            $log->e("Erreur lors de l'ajout de la relation source=$personne_source->id, destination=$personne_destination->id, statut=$statut_id");
-            return NULL;
+            $this->id = $row["id"];
+            $this->set_personne_source(new Personne($row["pers_source_id"]));
+            $this->set_personne_destination(new Personne($row["pers_destination_id"]));
+            $this->set_statut_id($row["statut_id"]);
         }
-        return $relation;
-    }
 
-    function link_relation_acte_into_db($acte, $relation){
-        global $log, $mysqli;
-
-        $values = [
-            "acte_id" => $acte->id,
-            "relation_id" => $relation->id
-        ];
-        $result = $mysqli->insert("acte_has_relation", $values);
-
-        if($result === FALSE){
-            $log->e("Erreur lors du lien entre relation=$relation->id et acte=$acte->id dans acte_has_relation");
-            return FALSE;
+        public function values_into_db(){
+            return [
+                "pers_source_id" => $this->personne_source->id,
+                "pers_destination_id" => $this->personne_destination->id,
+                "statut_id" => $this->statut_id
+            ];
         }
-        return TRUE;
+
+        public function pre_into_db(){}
+
+        public function post_into_db(){}
     }
+
+    // function link_relation_acte_into_db($acte, $relation){
+    //     global $log, $mysqli;
+    //
+    //     $values = [
+    //         "acte_id" => $acte->id,
+    //         "relation_id" => $relation->id
+    //     ];
+    //     $result = $mysqli->insert("acte_has_relation", $values);
+    //
+    //     if($result === FALSE){
+    //         $log->e("Erreur lors du lien entre relation=$relation->id et acte=$acte->id dans acte_has_relation");
+    //         return FALSE;
+    //     }
+    //     return TRUE;
+    // }
 
 ?>

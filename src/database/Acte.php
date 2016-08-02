@@ -1,221 +1,157 @@
 <?php
 
-    include_once(ROOT."src/database/Periode.php");
-    include_once(ROOT."src/database/TableEntry.php");
+    include_once(ROOT."src/database/DatabaseIO.php");
     include_once(ROOT."src/database/Personne.php");
     include_once(ROOT."src/database/Relation.php");
+    include_once(ROOT."src/database/Condition.php");
 
-    class Acte {
+    class Acte implements DatabaseIO{
 
-        var $xml;
-        var $source_id;
-        var $personnes;
-
-        var $epoux;
-        var $epouse;
-
-        var $temoins;
-        var $relations;
+        var $id;
 
         var $contenu;
-        var $id;
         var $epoux;
         var $epouse;
+        var $temoins;
+        var $parrains;
+        var $source_id;
+        var $date;
 
-        function __construct($id){
-            parent::__construct("acte", $id);
+        function __construct($id = NULL, $contenu = NULL){
             $this->source_id = SOURCE_DEFAULT_ID;
-            $this->personnes = [];
-            $this->temoins = [];
+            $this->contenu = NULL;
             $this->epoux = NULL;
             $this->epouse = NULL;
-            $this->relations = [];
+            $this->temoins = [];
+            $this->parains = [];
+            $this->date = NULL;
         }
 
-        function from_xml($xml){
-            $temoinsXML = NULL;
-            $this->xml = $xml;
-            $xml_attr = $xml->attributes();
+        function set_contenu($contenu){
+            $this->contenu = $contenu;
+        }
 
-            if($xml == NULL)
+        function set_epoux($epoux){
+            $this->epoux = $epoux;
+        }
+
+        function set_epouse($epouse){
+            $this->epouse = $epouse;
+        }
+
+        function set_date($date){
+            $this->date = $date;
+        }
+
+        function add_temoin($temoin){
+            $this->temoins[] = $temoin;
+        }
+
+        function add_parrain($parrain){
+            $this->parrains[] = $parrain;
+        }
+
+
+        // DATABASE IO
+
+        public function get_table_name(){
+            return "acte";
+        }
+
+        public function get_same_values(){
+            return [];
+        }
+
+        public function result_from_db($row){
+            if($row == NULL)
                 return;
 
-            if(isset($this->xml->date))
-                $this->set_date_xml($this->xml->date);
-            else
-                $this->set_date_xml(NULL);
-
-            foreach($this->xml->children() as $childXML){
-                switch($childXML->getName()){
-                    case "epoux":
-                        $epoux = personne_from_xml($childXML, $this);
-                        if($epoux != NULL){
-                            $this->personnes[] = $epoux;
-                            $this->epoux = $epoux;
-                            $this->set_var("epoux", $epoux->id);
-                        }
-                        break;
-                    case "epouse":
-                        $epouse = personne_from_xml($childXML, $this);
-                        if($epouse != NULL){
-                            $this->personnes[] = $epouse;
-                            $this->epouse = $epouse;
-                            $this->set_var("epouse", $epouse->id);
-                        }
-                        break;
-                    case "temoins":
-                        $temoinsXML = $childXML;
-                        break;
-                }
-            }
-
-            $this->from_xml_temoins($temoinsXML);
-
-            if(isset($xml_attr["num"])){
-                $this->id = "".intval($this->id);
-                unset($xml_attr["num"]);
-                $this->xml->addAttribute("id", "$this->id");
-            }
+            $this->id = $row["id"];
+            if(isset($row["epoux"]))
+                $this->set_epoux(new Personne($row["epoux"]));
+            if(isset($row["epouse"]))
+                $this->set_epouse(new Personne($row["epouse"]));
+            if(isset($row["date"]))
+                $this->set_date($row["date"]);
         }
 
-        function from_xml_temoins($temoinsXML){
-            if(!isset($temoinsXML))
-                return;
-
-            foreach($temoinsXML->children() as $childXML) {
-                if($childXML->getName() === "temoin"){
-                    $temoin = personne_from_xml($childXML, $this);
-                    if($temoin != NULL){
-                        $this->personnes[] = $temoin;
-                        $this->temoins[] = $temoin;
-                    }
-                }
-            }
+        public function values_into_db(){
+            $values = [];
+            if(isset($this->epoux))
+                $values["epoux"] = $this->epoux->id;
+            if(isset($this->epouse))
+                $values["epouse"] = $this->epouse->id;
+            if(isset($this->date))
+                $values["date"] = $this->date;
         }
 
-        function set_date_xml($xml){
-            $periode;
-            if(isset($this->values["periode_id"])){
-                $periode = new Periode(intval($this->values["periode_id"]));
-            }else{
-                $periode = new Periode();
-            }
-
-            if(isset($xml)){
-                $periode->with_date($xml->__toString());
-            }else {
-                $periode->default_periode();
-            }
-
-            $tmp = $periode->into_db();
-
-            if($tmp !== FALSE){
-                $this->set_var("periode_id", $tmp);
-                return TRUE;
-            }
-            return FALSE;
-        }
-
-        function into_db($id_require = FALSE){
-            global $alert;
+        public function pre_into_db(){
+            global $mysqli, $log, $alert;
 
             if(!isset($this->id)){
-                $alert->add_error("L'acte ne contient pas de num");
+                $alert->error("L'acte ne contient pas de num/id");
+                $log->e("L'acte ne contient pas de num/id");
                 return FALSE;
             }
 
-            $result = parent::into_db(TRUE);
-
-            if($result === FALSE)
-                return FALSE;
-
-            $result = $this->contenu_into_db();
-
-            $this->set_relations();
-            $this->set_conditions();
-
-            if($result === FALSE)
-                return FALSE;
-            return $this->id;
-        }
-
-        function create_relations_epoux_epouse(){
-            if(isset($this->values["epoux"], $this->values["epouse"])){
-                $relation = create_relation(
-                    $this->epoux,
-                    $this->epouse,
-                    STATUT_EPOUX,
-                    $this->values["periode_id"]
-                );
-                if($relation != NULL)
-                    $this->relations[] = $relation;
-
-                $relation = create_relation(
-                    $this->epouse,
-                    $this->epoux,
-                    STATUT_EPOUSE,
-                    $this->values["periode_id"]
-                );
-                if($relation != NULL)
-                    $this->relations[] = $relation;
+            foreach($this->temoins as $temoin){
+                if(isset($this->epoux))
+                    $this->epoux->add_relation($temoin, $this->epoux, STATUT_TEMOIN);
+                if(isset($this->epouse))
+                    $this->epouse->add_relation($temoin, $this->epouse, STATUT_TEMOIN);
             }
-        }
 
-        function create_relations_temoin_epoux_epouse(){
-            foreach ($this->temoins as $temoin){
-                if(isset($this->values["epoux"])){
-                    $relation = create_relation(
-                        $temoin,
-                        $this->epoux,
-                        STATUT_TEMOIN,
-                        $this->values["periode_id"]
-                    );
-                    if($relation != NULL)
-                        $this->relations[] = $relation;
-                }
-
-                if(isset($this->values["epouse"])){
-                    $relation = create_relation(
-                        $temoin,
-                        $this->epouse,
-                        STATUT_TEMOIN,
-                        $this->values["periode_id"]
-                    );
-                    if($relation != NULL)
-                        $this->relations[] = $relation;
-                }
+            foreach($this->parrains as $parrain){
+                if(isset($this->epoux))
+                    $this->epoux->add_relation($parrain, $this->epoux, STATUT_PARRAIN);
+                if(isset($this->epouse))
+                    $this->epouse->add_relation($parrain, $this->epouse, STATUT_PARRAIN);
             }
+
+            if(isset($this->epoux, $this->epouse)){
+                $this->epoux->add_relation($this->epoux, $this->epouse, STATUT_EPOUX);
+                $this->epouse->add_relation($this->epouse, $this->epoux, STATUT_EPOUSE);
+            }
+
+            if(isset($this->epoux))
+                $mysqli->into_db($this->epoux);
+
+            if(isset($this->epouse))
+                $mysqli->into_db($this->epouse);
+
+            foreach($this->temoins as $temoin)
+                $mysqli->into_db($temoin);
+
+            foreach($this->parrains as $parrain)
+                $mysqli->into_db($parrain);
+
         }
 
-        function set_relations(){
-	  /*
-	    Acte gère les relations epoux/se et temoin
-	    Personne gère les relations père/mère
-	   */
+        public function post_into_db(){
             global $mysqli;
 
-            $this->create_relations_epoux_epouse();
-            $this->create_relations_temoin_epoux_epouse();
+            $personnes = [];
+            if(isset($this->epoux))
+                $personnes[] = $this->epoux;
+            if(isset($this->epouse))
+                $personnes[] = $this->epouse;
+            $personnes = array_merge($personnes, $this->temoins, $this->parrains);
 
-            foreach($this->relations as $relation) {
-                link_relation_acte_into_db($this, $relation);
+            foreach($personnes as $personne){
+                foreach($personne->relations as $relation)
+                    $mysqli->into_db_acte_has_relation($this, $relation);
+
+                foreach($personne->conditions as $condition)
+                    $mysqli->into_db_acte_has_condition($this, $condition);
             }
 
-            foreach($this->personnes as $personne){
-                $personne->set_relations($this);
-            }
-        }
-
-        function set_conditions(){
-            foreach($this->personnes as $personne){
-                $personne->set_conditions($this);
-            }
+            $this->contenu_into_db();
         }
 
         function contenu_into_db(){
             global $mysqli;
 
-            $contenu = $mysqli->real_escape_string($this->xml->asXML());
+            $contenu = $mysqli->real_escape_string($this->contenu);
             $values = [
                 "acte_id" => $this->id,
                 "contenu" => $contenu
@@ -231,7 +167,7 @@
             global $mysqli;
             $conditions = [];
 
-            $result = $mysqli->select("cond", ["id"], "acte_id='$this->id'");
+            $result = $mysqli->select("acte_has_condition", ["condition_id"], "acte_id='$this->id'");
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
                     $conditions[] = new Condition($row["id"]);

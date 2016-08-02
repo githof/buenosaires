@@ -1,38 +1,46 @@
 <?php
 
-    include_once(ROOT."src/database/TableEntry.php");
+    include_once(ROOT."src/database/DatabaseIO.php");
 
 
-    class Condition extends TableEntry {
+    class Condition implements DatabaseIO{
 
+        var $id;
 
-        function __construct($id = NULL){
-            parent::__construct("cond", $id);
+        var $text;
+        var $personne;
+        var $source_id;
+
+        function __construct($id = NULL, $text = NULL, $personne = NULL, $source_id = NULL){
+            $this->id = $id;
+            $this->set_text($text);
+            $this->set_personne($personne);
+            $this->set_source_id($source_id);
         }
 
-        function set_text($text){
-            $this->set_var("text", $text);
+        function set_text($test){
+            $this->text = $text;
         }
 
-        function set_source($source_id){
-            $this->set_var("source_id", $source_id);
+        function set_personne($personne){
+            $this->personne = $personne;
         }
 
-        function set_personne($personne_id){
-            $this->set_var("personne_id", $personne_id);
-        }
-
-        function set_acte($acte_id){
-            $this->set_var("acte_id", $acte_id);
+        function set_source_id($source_id){
+            $this->source_id = $source_id;
         }
 
         function get_source_name(){
             global $mysqli;
 
-            $result = $mysqli->select("source", ["source"], "id='{$this->values["source_id"]}'");
+            $result = $mysqli->select(
+                "source",
+                ["valeur"],
+                "id='$this->source_id'"
+            );
             if($result != FALSE && $result->num_rows > 0){
                 $row = $result->fetch_assoc();
-                return $row["source"];
+                return $row["valeur"];
             }
             return "";
         }
@@ -46,30 +54,43 @@
             ];
             return parent::looking_for_same_in_db($values);
         }
-    }
 
-    function create_condition($text, $source_id, $personne, $acte){
-        global $log;
 
-        $condition = new Condition();
-        $condition->set_text($text);
-        $condition->set_source($source_id);
-        $condition->set_personne($personne->id);
-        $condition->set_acte($acte->id);
-        $condition->looking_for_same_in_db();
+        // DATABASE IO
 
-        $periode_id_ref = NULL;
-        if(isset($acte->values["periode_id"]))
-            $periode_id_ref = $acte->values["periode_id"];
-        $condition->set_periode($periode_id_ref);
-
-        $result = $condition->into_db();
-
-        if($result === FALSE){
-            $log->e("Erreur lors de l'ajout de la condition text=$text, source=$source_id, personne=$personne->id, acte=$acte->id");
-            return NULL;
+        public function get_table_name(){
+            return "condition";
         }
-        return $condition;
+
+        public function get_same_values(){
+            return [
+                "text" => $this->text,
+                "personne_id" => $this->personne,
+                "source_id" => $this->source_id
+            ];
+        }
+
+        public function result_from_db($row){
+            if($row == NULL)
+                return;
+
+            $this->id = $row["id"];
+            $this->set_text($row["text"]);
+            $this->set_personne(new Personn($row["personne_id"]));
+            $this->set_source_id($row["source_id"]);
+        }
+
+        public function values_into_db(){
+            return [
+                "text" => $this->text,
+                "personne_id" => $this->personne,
+                "source_id" => $this->source_id
+            ];
+        }
+
+        public function pre_into_db(){}
+
+        public function post_into_db(){}
     }
 
 ?>
