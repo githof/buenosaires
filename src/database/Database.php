@@ -173,6 +173,7 @@
                     $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
                     return $row["valeur"];
                 }
+                return FALSE;
             }
 
             $database_name = SQL_DATABASE_NAME;
@@ -218,7 +219,7 @@
                 ["*"],
                 "id='$obj->id'"
             );
-            id($result->num_rows == 1)
+            if($result->num_rows == 1)
                 $row = $result->fetch_assoc();
             return $row;
         }
@@ -256,7 +257,7 @@
 
         private function from_db_personne_noms_prenoms($personne){
             $result = $this->query("
-                SELECT prenom
+                SELECT prenom.id AS p_id, prenom, no_accent
                 FROM prenom_personne INNER JOIN prenom
                 ON prenom_personne.prenom_id = prenom.id
                 WHERE prenom_personne.personne_id = '$personne->id'
@@ -264,11 +265,11 @@
             );
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc())
-                    $personne->add_prenom($row["prenom"]);
+                    $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
             }
 
             $result = $this->query("
-                SELECT nom, value
+                SELECT nom.id AS n_id, nom, no_accent, value, attribut.id AS a_id
                 FROM nom_personne INNER JOIN nom
                 ON nom_personne.nom_id = nom.id
                 LEFT JOIN attribut
@@ -278,10 +279,10 @@
             );
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $attribut_str = NULL;
+                    $attribut = NULL;
                     if(isset($row["value"]))
-                        $attribut_str = $row["value"];
-                    $personne->add_nom($row["nom"], $attribut_str);
+                        $attribut = new Attribut($row["a_id"], $row["value"]);
+                    $personne->add_nom(new Nom($row["n_id"], $row["nom"], $row["no_accent"], $attribut));
                 }
             }
         }
@@ -353,6 +354,9 @@
                     $updated[$key] = $values_obj[$key];
             }
 
+            foreach($values_obj as $key => $val)
+                $updated[$key] = $val;
+
             return $updated;
         }
 
@@ -364,16 +368,15 @@
                 return;
 
             $values_db = $this->from_db($obj);
+            if(isset($values_db["id"]))
+                $obj->id = $values_db["id"];
             $values_obj = $obj->values_into_db();
             $values_updated = $this->updated_values($values_db, $values_obj);
 
-            if(count($values_updated) == 0)
-                return isset($obj->id)? $obj->id : FALSE;
-
-            if(isset($values_db, $this->id))
-                $result = $this->into_db_update($obj, $values);
+            if(isset($values_db, $obj->id))
+                $result = $this->into_db_update($obj, $values_updated);
             else
-                $result = $this->into_db_insert($obj, $values);
+                $result = $this->into_db_insert($obj, $values_updated);
 
             $obj->post_into_db();
 
@@ -383,6 +386,9 @@
         }
 
         private function into_db_update($obj, $values){
+            if(count($values) == 0)
+                return TRUE;
+
             return $this->update(
                 $obj->get_table_name(),
                 $values,
@@ -394,10 +400,11 @@
             global $log;
             $new_id = NULL;
             $result = FALSE;
+            $max_try = 2;
 
-            while($result === FALSE){
+            while($result === FALSE && $max_try > 0){
                 if(!isset($obj->id)){
-                    $new_id = $this->next_id($obj->table_name);
+                    $new_id = $this->next_id($obj->get_table_name());
                     if($new_id == 0){
                         $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");
                         return FALSE;
@@ -407,6 +414,7 @@
 
                 $values["id"] = $obj->id;
                 $result = $this->insert($obj->get_table_name(), $values);
+                $max_try--;
             }
             return $result;
         }
@@ -414,7 +422,7 @@
         public function into_db_prenom_personne($personne, $prenom, $ordre){
             $values = [
                 "personne_id" => $personne->id,
-                "prenom_id" => $prenom_id,
+                "prenom_id" => $prenom->id,
                 "ordre" => $ordre
             ];
             return $this->insert(

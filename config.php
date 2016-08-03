@@ -13,7 +13,7 @@ define("BASE_URL", "http://localhost/buenosaires/");
 // define("SQL_PASS", "UvPsQ8RrB3OuDApImf5Y");
 
 define("SQL_SERVER", "localhost");
-define("SQL_DATABASE_NAME", "buenosaires");
+define("SQL_DATABASE_NAME", "buenosaires_TPT");
 define("SQL_USER", "root");
 define("SQL_PASS", "root");
 

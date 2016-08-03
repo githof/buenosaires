@@ -31,7 +31,7 @@
         public function read_actes($only_new_acte = FALSE){
             global $log, $alert;
             $actesXML = NULL;
-            $i = 0;
+            $i = 1;
             $success_nb = 0;
 
             if(!isset($this->xml)){
@@ -47,9 +47,8 @@
 
             if(isset($actesXML)){
                 foreach ($actesXML as $xml_acte){
-                    $acte = $this->read_acte($xml_acte, $i, $only_new_acte);
-
-                    $success_nb++;
+                    if($this->read_acte($xml_acte, $i, $only_new_acte))
+                        $success_nb++;
                     $i++;
                 }
             }
@@ -63,7 +62,7 @@
         }
 
         private function read_acte($xml_acte, $position = NULL, $only_new_acte = FALSE){
-            global $log, $alert;
+            global $log, $alert, $mysqli;
             $acte_id = NULL;
             $xml_acte_attr = $xml_acte->attributes();
 
@@ -92,11 +91,10 @@
                 return FALSE;
             }
 
-            $acte = new Acte();
-            $acte->set_id($acte_id);
+            $acte = new Acte($acte_id);
             $acte->source_id = $this->source_id;
             $this->read_acte_node($acte, $xml_acte);
-            if($acte->into_db()){
+            if($mysqli->into_db($acte)){
                 $log->i("Acte$position ajouté avec succès");
                 return TRUE;
             }
@@ -118,26 +116,28 @@
         function read_acte_node($acte, $xml_acte){
             $acte->set_contenu($xml_acte->asXML());
             foreach($xml_acte->children() as $xml_child){
-                case "date":
-                    $acte->set_date($xml_child->__toString());
-                    break;
-                case "epoux":
-                    $acte->set_epoux($this->read_personne_node($xml_child));
-                    break;
-                case "epouse":
-                    $acte->set_epouse($this->read_personne_node($xml_child));
-                    break;
-                case "temoins":
-                    foreach($xml_child->children() as $xml_temoin){
-                        if($xml_temoin->getName() === "temoin")
-                            $acte->add_temoin($this->read_personne_node($xml_temoin));
-                    }
-                    break;
-                case "parrains":
-                    foreach($xml_child->children() as $xml_parrain){
-                        if($xml_parrain->getName() === "parrain")
-                            $acte->add_parrain($this->read_personne_node($xml_parrain));
-                    }
+                switch($xml_child->getName()){
+                    case "date":
+                        $acte->set_date($xml_child->__toString());
+                        break;
+                    case "epoux":
+                        $acte->set_epoux($this->read_personne_node($xml_child));
+                        break;
+                    case "epouse":
+                        $acte->set_epouse($this->read_personne_node($xml_child));
+                        break;
+                    case "temoins":
+                        foreach($xml_child->children() as $xml_temoin){
+                            if($xml_temoin->getName() === "temoin")
+                                $acte->add_temoin($this->read_personne_node($xml_temoin));
+                        }
+                        break;
+                    case "parrains":
+                        foreach($xml_child->children() as $xml_parrain){
+                            if($xml_parrain->getName() === "parrain")
+                                $acte->add_parrain($this->read_personne_node($xml_parrain));
+                        }
+                }
             }
         }
 
@@ -146,25 +146,27 @@
             $personne->set_xml($xml_personne);
 
             if(isset($xml_personne->attributes()["id"]))
-                $personne->set_id($xml_personne->attributes()["id"], TRUE);
+                $personne->id = $xml_personne->attributes()["id"];
 
             foreach($xml_personne->children() as $xml_child){
-                case "prenom":
-                    $personne->add_prenom($xml_child->__toString());
-                    break;
-                case "nom":
-                    $this->all_nom_attributes_in_one($xml_child);
-                    if(isset($xml_child->attributes()["attr"]))
-                        $personne->add_nom($xml_child->__toString(), $xml_child->attributes()["attr"]);
-                    else
-                        $personne->add_nom($xml_child->__toString());
-                    break;
-                case "pere":
-                    $personne->set_pere($this->read_personne_node($xml_child));
-                    break;
-                case "mere":
-                    $personne->set_mere($this->read_personne_node($xml_child));
-                    break;
+                switch($xml_child->getName()){
+                    case "prenom":
+                        $personne->add_prenom(new Prenom(NULL, $xml_child->__toString()));
+                        break;
+                    case "nom":
+                        $this->all_nom_attributes_in_one($xml_child);
+                        $attribut = NULL;
+                        if(isset($xml_child->attributes()["attr"]))
+                            $attribut = new Attribut(NULL, $xml_child->attributes()["attr"]);
+                        $personne->add_nom(new Nom(NULL, $xml_child->__toString(), NULL, $attribut));
+                        break;
+                    case "pere":
+                        $personne->set_pere($this->read_personne_node($xml_child));
+                        break;
+                    case "mere":
+                        $personne->set_mere($this->read_personne_node($xml_child));
+                        break;
+                }
             }
             return $personne;
         }

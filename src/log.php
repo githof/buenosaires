@@ -21,6 +21,7 @@
             if(!$this->output = fopen($filename, 'a')){
                 return false;
             }
+            chmod($filename, 0776);
             $this->filename = $filename;
             return true;
         }

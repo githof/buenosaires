@@ -18,12 +18,13 @@
         var $date;
 
         function __construct($id = NULL, $contenu = NULL){
+            $this->id = $id;
             $this->source_id = SOURCE_DEFAULT_ID;
             $this->contenu = NULL;
             $this->epoux = NULL;
             $this->epouse = NULL;
-            $this->temoins = [];
-            $this->parains = [];
+            $this->temoins = array();
+            $this->parrains = array();
             $this->date = NULL;
         }
 
@@ -96,20 +97,20 @@
 
             foreach($this->temoins as $temoin){
                 if(isset($this->epoux))
-                    $this->epoux->add_relation($temoin, $this->epoux, STATUT_TEMOIN);
+                    $temoin->add_relation($temoin, $this->epoux, STATUT_TEMOIN);
                 if(isset($this->epouse))
-                    $this->epouse->add_relation($temoin, $this->epouse, STATUT_TEMOIN);
+                    $temoin->add_relation($temoin, $this->epouse, STATUT_TEMOIN);
             }
 
             foreach($this->parrains as $parrain){
                 if(isset($this->epoux))
-                    $this->epoux->add_relation($parrain, $this->epoux, STATUT_PARRAIN);
+                    $parrain->add_relation($parrain, $this->epoux, STATUT_PARRAIN);
                 if(isset($this->epouse))
-                    $this->epouse->add_relation($parrain, $this->epouse, STATUT_PARRAIN);
+                    $parrain->add_relation($parrain, $this->epouse, STATUT_PARRAIN);
             }
 
             if(isset($this->epoux, $this->epouse)){
-                $this->epoux->add_relation($this->epoux, $this->epouse, STATUT_EPOUX);
+                $this->epouse->add_relation($this->epoux, $this->epouse, STATUT_EPOUX);
                 $this->epouse->add_relation($this->epouse, $this->epoux, STATUT_EPOUSE);
             }
 
@@ -125,6 +126,7 @@
             foreach($this->parrains as $parrain)
                 $mysqli->into_db($parrain);
 
+            return TRUE;
         }
 
         public function post_into_db(){

@@ -31,12 +31,20 @@
             $this->mere = NULL;
         }
 
-        public function add_prenom($prenom_str){
-            $this->prenoms[] = new Prenom(NULL, $prenom_str);
+        public function add_prenom($prenom){
+            foreach($this->prenoms as $_prenom){
+                if($_prenom->id == $prenom->id)
+                    return;
+            }
+            $this->prenoms[] = $prenom;
         }
 
-        public function add_nom($nom_str, $attribut_str){
-            $this->nom[] = new Nom(NULL, $nom_str, new Attribut(NULL, $attribut_str));
+        public function add_nom($nom){
+            foreach($this->noms as $_nom){
+                if($_nom->id == $nom->id)
+                    return;
+            }
+            $this->noms[] = $nom;
         }
 
         public function add_condition($text, $personne, $source_id){
@@ -100,6 +108,16 @@
                 $mysqli->into_db($this->mere);
                 $this->add_relation($this->mere, $this, STATUT_MERE);
             }
+
+            foreach($this->prenoms as $prenom){
+                $mysqli->into_db($prenom);
+            }
+
+            foreach($this->noms as $nom){
+                $mysqli->into_db($nom);
+            }
+
+            return TRUE;
         }
 
         public function post_into_db(){
@@ -107,14 +125,12 @@
 
             $i = 1;
             foreach($this->prenoms as $prenom){
-                $mysqli->into_db($prenom);
                 $mysqli->into_db_prenom_personne($this, $prenom, $i);
                 $i++;
             }
 
             $i = 1;
-            foreach($this->noms as nom){
-                $mysqli->into_db($nom);
+            foreach($this->noms as $nom){
                 $mysqli->into_db_nom_personne($this, $nom, $i);
                 $i++;
             }

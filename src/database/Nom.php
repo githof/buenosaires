@@ -12,10 +12,10 @@
         var $nom;
         var $no_accent;
 
-        function __construct($id = NULL, $nom = NULL, $attribut = NULL){
+        function __construct($id = NULL, $nom = NULL, $no_accent = NULL, $attribut = NULL){
             $this->id = $id;
             $this->set_attribut($attribut);
-            $this->set_nom($nom);
+            $this->set_nom($nom, $no_accent);
         }
 
         function set_nom($default, $no_accent = NULL){
@@ -23,11 +23,11 @@
                 return;
 
             $default = trim($default);
+            $this->nom = $default;
             if(!isset($no_accent))
                 $this->no_accent = no_accent($default);
-
-            $this->nom = $nom;
-            $this->no_accent = $no_accent;
+            else
+                $this->no_accent = $no_accent;
         }
 
         function set_attribut($attribut){
@@ -46,9 +46,9 @@
             $values["no_accent"] = $this->no_accent;
 
             if(isset($this->attribut, $this->attribut->id))
-                $vals["attribut_id"] = $this->attribut->id;
+                $values["attribut_id"] = $this->attribut->id;
             else
-                $vals["attribut_id"] = "NULL";
+                $values["attribut_id"] = "NULL";
 
             return $values;
         }
@@ -80,6 +80,8 @@
 
             if(isset($this->attribut))
                 $mysqli->into_db($this->attribut);
+
+            return TRUE;
         }
 
         public function post_into_db(){}

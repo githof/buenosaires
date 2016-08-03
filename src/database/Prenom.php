@@ -9,9 +9,9 @@
         var $prenom;
         var $no_accent;
 
-        function __construct($id = NULL, $prenom = NULL){
+        function __construct($id = NULL, $prenom = NULL, $no_accent = NULL){
             $this->id = $id;
-            $this->set_prenom($prenom);
+            $this->set_prenom($prenom, $no_accent);
         }
 
         function set_prenom($default, $no_accent = NULL){
@@ -53,7 +53,9 @@
             ];
         }
 
-        public function pre_into_db(){}
+        public function pre_into_db(){
+            return TRUE;
+        }
 
         public function post_into_db(){}
     }

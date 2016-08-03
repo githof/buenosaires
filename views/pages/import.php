@@ -100,7 +100,7 @@
 
         if($rep->num_rows > 0){
             while($row = $rep->fetch_assoc()){
-                echo "<option value='{$row["id"]}'>{$row["source"]}</option>";
+                echo "<option value='{$row["id"]}'>{$row["valeur"]}</option>";
             }
         }
     }
@@ -123,6 +123,7 @@
         }
 
         if($filename != NULL){
+            chmod($filename, 0776);
             $reader = new XMLActeReader($source_id);
             $reader->use_xml_file($filename);
             $reader->read_actes($only_new);
