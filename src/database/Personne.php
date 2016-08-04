@@ -74,6 +74,9 @@
             $this->xml = $xml;
         }
 
+        public function is_valid(){
+            return count($this->prenoms) > 0 || count($this->noms) > 0;
+        }
 
         // DATABASE IO
 
@@ -98,15 +101,15 @@
         public function pre_into_db(){
             global $mysqli;
 
-            if(count($this->prenoms) == 0 && count($this->noms) == 0)
+            if(!$this->is_valid())
                 return FALSE;
 
-            if(isset($this->pere)){
+            if(isset($this->pere) && $this->pere->is_valid()){
                 $mysqli->into_db($this->pere);
                 $this->add_relation($this->pere, $this, STATUT_PERE);
             }
 
-            if(isset($this->mere)){
+            if(isset($this->mere) && $this->mere->is_valid()){
                 $mysqli->into_db($this->mere);
                 $this->add_relation($this->mere, $this, STATUT_MERE);
             }

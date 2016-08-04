@@ -96,21 +96,28 @@
                 return FALSE;
             }
 
+            $valid_epoux = isset($this->epoux) && $this->epoux->is_valid();
+            $valid_epouse = isset($this->epouse) && $this->epouse->is_valid();
+
             foreach($this->temoins as $temoin){
-                if(isset($this->epoux))
-                    $temoin->add_relation($temoin, $this->epoux, STATUT_TEMOIN);
-                if(isset($this->epouse))
-                    $temoin->add_relation($temoin, $this->epouse, STATUT_TEMOIN);
+                if($temoin->is_valid()){
+                    if($valid_epoux)
+                        $temoin->add_relation($temoin, $this->epoux, STATUT_TEMOIN);
+                    if($valid_epouse)
+                        $temoin->add_relation($temoin, $this->epouse, STATUT_TEMOIN);
+                }
             }
 
             foreach($this->parrains as $parrain){
-                if(isset($this->epoux))
-                    $parrain->add_relation($parrain, $this->epoux, STATUT_PARRAIN);
-                if(isset($this->epouse))
-                    $parrain->add_relation($parrain, $this->epouse, STATUT_PARRAIN);
+                if($parrain->is_valid()){
+                    if($valid_epoux)
+                        $parrain->add_relation($parrain, $this->epoux, STATUT_PARRAIN);
+                    if($valid_epouse)
+                        $parrain->add_relation($parrain, $this->epouse, STATUT_PARRAIN);
+                }
             }
 
-            if(isset($this->epoux, $this->epouse)){
+            if($valid_epoux && $valid_epouse){
                 $this->epouse->add_relation($this->epoux, $this->epouse, STATUT_EPOUX);
                 $this->epouse->add_relation($this->epouse, $this->epoux, STATUT_EPOUSE);
             }
@@ -141,11 +148,13 @@
             $personnes = array_merge($personnes, $this->temoins, $this->parrains);
 
             foreach($personnes as $personne){
-                foreach($personne->relations as $relation)
-                    $mysqli->into_db_acte_has_relation($this, $relation);
+                if(isset($personne->id) && $personne->is_valid()){
+                    foreach($personne->relations as $relation)
+                        $mysqli->into_db_acte_has_relation($this, $relation);
 
-                foreach($personne->conditions as $condition)
-                    $mysqli->into_db_acte_has_condition($this, $condition);
+                    foreach($personne->conditions as $condition)
+                        $mysqli->into_db_acte_has_condition($this, $condition);
+                }
             }
 
             $this->contenu_into_db();
