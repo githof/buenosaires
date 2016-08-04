@@ -2,6 +2,8 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+CREATE SCHEMA IF NOT EXISTS `buenosaires_TPT` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `buenosaires_TPT` ;
 
 -- -----------------------------------------------------
 -- Table `buenosaires_TPT`.`personne`
@@ -123,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`acte` (
   `id` INT NOT NULL,
   `epoux` INT NULL,
   `epouse` INT NULL,
+  `date` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_acte_personne1`
     FOREIGN KEY (`epoux`)

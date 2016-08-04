@@ -33,7 +33,7 @@
 
         public function add_prenom($prenom){
             foreach($this->prenoms as $_prenom){
-                if($_prenom->id == $prenom->id)
+                if($_prenom->id == $prenom->id || $_prenom->no_accent == $prenom->no_accent)
                     return;
             }
             $this->prenoms[] = $prenom;
@@ -41,14 +41,16 @@
 
         public function add_nom($nom){
             foreach($this->noms as $_nom){
-                if($_nom->id == $nom->id)
+                if($_nom->id == $nom->id ||
+                    ($_nom->no_accent == $nom->no_accent &&
+                    (isset($_nom->attribut, $nom->attribut) && $_nom->attribut->value == $nom->attribut->value) || $_nom->attribut == $nom->attribut))
                     return;
             }
             $this->noms[] = $nom;
         }
 
-        public function add_condition($text, $personne, $source_id){
-            $this->conditions[] = new Condition(NULL, $text, $personne, $source_id);
+        public function add_condition($text, $source_id){
+            $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
         }
 
         public function add_relation($personne_source, $personne_destination, $statut_id){
@@ -124,12 +126,14 @@
             global $mysqli;
 
             $i = 1;
+            $mysqli->delete("prenom_personne", "personne_id='$this->id'");
             foreach($this->prenoms as $prenom){
                 $mysqli->into_db_prenom_personne($this, $prenom, $i);
                 $i++;
             }
 
             $i = 1;
+            $mysqli->delete("nom_personne", "personne_id='$this->id'");
             foreach($this->noms as $nom){
                 $mysqli->into_db_nom_personne($this, $nom, $i);
                 $i++;

@@ -137,6 +137,7 @@
                             if($xml_parrain->getName() === "parrain")
                                 $acte->add_parrain($this->read_personne_node($xml_parrain));
                         }
+                        break;
                 }
             }
         }
@@ -165,6 +166,9 @@
                         break;
                     case "mere":
                         $personne->set_mere($this->read_personne_node($xml_child));
+                        break;
+                    case "condition":
+                        $personne->add_condition($xml_child->__toString(), $this->source_id);
                         break;
                 }
             }

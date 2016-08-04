@@ -18,7 +18,7 @@
             $this->set_source_id($source_id);
         }
 
-        function set_text($test){
+        function set_text($text){
             $this->text = $text;
         }
 
@@ -45,16 +45,6 @@
             return "";
         }
 
-        function looking_for_same_in_db($vals = NULL){
-            $values = [
-                "text" => $this->values["text"],
-                "source_id" => $this->values["source_id"],
-                "personne_id" => $this->values["personne_id"],
-                "acte_id" => $this->values["acte_id"]
-            ];
-            return parent::looking_for_same_in_db($values);
-        }
-
 
         // DATABASE IO
 
@@ -65,7 +55,7 @@
         public function get_same_values(){
             return [
                 "text" => $this->text,
-                "personne_id" => $this->personne,
+                "personne_id" => $this->personne->id,
                 "source_id" => $this->source_id
             ];
         }
@@ -76,14 +66,14 @@
 
             $this->id = $row["id"];
             $this->set_text($row["text"]);
-            $this->set_personne(new Personn($row["personne_id"]));
+            $this->set_personne(new Personne($row["personne_id"]));
             $this->set_source_id($row["source_id"]);
         }
 
         public function values_into_db(){
             return [
                 "text" => $this->text,
-                "personne_id" => $this->personne,
+                "personne_id" => $this->personne->id,
                 "source_id" => $this->source_id
             ];
         }

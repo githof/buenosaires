@@ -33,7 +33,7 @@
                     $s .= ", ";
             }
 
-            $s .= " FROM " . $table;
+            $s .= " FROM `$table`";
 
             if(strlen($where) > 0)
                 $s .= " WHERE " . $where;
@@ -53,7 +53,7 @@
         public function insert($table, $values, $more = ""){
             global $log;
 
-            $s = "INSERT INTO " . $table . " (";
+            $s = "INSERT INTO `$table` (";
 
             $keys = "";
             $vals = "";
@@ -92,7 +92,7 @@
 
         public function update($table, $values, $where, $more = ""){
             global $log;
-            $s = "UPDATE " . $table . " SET ";
+            $s = "UPDATE `$table` SET ";
 
             $i = 0;
 
@@ -129,7 +129,7 @@
         public function delete($table, $where, $more = ""){
             global $log;
 
-            $s = "DELETE FROM " . $table;
+            $s = "DELETE FROM `$table`";
 
             if(strlen($where) > 0)
                 $s .= " WHERE " . $where;
@@ -446,25 +446,15 @@
         }
 
         public function into_db_acte_has_relation($acte, $relation){
-            $values = [
-                "acte_id" => $acte->id,
-                "relation_id" => $relation->id
-            ];
-            return $this->insert(
-                "acte_has_relation",
-                $values
-            );
+            return $this->query("
+            INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
+            ");
         }
 
         public function into_db_acte_has_condition($acte, $condition){
-            $values = [
-                "acte_id" => $acte->id,
-                "condition_id" => $condition->id
-            ];
-            return $this->insert(
-                "acte_has_condition",
-                $values
-            );
+            return $this->query("
+            INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
+            ");
         }
     }
 

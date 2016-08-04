@@ -84,6 +84,7 @@
                 $values["epouse"] = $this->epouse->id;
             if(isset($this->date))
                 $values["date"] = $this->date;
+            return $values;
         }
 
         public function pre_into_db(){
