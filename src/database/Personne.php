@@ -33,7 +33,7 @@
 
         public function add_prenom($prenom){
             foreach($this->prenoms as $_prenom){
-                if($_prenom->id == $prenom->id || $_prenom->no_accent == $prenom->no_accent)
+                if((isset($_prenom->id, $prenom->id) && $_prenom->id == $prenom->id) || $_prenom->no_accent == $prenom->no_accent)
                     return;
             }
             $this->prenoms[] = $prenom;
@@ -41,7 +41,7 @@
 
         public function add_nom($nom){
             foreach($this->noms as $_nom){
-                if($_nom->id == $nom->id ||
+                if((isset($_nom->id, $nom->id) && $_nom->id == $nom->id) ||
                     ($_nom->no_accent == $nom->no_accent &&
                     (isset($_nom->attribut, $nom->attribut) && $_nom->attribut->value == $nom->attribut->value) || $_nom->attribut == $nom->attribut))
                     return;

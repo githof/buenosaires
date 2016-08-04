@@ -31,19 +31,16 @@
                 break;
             case "relation":
                 switch($column_name){
-                    case "source":
-                    case "destination":
+                    case "pers_source_id":
+                    case "pers_destination_id":
                         $link = "./personne/$value";
                         break;
                 }
                 break;
-            case "cond":
+            case "condition":
                 switch($column_name){
                     case "personne_id":
                         $link = "./personne/$value";
-                        break;
-                    case "acte_id";
-                        $link = "./acte/$value";
                         break;
                 }
                 break;
@@ -101,12 +98,11 @@
         "Contenu des actes" => "acte_contenu",
         "Personnes" => "personne",
         "Relations" => "relation",
-        "Conditions" => "cond",
+        "Conditions" => "condition",
         "Sources" => "source",
         "Statuts" => "statut",
         "Prenoms" => "prenom",
         "Noms" => "nom",
-        "Periodes" => "periode",
         "Attributs" => "attribut"
     ];
 
