@@ -78,9 +78,9 @@
 
         public function values_into_db(){
             $values = [];
-            if(isset($this->epoux))
+            if(isset($this->epoux, $this->epoux->id))
                 $values["epoux"] = $this->epoux->id;
-            if(isset($this->epouse))
+            if(isset($this->epouse, $this->epouse->id))
                 $values["epouse"] = $this->epouse->id;
             if(isset($this->date))
                 $values["date"] = $this->date;
