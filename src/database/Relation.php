@@ -84,21 +84,4 @@
 
         public function post_into_db(){}
     }
-
-    // function link_relation_acte_into_db($acte, $relation){
-    //     global $log, $mysqli;
-    //
-    //     $values = [
-    //         "acte_id" => $acte->id,
-    //         "relation_id" => $relation->id
-    //     ];
-    //     $result = $mysqli->insert("acte_has_relation", $values);
-    //
-    //     if($result === FALSE){
-    //         $log->e("Erreur lors du lien entre relation=$relation->id et acte=$acte->id dans acte_has_relation");
-    //         return FALSE;
-    //     }
-    //     return TRUE;
-    // }
-
 ?>

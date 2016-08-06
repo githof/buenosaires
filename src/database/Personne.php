@@ -156,108 +156,19 @@
         }
 
 
-        // function from_xml($xml, $acte = NULL){
-        //     if($xml == NULL)
-        //         return;
-        //
-        //     $this->xml = $xml;
-        //     $attr = $xml->attributes();
-        //
-        //     if(isset($acte))
-        //         $this->set_periode($acte->values["periode_id"]);
-        //     else
-        //         $this->set_periode(NULL);
-        //
-        //     if(isset($attr["don"]) && ($attr["don"] === "true"))
-        //         $this->conditions[] = "don";
-        //
-        //     $prenoms_id = [];
-        //     $noms_id = [];
-        //     foreach($xml->children() as $childXML){
-        //         switch($childXML->getName()){
-        //             case "prenom":
-        //                 $rep = $this->set_prenom($childXML->__toString());
-        //                 if($rep != FALSE)
-        //                     $prenoms_id[] = $rep;
-        //                 break;
-        //             case "nom":
-        //                 $rep = $this->set_nom($childXML);
-        //                 if($rep != FALSE)
-        //                     $noms_id[] = $rep;
-        //                 break;
-        //             case "pere":
-        //                 $pere = personne_from_xml($childXML, $acte);
-        //                 if($pere != NULL){
-        //                     $this->pere = $pere;
-        //                 }
-        //                 break;
-        //             case "mere":
-        //                 $mere = personne_from_xml($childXML, $acte);
-        //                 if($mere != NULL){
-        //                     $this->mere = $mere;
-        //                 }
-        //                 break;
-        //             case "condition":
-        //                 $this->texte_conditions[] = $childXML->__toString();
-        //                 break;
-        //         }
-        //     }
-        //
-        //     $this->prenoms_id = $prenoms_id;
-        //     $this->noms_id = $noms_id;
-        // }
-
-
-        function get_prenoms(){
-            global $mysqli;
-            $prenoms = [];
-
-            $result = $mysqli->query(
-                "SELECT prenom
-                FROM prenom INNER JOIN prenom_personne
-                ON prenom.id = prenom_personne.prenom_id
-                WHERE prenom_personne.personne_id = '$this->id'
-                ORDER BY prenom_personne.ordre"
-            );
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc())
-                    $prenoms[] = $row["prenom"];
-            }
-            return $prenoms;
-        }
-
-        function get_noms(){
-            global $mysqli;
-            $noms = [];
-
-            $result = $mysqli->query(
-                "SELECT nom, value
-                FROM nom INNER JOIN nom_personne
-                ON nom.id = nom_personne.nom_id
-                LEFT JOIN attribut
-                ON attribut.id = nom.attribut_id
-                WHERE nom_personne.personne_id = '$this->id'
-                ORDER BY nom_personne.ordre"
-            );
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $nom = $row["nom"];
-                    if(isset($row["value"]))
-                        $nom = $row["value"] . " " . $nom;
-                    $noms[] = $nom;
-                }
-            }
-            return $noms;
-        }
-
         function get_conditions(){
             global $mysqli;
             $conditions = [];
 
-            $result = $mysqli->select("condition", ["id"], "personne_id='$this->id'");
+            $result = $mysqli->select("condition", ["*"], "personne_id='$this->id'");
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $conditions[] = new Condition($row["id"]);
+                    $conditions[] = new Condition(
+                        $row["id"],
+                        $row["text"],
+                        new Personne($row["personne_id"]),
+                        $row["source_id"]
+                    );
                 }
             }
             return $conditions;
@@ -267,10 +178,15 @@
             global $mysqli;
             $relations = [];
 
-            $result = $mysqli->select("relation", ["id"], "source='$this->id' OR destination='$this->id'");
+            $result = $mysqli->select("relation", ["*"], "pers_source_id='$this->id' OR pers_destination_id='$this->id'");
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $relations[] = new Relation($row["id"]);
+                    $relations[] = new Relation(
+                        $row["id"],
+                        new Personne($row["pers_source_id"]),
+                        new Personne($row["pers_destination_id"]),
+                        $row["statut_id"]
+                    );
                 }
             }
             return $relations;

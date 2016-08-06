@@ -5,7 +5,9 @@
 
 
     $personne = new Personne($url_parsed["id"]);
-    if(!$personne->is_in_db){
+    $result = $mysqli->from_db($personne);
+    $personne->result_from_db($result);
+    if($result == NULL){
 ?>
 <div>
     Aucune personne enregistrée avec cet id
@@ -14,29 +16,18 @@
     }else{
 ?>
 <div class="detail_container">
-    <div class="detail_div">
-        <div class="detail_div_title">
-            ID
-        </div>
-        <?php echo $personne->id; ?>
+    <div class="detail_div personne_title">
+        <?php echo html_personne_full_name($personne); ?>
     </div>
-    <div class="detail_div">
+    <div class="detail_div detail_div_horizontal">
         <div class="detail_div_title">
-            PRENOM(S)
+            ID: <?php echo $personne->id; ?>
         </div>
-        <?php echo html_personne_prenoms($personne); ?>
     </div>
-    <div class="detail_div">
-        <div class="detail_div_title">
-            NOM(S)
-        </div>
-        <?php echo html_personne_noms($personne); ?>
-    </div>
-    <div class="detail_div">
+    <div class="detail_div detail_div_horizontal">
         <div class="detail_div_title">
             PERIODE
         </div>
-        <?php echo html_periode(periode_memory($personne->values["periode_id"])); ?>
     </div>
     <div class="detail_div">
         <div class="detail_div_title">
@@ -48,7 +39,7 @@
         <div class="detail_div_title">
             RELATIONS
         </div>
-        <?php echo html_relations($personne->get_relations()); ?>
+        <?php echo html_personne_relations($personne); ?>
     </div>
 </div>
 <?php
