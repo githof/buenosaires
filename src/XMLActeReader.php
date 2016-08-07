@@ -147,9 +147,13 @@
         function read_personne_node($xml_personne){
             $personne = new Personne();
             $personne->set_xml($xml_personne);
+            $xml_personne_attributes = $xml_personne->attributes();
 
-            if(isset($xml_personne->attributes()["id"]))
+            if(isset($xml_personne_attributes["id"]))
                 $personne->id = $xml_personne->attributes()["id"];
+
+            if(isset($xml_personne_attributes["don"]) && $xml_personne_attributes["don"] == "true")
+                $personne->add_condition("Don", $this->source_id);
 
             foreach($xml_personne->children() as $xml_child){
                 switch($xml_child->getName()){
