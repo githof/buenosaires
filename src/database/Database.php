@@ -40,14 +40,7 @@
 
             $s .= " " . $more;
 
-            $log->i($s);
-
-            $rep = parent::query($s);
-            if($rep === FALSE){
-                $log->e("SQL error : $this->error");
-                return FALSE;
-            }
-            return $rep;
+            return $this->query($s);
         }
 
         public function insert($table, $values, $more = ""){
@@ -80,14 +73,7 @@
             if(strlen($more) > 0)
                 $s .= " " . $more;
 
-            $log->i($s);
-
-            $rep = parent::query($s);
-            if($rep === FALSE){
-                $log->e("SQL error : $this->error");
-                return FALSE;
-            }
-            return $rep;
+            return $this->query($s);
         }
 
         public function update($table, $values, $where, $more = ""){
@@ -116,14 +102,7 @@
             if(strlen($more) > 0)
                 $s .= " " . $more;
 
-            $log->i($s);
-
-            $rep = parent::query($s);
-            if($rep === FALSE){
-                $log->e("SQL error : $this->error");
-                return FALSE;
-            }
-            return $rep;
+            return $this->query($s);
         }
 
         public function delete($table, $where, $more = ""){
@@ -137,24 +116,21 @@
             if(strlen($more) > 0)
                 $s .= " " . $more;
 
-            $log->i($s);
-
-            $rep = parent::query($s);
-            if($rep === FALSE){
-                $log->e("SQL error : $this->error");
-                return FALSE;
-            }
-            return $rep;
+            return $this->query($s);
         }
 
         public function query($requete){
             global $log;
 
+            $m = microtime(TRUE);
             $result = parent::query($requete);
+            $m = microtime(TRUE) - $m;
             if($result === FALSE){
                 $log->e("SQL error : $this->error");
                 return FALSE;
             }
+            $log->i(trim($requete));
+            $log->d("exec time: ".($m*1000)." ms");
             return $result;
         }
 
@@ -179,13 +155,7 @@
             $database_name = SQL_DATABASE_NAME;
             $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
 
-            $log->i($s);
-
-            $result = parent::query($s);
-            if($result === FALSE){
-                $log->e("SQL error : $this->error");
-                return FALSE;
-            }
+            $result = $this->query($s);
 
             if($result->num_rows != 1)
                 return FALSE;
