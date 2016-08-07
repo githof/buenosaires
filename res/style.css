@@ -149,10 +149,19 @@ h1{
 	flex-direction: column;
 }
 
+.flex_vertical {
+	flex-direction: column;
+}
+
+.flex_horizontal {
+	flex-direction: row;
+}
+
 .detail_div_title {
 	font-weight: bold;
 	font-size: 16px;
 	margin-bottom: 7px;
+	margin-right: 7px;
 }
 
 .personne_title {
@@ -211,7 +220,7 @@ h1{
 }
 
 .relation_statut {
-	text-transform: uppercase;
+	white-space: nowrap;
 }
 
 .code_indent {

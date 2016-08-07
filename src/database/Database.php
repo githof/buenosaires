@@ -196,7 +196,7 @@
 
 
 
-        public function from_db($obj){
+        public function from_db($obj, $update_obj = FALSE){
             $row = NULL;
             if(isset($obj->id)){
                 $row = $this->from_db_by_id($obj);
@@ -209,6 +209,8 @@
                     $row = $this->from_db_by_same($obj);
             }
 
+            if($update_obj)
+                $obj->result_from_db($row);
             return $row;
         }
 

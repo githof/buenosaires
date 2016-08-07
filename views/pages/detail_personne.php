@@ -5,8 +5,7 @@
 
 
     $personne = new Personne($url_parsed["id"]);
-    $result = $mysqli->from_db($personne);
-    $personne->result_from_db($result);
+    $result = $mysqli->from_db($personne, TRUE);
     if($result == NULL){
 ?>
 <div>
@@ -19,27 +18,36 @@
     <div class="detail_div personne_title">
         <?php echo html_personne_full_name($personne); ?>
     </div>
-    <div class="detail_div detail_div_horizontal">
+    <div class="detail_div flex_horizontal">
         <div class="detail_div_title">
-            ID: <?php echo $personne->id; ?>
+            ID
+        </div>
+        <div class="detail_div_contenu">
+            <?php echo $personne->id; ?>
         </div>
     </div>
-    <div class="detail_div detail_div_horizontal">
+    <div class="detail_div flex_horizontal">
         <div class="detail_div_title">
             PERIODE
         </div>
+        <div class="detail_div_contenu">
+        </div>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_vertical">
         <div class="detail_div_title">
             CONDITIONS
         </div>
-        <?php echo html_conditions($personne->get_conditions()); ?>
+        <div class="detail_div_contenu">
+            <?php echo html_conditions($personne->get_conditions()); ?>
+        </div>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_vertical">
         <div class="detail_div_title">
             RELATIONS
         </div>
-        <?php echo html_personne_relations($personne); ?>
+        <div class="detail_div_contenu">
+            <?php echo html_personne_relations($personne); ?>
+        </div>
     </div>
 </div>
 <?php

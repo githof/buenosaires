@@ -6,7 +6,8 @@
 
 
     $acte = new Acte($url_parsed["id"]);
-    if(!$acte->is_in_db){
+    $result = $mysqli->from_db($acte, TRUE);
+    if(!isset($result)){
 ?>
 <div>
     Aucun acte enregistré avec cet id
@@ -14,51 +15,65 @@
     }else{
 ?>
 <div class="detail_container">
-    <div class="detail_div">
+    <div class="detail_div flex_horizontal">
         <div class="detail_div_title">
             ID
         </div>
-        <?php echo $acte->id ?>
+        <div class="detail_div_contenu">
+            <?php echo $acte->id ?>
+        </div>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_horizontal">
         <div class="detail_div_title">
             EPOUX
         </div>
-        <?php if(isset($acte->values["epoux"]))
-                echo html_personne_small(personne_memory($acte->values["epoux"]));
-        ?>
+        <div class="detail_div_contenu">
+            <?php if(isset($acte->epoux))
+                    echo html_personne_link(personne_memory($acte->epoux->id));
+            ?>
+        </div>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_horizontal">
         <div class="detail_div_title">
             EPOUSE
         </div>
-        <?php if(isset($acte->values["epouse"]))
-                echo html_personne_small(personne_memory($acte->values["epouse"]));
-        ?>
-    </div>
-    <div class="detail_div">
-        <div class="detail_div_title">
-            PERIODE
+        <div class="detail_div_contenu">
+            <?php if(isset($acte->epouse))
+                    echo html_personne_link(personne_memory($acte->epouse->id));
+            ?>
         </div>
-        <?php echo html_periode(periode_memory($acte->values["periode_id"])); ?>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_horizontal">
+        <div class="detail_div_title">
+            DATE
+        </div>
+        <div class="detail_div_contenu">
+            <?php echo $acte->date; ?>
+        </div>
+    </div>
+    <div class="detail_div flex_vertical">
         <div class="detail_div_title">
             CONDITIONS
         </div>
-        <?php echo html_conditions($acte->get_conditions()); ?>
+        <div class="detail_div_contenu">
+            <?php echo html_conditions($acte->get_conditions()); ?>
+        </div>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_vertical">
         <div class="detail_div_title">
             RELATIONS
         </div>
-        <?php echo html_relations($acte->get_relations()); ?>
+        <div class="detail_div_contenu">
+            <?php echo html_relations($acte->get_relations()); ?>
+        </div>
     </div>
-    <div class="detail_div">
+    <div class="detail_div flex_vertical">
         <div class="detail_div_title">
             CONTENU
         </div>
-        <?php echo html_acte_contenu($acte->get_contenu()); ?>
+        <div class="detail_div_contenu">
+            <?php echo html_acte_contenu($acte->get_contenu()); ?>
+        </div>
     </div>
 </div>
 <?php

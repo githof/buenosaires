@@ -40,7 +40,7 @@
                     $obj = new Periode($id);
                     break;
             }
-            $obj->result_from_db($mysqli->from_db($obj));
+            $mysqli->from_db($obj, TRUE);
             $memory[$class][$id] = $obj;
             return $obj;
         }
@@ -86,30 +86,59 @@
         $statut_name = $relation->get_statut_name();
         $source = html_personne_link(personne_memory($relation->personne_source->id));
         $destination = html_personne_link(personne_memory($relation->personne_destination->id));
-
+        $actes_html = "";
+        foreach($relation->get_actes() as $acte)
+            $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
         return "
         <tr>
             <td>$source</td>
-            <td class='relation_statut'>$statut_name</td>
+            <td class='relation_statut'>$statut_name de</td>
             <td>$destination</td>
+            <td>$actes_html</td>
         </tr>";
     }
 
     function html_relations($relations){
+        $mariage = [];
+        $famille = [];
+        $temoins = [];
+        $parrains = [];
+        $all = [];
+
+        foreach($relations as $relation){
+            switch($relation->statut_id){
+                case STATUT_EPOUX:
+                case STATUT_EPOUSE:
+                    $mariage[] = $relation;
+                    break;
+                case STATUT_PERE:
+                case STATUT_MERE:
+                    $famille[] = $relation;
+                    break;
+                case STATUT_TEMOIN:
+                    $temoins[] = $relation;
+                    break;
+                case STATUT_PARRAIN:
+                    $parrains[] = $relation;
+                break;
+            }
+        }
+        $all = array_merge($all, $mariage, $famille, $temoins, $parrains);
         $rows = "";
-        foreach($relations as $relation)
+        foreach($all as $relation)
             $rows .= html_relation($relation);
 
         if(strlen($rows) == 0)
             return "";
 
         return  "
-        <table class='table table-bordered table-striped table-hover'>
+        <table class='table table-striped table-hover'>
             <thead>
                 <tr>
                     <th>Personne source</th>
                     <th>Statut</th>
                     <th>Personne destination</th>
+                    <th>Actes</th>
                 </tr>
             </thead>
             <tbody>

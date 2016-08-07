@@ -179,10 +179,20 @@
             global $mysqli;
             $conditions = [];
 
-            $result = $mysqli->select("acte_has_condition", ["condition_id"], "acte_id='$this->id'");
+            $result = $mysqli->query("
+                SELECT *
+                FROM acte_has_condition INNER JOIN `condition`
+                ON acte_has_condition.condition_id = `condition`.id
+                WHERE acte_has_condition.acte_id = $this->id
+            ");
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $conditions[] = new Condition($row["id"]);
+                    $conditions[] = new Condition(
+                        $row["id"],
+                        $row["text"],
+                        new Personne($row["personne_id"]),
+                        $row["source_id"]
+                    );
                 }
             }
             return $conditions;
@@ -192,10 +202,20 @@
             global $mysqli;
             $relations = [];
 
-            $result = $mysqli->select("acte_has_relation", ["relation_id"], "acte_id='$this->id'");
+            $result = $mysqli->query("
+                SELECT *
+                FROM acte_has_relation INNER JOIN relation
+                ON acte_has_relation.relation_id = relation.id
+                WHERE acte_has_relation.acte_id = $this->id
+            ");
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $relations[] = new Relation($row["relation_id"]);
+                    $relations[] = new Relation(
+                        $row["id"],
+                        new Personne($row["pers_source_id"]),
+                        new Personne($row["pers_destination_id"]),
+                        $row["statut_id"]
+                    );
                 }
             }
             return $relations;
