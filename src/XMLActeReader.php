@@ -116,7 +116,6 @@
         }
 
         function read_acte_node($acte, $xml_acte){
-            $acte->set_contenu($xml_acte->asXML());
             foreach($xml_acte->children() as $xml_child){
                 switch($xml_child->getName()){
                     case "date":
@@ -142,6 +141,7 @@
                         break;
                 }
             }
+            $acte->set_contenu($xml_acte->asXML());
         }
 
         function read_personne_node($xml_personne){
@@ -188,10 +188,8 @@
 
             foreach ($attrs as $key => $value){
                 if(strcmp($key, "id") != 0 && strcmp($value, "true") == 0){
-                    $new_attr .= "$key";
+                    $new_attr .= "$key ";
                     $attrs_to_unset[] = $key;
-                    if($i < count($attrs) -1)
-                        $new_attr .= " ";
                 }
             }
 
@@ -202,7 +200,7 @@
             if(strlen($new_attr) == 0)
                 return;
 
-            $xml_nom->addAttribute("attr", $new_attr);
+            $xml_nom->addAttribute("attr", trim($new_attr));
         }
     }
 ?>
