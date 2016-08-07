@@ -155,8 +155,6 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`statut` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `value_UNIQUE` ON `buenosaires_TPT`.`statut` (`valeur` ASC);
-
 
 -- -----------------------------------------------------
 -- Table `buenosaires_TPT`.`relation`
@@ -286,8 +284,6 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`categorie` (
   `value` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
-
-CREATE UNIQUE INDEX `value_UNIQUE` ON `buenosaires_TPT`.`categorie` (`value` ASC);
 
 
 -- -----------------------------------------------------
