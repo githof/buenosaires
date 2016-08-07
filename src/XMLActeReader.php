@@ -73,9 +73,11 @@
 
             $log->i("Ajout de l'acte$position à partir d'xml");
 
-            if(isset($xml_acte_attr["num"]))
-                $acte_id = $xml_acte_attr["num"];
-            else if(isset($xml_acte_attr["id"]))
+            if(isset($xml_acte_attr["num"])){
+                $acte_id = intval($xml_acte_attr["num"]);
+                unset($xml_acte_attr["num"]);
+                $xml_acte->addAttribute("id", "$acte_id");
+            }else if(isset($xml_acte_attr["id"]))
                 $acte_id = $xml_acte_attr["id"];
             else{
                 $message = "L'acte$position ne contient pas d'attribut num/id. Impossible de l'ajouter";
