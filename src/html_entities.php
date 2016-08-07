@@ -118,13 +118,17 @@
         </table>";
     }
 
-    function html_personne_relation($personne, $statut_name){
+    function html_personne_relation($personne, $statut_name, $actes){
         $personne = html_personne_link(personne_memory($personne->id));
+        $actes_html = "";
+        foreach($actes as $acte)
+            $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
         return "
-        <div class='personne_relation'>
-            <span class='personne_relation_statut'>$statut_name</span>
-            <span class='personne_relation_personne'>$personne</span>
-        </div>";
+        <tr>
+            <td><span class='personne_relation_statut'>$statut_name</span></td>
+            <td><span class='personne_relation_personne'>$personne</span></td>
+            <td>$actes_html</td>
+        </tr>";
     }
 
     function html_personne_relations($personne){
@@ -168,70 +172,65 @@
         }
 
         $str = "";
-        $rows = "";
         foreach($mariage as $relation){
             if($personne->id == $relation->personne_destination->id)
                 continue;
             $statut_name = ($relation->statut_id == STATUT_EPOUX)? "est marrié à" : "est marriée à";
-            $rows .= html_personne_relation($relation->personne_destination, $statut_name);
+            $str .= html_personne_relation($relation->personne_destination, $statut_name, $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        $rows = "";
         foreach($parents as $relation){
             $statut_name = ($relation->statut_id == STATUT_PERE)? "a pour père" : "a pour mère";
-            $rows .= html_personne_relation($relation->personne_source, $statut_name);
+            $str .= html_personne_relation($relation->personne_source, $statut_name, $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        $rows = "";
         foreach($enfants as $relation){
             $statut_name = ($relation->statut_id == STATUT_PERE)? "est père de" : "est mère de";
-            $rows .= html_personne_relation($relation->personne_destination, $statut_name);
+            $str .= html_personne_relation($relation->personne_destination, $statut_name, $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        $rows = "";
         foreach($est_temoins as $relation){
-            $rows .= html_personne_relation($relation->personne_destination, "est témoin de");
+            $str .= html_personne_relation($relation->personne_destination, "est témoin de", $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        $rows = "";
         foreach($a_temoins as $relation){
-            $rows .= html_personne_relation($relation->personne_source, "a pour témoin");
+            $str .= html_personne_relation($relation->personne_source, "a pour témoin", $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        $rows = "";
         foreach($est_parrains as $relation){
-            $rows .= html_personne_relation($relation->personne_destination, "est parrain de");
+            $str .= html_personne_relation($relation->personne_destination, "est parrain de", $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        $rows = "";
         foreach($a_parrains as $relation){
-            $rows .= html_personne_relation($relation->personne_source, "a pour parrain");
+            $str .= html_personne_relation($relation->personne_source, "a pour parrain", $relation->get_actes());
         }
-        if(strlen($rows) > 0)
-            $str .= "<div class='personne_relations'>$rows</div>";
 
-        return $str;
+        return "
+        <table class='table table-hover table-condensed'>
+            <thead>
+                <tr>
+                    <th>Statut</th>
+                    <th>Personne</th>
+                    <th>Actes</th>
+                </tr>
+            </thead>
+            <tbody>
+                $str
+            </tbody>
+        </table>";
     }
 
     function html_condition($condition){
         $personne = html_personne_link(personne_memory($condition->personne->id));
         $source_name = $condition->get_source_name();
+        $actes_html = "";
+        foreach($condition->get_actes() as $acte)
+            $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
         return "
         <tr>
             <td>$condition->text</td>
             <td>$source_name</td>
+            <td>$actes_html</td>
         </tr>";
     }
 
@@ -249,6 +248,7 @@
                 <tr>
                     <th>Condition</th>
                     <th>Source</th>
+                    <th>Actes</th>
                 </tr>
             </thead>
             <tbody>

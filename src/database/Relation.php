@@ -45,6 +45,22 @@
             return "";
         }
 
+        function get_actes(){
+            global $mysqli;
+            $actes = [];
+
+            $result = $mysqli->select(
+                "acte_has_relation",
+                ["acte_id"],
+                "relation_id='$this->id'"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc())
+                    $actes[] = new Acte($row["acte_id"]);
+            }
+            return $actes;
+        }
+
 
         // DATABASE IO
 
