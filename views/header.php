@@ -64,16 +64,9 @@
     </li>
     <li>
         <!-- <a href="gestion/viewActes.php"> -->
-        <a href="./">
+        <a href="./recherche">
             <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-            <span class="nav_item">Actes</span>
-        </a>
-    </li>
-    <li>
-        <!-- <a href="gestion/viewPersonnes.php"> -->
-        <a href="./">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-            <span class="nav_item">Personnes</span>
+            <span class="nav_item">Recherche</span>
         </a>
     </li>
     <li>

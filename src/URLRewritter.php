@@ -5,6 +5,8 @@
         "/(?'page'table{1})"                    =>  ["table", "table"],
         "/(?'page'personne)/(?'id'\d+)"         =>  ["detail_personne", "personne"],
         "/(?'page'acte)/(?'id'\d+)"             =>  ["detail_acte", "acte"],
+        "/(?'page'recherche)"                   =>  ["search", "recherche"],
+        "/(?'page'resultat)"                    =>  ["result", "résultats"],
         "/(?'page'import{1})"                   =>  ["import", "import"],
         "/(?'page'logs{1})"                     =>  ["logs", "logs"],
         "/(?'page'new-account{1})"              =>  ["new_account", "création d'un compte"],
