@@ -22,7 +22,7 @@
             if($default == NULL)
                 return;
 
-            $default = trim($default);
+            $default = trim(strtoupper(accent_uppercase($default)));
             $this->nom = $default;
             if(!isset($no_accent))
                 $this->no_accent = no_accent($default);
