@@ -1,15 +1,15 @@
 
 + structure
-  - base : toujours mettre l'id dans insert
+  # base : toujours mettre l'id dans insert
     attention à récupérer le return d'insert si erreur (parce que l'id
     a pu être déjà attrivué par la base), avec un while +1 par ex
 
-  - base : virer les périodes \o/
+  # base : virer les périodes \o/
 
 + création
   - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
-  - parrains, sur le modèle de temoins
-  - quand on ajoute un acte, n'ajouter les personnes que si elles ont
+  # parrains, sur le modèle de temoins
+  # quand on ajoute un acte, n'ajouter les personnes que si elles ont
     au moins un nom ou un prénom (mais il peut y avoir un nom ou un
     prénom seul), pour pouvoir faire le test d'homonymie
 
@@ -26,9 +26,6 @@
   - condition décès
   - veuf/veuve
   - bouton loading add actes
-  - mettre tous les nom en majuscule ou minuscule (de même pour prenom tous en
-    minuscule) ?
-  - renommer table cond -> condition
   - même personne qui apparait pas avec les mêmes prenoms/noms (404)
 
 Captures d'écran :
