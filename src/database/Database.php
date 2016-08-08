@@ -331,13 +331,10 @@
             if($values_db == NULL)
                 return $values_obj;
 
-            foreach($values_db as $key => $val){
-                if(isset($values_obj[$key]) && $values_obj[$key] != $val)
-                    $updated[$key] = $values_obj[$key];
+            foreach($values_obj as $key => $val){
+                if(!isset($values_db[$key]) || $values_db[$key] != $val)
+                    $updated[$key] = $val;
             }
-
-            foreach($values_obj as $key => $val)
-                $updated[$key] = $val;
 
             return $updated;
         }

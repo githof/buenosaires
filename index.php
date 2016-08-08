@@ -1,5 +1,7 @@
 <?php
 
+    $exec_time_script = microtime(TRUE);
+
     define("ROOT", __DIR__ . "/");
 
     session_start();
@@ -81,5 +83,7 @@
 
 <?php
     $mysqli->close();
+    $exec_time_script = microtime(TRUE) - $exec_time_script;
+    $log->i("EXEC TIME SCRIPT PAGE ".($exec_time_script *1000)." ms");
     $log->close();
 ?>
