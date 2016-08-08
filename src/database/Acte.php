@@ -147,6 +147,7 @@
                 $personnes[] = $this->epouse;
             $personnes = array_merge($personnes, $this->temoins, $this->parrains);
 
+            $mysqli->start_transaction();
             foreach($personnes as $personne){
                 if(isset($personne->id) && $personne->is_valid()){
                     foreach($personne->relations as $relation)
@@ -158,6 +159,7 @@
             }
 
             $this->contenu_into_db();
+            $mysqli->end_transaction();
         }
 
         function contenu_into_db(){

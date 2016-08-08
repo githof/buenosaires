@@ -9,6 +9,8 @@
 
     class Database extends mysqli{
 
+        var $mutex;
+
         public function __construct(){
             global $log;
 
@@ -162,6 +164,14 @@
 
             $row = $result->fetch_assoc();
             return $row["id"];
+        }
+
+        public function start_transaction(){
+            return $this->query("START TRANSACTION");
+        }
+
+        public function end_transaction(){
+            return $this->query("COMMIT");
         }
 
 

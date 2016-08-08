@@ -128,6 +128,7 @@
         public function post_into_db(){
             global $mysqli;
 
+            $mysqli->start_transaction();
             $i = 1;
             $mysqli->delete("prenom_personne", "personne_id='$this->id'");
             foreach($this->prenoms as $prenom){
@@ -141,6 +142,7 @@
                 $mysqli->into_db_nom_personne($this, $nom, $i);
                 $i++;
             }
+            $mysqli->end_transaction();
 
             foreach($this->relations as $relation)
                 $mysqli->into_db($relation);
