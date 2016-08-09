@@ -60,12 +60,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="res/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="res/multi-select/css/multi-select.css" rel="stylesheet" />
         <link href="res/style.css" rel="stylesheet" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
         <title>Buenos Aires</title>
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="">
             <div class="sidebar">
                 <?php echo $header_output; ?>
             </div>
@@ -77,7 +78,9 @@
                 </div>
             </div>
         </div>
-        <script src="res/bootstrap/js/bootstrap.min.js"></script>
+        <script src="res/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="res/multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
+        <script src="res/init.js" type="text/javascript"></script>
     </body>
 </html>
 

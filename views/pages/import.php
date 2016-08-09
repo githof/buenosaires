@@ -132,55 +132,56 @@
 
 ?>
 
-<h3>
-    Ajouter un ou des actes
-</h3>
-<div class="import_form">
+<section>
     <h4>
         Avec un fichier
     </h4>
-    <form method="post" enctype="multipart/form-data" action="">
-        <div class="form-group">
-            <label for="import_file_source">Source du/des actes(s) : </label>
-            <select name="import_file_source" id="import_file_source">
-                <?php all_sources_available(); ?>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="import_file">Fichier</label>
-            <input type="file" id="import_file" name="import_file">
-        </div>
-        <div class="form-group">
-            <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
-            <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Envoyer">
-        </div>
-        <input type="hidden" name="form_type" value="file">
-    </form>
-</div>
-<div class="import_form">
+    <div class="section-inner">
+        <form method="post" enctype="multipart/form-data" action="">
+            <div class="form-group">
+                <label for="import_file_source">Source du/des actes(s) : </label>
+                <select name="import_file_source" id="import_file_source">
+                    <?php all_sources_available(); ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="import_file">Fichier</label>
+                <input type="file" id="import_file" name="import_file">
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
+                <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Envoyer">
+            </div>
+            <input type="hidden" name="form_type" value="file">
+        </form>
+    </div>
+</section>
+<section>
     <h4>
         En le(s) copiant ici
     </h4>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="import_text_source">Source du/des actes(s) : </label>
-            <select name="import_text_source" id="import_text_source">
-                <?php all_sources_available(); ?>
-            </select>
-        </div>
-        <div class="form-group">
-            <textarea class="form-control" rows="6" name="import_text"></textarea>
-        </div>
-        <div class="form-group">
-            <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
-            <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Envoyer">
-        </div>
-        <input type="hidden" name="form_type" value="text">
-    </form>
-</div>
+    <div class="section-inner">
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="import_text_source">Source du/des actes(s) : </label>
+                <select name="import_text_source" id="import_text_source">
+                    <?php all_sources_available(); ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows="6" name="import_text"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
+                <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Envoyer">
+            </div>
+            <input type="hidden" name="form_type" value="text">
+        </form>
+    </div>
+</section>

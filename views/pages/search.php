@@ -13,9 +13,12 @@
         return $str;
     }
 
-    function all_family_name(){
+    function all_family_name($with_aucun = FALSE){
         global $mysqli;
-        $str = "<option value='0'>Aucun</option>";
+        $str = "";
+
+        if($with_aucun)
+            $str .= "<option value='0'>Aucun</option>";
 
         $result = $mysqli->query("
             SELECT nom.id AS id, no_accent, value
@@ -48,31 +51,52 @@
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="actes">
         <section>
-            <form method="post" action="resultat">
-                <div class="form-group">
-                    <label for="acte_id">Par ID</label>
-                    <select name="acte_id" id="acte_id">
-                        <?php echo all_acte_id(); ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="acte_date_start">A partir de</label>
-                    <input type="date" name="acte_date_start" id="acte_date_start">
-                </div>
-                <div class="form-group">
-                    <label for="acte_date_end">Avant</label>
-                    <input type="date" name="acte_date_end" id="acte_date_end">
-                </div>
-                <div class="form-group">
-                    <label for="acte_family_name">Concernant la famille</label>
-                    <select name="acte_family_name" id="acte_family_name">
-                        <?php echo all_family_name(); ?>
-                    </select>
-                </div>
-            </form>
+            <div>
+                <form method="post" action="resultat">
+                    <div class="form-group">
+                        <label for="acte_date_start">A partir de</label>
+                        <input type="date" name="acte_date_start" id="acte_date_start">
+                    </div>
+                    <div class="form-group">
+                        <label for="acte_date_end">Avant</label>
+                        <input type="date" name="acte_date_end" id="acte_date_end">
+                    </div>
+                    <div class="form-group">
+                        <label for="acte_family_name">Concernant la famille</label>
+                        <select multiple="multiple" name="acte_family_name" id="acte_family_name">
+                            <?php echo all_family_name(); ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Rechercher">
+                    </div>
+                </form>
+            </div>
         </section>
     </div>
     <div role="tabpanel" class="tab-pane" id="personnes">
-
+        <section>
+            <div>
+                <form method="post" action="resultat">
+                    <div class="form-group">
+                        <label for="personne_date_start">A partir de</label>
+                        <input type="date" name="personne_date_start" id="personne_date_start">
+                    </div>
+                    <div class="form-group">
+                        <label for="personne_date_end">Avant</label>
+                        <input type="date" name="personne_date_end" id="personne_date_end">
+                    </div>
+                    <div class="form-group">
+                        <label for="personne_family_name">Concernant la famille</label>
+                        <select name="personne_family_name" id="personne_family_name">
+                            <?php echo all_family_name(TRUE); ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Rechercher">
+                    </div>
+                </form>
+            </div>
+        </section>
     </div>
 </div>

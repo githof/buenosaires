@@ -7,7 +7,7 @@
         "/(?'page'acte)/(?'id'\d+)"             =>  ["detail_acte", "acte"],
         "/(?'page'recherche)"                   =>  ["search", "recherche"],
         "/(?'page'resultat)"                    =>  ["result", "résultats"],
-        "/(?'page'import{1})"                   =>  ["import", "import"],
+        "/(?'page'import{1})"                   =>  ["import", "import d'acte(s)"],
         "/(?'page'logs{1})"                     =>  ["logs", "logs"],
         "/(?'page'new-account{1})"              =>  ["new_account", "création d'un compte"],
         "/(?'page'disconnect{1})"               =>  ["disconnect", "déconnexion"],
