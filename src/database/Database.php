@@ -24,7 +24,7 @@
             }
         }
 
-        public function select($table, $columns, $where, $more = ""){
+        public function select($table, $columns, $where = "", $more = ""){
             global $log;
 
             $s = "SELECT ";
