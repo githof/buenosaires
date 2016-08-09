@@ -15,7 +15,8 @@
         var $temoins;
         var $parrains;
         var $source_id;
-        var $date;
+        var $date_start;
+        var $date_end;
 
         function __construct($id = NULL, $contenu = NULL){
             $this->id = $id;
@@ -25,7 +26,8 @@
             $this->epouse = NULL;
             $this->temoins = array();
             $this->parrains = array();
-            $this->date = NULL;
+            $this->date_start = NULL;
+            $this->date_end = NULL;
         }
 
         function set_contenu($contenu){
@@ -41,7 +43,9 @@
         }
 
         function set_date($date){
-            $this->date = $date;
+            $dates = read_date($date);
+            $this->date_start = $dates[0];
+            $this->date_end = $dates[1];
         }
 
         function add_temoin($temoin){
@@ -72,8 +76,10 @@
                 $this->set_epoux(new Personne($row["epoux"]));
             if(isset($row["epouse"]))
                 $this->set_epouse(new Personne($row["epouse"]));
-            if(isset($row["date"]))
-                $this->set_date($row["date"]);
+            if(isset($row["date_start"]))
+                $this->date_start = $row["date_start"];
+            if(isset($row["date_end"]))
+                $this->date_end = $row["date_end"];
         }
 
         public function values_into_db(){
@@ -82,8 +88,10 @@
                 $values["epoux"] = $this->epoux->id;
             if(isset($this->epouse, $this->epouse->id))
                 $values["epouse"] = $this->epouse->id;
-            if(isset($this->date))
-                $values["date"] = $this->date;
+            if(isset($this->date_start))
+                $values["date_start"] = $this->date_start;
+            if(isset($this->date_end))
+                $values["date_end"] = $this->date_end;
             return $values;
         }
 

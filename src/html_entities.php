@@ -363,4 +363,13 @@
         return $str;
     }
 
+    function html_date($date_start, $date_end){
+        $str = "";
+        if($date_start == $date_end)
+            $str = "$date_start";
+        else
+            $str = "$date_start / $date_end";
+        return "<div class='date'>$str</div>";
+    }
+
 ?>

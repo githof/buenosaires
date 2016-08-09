@@ -48,7 +48,7 @@
             DATE
         </div>
         <div class="detail_div_contenu">
-            <?php echo $acte->date; ?>
+            <?php echo html_date($acte->date_start, $acte->date_end); ?>
         </div>
     </div>
     <div class="detail_div flex_vertical">

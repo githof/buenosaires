@@ -37,4 +37,30 @@
         );
     }
 
+    function read_date($date){
+        $split = explode('-', trim($date));
+        if(count($split) == 3){
+            $d = format_date($split[2], $split[1], $split[0]);
+            return [$d, $d];
+        }else if(count($split) == 1){
+            return [
+                format_date($split[0], "01", "01"),
+                format_date($split[0], "12", "31")
+            ];
+        }
+        return NULL;
+    }
+
+    function format_date($year, $month, $day){
+        return fill_number($year, 4)
+            . "-" . fill_number($month, 2)
+            . "-" . fill_number($day, 2);
+    }
+
+    function fill_number($str, $length){
+        while(strlen($str) < $length)
+            $str = "0" . $str;
+        return $str;
+    }
+
 ?>
