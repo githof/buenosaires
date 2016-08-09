@@ -286,60 +286,6 @@
         </table>";
     }
 
-    // function html_periode($periode){
-    //     $d_m = $periode->values["debut_min"];
-    //     $d_M = $periode->values["debut_max"];
-    //     $f_m = $periode->values["fin_min"];
-    //     $f_M = $periode->values["fin_max"];
-    //
-    //     return "
-    //     <div class='periode'>
-    //         <div class='periode_part'>
-    //             <div class='periode_debut'>début</div>
-    //             <div class='periode_min_max'>
-    //                 <div class='periode_max'>
-    //                     <div class='periode_max_title'>
-    //                         max
-    //                     </div>
-    //                     <div class='periode_value'>
-    //                         $d_M
-    //                     </div>
-    //                 </div>
-    //                 <div class='periode_min'>
-    //                     <div class='periode_max_title'>
-    //                         min
-    //                     </div>
-    //                     <div class='periode_value'>
-    //                         $d_m
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //         <div class='periode_part'>
-    //             <div class='periode_min_max'>
-    //                 <div class='periode_max'>
-    //                     <div class='periode_value'>
-    //                         $f_M
-    //                     </div>
-    //                     <div class='periode_max_title'>
-    //                         max
-    //                     </div>
-    //                 </div>
-    //                 <div class='periode_min'>
-    //                     <div class='periode_value'>
-    //                         $f_m
-    //                     </div>
-    //                     <div class='periode_max_title'>
-    //                         min
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //             <div class='periode_fin'>fin</div>
-    //         </div>
-    //     </div>
-    //     ";
-    // }
-
     function html_personne_link($personne){
         $full_name = html_personne_full_name($personne);
         return "
