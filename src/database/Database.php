@@ -124,6 +124,7 @@
         public function query($requete){
             global $log;
 
+            $log->i(trim($requete));
             $m = microtime(TRUE);
             $result = parent::query($requete);
             $m = microtime(TRUE) - $m;
@@ -131,7 +132,6 @@
                 $log->e("SQL error : $this->error");
                 return FALSE;
             }
-            $log->i(trim($requete));
             $log->d("exec time: ".($m*1000)." ms");
             return $result;
         }

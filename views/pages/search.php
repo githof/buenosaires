@@ -56,20 +56,23 @@
                     <div class="form-group">
                         <label for="acte_date_start">A partir de</label>
                         <input type="date" name="acte_date_start" id="acte_date_start">
+                        <p class="help-block">Format: AAAA-MM-JJ</p>
                     </div>
                     <div class="form-group">
                         <label for="acte_date_end">Avant</label>
                         <input type="date" name="acte_date_end" id="acte_date_end">
+                        <p class="help-block">Format: AAAA-MM-JJ</p>
                     </div>
                     <div class="form-group">
-                        <label for="acte_family_name">Concernant la famille</label>
-                        <select multiple="multiple" name="acte_family_name" id="acte_family_name">
+                        <label for="acte_family_name">Contenant les familles</label>
+                        <select multiple="multiple" name="acte_family_name[]" id="acte_family_name">
                             <?php echo all_family_name(); ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Rechercher">
                     </div>
+                    <input type="hidden" name="type" value="acte">
                 </form>
             </div>
         </section>
@@ -95,6 +98,7 @@
                     <div class="form-group">
                         <input type="submit" value="Rechercher">
                     </div>
+                    <input type="hidden" name="type" value="personne">
                 </form>
             </div>
         </section>

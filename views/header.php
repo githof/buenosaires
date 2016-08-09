@@ -65,7 +65,7 @@
     <li>
         <!-- <a href="gestion/viewActes.php"> -->
         <a href="./recherche">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
             <span class="nav_item">Recherche</span>
         </a>
     </li>
