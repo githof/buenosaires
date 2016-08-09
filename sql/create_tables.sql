@@ -125,7 +125,8 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`acte` (
   `id` INT NOT NULL,
   `epoux` INT NULL,
   `epouse` INT NULL,
-  `date` VARCHAR(45) NULL,
+  `date_start` DATE NULL,
+  `date_end` DATE NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_acte_personne1`
     FOREIGN KEY (`epoux`)
