@@ -4,7 +4,6 @@
 
     function search_actes(){
         global $mysqli, $ARGS;
-        var_dump($ARGS);
 
         $date_start = (isset($ARGS["acte_date_start"]))? $ARGS["acte_date_start"] : NULL;
         $date_end = (isset($ARGS["acte_date_end"]))? $ARGS["acte_date_end"] : NULL;
