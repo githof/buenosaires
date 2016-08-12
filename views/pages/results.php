@@ -20,15 +20,7 @@
 
         $select_relation_with_noms = "";
         if(isset($noms_id) && count($noms_id) > 0){
-            $names = "";
-            $i = 0;
-            foreach($noms_id as $nom_id){
-                $names .= "'".$mysqli->real_escape_string($nom_id)."'";
-                if($i < count($noms_id)-1)
-                    $names .= ", ";
-                $i++;
-            }
-
+            $noms = ensemble_str($noms_id, ", ");
             $select_relation_with_noms = "
                 SELECT acte_has_relation.acte_id
                 FROM relation INNER JOIN nom_personne AS nom_personne1
@@ -37,7 +29,8 @@
                 ON relation.pers_destination_id = nom_personne.personne_id
                 INNER JOIN acte_has_relation
                 ON relation.id = acte_has_relation.relation_id
-                WHERE nom_personne1.nom_id IN ($names) OR nom_personne.nom_id IN ($names)
+                WHERE nom_personne1.nom_id IN ($noms)
+                OR nom_personne.nom_id IN ($noms)
             ";
         }
 
@@ -55,6 +48,64 @@
             FROM acte
             $where
         ");
+    }
+
+    function search_personnes(){
+        global $mysqli, $ARGS;
+
+        $date_start = (isset($ARGS["personne_date_start"]))? $ARGS["personne_date_start"] : NULL;
+        $date_end = (isset($ARGS["personne_date_end"]))? $ARGS["personne_date_end"] : NULL;
+        $noms_id = (isset($ARGS["personne_noms"]))? $ARGS["personne_noms"] : NULL;
+        $prenoms_id = (isset($ARGS["personne_prenoms"]))? $ARGS["personne_prenoms"] : NULL;
+
+        $where_noms = NULL;
+        $where_prenoms = NULL;
+
+        if(isset($noms_id) && count($noms_id) > 0){
+            $noms = ensemble_str($noms_id, ", ");
+            $where_noms = "
+                SELECT personne_id
+                FROM nom_personne
+                WHERE nom_id IN ($noms)
+            ";
+        }
+
+        if(isset($prenoms_id) && count($prenoms_id) > 0){
+            $prenoms = ensemble_str($prenoms_id, ", ");
+            $where_prenoms = "
+                SELECT personne_id
+                FROM prenom_personne
+                WHERE prenom_id IN ($prenoms)
+            ";
+        }
+
+        $where = "";
+        if(isset($where_noms, $where_prenoms)){
+            $where = "WHERE id IN ($where_noms) OR id IN ($where_prenoms)";
+        }else if(isset($where_noms)){
+            $where = "WHERE id IN ($where_noms)";
+        }else if(isset($where_prenoms)){
+            $where = "WHERE id IN ($where_prenoms)";
+        }
+
+        return $mysqli->query("
+            SELECT id
+            FROM personne
+            $where
+        ");
+    }
+
+    function ensemble_str($tab, $separator){
+        $str = "";
+        $i = 0;
+        $length = count($tab);
+        foreach($tab as $entry){
+            $str .= "'$entry'";
+            if($i < $length -1)
+                $str .= "$separator";
+            $i++;
+        }
+        return $str;
     }
 
     function print_result_actes($results){
@@ -82,7 +133,7 @@
         }
 
         return "
-            <table class='table table-striped table-hover'
+            <table class='table table-striped table-hover'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -90,6 +141,25 @@
                         <th>Epouse</th>
                         <th>Date</th>
                     </tr>
+                </thead>
+                <tbody>
+                    $str
+                </tbody>
+            </table>
+        ";
+    }
+
+    function print_result_personnes($results){
+        $str = "";
+        while($row = $results->fetch_assoc()){
+            $html_personne = html_personne_link(personne_memory($row["id"]));
+            $str .= "<tr><td>$html_personne</td></tr>";
+        }
+
+        return "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr><th>Personne</th></tr>
                 </thead>
                 <tbody>
                     $str
@@ -120,7 +190,9 @@
         if($results != FALSE)
             $html = print_result_actes($results);
     }else if(isset($ARGS["type"]) && $ARGS["type"] == "personne"){
-
+        $results = search_personnes();
+        if($results != FALSE)
+            $html = print_result_personnes($results);
     }else{
         $html = "Formulaire de recherche incomplet";
     }

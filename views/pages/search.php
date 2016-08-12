@@ -95,14 +95,14 @@
         <section>
             <div>
                 <form method="get" action="resultat">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="personne_date_start">A partir de</label>
                         <input type="date" name="personne_date_start" id="personne_date_start">
                     </div>
                     <div class="form-group">
                         <label for="personne_date_end">Avant</label>
                         <input type="date" name="personne_date_end" id="personne_date_end">
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="personne_noms">Avec pour nom(s) de famille</label>
                         <select multiple="multiple" name="personne_noms[]" id="personne_noms">
