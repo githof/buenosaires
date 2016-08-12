@@ -56,7 +56,7 @@
             CONDITIONS
         </div>
         <div class="detail_div_contenu">
-            <?php echo html_conditions($acte->get_conditions()); ?>
+            <?php echo html_conditions($acte->get_conditions(), TRUE); ?>
         </div>
     </div>
     <div class="detail_div flex_vertical">

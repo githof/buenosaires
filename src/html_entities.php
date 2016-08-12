@@ -249,33 +249,45 @@
         </table>";
     }
 
-    function html_condition($condition){
-        $personne = html_personne_link(personne_memory($condition->personne->id));
+    function html_condition($condition, $show_personne = FALSE){
+        $personne = "";
         $source_name = $condition->get_source_name();
         $actes_html = "";
         foreach($condition->get_actes() as $acte)
             $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
+
+        if($show_personne){
+            $personne = html_personne_link(personne_memory($condition->personne->id));
+            $personne = "<td>$personne</td>";
+        }
+
         return "
         <tr>
             <td>$condition->text</td>
+            $personne
             <td>$source_name</td>
             <td>$actes_html</td>
         </tr>";
     }
 
-    function html_conditions($conditions){
+    function html_conditions($conditions, $show_personne = FALSE){
+        $personne_column = "";
         $rows = "";
         foreach($conditions as $condition)
-            $rows .= html_condition($condition);
+            $rows .= html_condition($condition, $show_personne);
 
         if(strlen($rows) == 0)
             return "";
+
+        if($show_personne)
+            $personne_column = "<th>Personne</th>";
 
         return  "
         <table class='table table-striped table-hover table-condensed'>
             <thead>
                 <tr>
                     <th>Condition</th>
+                    $personne_column
                     <th>Source</th>
                     <th>Actes</th>
                 </tr>
