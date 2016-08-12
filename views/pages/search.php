@@ -13,12 +13,9 @@
         return $str;
     }
 
-    function all_family_name($with_aucun = FALSE){
+    function all_noms(){
         global $mysqli;
         $str = "";
-
-        if($with_aucun)
-            $str .= "<option value='0'>Aucun</option>";
 
         $result = $mysqli->query("
             SELECT nom.id AS id, no_accent, value
@@ -32,6 +29,23 @@
                 if(isset($row["value"]) && $row["value"] != "NULL")
                     $attribut_str = "{$row["value"]} ";
                 $str .= "<option value='{$row["id"]}'>$attribut_str{$row["no_accent"]}</option>";
+            }
+        }
+        return $str;
+    }
+
+    function all_prenoms(){
+        global $mysqli;
+        $str = "";
+
+        $result = $mysqli->query("
+            SELECT id, no_accent
+            FROM prenom
+            ORDER BY no_accent
+        ");
+        if($result != FALSE && $result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
             }
         }
         return $str;
@@ -64,9 +78,9 @@
                         <p class="help-block">Format: AAAA-MM-JJ</p>
                     </div>
                     <div class="form-group">
-                        <label for="acte_family_name">Contenant les familles</label>
-                        <select multiple="multiple" name="acte_family_name[]" id="acte_family_name">
-                            <?php echo all_family_name(); ?>
+                        <label for="acte_noms">Contenant les personnes avec pour nom de famille</label>
+                        <select multiple="multiple" name="acte_noms[]" id="acte_noms">
+                            <?php echo all_noms(); ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -90,9 +104,15 @@
                         <input type="date" name="personne_date_end" id="personne_date_end">
                     </div>
                     <div class="form-group">
-                        <label for="personne_family_name">Concernant la famille</label>
-                        <select name="personne_family_name" id="personne_family_name">
-                            <?php echo all_family_name(TRUE); ?>
+                        <label for="personne_noms">Avec pour nom(s) de famille</label>
+                        <select multiple="multiple" name="personne_noms[]" id="personne_noms">
+                            <?php echo all_noms(); ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personne_prenoms">Avec pour prenom(s)</label>
+                        <select multiple="multiple" name="personne_prenoms[]" id="personne_prenoms">
+                            <?php echo all_prenoms(); ?>
                         </select>
                     </div>
                     <div class="form-group">

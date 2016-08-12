@@ -7,7 +7,7 @@
 
         $date_start = (isset($_POST["acte_date_start"]))? $mysqli->real_escape_string($_POST["acte_date_start"]) : NULL;
         $date_end = (isset($_POST["acte_date_end"]))? $mysqli->real_escape_string($_POST["acte_date_end"]) : NULL;
-        $family_names_id = (isset($_POST["acte_family_name"]))? $_POST["acte_family_name"] : NULL;
+        $noms_id = (isset($_POST["acte_noms"]))? $mysqli->real_escape_string($_POST["acte_noms"]) : NULL;
 
         $where = "";
         if(isset($date_start) && strlen($date_start) > 0)
@@ -18,18 +18,18 @@
             $where .= " date_end <= '$date_end'";
         }
 
-        $select_relation_with_family_names = "";
-        if(isset($family_names_id) && count($family_names_id) > 0){
+        $select_relation_with_noms = "";
+        if(isset($noms_id) && count($noms_id) > 0){
             $names = "";
             $i = 0;
-            foreach($family_names_id as $family_name_id){
-                $names .= "'".$mysqli->real_escape_string($family_name_id)."'";
-                if($i < count($family_names_id)-1)
+            foreach($noms_id as $nom_id){
+                $names .= "'".$mysqli->real_escape_string($nom_id)."'";
+                if($i < count($noms_id)-1)
                     $names .= ", ";
                 $i++;
             }
 
-            $select_relation_with_family_names = "
+            $select_relation_with_noms = "
                 SELECT acte_has_relation.acte_id
                 FROM relation INNER JOIN nom_personne AS nom_personne1
                 ON relation.pers_source_id = nom_personne1.personne_id
@@ -41,10 +41,10 @@
             ";
         }
 
-        if(strlen($select_relation_with_family_names) > 0){
+        if(strlen($select_relation_with_noms) > 0){
             if(strlen($where) > 0)
                 $where .= " AND ";
-            $where .= " id IN ($select_relation_with_family_names)";
+            $where .= " id IN ($select_relation_with_noms)";
         }
 
         if(strlen($where) > 0)
