@@ -63,4 +63,13 @@
         return $str;
     }
 
+    function endsWith($str, $end){
+        $length = strlen($end);
+        if ($length == 0) {
+            return true;
+        }
+
+        return (substr($str, -$length) === $end);
+    }
+
 ?>

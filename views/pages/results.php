@@ -3,11 +3,12 @@
     include_once(ROOT."src/html_entities.php");
 
     function search_actes(){
-        global $mysqli;
+        global $mysqli, $ARGS;
+        var_dump($ARGS);
 
-        $date_start = (isset($_POST["acte_date_start"]))? $mysqli->real_escape_string($_POST["acte_date_start"]) : NULL;
-        $date_end = (isset($_POST["acte_date_end"]))? $mysqli->real_escape_string($_POST["acte_date_end"]) : NULL;
-        $noms_id = (isset($_POST["acte_noms"]))? $mysqli->real_escape_string($_POST["acte_noms"]) : NULL;
+        $date_start = (isset($ARGS["acte_date_start"]))? $ARGS["acte_date_start"] : NULL;
+        $date_end = (isset($ARGS["acte_date_end"]))? $ARGS["acte_date_end"] : NULL;
+        $noms_id = (isset($ARGS["acte_noms"]))? $ARGS["acte_noms"] : NULL;
 
         $where = "";
         if(isset($date_start) && strlen($date_start) > 0)
@@ -99,13 +100,27 @@
     }
 
 
+    $ARGS = [];
+    $args = explode("&", $url_parsed["args"]);
+    foreach($args as $arg){
+        $split = explode("=", $arg);
+        if(endsWith($split[0], "[]")){
+            $key = substr($split[0],0, strlen($split[0]) -2);
+            if(!isset($ARGS[$key]))
+                $ARGS[$key] = [];
+            if(strlen($split[1]) > 0)
+                $ARGS[$key][] = $mysqli->real_escape_string($split[1]);
+        }else if(strlen($split[1]) > 0)
+            $ARGS[$split[0]] = $mysqli->real_escape_string($split[1]);
+    }
+
     $html = "";
 
-    if(isset($_POST["type"]) && $_POST["type"] == "acte"){
+    if(isset($ARGS["type"]) && $ARGS["type"] == "acte"){
         $results = search_actes();
         if($results != FALSE)
             $html = print_result_actes($results);
-    }else if(isset($_POST["type"]) && $_POST["type"] == "personne"){
+    }else if(isset($ARGS["type"]) && $ARGS["type"] == "personne"){
 
     }else{
         $html = "Formulaire de recherche incomplet";

@@ -66,7 +66,7 @@
     <div role="tabpanel" class="tab-pane active" id="actes">
         <section>
             <div>
-                <form method="post" action="resultat">
+                <form method="get" action="resultat">
                     <div class="form-group">
                         <label for="acte_date_start">A partir de</label>
                         <input type="date" name="acte_date_start" id="acte_date_start">
@@ -94,7 +94,7 @@
     <div role="tabpanel" class="tab-pane" id="personnes">
         <section>
             <div>
-                <form method="post" action="resultat">
+                <form method="get" action="resultat">
                     <div class="form-group">
                         <label for="personne_date_start">A partir de</label>
                         <input type="date" name="personne_date_start" id="personne_date_start">
