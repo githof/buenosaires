@@ -56,6 +56,23 @@
             $this->parrains[] = $parrain;
         }
 
+        function recursive_link_conditions_and_relations($personne){
+            global $mysqli;
+            
+            if(isset($personne->id) && $personne->is_valid()){
+                foreach($personne->relations as $relation)
+                    $mysqli->into_db_acte_has_relation($this, $relation);
+
+                foreach($personne->conditions as $condition)
+                    $mysqli->into_db_acte_has_condition($this, $condition);
+
+                if(isset($personne->pere))
+                    $this->recursive_link_conditions_and_relations($personne->pere);
+                if(isset($personne->mere))
+                    $this->recursive_link_conditions_and_relations($personne->mere);
+            }
+        }
+
 
         // DATABASE IO
 
@@ -157,13 +174,7 @@
 
             $mysqli->start_transaction();
             foreach($personnes as $personne){
-                if(isset($personne->id) && $personne->is_valid()){
-                    foreach($personne->relations as $relation)
-                        $mysqli->into_db_acte_has_relation($this, $relation);
-
-                    foreach($personne->conditions as $condition)
-                        $mysqli->into_db_acte_has_condition($this, $condition);
-                }
+                $this->recursive_link_conditions_and_relations($personne);
             }
 
             $this->contenu_into_db();
