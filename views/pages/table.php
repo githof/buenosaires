@@ -41,6 +41,30 @@
             </table>";
     }
 
+    function print_table_personne($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $html_personne = html_personne_link(personne_memory($row["id"]));
+            $rows .= "
+                <tr>
+                    <td><a href='personne/{$row["id"]}'>{$row["id"]}</a></td>
+                    <td>$html_personne</td>
+                </tr>";
+        }
+        return "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                    </tr>
+                <thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
@@ -52,6 +76,8 @@
 
         if($table_name == "acte")
             return print_table_acte($results);
+        if($table_name == "personne")
+            return print_table_personne($results);
     }
 
     // function add_link($table_name, $column_name, $value){
