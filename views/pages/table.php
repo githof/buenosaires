@@ -41,6 +41,29 @@
             </table>";
     }
 
+    function print_table_acte_contenu($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $rows .= "
+                <tr>
+                    <td><a href='acte/{$row["acte_id"]}'>{$row["acte_id"]}</a></td>
+                    <td>{$row["contenu"]}</td>
+                </tr>";
+        }
+        return "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>ID acte</th>
+                        <th>Contenu</th>
+                    </tr>
+                <thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+    }
+
     function print_table_personne($results){
         $rows = "";
         while($row = $results->fetch_assoc()){
@@ -78,6 +101,8 @@
             return print_table_acte($results);
         if($table_name == "personne")
             return print_table_personne($results);
+        if($table_name == "acte_contenu")
+            return print_table_acte_contenu($results);
     }
 
     // function add_link($table_name, $column_name, $value){
