@@ -14,6 +14,9 @@
 <?php
     }else{
 ?>
+<div class="detail_options">
+    <a class="btn btn-danger btn-sm" href="supprimer/acte/<?php echo $acte->id; ?>">Supprimer l'acte</a>
+</div>
 <div class="detail_container">
     <div class="detail_div flex_horizontal">
         <div class="detail_div_title">

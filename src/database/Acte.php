@@ -58,7 +58,7 @@
 
         function recursive_link_conditions_and_relations($personne){
             global $mysqli;
-            
+
             if(isset($personne->id) && $personne->is_valid()){
                 foreach($personne->relations as $relation)
                     $mysqli->into_db_acte_has_relation($this, $relation);
@@ -71,6 +71,78 @@
                 if(isset($personne->mere))
                     $this->recursive_link_conditions_and_relations($personne->mere);
             }
+        }
+
+        function contenu_into_db(){
+            global $mysqli;
+
+            $contenu = $mysqli->real_escape_string($this->contenu);
+            $values = [
+                "acte_id" => $this->id,
+                "contenu" => $contenu
+            ];
+
+            return $mysqli->insert(
+                "acte_contenu",
+                $values,
+                " ON DUPLICATE KEY UPDATE contenu='$contenu'");
+        }
+
+        function get_conditions(){
+            global $mysqli;
+            $conditions = [];
+
+            $result = $mysqli->query("
+                SELECT *
+                FROM acte_has_condition INNER JOIN `condition`
+                ON acte_has_condition.condition_id = `condition`.id
+                WHERE acte_has_condition.acte_id = '$this->id'
+            ");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $conditions[] = new Condition(
+                        $row["id"],
+                        $row["text"],
+                        new Personne($row["personne_id"]),
+                        $row["source_id"]
+                    );
+                }
+            }
+            return $conditions;
+        }
+
+        function get_relations(){
+            global $mysqli;
+            $relations = [];
+
+            $result = $mysqli->query("
+                SELECT *
+                FROM acte_has_relation INNER JOIN relation
+                ON acte_has_relation.relation_id = relation.id
+                WHERE acte_has_relation.acte_id = '$this->id'
+            ");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $relations[] = new Relation(
+                        $row["id"],
+                        new Personne($row["pers_source_id"]),
+                        new Personne($row["pers_destination_id"]),
+                        $row["statut_id"]
+                    );
+                }
+            }
+            return $relations;
+        }
+
+        function get_contenu(){
+            global $mysqli;
+
+            $result = $mysqli->select("acte_contenu", ["contenu"], "acte_id='$this->id'");
+            if($result != FALSE && $result->num_rows == 1){
+                $row = $result->fetch_assoc();
+                return $row["contenu"];
+            }
+            return "";
         }
 
 
@@ -179,78 +251,6 @@
 
             $this->contenu_into_db();
             $mysqli->end_transaction();
-        }
-
-        function contenu_into_db(){
-            global $mysqli;
-
-            $contenu = $mysqli->real_escape_string($this->contenu);
-            $values = [
-                "acte_id" => $this->id,
-                "contenu" => $contenu
-            ];
-
-            return $mysqli->insert(
-                "acte_contenu",
-                $values,
-                " ON DUPLICATE KEY UPDATE contenu='$contenu'");
-        }
-
-        function get_conditions(){
-            global $mysqli;
-            $conditions = [];
-
-            $result = $mysqli->query("
-                SELECT *
-                FROM acte_has_condition INNER JOIN `condition`
-                ON acte_has_condition.condition_id = `condition`.id
-                WHERE acte_has_condition.acte_id = $this->id
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $conditions[] = new Condition(
-                        $row["id"],
-                        $row["text"],
-                        new Personne($row["personne_id"]),
-                        $row["source_id"]
-                    );
-                }
-            }
-            return $conditions;
-        }
-
-        function get_relations(){
-            global $mysqli;
-            $relations = [];
-
-            $result = $mysqli->query("
-                SELECT *
-                FROM acte_has_relation INNER JOIN relation
-                ON acte_has_relation.relation_id = relation.id
-                WHERE acte_has_relation.acte_id = $this->id
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $relations[] = new Relation(
-                        $row["id"],
-                        new Personne($row["pers_source_id"]),
-                        new Personne($row["pers_destination_id"]),
-                        $row["statut_id"]
-                    );
-                }
-            }
-            return $relations;
-        }
-
-        function get_contenu(){
-            global $mysqli;
-
-            $result = $mysqli->select("acte_contenu", ["contenu"], "acte_id='$this->id'");
-            if($result != FALSE && $result->num_rows == 1){
-                $row = $result->fetch_assoc();
-                return $row["contenu"];
-            }
-            return "";
         }
     }
 
