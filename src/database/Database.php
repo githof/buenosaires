@@ -493,6 +493,8 @@
             foreach($personnes_id as $personne_id){
                 $this->delete_personne($personne_id);
             }
+
+            $this->remove_unused_prenoms_noms();
         }
 
         public function delete_personne($personne_id){
@@ -522,8 +524,6 @@
 
             $this->delete("prenom_personne", "personne_id='$personne_id'");
             $this->delete("nom_personne", "personne_id='$personne_id'");
-
-            $this->remove_unused_prenoms_noms();
 
             $this->delete("personne", "id='$personne_id'");
         }
