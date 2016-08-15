@@ -111,6 +111,29 @@
         </table>";
     }
 
+    function print_table_condition($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $condition = new Condition();
+            $condition->result_from_db($row);
+            $rows .= html_condition($condition, TRUE);
+        }
+        return  "
+        <table class='table table-striped table-hover table-condensed'>
+            <thead>
+                <tr>
+                    <th>Condition</th>
+                    <th>Personne</th>
+                    <th>Source</th>
+                    <th>Actes</th>
+                </tr>
+            </thead>
+            <tbody>
+                $rows
+            </tbody>
+        </table>";
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
@@ -128,6 +151,8 @@
             return print_table_acte_contenu($results);
         if($table_name == "relation")
             return print_table_relation($results);
+        if($table_name == "condition")
+            return print_table_condition($results);
     }
 
     // function add_link($table_name, $column_name, $value){
