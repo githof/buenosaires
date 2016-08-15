@@ -157,6 +157,29 @@
             </table>";
     }
 
+    function print_table_status($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $rows .= "
+                <tr>
+                    <td>{$row["id"]}</td>
+                    <td>{$row["valeur"]}</td>
+                </tr>";
+        }
+        return  "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
@@ -178,6 +201,8 @@
             return print_table_condition($results);
         if($table_name == "source")
             return print_table_source($results);
+        if($table_name == "statut")
+            return print_table_status($results);
     }
 
     // function add_link($table_name, $column_name, $value){
