@@ -88,6 +88,29 @@
             </table>";
     }
 
+    function print_table_relation($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $relation = new Relation();
+            $relation->result_from_db($row);
+            $rows .= html_relation($relation);
+        }
+        return  "
+        <table class='table table-striped table-hover'>
+            <thead>
+                <tr>
+                    <th>Personne source</th>
+                    <th>Statut</th>
+                    <th>Personne destination</th>
+                    <th>Actes</th>
+                </tr>
+            </thead>
+            <tbody>
+                $rows
+            </tbody>
+        </table>";
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
@@ -103,6 +126,8 @@
             return print_table_personne($results);
         if($table_name == "acte_contenu")
             return print_table_acte_contenu($results);
+        if($table_name == "relation")
+            return print_table_relation($results);
     }
 
     // function add_link($table_name, $column_name, $value){
