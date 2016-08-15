@@ -96,19 +96,19 @@
             $rows .= html_relation($relation);
         }
         return  "
-        <table class='table table-striped table-hover'>
-            <thead>
-                <tr>
-                    <th>Personne source</th>
-                    <th>Statut</th>
-                    <th>Personne destination</th>
-                    <th>Actes</th>
-                </tr>
-            </thead>
-            <tbody>
-                $rows
-            </tbody>
-        </table>";
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>Personne source</th>
+                        <th>Statut</th>
+                        <th>Personne destination</th>
+                        <th>Actes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
     }
 
     function print_table_condition($results){
@@ -119,19 +119,42 @@
             $rows .= html_condition($condition, TRUE);
         }
         return  "
-        <table class='table table-striped table-hover table-condensed'>
-            <thead>
+            <table class='table table-striped table-hover table-condensed'>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Personne</th>
+                        <th>Source</th>
+                        <th>Actes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+    }
+
+    function print_table_source($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $rows .= "
                 <tr>
-                    <th>Condition</th>
-                    <th>Personne</th>
-                    <th>Source</th>
-                    <th>Actes</th>
-                </tr>
-            </thead>
-            <tbody>
-                $rows
-            </tbody>
-        </table>";
+                    <td>{$row["id"]}</td>
+                    <td>{$row["valeur"]}</td>
+                </tr>";
+        }
+        return  "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
     }
 
     function print_table($table_name){
@@ -153,6 +176,8 @@
             return print_table_relation($results);
         if($table_name == "condition")
             return print_table_condition($results);
+        if($table_name == "source")
+            return print_table_source($results);
     }
 
     // function add_link($table_name, $column_name, $value){
