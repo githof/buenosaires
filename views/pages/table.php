@@ -228,10 +228,49 @@
             </table>";
     }
 
+    function print_table_nom($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $attr = "";
+            if(isset($row["value"]))
+                $attr = $row["value"];
+            $rows .= "
+                <tr>
+                    <td>{$row["id"]}</td>
+                    <td>{$row["nom"]}</td>
+                    <td>{$row["no_accent"]}</td>
+                    <td>$attr</td>
+                </tr>";
+        }
+        return  "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Sans accent</th>
+                        <th>Attribut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
-        $results = $mysqli->select($table_name, ["*"]);
+        if($table_name == "nom"){
+            $results = $mysqli->query("
+                SELECT nom.id AS id, no_accent, nom, value
+                FROM nom LEFT JOIN attribut
+                ON nom.attribut_id = attribut.id
+            ");
+        }else{
+            $results = $mysqli->select($table_name, ["*"]);
+        }
+
         if($results === FALSE){
             $alert->e("Erreur lors de l'affichage de la table $table_name");
             return;
@@ -255,6 +294,8 @@
             return print_table_attribut($results);
         if($table_name == "prenom")
             return print_table_prenom($results);
+        if($table_name == "nom")
+            return print_table_nom($results);
     }
 
     // function add_link($table_name, $column_name, $value){
