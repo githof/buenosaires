@@ -203,6 +203,31 @@
             </table>";
     }
 
+    function print_table_prenom($results){
+        $rows = "";
+        while($row = $results->fetch_assoc()){
+            $rows .= "
+                <tr>
+                    <td>{$row["id"]}</td>
+                    <td>{$row["prenom"]}</td>
+                    <td>{$row["no_accent"]}</td>
+                </tr>";
+        }
+        return  "
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Prenom</th>
+                        <th>Sans accent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+    }
+
     function print_table($table_name){
         global $mysqli, $alert;
 
@@ -228,6 +253,8 @@
             return print_table_status($results);
         if($table_name == "attribut")
             return print_table_attribut($results);
+        if($table_name == "prenom")
+            return print_table_prenom($results);
     }
 
     // function add_link($table_name, $column_name, $value){
