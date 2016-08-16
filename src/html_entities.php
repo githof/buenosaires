@@ -299,15 +299,14 @@
     }
 
     function html_personne_link($personne){
-        $full_name = html_personne_full_name($personne);
+        $full_name = html_personne_full_name($personne, TRUE);
         return "
         <a class='personne_link' href='./personne/$personne->id'>
             $full_name
-            ($personne->id)
         </a>";
     }
 
-    function html_personne_full_name($personne){
+    function html_personne_full_name($personne, $with_id = FALSE){
         $str = "";
         foreach($personne->prenoms as $prenom)
             $str .= "<div class='personne_prenom'>$prenom->prenom</div>";
@@ -318,6 +317,10 @@
                 $attr = $nom->attribut->value . " ";
             $str .="<div class='personne_nom'>$attr$nom->nom</div>";
         }
+
+        if($with_id)
+            $str .= "($personne->id)";
+
         return $str;
     }
 

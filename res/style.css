@@ -253,6 +253,29 @@ section > div {
 	margin-bottom: 10px;
 }
 
+#ms-fusion_personne_list {
+	width: auto;
+	height: 150px;
+}
+
+#ms-fusion_personne_list ul {
+	height: 70%;
+}
+
+#ms-fusion_personne_list .help-block {
+	height: 20%
+}
+
+#ms-fusion_personne_list .ms-selectable, #ms-fusion_personne_list .ms-selection {
+	float: left;
+	width: 45%;
+	height: 100%;
+}
+
+#ms-fusion_personne_list .ms-selection {
+	margin-left: 10%;
+}
+
 /*
 body{
 	margin:0px;

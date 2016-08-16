@@ -34,6 +34,13 @@
             $this->attribut = $attribut;
         }
 
+        function to_String(){
+            $str = "";
+            if(isset($this->attribut, $this->attribut->value))
+                $str = $this->attribut->value . " ";
+            return $str . "$this->nom";
+        }
+
 
         // DATABASE IO
 
