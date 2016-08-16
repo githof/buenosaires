@@ -32,10 +32,16 @@ $(document).ready(function(){
                 });
         },
         afterSelect: function(){
-            this.qs1.cache();
+            var that = this;
+            that.qs1.cache();
+            if(that.$selectionUl.children(".ms-selected").length >= 2)
+                that.$selectableUl.children().addClass("disabled");
         },
         afterDeselect: function(){
-            this.qs1.cache();
+            var that = this;
+            that.qs1.cache();
+            if(that.$selectionUl.children(".ms-selected").length < 2)
+                that.$selectableUl.children().removeClass("disabled");
         }
     });
 })
