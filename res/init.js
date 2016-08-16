@@ -17,13 +17,11 @@ $(document).ready(function(){
 
     $("#fusion_personne_list").multiSelect({
         selectionHeader: "<div class='help-block'>Sélection (max: 2)</div>",
-        selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Personne'>",
+        selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
         afterInit: function(ms){
             var that = this,
                 $selectableSearch = that.$selectableUl.prev(),
-                $selectionSearch = that.$selectionUl.prev(),
-                selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-                selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+                selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
 
             that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
                 .on('keydown', function(e){
