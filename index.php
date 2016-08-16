@@ -79,6 +79,7 @@
             </div>
         </div>
         <script src="res/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="res/quicksearch/jquery.quicksearch.js" type="text/javascript"></script>
         <script src="res/multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
         <script src="res/init.js" type="text/javascript"></script>
     </body>

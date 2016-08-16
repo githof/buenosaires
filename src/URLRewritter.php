@@ -9,6 +9,7 @@
         "/(?'page'resultat)\?(?'args'[^/]+)"            =>  ["results", "résultats"],
         "/(?'page'supprimer)/(?'type'acte)/(?'id'\d+)"  =>  ["delete", "supprimer acte"],
         "/(?'page'import{1})"                           =>  ["import", "import d'acte(s)"],
+        "/(?'page'fusion)"                              =>  ["fusion", "fusion"],
         "/(?'page'logs{1})"                             =>  ["logs", "logs"],
         "/(?'page'new-account{1})"                      =>  ["new_account", "création d'un compte"],
         "/(?'page'disconnect{1})"                       =>  ["disconnect", "déconnexion"],

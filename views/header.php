@@ -70,8 +70,7 @@
         </a>
     </li>
     <li>
-        <!-- <a href="gestion/fusion.php"> -->
-        <a href="./">
+        <a href="./fusion">
             <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
             <span class="nav_item">Fusionner</span>
         </a>
