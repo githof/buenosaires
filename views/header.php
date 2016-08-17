@@ -12,7 +12,7 @@
 
 ?>
 
-<?php if ($account->is_connected){ ?>
+<!-- <?php if ($account->is_connected){ ?>
 <div class="connected">
     <div>
         <h3><?php echo $account->get_full_name(); ?></h3>
@@ -35,70 +35,61 @@
     </form>
     <a href="./new-account"><div class="connexion_btn btn btn-default btn-sm m-t-3">Créer un compte</div></a>
 </div>
-<?php } ?>
-<ul class="nav nav-sidebar">
-    <li>
+<?php } ?> -->
+<p>
+    BUENOS AIRES
+</p>
+<ul>
+    <li data-toggle="tooltip" data-placement="bottom" title="Acceuil">
         <a href="./">
             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-            <span class="nav_item">Accueil</span>
         </a>
     </li>
-	<li>
-        <!-- <a href="accueil/console.php"> -->
+	<!-- <li>
         <a href="./">
             <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
             <span class="nav_item">Console</span>
         </a>
-    </li>
-	<li>
+    </li> -->
+	<li data-toggle="tooltip" data-placement="bottom" title="Import">
         <a href="./import">
             <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-            <span class="nav_item">Import</span>
         </a>
     </li>
-    <li>
+    <li data-toggle="tooltip" data-placement="bottom" title="Export">
         <a href="./export">
             <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-            <span class="nav_item">Export</span>
         </a>
     </li>
-    <li>
-        <!-- <a href="gestion/viewActes.php"> -->
+    <li data-toggle="tooltip" data-placement="bottom" title="Recherche">
         <a href="./recherche">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            <span class="nav_item">Recherche</span>
         </a>
     </li>
-    <li>
+    <li data-toggle="tooltip" data-placement="bottom" title="Fusion">
         <a href="./fusion">
             <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-            <span class="nav_item">Fusionner</span>
         </a>
     </li>
-    <li>
-        <!-- <a href="gestion/dissocier.php"> -->
+    <li data-toggle="tooltip" data-placement="bottom" title="Dissocier">
         <a href="./">
             <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
-            <span class="nav_item">Dissocier</span>
         </a>
     </li>
-    <li>
+    <li data-toggle="tooltip" data-placement="bottom" title="Tables">
         <a href="./table">
             <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-            <span class="nav_item">Tables</span>
         </a>
     </li>
-    <li>
-        <!-- <a href="gestion/viewGroupes.php"> -->
+    <!-- <li>
         <a href="./">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
             <span class="nav_item">Groupe</span>
         </a>
-    </li>
-    <li>
+    </li> -->
+    <li data-toggle="tooltip" data-placement="bottom" title="Logs">
         <a href="./logs">
             <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-            <span class="nav_item">Logs</span>
         </a>
     </li>
 </ul>

@@ -10,17 +10,19 @@ body {
 }
 
 .main {
-	margin-left: 200px;
-	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
 	height: 100vh;
+	width: 980px;
 }
 
 h1{
+	padding-top: 20px;
+	padding-bottom: 20px;
 	text-align: center;
 	text-transform: uppercase;
-	font-size: 30px;
-	height: 7%;
-	border-bottom: 1px solid #c3c3c3;
+	font-size: 20px;
 }
 
 .page{
@@ -28,18 +30,52 @@ h1{
 	width: 100%;
 }
 
-.sidebar{
+.nav-bar{
 	position: fixed;
 	top: 0px;
-	bottom: 0px;
 	left: 0px;
+	right: 0px;
 	background-color: #f5f5f5;
-	height: 100%;
-	border-right: 1px solid #d8d8d8;
-	width: 200px;
+	height: 50px;
+	border-bottom: 1px solid #d8d8d8;
+}
+
+.nav-bar-in {
+	width: 980px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.nav-bar p {
+	display: inline-block;
+	font-size: 20px;
+}
+
+.nav-bar ul {
+	display: inline-block;
+	margin: 0px;
+	line-height: 50px;
+}
+
+.nav-bar li{
+	display: inline-block;
+	font-size: 16px;
+}
+
+.nav-bar li a {
+	display: block;
 	padding-left: 15px;
 	padding-right: 15px;
-	float: left;
+}
+
+.nav-bar li:hover {
+	background: #cce1f3;
+}
+
+.nav_item{
+	font-size: 12px;
+	padding-left: 10px;
+	display: none;
 }
 
 section {
@@ -73,25 +109,6 @@ section > div {
 
 .connexion form{
 	margin-bottom: 10px;
-}
-
-.sidebar li a{
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.sidebar li a:hover{
-	background-color: #dcdcdc;
-}
-
-.sidebar li a span{
-	display: inline;
-}
-
-.nav_item{
-	font-size: 12px;
-	padding-left: 10px;
 }
 
 .connected {

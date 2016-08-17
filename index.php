@@ -7,12 +7,12 @@
     session_start();
 
     $url_parsed = [];
+    $ARGS = [];
     $page_title;
 
-    include_once(ROOT."src/URLRewritter.php");
     include_once(ROOT."config.php");
-    include_once(ROOT."src/log.php");
     include_once(ROOT."src/utils.php");
+    include_once(ROOT."src/log.php");
     include_once(ROOT."src/Alert.php");
     include_once(ROOT."src/account/Account.php");
     include_once(ROOT."src/database/Database.php");
@@ -21,6 +21,8 @@
     $alert = new Alert();
     $mysqli = new Database();
     $account = new Account();
+
+    include_once(ROOT."src/URLRewritter.php");
 
     if(!is_dir(TMP_DIRECTORY))
         mkdir(TMP_DIRECTORY, 0777);
@@ -71,16 +73,16 @@
         <title>Buenos Aires</title>
     </head>
     <body>
-        <div class="">
-            <div class="sidebar">
+        <div class="nav-bar">
+            <div class="nav-bar-in">
                 <?php echo $header_output; ?>
             </div>
-            <div class="main">
-                <?php echo $alerts_output; ?>
-                <h1><?php echo $page_title ?></h1>
-                <div class="page">
-                    <?php echo $page_output; ?>
-                </div>
+        </div>
+        <div class="main">
+            <?php echo $alerts_output; ?>
+            <h1><?php echo $page_title ?></h1>
+            <div class="page">
+                <?php echo $page_output; ?>
             </div>
         </div>
         <script src="res/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>

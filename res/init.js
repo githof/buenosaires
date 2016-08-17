@@ -44,4 +44,9 @@ $(document).ready(function(){
                 that.$selectableUl.children().removeClass("disabled");
         }
     });
+
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
 })
