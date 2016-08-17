@@ -168,21 +168,6 @@
         ";
     }
 
-
-    $ARGS = [];
-    $args = explode("&", $url_parsed["args"]);
-    foreach($args as $arg){
-        $split = explode("=", $arg);
-        if(endsWith($split[0], "[]")){
-            $key = substr($split[0],0, strlen($split[0]) -2);
-            if(!isset($ARGS[$key]))
-                $ARGS[$key] = [];
-            if(strlen($split[1]) > 0)
-                $ARGS[$key][] = $mysqli->real_escape_string($split[1]);
-        }else if(strlen($split[1]) > 0)
-            $ARGS[$split[0]] = $mysqli->real_escape_string($split[1]);
-    }
-
     $html = "";
 
     if(isset($ARGS["type"]) && $ARGS["type"] == "acte"){
