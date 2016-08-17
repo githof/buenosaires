@@ -15,16 +15,6 @@
         ";
     }
 
-    if(isset($_POST['connect_email']) && isset($_POST['connect_pass'])){
-        $account->set_email(safe($_POST['connect_email']));
-        $account->set_password(safe(md5($_POST['connect_pass'])));
-
-        if($account->connect())
-            $alert->add_success("Connexion réussie");
-        else
-            $alert->add_warning("Echec de la connexion");
-    }
-
     $menu_items = [
         ["Acceuil", "home", ""],
         ["Import", "cloud-upload", "import"],
@@ -53,13 +43,16 @@
 
 <?php if ($account->is_connected){ ?>
 <div class="connected">
-    <div>
-        <h3><?php echo $account->get_full_name(); ?></h3>
-    </div>
+    <span><?php echo $account->get_full_name(); ?></span>
     <?php if ($account->get_rang() > 1){ ?>
     <a href="accueil/administration.php"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
-    <a href="./disconnect"><button class="connexion_btn btn btn-default btn-sm m-t-3">Deconnexion</button></a>
+    <form action="" method="post">
+        <input type="hidden" name="action" value="deconnexion">
+        <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Deconnexion' class="connexion_btn btn btn-default btn-sm">
+            <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
+        </button>
+    </form>
 </div>
 <?php } else {?>
 <div class="connexion">
@@ -75,17 +68,18 @@
                 </div>
                 <div class="modal-body">
                     <form name="identification" action="" method="post">
+                        <input type="hidden" name="action" value="connexion">
                         <div class="form-group">
                             <input class="form-control" type="email" name="connect_email" placeholder="Email" />
                         </div>
                         <div class="form-group">
                             <input class="form-control" type="password" name="connect_pass" placeholder="Password" />
                         </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            <input type="submit" class="btn btn-primary" value="Se connecter">
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-primary">Se connecter</button>
                 </div>
             </div>
         </div>

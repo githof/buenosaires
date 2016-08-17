@@ -100,21 +100,14 @@ section > div {
 	margin: 10px;
 }
 
-.connexion{
+.connexion, .connected{
 	display: inline-block;
 	float: right;
 	line-height: 50px;
 }
 
-.connexion form{
-	margin-bottom: 10px;
-}
-
-.connected {
-	margin-top: 20px;
-	margin-bottom: 20px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #d8d8d8;
+.connected form{
+	display: inline-block;
 }
 
 .connexion_btn{

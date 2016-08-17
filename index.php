@@ -27,9 +27,18 @@
     if(!is_dir(TMP_DIRECTORY))
         mkdir(TMP_DIRECTORY, 0777);
 
-    if($account->is_connected && isset($url_parsed["page"]) && $url_parsed["page"] == "disconnect"){
-        $account->disconnect();
-        $alert->add_success("Déconnexion réussie");
+    if(isset($_POST["action"])){
+        if($_POST["action"] == "deconnexion" && $account->is_connected){
+            $account->disconnect();
+            $alert->success("Déconnexion réussie");
+        }else if($_POST["action"] == "connexion" && isset($_POST['connect_email'], $_POST['connect_pass']) && !$account->is_connected){
+            $account->set_email(safe($_POST['connect_email']));
+            $account->set_password(safe(md5($_POST['connect_pass'])));
+            if($account->connect())
+                $alert->success("Connexion réussie");
+            else
+                $alert->warning("Echec de la connexion");
+        }
     }
 
 

@@ -8,11 +8,11 @@
         "/(?'page'recherche)"                           =>  ["search", "recherche"],
         "/(?'page'resultat)\?(?'args'[^/]+)"            =>  ["results", "résultats"],
         "/(?'page'supprimer)/(?'type'acte)/(?'id'\d+)"  =>  ["delete", "supprimer acte"],
+        "/(?'page'get)/(?'script'[^/]+)"                =>  ["", ""],
         "/(?'page'import{1})"                           =>  ["import", "import d'acte(s)"],
         "/(?'page'fusion)"                              =>  ["fusion", "fusion"],
         "/(?'page'logs{1})"                             =>  ["logs", "logs"],
         "/(?'page'new-account{1})"                      =>  ["new_account", "création d'un compte"],
-        "/(?'page'disconnect{1})"                       =>  ["disconnect", "déconnexion"],
         "(?'page'/)"                                    =>  ["accueil", "bienvenue"]
     ];
 
@@ -30,4 +30,19 @@
         }
     }
 
+
+    if(isset($url_parsed["args"])){
+        $args = explode("&", $url_parsed["args"]);
+        foreach($args as $arg){
+            $split = explode("=", $arg);
+            if(endsWith($split[0], "[]")){
+                $key = substr($split[0],0, strlen($split[0]) -2);
+                if(!isset($ARGS[$key]))
+                    $ARGS[$key] = [];
+                if(strlen($split[1]) > 0)
+                    $ARGS[$key][] = $mysqli->real_escape_string($split[1]);
+            }else if(strlen($split[1]) > 0)
+                $ARGS[$split[0]] = $mysqli->real_escape_string($split[1]);
+        }
+    }
 ?>
