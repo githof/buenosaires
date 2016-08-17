@@ -13,13 +13,13 @@
                 $mysqli->from_db($personne);
                 $html = "";
 
+                $html .= " [$personne->id]";
                 foreach($personne->prenoms as $prenom)
                     $html .= " $prenom->prenom";
 
                 foreach($personne->noms as $nom)
                     $html .= " " . $nom->to_String();
 
-                $html .= " ($personne->id)";
                 $str .= "<option value='$personne->id'>$html</option>";
             }
         }

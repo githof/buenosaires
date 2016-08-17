@@ -38,8 +38,13 @@
 
     // CURRENT PAGE
     if(isset($url_parsed["page"])){
-        include_once(ROOT."views/pages/" . $url_parsed["include"] . ".php");
-        $page_title = $url_parsed["title"];
+        if($url_parsed["page"] == "get"){
+            include_once(ROOT."views/get/" . $url_parsed["script"] . "php");
+            exit(0);
+        }else{
+            include_once(ROOT."views/pages/" . $url_parsed["include"] . ".php");
+            $page_title = $url_parsed["title"];
+        }
     }else{
         include_once(ROOT."views/pages/404.php");
         $page_title = "404";
