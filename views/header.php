@@ -1,5 +1,20 @@
 <?php
 
+    function html_item($title, $icon, $url){
+        global $url_parsed;
+
+        $selected = "";
+        if($url == $url_parsed["page"] || $url_parsed["page"] == "/" && $url == "")
+            $selected = "selected-page";
+        return "
+            <li data-toggle='tooltip' data-placement='bottom' title='$title' class='$selected'>
+                <a href='./$url'>
+                    <span class='glyphicon glyphicon-$icon' aria-hidden='true'></span>
+                </a>
+            </li>
+        ";
+    }
+
     if(isset($_POST['connect_email']) && isset($_POST['connect_pass'])){
         $account->set_email(safe($_POST['connect_email']));
         $account->set_password(safe(md5($_POST['connect_pass'])));
@@ -10,9 +25,33 @@
             $alert->add_warning("Echec de la connexion");
     }
 
+    $menu_items = [
+        ["Acceuil", "home", ""],
+        ["Import", "cloud-upload", "import"],
+        ["Export", "cloud-download", "export"],
+        ["Recherche", "search", "recherche"],
+        ["Fusion", "resize-small", "fusion"],
+        //["Dissocier", "resize-full", ""],
+        ["Tables", "align-justify", "table"],
+        ["Logs", "wrench", "logs"],
+        //["Groupe", "user", ""]
+        //["Console", "console", ""]
+    ];
+
+    $html_menu_items = "";
+    foreach($menu_items as $item)
+        $html_menu_items .= html_item($item[0], $item[1], $item[2]);
+
 ?>
 
-<!-- <?php if ($account->is_connected){ ?>
+<p>
+    BUENOS AIRES
+</p>
+<ul>
+    <?php echo $html_menu_items; ?>
+</ul>
+
+<?php if ($account->is_connected){ ?>
 <div class="connected">
     <div>
         <h3><?php echo $account->get_full_name(); ?></h3>
@@ -24,72 +63,33 @@
 </div>
 <?php } else {?>
 <div class="connexion">
-    <form name="identification" action="" method="post">
-        <div class="form-group">
-            <input class="form-control" type="email" name="connect_email" placeholder="Email" />
+    <a type="button" class="connexion_btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-connexion">Connexion</a>
+    <div class="modal fade" id="modal-connexion" tabindex="-1" role="dialog" aria-labellebdy="modal-connexion-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="modal-connexion-label">Connexion</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="identification" action="" method="post">
+                        <div class="form-group">
+                            <input class="form-control" type="email" name="connect_email" placeholder="Email" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" name="connect_pass" placeholder="Password" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary">Se connecter</button>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="connect_pass" placeholder="Password" />
-        </div>
-        <input class="connexion_btn btn btn-primary btn-sm" type="submit" value="Connexion" />
-    </form>
-    <a href="./new-account"><div class="connexion_btn btn btn-default btn-sm m-t-3">Créer un compte</div></a>
+    </div>
+    <a href="./new-account" class="connexion_btn btn btn-default btn-sm">Créer un compte</a>
 </div>
-<?php } ?> -->
-<p>
-    BUENOS AIRES
-</p>
-<ul>
-    <li data-toggle="tooltip" data-placement="bottom" title="Acceuil">
-        <a href="./">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-        </a>
-    </li>
-	<!-- <li>
-        <a href="./">
-            <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
-            <span class="nav_item">Console</span>
-        </a>
-    </li> -->
-	<li data-toggle="tooltip" data-placement="bottom" title="Import">
-        <a href="./import">
-            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-        </a>
-    </li>
-    <li data-toggle="tooltip" data-placement="bottom" title="Export">
-        <a href="./export">
-            <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-        </a>
-    </li>
-    <li data-toggle="tooltip" data-placement="bottom" title="Recherche">
-        <a href="./recherche">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        </a>
-    </li>
-    <li data-toggle="tooltip" data-placement="bottom" title="Fusion">
-        <a href="./fusion">
-            <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-        </a>
-    </li>
-    <li data-toggle="tooltip" data-placement="bottom" title="Dissocier">
-        <a href="./">
-            <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
-        </a>
-    </li>
-    <li data-toggle="tooltip" data-placement="bottom" title="Tables">
-        <a href="./table">
-            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-        </a>
-    </li>
-    <!-- <li>
-        <a href="./">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            <span class="nav_item">Groupe</span>
-        </a>
-    </li> -->
-    <li data-toggle="tooltip" data-placement="bottom" title="Logs">
-        <a href="./logs">
-            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-        </a>
-    </li>
-</ul>
+<?php } ?>
