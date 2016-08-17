@@ -24,6 +24,15 @@ h1{
 	font-size: 20px;
 }
 
+.alert {
+	position: fixed;
+	right: 20px;
+}
+
+.alert .close {
+	padding-left: 5px;
+}
+
 .page{
 	width: 100%;
 }
@@ -210,39 +219,6 @@ section > div {
 	flex-direction: row;
 	justify-content: center;
 	font-size: 12px;
-}
-
-.periode_part {
-	margin-right: 20px;
-	display: flex;
-	flex-direction: row;
-}
-
-.periode_part > div{
-	align-self: center;
-}
-
-.periode_debut, .periode_fin {
-	text-align: center;
-	text-transform: uppercase;
-	margin: 10px;
-	color: #9c9c9c;
-}
-
-.periode_min_max {
-	display: flex;
-	flex-direction: column;
-	white-space: nowrap;
-}
-
-.periode_min, .periode_max {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-
-.periode_max_title, .periode_min_title {
-	color: #9c9c9c;
 }
 
 .relation_statut {

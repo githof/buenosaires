@@ -49,4 +49,10 @@ $(document).ready(function(){
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
+
+
+    $(".alert").fadeOut(5000, function(){
+        $(this).hide();
+        $(this).remove();
+    });
 })
