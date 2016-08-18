@@ -31,11 +31,18 @@ $(document).ready(function(){
                     }
                 });
         },
-        afterSelect: function(){
+        afterSelect: function(values){
             var that = this;
             that.qs1.cache();
             if(that.$selectionUl.children(".ms-selected").length >= 2)
                 that.$selectableUl.children().addClass("disabled");
+
+            console.log(values[0]);
+            $.get("get/fusion_personne_infos?id="+values[0], function(data){
+                $("#result").html(data);
+                console.log("SUCCESS");
+                console.log(data);
+            });
         },
         afterDeselect: function(){
             var that = this;

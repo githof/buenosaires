@@ -28,11 +28,13 @@
 
 ?>
 <section>
+    <h4>Choisir deux personnes à fusionner</h4>
     <div>
         <select multiple="multiple" id="fusion_personne_list">
             <?php echo all_personnes(); ?>
         </select>
     </div>
 </section>
+<div id="results"></div>
 <form method="get" action="">
 </form>

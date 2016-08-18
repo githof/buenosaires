@@ -160,7 +160,7 @@
         </tr>";
     }
 
-    function html_personne_relations($personne){
+    function html_personne_relations($personne, $with_header = TRUE){
         $parents = [];
         $enfants = [];
         $mariage = [];
@@ -234,19 +234,22 @@
             $str .= html_personne_relation($relation->personne_source, "a pour parrain", $relation->get_actes());
         }
 
-        return "
-        <table class='table table-hover table-condensed'>
-            <thead>
-                <tr>
-                    <th>Statut</th>
-                    <th>Personne</th>
-                    <th>Actes</th>
-                </tr>
-            </thead>
-            <tbody>
-                $str
-            </tbody>
-        </table>";
+        if($with_header){
+            $str = "
+                <table class='table table-hover table-condensed'>
+                    <thead>
+                        <tr>
+                            <th>Statut</th>
+                            <th>Personne</th>
+                            <th>Actes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        $str
+                    </tbody>
+                </table>";
+        }
+        return $str;
     }
 
     function html_condition($condition, $show_personne = FALSE){
@@ -270,7 +273,7 @@
         </tr>";
     }
 
-    function html_conditions($conditions, $show_personne = FALSE){
+    function html_conditions($conditions, $show_personne = FALSE, $with_header = TRUE){
         $personne_column = "";
         $rows = "";
         foreach($conditions as $condition)
@@ -282,20 +285,23 @@
         if($show_personne)
             $personne_column = "<th>Personne</th>";
 
-        return  "
-        <table class='table table-striped table-hover table-condensed'>
-            <thead>
-                <tr>
-                    <th>Condition</th>
-                    $personne_column
-                    <th>Source</th>
-                    <th>Actes</th>
-                </tr>
-            </thead>
-            <tbody>
-                $rows
-            </tbody>
-        </table>";
+        if($with_header){
+            return "
+            <table class='table table-striped table-hover table-condensed'>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        $personne_column
+                        <th>Source</th>
+                        <th>Actes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+            </table>";
+        }
+        return $rows;
     }
 
     function html_personne_link($personne){
