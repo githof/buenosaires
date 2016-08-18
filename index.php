@@ -50,7 +50,7 @@
     // CURRENT PAGE
     if(isset($url_parsed["page"])){
         if($url_parsed["page"] == "get"){
-            include_once(ROOT."views/get/" . $url_parsed["script"] . "php");
+            include_once(ROOT."views/get/" . $url_parsed["script"] . ".php");
             exit(0);
         }else{
             include_once(ROOT."views/pages/" . $url_parsed["include"] . ".php");
