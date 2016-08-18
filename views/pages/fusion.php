@@ -35,6 +35,6 @@
         </select>
     </div>
 </section>
-<div id="results"></div>
+<div id="result"></div>
 <form method="get" action="">
 </form>

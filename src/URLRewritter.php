@@ -15,7 +15,7 @@
             =>  ["results", "résultats"],
         "/(?'page'supprimer)/(?'type'acte)/(?'id'\d+)"
             =>  ["delete", "supprimer acte"],
-        "/(?'page'get)/(?'script'[^/]+)(\?(?'args'[^/]+)){0,1}"
+        "/(?'page'get)\?(?'args'[^/]+)"
             =>  ["", ""],
         "/(?'page'import)"
             =>  ["import", "import d'acte(s)"],

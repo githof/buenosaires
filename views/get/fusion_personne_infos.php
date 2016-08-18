@@ -1,5 +1,8 @@
 <?php
 
+    include_once(ROOT."src/html_entities.php");
+
+
     function html_personne_fusion($personne){
         $html = "<div class='fusion-id'>$personne->id</div>";
 
@@ -9,9 +12,11 @@
         foreach($personne->prenoms as $prenom)
             $html .= "<div class='fusion-prenom'>$prenom->prenom</div>";
 
-        $html .= "<div class='fusion-condition'>".html_condition($personne->get_conditions, FALSE, FALSE)."</div>";
+        $html .= "<div class='fusion-condition'>".html_conditions($personne->get_conditions(), FALSE, FALSE)."</div>";
 
         $html .= "<div class='fusion-relations'>".html_personne_relations($personne, FALSE)."</div>";
+
+        return $html;
     }
 
     $html = "";

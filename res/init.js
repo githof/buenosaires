@@ -38,10 +38,11 @@ $(document).ready(function(){
                 that.$selectableUl.children().addClass("disabled");
 
             console.log(values[0]);
-            $.get("get/fusion_personne_infos?id="+values[0], function(data){
+            $.get("get?s=fusion_personne_infos&id="+values[0], function(data, status){
                 $("#result").html(data);
                 console.log("SUCCESS");
                 console.log(data);
+                console.log(status);
             });
         },
         afterDeselect: function(){

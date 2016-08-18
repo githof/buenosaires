@@ -47,9 +47,8 @@
     $is_get = FALSE;
     if(isset($url_parsed["page"])){
         if($url_parsed["page"] == "get"){
-            $view = ROOT."views/get/" . $url_parsed["script"] . ".php";
+            $view = ROOT."views/get/" . $ARGS["s"] . ".php";
             $is_get = TRUE;
-            exit(0);
         }else{
             $view = ROOT."views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
