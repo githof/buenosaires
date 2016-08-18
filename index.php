@@ -42,29 +42,39 @@
     }
 
 
-    // HEADER
-    include_once(ROOT."views/header.php");
-    $header_output = ob_get_clean();
-    ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
-
-    // CURRENT PAGE
+    // VIEW SCRIPT
+    $view = "";
+    $is_get = FALSE;
     if(isset($url_parsed["page"])){
         if($url_parsed["page"] == "get"){
-            include_once(ROOT."views/get/" . $url_parsed["script"] . ".php");
+            $view = ROOT."views/get/" . $url_parsed["script"] . ".php";
+            $is_get = TRUE;
             exit(0);
         }else{
-            include_once(ROOT."views/pages/" . $url_parsed["include"] . ".php");
+            $view = ROOT."views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
         }
     }else{
-        include_once(ROOT."views/pages/404.php");
+        $view = ROOT."views/pages/404.php";
         $page_title = "404";
     }
 
-    $page_output = ob_get_clean();
 
-    // ALERTS
-    $alerts_output = $alert->html_all();
+
+    if($is_get){
+        include_once($view);
+    }else{
+        // HEADER
+        include_once(ROOT."views/header.php");
+        $header_output = ob_get_clean();
+        ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
+
+        // VIEW
+        include_once($view);
+        $page_output = ob_get_clean();
+
+        // ALERTS
+        $alerts_output = $alert->html_all();
 
 ?>
 
@@ -102,6 +112,8 @@
 </html>
 
 <?php
+    }
+
     $mysqli->close();
     $exec_time_script = microtime(TRUE) - $exec_time_script;
     $log->i("EXEC TIME SCRIPT PAGE ".($exec_time_script *1000)." ms");
