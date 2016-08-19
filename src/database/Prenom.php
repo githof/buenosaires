@@ -26,6 +26,10 @@
             $this->no_accent = $no_accent;
         }
 
+        function to_string(){
+            return $this->prenom;
+        }
+
 
         // DATABASE IO
 

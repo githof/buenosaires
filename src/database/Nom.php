@@ -34,7 +34,7 @@
             $this->attribut = $attribut;
         }
 
-        function to_String(){
+        function to_string(){
             $str = "";
             if(isset($this->attribut, $this->attribut->value))
                 $str = $this->attribut->value . " ";
