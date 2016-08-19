@@ -11,11 +11,11 @@
 
             $epoux_str = "";
             if(isset($row["epoux"]))
-                $epoux_str = html_personne_link(personne_memory($row["epoux"]));
+                $epoux_str = html_personne(personne_memory($row["epoux"]));
 
             $epouse_str = "";
             if(isset($row["epouse"]))
-                $epouse_str = html_personne_link(personne_memory($row["epouse"]));
+                $epouse_str = html_personne(personne_memory($row["epouse"]));
 
             $rows .= "
                 <tr>
@@ -67,7 +67,7 @@
     function print_table_personne($results){
         $rows = "";
         while($row = $results->fetch_assoc()){
-            $html_personne = html_personne_link(personne_memory($row["id"]));
+            $html_personne = html_personne(personne_memory($row["id"]), FALSE, FALSE);
             $rows .= "
                 <tr>
                     <td><a href='personne/{$row["id"]}'>{$row["id"]}</a></td>
@@ -93,7 +93,19 @@
         while($row = $results->fetch_assoc()){
             $relation = new Relation();
             $relation->result_from_db($row);
-            $rows .= html_relation($relation);
+
+            $html_statut = html_relation_statut($relation->get_statut_name());
+            $html_source = html_personne(personne_memory($relation->personne_source->id));
+            $html_destination = html_personne(personne_memory($relation->personne_destination->id));
+            $html_actes = html_list_actes($relation->get_actes());
+
+            $rows .= "
+                <tr>
+                    <td>$html_source</td>
+                    <td>$html_statut</td>
+                    <td>$html_destination</td>
+                    <td>$html_actes</td>
+                </tr>";
         }
         return  "
             <table class='table table-striped table-hover'>
@@ -116,7 +128,19 @@
         while($row = $results->fetch_assoc()){
             $condition = new Condition();
             $condition->result_from_db($row);
-            $rows .= html_condition($condition, TRUE);
+
+            $html_text = html_condition_text($condition->text);
+            $html_personne = html_personne(personne_memory($condition->personne->id));
+            $html_source = html_condition_source($condition->get_source_name());
+            $html_actes = html_list_actes($condition->get_actes());
+
+            $rows .= "
+                <tr>
+                    <td>$html_text</td>
+                    <td>$html_personne</td>
+                    <td>$html_source</td>
+                    <td>$html_actes</td>
+                </tr>";
         }
         return  "
             <table class='table table-striped table-hover table-condensed'>
@@ -297,86 +321,6 @@
         if($table_name == "nom")
             return print_table_nom($results);
     }
-
-    // function add_link($table_name, $column_name, $value){
-    //     $link = NULL;
-    //     switch($table_name){
-    //         case "acte":
-    //             switch($column_name){
-    //                 case "id":
-    //                     $link = "./acte/$value";
-    //                     break;
-    //                 case "epoux":
-    //                 case "epouse":
-    //                     $link = "./personne/$value";
-    //                     break;
-    //             }
-    //             break;
-    //         case "acte_contenu":
-    //             switch($column_name){
-    //                 case "acte_id":
-    //                     $link = "./acte/$value";
-    //                     break;
-    //             }
-    //             break;
-    //         case "personne":
-    //             switch($column_name){
-    //                 case "id":
-    //                     $link = "./personne/$value";
-    //                     break;
-    //             }
-    //             break;
-    //         case "relation":
-    //             switch($column_name){
-    //                 case "pers_source_id":
-    //                 case "pers_destination_id":
-    //                     $link = "./personne/$value";
-    //                     break;
-    //             }
-    //             break;
-    //         case "condition":
-    //             switch($column_name){
-    //                 case "personne_id":
-    //                     $link = "./personne/$value";
-    //                     break;
-    //             }
-    //             break;
-    //     }
-    //
-    //     if(isset($link))
-    //         return "<a href='$link'>$value</a>";
-    //     return $value;
-    // }
-
-    // function print_table($table_name){
-    //     global $mysqli, $alert;
-    //
-    //     $rep = $mysqli->select($table_name, ["*"], "");
-    //     if($rep === FALSE){
-    //         $alert->e("Erreur lors de l'affichage de la table $table_name");
-    //         return;
-    //     }
-    //
-    //     echo "<table class='table table-striped table-hover'><thead><tr>";
-    //
-    //     $fields = $rep->fetch_fields();
-    //     foreach ($fields as $val) {
-    //         echo "<th>$val->name</th>";
-    //     }
-    //     echo "</tr></thead><tbody>";
-    //
-    //     while($row = $rep->fetch_row()){
-    //         echo "<tr>";
-    //         for($i = 0; $i < count($row); $i++){
-    //             $value = htmlspecialchars($row[$i]);
-    //             $value = add_link($table_name, $fields[$i]->name, $value);
-    //             echo "<td>$value</td>";
-    //         }
-    //         echo "</tr>";
-    //     }
-    //
-    //     echo "</tbody></tables>";
-    // }
 
     function button_table($text, $nom_table){
         global $url_parsed;
