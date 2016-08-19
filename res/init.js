@@ -6,22 +6,27 @@ function get_personne_infos(id){
             pers = "personne-B";
 
         var $data = $("<div>"+data+"</div>");
+        console.log(data);
 
         $(".fusion-ids").append(
-            $data.children(".fusion-id").addClass(pers)
+            $data.children(".id").addClass(pers)
         );
+
         $(".fusion-noms").append(
-            $data.children(".fusion-nom").addClass(pers)
+            $data.children(".nom").addClass(pers)
         );
+
         $(".fusion-prenoms").append(
-            $data.children(".fusion-prenom").addClass(pers)
+            $data.children(".prenom").addClass(pers)
         );
-        // $(".fusion-conditions").html(
-        //     $("<table>").append($("<tbody>").append($data.children(".fusion-conditions").html()))
-        // );
-        // $(".fusion-relations").html(
-        //     $("<table>").append($("<tbody>").append($data.children(".fusion-relations").html()))
-        // );
+
+        $(".fusion-conditions").append(
+            $data.children(".condition").addClass(pers)
+        );
+
+        $(".fusion-relations").append(
+            $data.children(".relation").addClass(pers)
+        );
     });
 }
 

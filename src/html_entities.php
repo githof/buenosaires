@@ -113,7 +113,7 @@
                 $html_source
                 $html_statut
                 $html_destination
-                <div class='more'>$html_acte</div>
+                <div class='more'>$html_actes</div>
             </div>";
     }
 

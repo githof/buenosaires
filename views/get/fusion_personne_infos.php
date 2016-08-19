@@ -4,17 +4,21 @@
 
 
     function html_personne_fusion($personne){
-        $html = "<div class='fusion-id'>$personne->id</div>";
+        $html = "<div class='id'>$personne->id</div>";
 
         foreach($personne->noms as $nom)
-            $html .= "<div class='fusion-nom'>".$nom->to_String()."</div>";
+            $html .= "<div class='nom'>".$nom->to_string()."</div>";
 
         foreach($personne->prenoms as $prenom)
-            $html .= "<div class='fusion-prenom'>$prenom->prenom</div>";
+            $html .= "<div class='prenom'>".$prenom->to_string()."</div>";
 
-        $html .= "<div class='fusion-conditions'>".html_conditions($personne->get_conditions(), FALSE, FALSE)."</div>";
+        $conditions = $personne->get_conditions();
+        foreach($conditions as $condition)
+            $html .= "<div class='condition'>".html_condition($condition)."</div>";
 
-        $html .= "<div class='fusion-relations'>".html_personne_relations($personne, FALSE)."</div>";
+        $relations = $personne->get_relations();
+        foreach($relations as $relation)
+            $html .= "<div class='relation'>".html_relation($relation)."</div>";
 
         return $html;
     }
@@ -28,6 +32,7 @@
         }
     }
 
+    var_dump($html);
     echo $html;
 
 ?>

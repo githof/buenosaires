@@ -186,6 +186,32 @@ section > div {
 	margin: 0px;
 }
 
+.flex-vertical {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.flex-horizontal {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.flex-vertical > div{
+	margin-top: 10px;
+}
+
+.flex-vertical > div:first-child {
+	margin-top: 0px;
+}
+
+.flex-horizontal > div {
+	margin-left: 10px;
+}
+
+.flex-horizontal > div:first-child {
+	margin-left: 0px;
+}
+
 
 /* ENTITIES */
 
@@ -259,23 +285,19 @@ section > div {
 
 
 /* FUSION */
+
 .personne-A, .personne-B {
+	border: 1px solid white;
+	border-left-width: 10px;
 	border-radius: 3px;
-	padding: 3px;
-	margin-top: 5px;
-	margin-left: 5px;
+	padding: 2px 5px;
 }
-
-.personne-A:first-child, .personne-B:first-child {
-	margin: 0px;
-}
-
 .personne-A {
-	background-color: rgba(103, 164, 233, 0.39);
+	border-color: rgba(103, 164, 233, 0.39);
 }
 
 .personne-B {
-	background-color: rgba(168, 0, 255, 0.34);
+	border-color: rgba(168, 0, 255, 0.34);
 }
 
 .fusion-ids > div, .fusion-prenoms > div, .fusion-noms > div {
