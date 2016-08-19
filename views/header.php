@@ -4,7 +4,9 @@
         global $url_parsed;
 
         $selected = "";
-        if($url == $url_parsed["page"] || $url_parsed["page"] == "/" && $url == "")
+        $page = (isset($url_parsed['page']))? $url_parsed['page'] : "";
+
+        if($url == "" && $page == "/" || $url == $page)
             $selected = "selected-page";
         return "
             <li data-toggle='tooltip' data-placement='bottom' title='$title' class='$selected'>
