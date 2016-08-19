@@ -104,14 +104,14 @@
     }
 
     function html_relation($relation){
-        $html_statut_name = html_relation_statut($relation->get_statut_name());
+        $html_statut = html_relation_statut($relation->get_statut_name());
         $html_source = html_personne(personne_memory($relation->personne_source->id));
         $html_destination = html_personne(personne_memory($relation->personne_destination->id));
         $html_actes = html_list_actes($relation->get_actes());
         return "
             <div class='relation'>
                 $html_source
-                $html_statut_name
+                $html_statut
                 $html_destination
                 $html_acte
             </div>";
@@ -155,12 +155,12 @@
 
     function html_personne_relation($personne, $statut_name, $actes){
         $html_personne = html_personne(personne_memory($personne->id));
-        $html_statut_name = html_relation_statut($statut_name);
+        $html_statut = html_relation_statut($statut_name);
         $html_actes = html_list_actes($actes);
 
         return "
             <div class='relation'>
-                $html_statut_name
+                $html_statut
                 $html_personne
                 $html_actes
             </div>";
@@ -268,7 +268,6 @@
     }
 
     function html_personne($personne, $with_url = TRUE, $with_id = TRUE, $id_first = FALSE){
-        $full_name = html_personne($personne, TRUE);
         $html = "";
         foreach($personne->prenoms as $prenom)
             $html .= "<div class='prenom'>".$prenom->to_string()."</div>";
