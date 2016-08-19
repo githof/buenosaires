@@ -32,7 +32,7 @@
         </div>
         <div class="detail_div_contenu">
             <?php if(isset($acte->epoux))
-                    echo html_personne_link(personne_memory($acte->epoux->id));
+                    echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
             ?>
         </div>
     </div>
@@ -42,7 +42,7 @@
         </div>
         <div class="detail_div_contenu">
             <?php if(isset($acte->epouse))
-                    echo html_personne_link(personne_memory($acte->epouse->id));
+                    echo html_personne_link(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
             ?>
         </div>
     </div>
@@ -59,7 +59,7 @@
             CONDITIONS
         </div>
         <div class="detail_div_contenu">
-            <?php echo html_conditions($acte->get_conditions(), TRUE); ?>
+            <?php echo html_conditions($acte->get_conditions()); ?>
         </div>
     </div>
     <div class="detail_div flex_vertical">
