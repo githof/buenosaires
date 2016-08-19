@@ -42,7 +42,7 @@
         </div>
         <div class="detail_div_contenu">
             <?php if(isset($acte->epouse))
-                    echo html_personne_link(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+                    echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
             ?>
         </div>
     </div>
