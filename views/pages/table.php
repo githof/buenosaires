@@ -354,7 +354,7 @@
 
 ?>
 
-<div id="tables_buttons">
+<div id="tables-buttons">
     <?php
         foreach ($tables_available as $key => $value) {
             echo button_table($key, $value);

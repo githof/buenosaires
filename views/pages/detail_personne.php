@@ -14,42 +14,30 @@
 <?php
     }else{
 ?>
-<div class="detail_container">
-    <div class="detail_div personne_title">
-        <?php echo html_personne($personne, FALSE, FALSE); ?>
+<section>
+    <?php echo html_personne($personne, FALSE, FALSE); ?>
+</section>
+<section>
+    <h4>ID</h4>
+    <div>
+        <?php echo $personne->id; ?>
     </div>
-    <div class="detail_div flex_horizontal">
-        <div class="detail_div_title">
-            ID
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo $personne->id; ?>
-        </div>
+</section>
+<section>
+    <h4>PERIODE</h4>
+</section>
+<section>
+    <h4>CONDITIONS</h4>
+    <div>
+        <?php echo html_conditions($personne->get_conditions(), FALSE); ?>
     </div>
-    <div class="detail_div flex_horizontal">
-        <div class="detail_div_title">
-            PERIODE
-        </div>
-        <div class="detail_div_contenu">
-        </div>
+</section>
+<section>
+    <h4>RELATIONS</h4>
+    <div>
+        <?php echo html_personne_relations($personne); ?>
     </div>
-    <div class="detail_div flex_vertical">
-        <div class="detail_div_title">
-            CONDITIONS
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo html_conditions($personne->get_conditions()); ?>
-        </div>
-    </div>
-    <div class="detail_div flex_vertical">
-        <div class="detail_div_title">
-            RELATIONS
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo html_personne_relations($personne); ?>
-        </div>
-    </div>
-</div>
+</section>
 <?php
     }
 ?>

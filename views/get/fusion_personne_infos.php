@@ -7,12 +7,12 @@
         $html = "<div class='fusion-id'>$personne->id</div>";
 
         foreach($personne->noms as $nom)
-            $html .= "<div class='fusion-nom'>$nom->to_String()</div>";
+            $html .= "<div class='fusion-nom'>".$nom->to_String()."</div>";
 
         foreach($personne->prenoms as $prenom)
             $html .= "<div class='fusion-prenom'>$prenom->prenom</div>";
 
-        $html .= "<div class='fusion-condition'>".html_conditions($personne->get_conditions(), FALSE, FALSE)."</div>";
+        $html .= "<div class='fusion-conditions'>".html_conditions($personne->get_conditions(), FALSE, FALSE)."</div>";
 
         $html .= "<div class='fusion-relations'>".html_personne_relations($personne, FALSE)."</div>";
 

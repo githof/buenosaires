@@ -27,6 +27,7 @@
     }
 
 ?>
+
 <section>
     <h4>Choisir deux personnes à fusionner</h4>
     <div>
@@ -35,6 +36,28 @@
         </select>
     </div>
 </section>
-<div id="result"></div>
-<form method="get" action="">
-</form>
+<section>
+    <h4>ID</h4>
+    <div class="fusion-ids">
+    </div>
+</section>
+<section>
+    <h4>Noms</h4>
+    <div class="fusion-noms">
+    </div>
+</section>
+<section>
+    <h4>Prenoms</h4>
+    <div class="fusion-prenoms">
+    </div>
+</section>
+<section>
+    <h4>Condition</h4>
+    <div class="fusion-conditions">
+    </div>
+</section>
+<section>
+    <h4>Relations</h4>
+    <div class="fusion-relations">
+    </div>
+</section>

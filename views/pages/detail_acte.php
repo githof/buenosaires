@@ -17,68 +17,52 @@
 <div class="detail_options">
     <a class="btn btn-danger btn-sm" href="supprimer/acte/<?php echo $acte->id; ?>">Supprimer l'acte</a>
 </div>
-<div class="detail_container">
-    <div class="detail_div flex_horizontal">
-        <div class="detail_div_title">
-            ID
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo $acte->id ?>
-        </div>
+<section>
+    <h4>ID</h4>
+    <div>
+        <?php echo $acte->id ?>
     </div>
-    <div class="detail_div flex_horizontal">
-        <div class="detail_div_title">
-            EPOUX
-        </div>
-        <div class="detail_div_contenu">
-            <?php if(isset($acte->epoux))
-                    echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
-            ?>
-        </div>
+</section>
+<section>
+    <h4>EPOUX</h4>
+    <div>
+        <?php if(isset($acte->epoux))
+                echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+        ?>
     </div>
-    <div class="detail_div flex_horizontal">
-        <div class="detail_div_title">
-            EPOUSE
-        </div>
-        <div class="detail_div_contenu">
-            <?php if(isset($acte->epouse))
-                    echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
-            ?>
-        </div>
+</section>
+<section>
+    <h4>EPOUSE</h4>
+    <div>
+        <?php if(isset($acte->epouse))
+                echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+        ?>
     </div>
-    <div class="detail_div flex_horizontal">
-        <div class="detail_div_title">
-            DATE
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo html_date($acte->date_start, $acte->date_end); ?>
-        </div>
+</section>
+<section>
+    <h4>DATE</h4>
+    <div>
+        <?php echo html_date($acte->date_start, $acte->date_end); ?>
     </div>
-    <div class="detail_div flex_vertical">
-        <div class="detail_div_title">
-            CONDITIONS
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo html_conditions($acte->get_conditions()); ?>
-        </div>
+</section>
+<section>
+    <h4>CONDITIONS</h4>
+    <div>
+        <?php echo html_conditions($acte->get_conditions()); ?>
     </div>
-    <div class="detail_div flex_vertical">
-        <div class="detail_div_title">
-            RELATIONS
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo html_relations($acte->get_relations()); ?>
-        </div>
+</section>
+<section>
+    <h4>RELATIONS</h4>
+    <div>
+        <?php echo html_relations($acte->get_relations()); ?>
     </div>
-    <div class="detail_div flex_vertical">
-        <div class="detail_div_title">
-            CONTENU
-        </div>
-        <div class="detail_div_contenu">
-            <?php echo html_acte_contenu($acte->get_contenu()); ?>
-        </div>
+</section>
+<section>
+    <h4>CONTENU</h4>
+    <div>
+        <?php echo html_acte_contenu($acte->get_contenu()); ?>
     </div>
-</div>
+</section>
 <?php
     }
 ?>

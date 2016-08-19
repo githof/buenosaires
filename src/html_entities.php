@@ -88,7 +88,7 @@
             $html .= "<a href='acte/$acte->id'>[$acte->id]</a>";
         if(strlen($html) == 0)
             return "";
-        return "<div class='list-acte'>Actes: $html</div>";
+        return "<div class='list-acte'>actes: $html</div>";
     }
 
     function html_relation_statut($statut){
@@ -96,7 +96,7 @@
     }
 
     function html_condition_source($source){
-        return "<div class='condition-source'>$source</div>";
+        return "<div class='condition-source'>source: $source</div>";
     }
 
     function html_condition_text($text){
@@ -113,7 +113,7 @@
                 $html_source
                 $html_statut
                 $html_destination
-                $html_acte
+                <div class='more'>$html_acte</div>
             </div>";
     }
 
@@ -162,7 +162,7 @@
             <div class='relation'>
                 $html_statut
                 $html_personne
-                $html_actes
+                <div class='more'>$html_actes</div>
             </div>";
     }
 
@@ -253,8 +253,10 @@
             <div class='condition'>
                 $html_text
                 $html_personne
-                $html_source
-                $html_actes
+                <div class='more'>
+                    $html_source
+                    $html_actes
+                </div>
             </div>";
     }
 
@@ -274,7 +276,7 @@
 
         $html_noms = "";
         foreach($personne->noms as $nom)
-            $html .= "<div class='noms'>".$nom->to_string()."</div>";
+            $html .= "<div class='nom'>".$nom->to_string()."</div>";
 
         if($with_url)
             $html = "<a href='personne/$personne->id'>$html</a>";
@@ -283,7 +285,7 @@
             if($id_first)
                 $html = "($personne->id) $html";
             else
-                $html .= " ($personne->id)";
+                $html .= "($personne->id)";
         }
 
         return "<div class='personne'>$html</div>";

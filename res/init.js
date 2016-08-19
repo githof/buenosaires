@@ -1,3 +1,31 @@
+
+function get_personne_infos(id){
+    $.get("get?s=fusion_personne_infos&id="+id, function(data, status){
+        var pers = "personne-A";
+        if($(".fusion-ids").children().length > 0)
+            pers = "personne-B";
+
+        var $data = $("<div>"+data+"</div>");
+
+        $(".fusion-ids").append(
+            $data.children(".fusion-id").addClass(pers)
+        );
+        $(".fusion-noms").append(
+            $data.children(".fusion-nom").addClass(pers)
+        );
+        $(".fusion-prenoms").append(
+            $data.children(".fusion-prenom").addClass(pers)
+        );
+        // $(".fusion-conditions").html(
+        //     $("<table>").append($("<tbody>").append($data.children(".fusion-conditions").html()))
+        // );
+        // $(".fusion-relations").html(
+        //     $("<table>").append($("<tbody>").append($data.children(".fusion-relations").html()))
+        // );
+    });
+}
+
+
 $(document).ready(function(){
 
     $("#acte_noms").multiSelect({
@@ -36,14 +64,7 @@ $(document).ready(function(){
             that.qs1.cache();
             if(that.$selectionUl.children(".ms-selected").length >= 2)
                 that.$selectableUl.children().addClass("disabled");
-
-            console.log(values[0]);
-            $.get("get?s=fusion_personne_infos&id="+values[0], function(data, status){
-                $("#result").html(data);
-                console.log("SUCCESS");
-                console.log(data);
-                console.log(status);
-            });
+            get_personne_infos(values[0]);
         },
         afterDeselect: function(){
             var that = this;
