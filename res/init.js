@@ -3,7 +3,13 @@ function get_personne_infos(id){
     $.get("get?s=fusion_personne_infos&id="+id, function(data, status){
         var pers = "personne-A";
         var input_id_checked = "checked";
-        if($(".fusion-ids").children().length > 0){
+
+        var contains_A = $("#fusion-form").find(".personne-A").length > 0;
+        var contains_B = $("#fusion-form").find(".personne-B").length > 0;
+
+        if(contains_A && contains_B)
+            return;
+        else if(contains_A){
             pers = "personne-B";
             input_id_checked = "";
         }
