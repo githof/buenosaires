@@ -15,7 +15,11 @@
     }else{
 ?>
 <div class="detail_options">
-    <a class="btn btn-danger btn-sm" href="supprimer/acte/<?php echo $acte->id; ?>">Supprimer l'acte</a>
+    <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
+    <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
+    <button class="btn btn-danger btn-sm" id="acte-suppr-3">Parce que vous allez vraiment le faire</button>
+    <button class="btn btn-danger btn-sm" id="acte-suppr-4">Dernière chance ?</button>
+    <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
 </div>
 <section>
     <h4>ID</h4>

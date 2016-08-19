@@ -89,4 +89,29 @@ $(document).ready(function(){
         $(this).hide();
         $(this).remove();
     });
+
+
+
+    /* ACTE SUPPR BUTTONS */
+    $("#acte-suppr-2").hide();
+    $("#acte-suppr-3").hide();
+    $("#acte-suppr-4").hide();
+    $("#acte-suppr-5").hide();
+
+    $("#acte-suppr-1").click(function(){
+        $("#acte-suppr-1").hide();
+        $("#acte-suppr-2").show();
+    });
+    $("#acte-suppr-2").click(function(){
+        $("#acte-suppr-2").hide();
+        $("#acte-suppr-3").show();
+    });
+    $("#acte-suppr-3").click(function(){
+        $("#acte-suppr-3").hide();
+        $("#acte-suppr-4").show();
+    });
+    $("#acte-suppr-4").click(function(){
+        $("#acte-suppr-4").hide();
+        $("#acte-suppr-5").show();
+    });
 })
