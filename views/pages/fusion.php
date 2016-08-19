@@ -38,7 +38,7 @@
 </section>
 <form id="fusion-form">
     <section>
-        <h4>ID (Choisir l'ID à conserver)</h4>
+        <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
         <div class="fusion-ids flex-horizontal">
         </div>
     </section>

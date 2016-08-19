@@ -11,7 +11,7 @@ function get_personne_infos(id){
         var $data = $("<div>"+data+"</div>");
 
         $("#fusion-form").append(
-            $("<input type='hidden' name='id-"+pers+"' value='"+id+"'>")
+            $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
         );
 
         $(".fusion-ids").append(
@@ -37,6 +37,15 @@ function get_personne_infos(id){
             $data.children(".relation").addClass(pers)
         );
     });
+}
+
+function rm_personne_infos(id){
+    var $input = $("#pers-"+id);
+    if($input == null)
+        return;
+
+    var pers = ($input.parent().hasClass("personne-A"))? "personne-A" : "personne-B";
+    $("."+pers).remove();
 }
 
 
@@ -80,20 +89,23 @@ $(document).ready(function(){
                 that.$selectableUl.children().addClass("disabled");
             get_personne_infos(values[0]);
         },
-        afterDeselect: function(){
+        afterDeselect: function(values){
             var that = this;
             that.qs1.cache();
             if(that.$selectionUl.children(".ms-selected").length < 2)
                 that.$selectableUl.children().removeClass("disabled");
+            rm_personne_infos(values[0]);
         }
     });
 
 
+    /* TOOLTIPS */
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
 
 
+    /* ALERTS */
     $(".alert").fadeOut(5000, function(){
         $(this).hide();
         $(this).remove();
