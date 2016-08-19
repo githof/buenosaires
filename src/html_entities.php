@@ -66,10 +66,10 @@
         return has_memory("periode", $id);
     }
 
-    function html_acte_contenu($acte_contenu){
-        return $acte_contenu;
-    }
 
+    function html_acte_contenu($acte_contenu){
+        return "<div class='acte-contenu'>$acte_contenu</div>";
+    }
 
     function html_acte_small($acte){
         $periode = html_periode(periode_memory($acte->values["periode_id"]));
@@ -82,20 +82,39 @@
         </div>";
     }
 
+    function html_list_actes($actes){
+        $html = "";
+        foreach($actes as $acte)
+            $html .= "<a href='acte/$acte->id'>[$acte->id]</a>";
+        if(strlen($html) == 0)
+            return "";
+        return "<div class='list-acte'>Actes: $html</div>";
+    }
+
+    function html_relation_statut($statut){
+        return "<div class='relation-statut'>$statut</div>";
+    }
+
+    function html_condition_source($source){
+        return "<div class='condition-source'>$source</div>";
+    }
+
+    function html_condition_text($text){
+        return "<div class='condition-text'>$text</div>";
+    }
+
     function html_relation($relation){
-        $statut_name = $relation->get_statut_name();
-        $source = html_personne_link(personne_memory($relation->personne_source->id));
-        $destination = html_personne_link(personne_memory($relation->personne_destination->id));
-        $actes_html = "";
-        foreach($relation->get_actes() as $acte)
-            $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
+        $html_statut_name = html_relation_statut($relation->get_statut_name());
+        $html_source = html_personne(personne_memory($relation->personne_source->id));
+        $html_destination = html_personne(personne_memory($relation->personne_destination->id));
+        $html_actes = html_list_actes($relation->get_actes());
         return "
-        <tr>
-            <td>$source</td>
-            <td class='relation_statut'>$statut_name de</td>
-            <td>$destination</td>
-            <td>$actes_html</td>
-        </tr>";
+            <div class='relation'>
+                $html_source
+                $html_statut_name
+                $html_destination
+                $html_acte
+            </div>";
     }
 
     function html_relations($relations){
@@ -124,43 +143,30 @@
             }
         }
         $all = array_merge($all, $mariage, $famille, $temoins, $parrains);
-        $rows = "";
+        $html_relations = "";
         foreach($all as $relation)
-            $rows .= html_relation($relation);
+            $html_relations .= html_relation($relation);
 
-        if(strlen($rows) == 0)
-            return "";
-
-        return  "
-        <table class='table table-striped table-hover'>
-            <thead>
-                <tr>
-                    <th>Personne source</th>
-                    <th>Statut</th>
-                    <th>Personne destination</th>
-                    <th>Actes</th>
-                </tr>
-            </thead>
-            <tbody>
-                $rows
-            </tbody>
-        </table>";
+        return "
+            <div class='relations'>
+                $html_relations
+            </div>";
     }
 
     function html_personne_relation($personne, $statut_name, $actes){
-        $personne = html_personne_link(personne_memory($personne->id));
-        $actes_html = "";
-        foreach($actes as $acte)
-            $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
+        $html_personne = html_personne(personne_memory($personne->id));
+        $html_statut_name = html_relation_statut($statut_name);
+        $html_actes = html_list_actes($actes);
+
         return "
-        <tr>
-            <td><span class='personne_relation_statut'>$statut_name</span></td>
-            <td><span class='personne_relation_personne'>$personne</span></td>
-            <td>$actes_html</td>
-        </tr>";
+            <div class='relation'>
+                $html_statut_name
+                $html_personne
+                $html_actes
+            </div>";
     }
 
-    function html_personne_relations($personne, $with_header = TRUE){
+    function html_personne_relations($personne){
         $parents = [];
         $enfants = [];
         $mariage = [];
@@ -234,100 +240,54 @@
             $str .= html_personne_relation($relation->personne_source, "a pour parrain", $relation->get_actes());
         }
 
-        if($with_header){
-            $str = "
-                <table class='table table-hover table-condensed'>
-                    <thead>
-                        <tr>
-                            <th>Statut</th>
-                            <th>Personne</th>
-                            <th>Actes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        $str
-                    </tbody>
-                </table>";
-        }
-        return $str;
+        return "<div class='relations'>$str</div>";
     }
 
-    function html_condition($condition, $show_personne = FALSE){
-        $personne = "";
-        $source_name = $condition->get_source_name();
-        $actes_html = "";
-        foreach($condition->get_actes() as $acte)
-            $actes_html .= " <a href='acte/$acte->id'>[$acte->id]</a>";
-
-        if($show_personne){
-            $personne = html_personne_link(personne_memory($condition->personne->id));
-            $personne = "<td>$personne</td>";
-        }
+    function html_condition($condition, $show_personne = TRUE){
+        $html_text = html_condition_text($condition->text);
+        $html_personne = ($show_personne)? html_personne(personne_memory($condition->personne->id)) : "";
+        $html_source = html_condition_source($condition->get_source_name());
+        $html_actes = html_list_actes($condition->get_actes());
 
         return "
-        <tr>
-            <td>$condition->text</td>
-            $personne
-            <td>$source_name</td>
-            <td>$actes_html</td>
-        </tr>";
+            <div class='condition'>
+                $html_text
+                $html_personne
+                $html_source
+                $html_actes
+            </div>";
     }
 
-    function html_conditions($conditions, $show_personne = FALSE, $with_header = TRUE){
-        $personne_column = "";
+    function html_conditions($conditions, $show_personne = TRUE){
         $rows = "";
         foreach($conditions as $condition)
             $rows .= html_condition($condition, $show_personne);
 
-        if(strlen($rows) == 0)
-            return "";
-
-        if($show_personne)
-            $personne_column = "<th>Personne</th>";
-
-        if($with_header){
-            return "
-            <table class='table table-striped table-hover table-condensed'>
-                <thead>
-                    <tr>
-                        <th>Condition</th>
-                        $personne_column
-                        <th>Source</th>
-                        <th>Actes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    $rows
-                </tbody>
-            </table>";
-        }
-        return $rows;
-    }
-
-    function html_personne_link($personne){
-        $full_name = html_personne_full_name($personne, TRUE);
         return "
-        <a class='personne_link' href='./personne/$personne->id'>
-            $full_name
-        </a>";
+            <div class='conditions'>$rows</div>";
     }
 
-    function html_personne_full_name($personne, $with_id = FALSE){
-        $str = "";
+    function html_personne($personne, $with_url = TRUE, $with_id = TRUE, $id_first = FALSE){
+        $full_name = html_personne($personne, TRUE);
+        $html = "";
         foreach($personne->prenoms as $prenom)
-            $str .= "<div class='personne_prenom'>$prenom->prenom</div>";
+            $html .= "<div class='prenom'>".$prenom->to_string()."</div>";
 
-        foreach($personne->noms as $nom){
-            $attr = "";
-            if(isset($nom->attribut))
-                $attr = $nom->attribut->value . " ";
-            $str .="<div class='personne_nom'>$attr$nom->nom</div>";
+        $html_noms = "";
+        foreach($personne->noms as $nom)
+            $html .= "<div class='noms'>".$nom->to_string()."</div>";
+
+        if($with_url)
+            $html = "<a href='personne/$personne->id'>$html</a>";
+
+        if($with_id){
+            if($id_first)
+                $html = "($personne->id) $html";
+            else
+                $html .= " ($personne->id)";
         }
 
-        if($with_id)
-            $str .= "($personne->id)";
-
-        return $str;
+        return "<div class='personne'>$html</div>";
     }
 
     function html_date($date_start, $date_end){
