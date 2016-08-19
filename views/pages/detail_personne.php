@@ -16,7 +16,7 @@
 ?>
 <div class="detail_container">
     <div class="detail_div personne_title">
-        <?php echo html_personne_full_name($personne); ?>
+        <?php echo html_personne($personne, FALSE, FALSE); ?>
     </div>
     <div class="detail_div flex_horizontal">
         <div class="detail_div_title">
