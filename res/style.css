@@ -292,6 +292,7 @@ section > div {
 	border-radius: 3px;
 	padding: 2px 5px;
 }
+
 .personne-A {
 	border-color: rgba(103, 164, 233, 0.39);
 }
@@ -300,6 +301,6 @@ section > div {
 	border-color: rgba(168, 0, 255, 0.34);
 }
 
-.fusion-ids > div, .fusion-prenoms > div, .fusion-noms > div {
-	display: inline-block;
+.personne-A label, .personne-B label {
+	margin-left: 10px;
 }

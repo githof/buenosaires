@@ -32,7 +32,6 @@
         }
     }
 
-    var_dump($html);
     echo $html;
 
 ?>

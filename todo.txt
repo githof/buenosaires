@@ -30,3 +30,7 @@
 
 Captures d'écran :
 DROPBOX/Belgrano/Chris/Captures*.png
+
+
++ Ced questions
+    - Fusion : changer les informations (id, noms, prenoms) dans le contenu des actes ?

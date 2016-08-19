@@ -2,14 +2,23 @@
 function get_personne_infos(id){
     $.get("get?s=fusion_personne_infos&id="+id, function(data, status){
         var pers = "personne-A";
-        if($(".fusion-ids").children().length > 0)
+        var input_id_checked = "checked";
+        if($(".fusion-ids").children().length > 0){
             pers = "personne-B";
+            input_id_checked = "";
+        }
 
         var $data = $("<div>"+data+"</div>");
-        console.log(data);
+
+        $("#fusion-form").append(
+            $("<input type='hidden' name='id-"+pers+"' value='"+id+"'>")
+        );
 
         $(".fusion-ids").append(
-            $data.children(".id").addClass(pers)
+            $("<div class='"+pers+"'>").append(
+                $("<input type='radio' name='id' id='pers-"+id+"' value='"+id+"' "+input_id_checked+">"),
+                $("<label for='pers-"+id+"'>"+id+"</label>")
+            )
         );
 
         $(".fusion-noms").append(

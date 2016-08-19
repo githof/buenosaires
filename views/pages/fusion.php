@@ -36,28 +36,30 @@
         </select>
     </div>
 </section>
-<section>
-    <h4>ID</h4>
-    <div class="fusion-ids flex-horizontal">
-    </div>
-</section>
-<section>
-    <h4>Noms</h4>
-    <div class="fusion-noms flex-horizontal">
-    </div>
-</section>
-<section>
-    <h4>Prenoms</h4>
-    <div class="fusion-prenoms flex-horizontal">
-    </div>
-</section>
-<section>
-    <h4>Condition</h4>
-    <div class="fusion-conditions flex-vertical">
-    </div>
-</section>
-<section>
-    <h4>Relations</h4>
-    <div class="fusion-relations flex-vertical">
-    </div>
-</section>
+<form id="fusion-form">
+    <section>
+        <h4>ID (Choisir l'ID à conserver)</h4>
+        <div class="fusion-ids flex-horizontal">
+        </div>
+    </section>
+    <section>
+        <h4>Noms</h4>
+        <div class="fusion-noms flex-horizontal">
+        </div>
+    </section>
+    <section>
+        <h4>Prenoms</h4>
+        <div class="fusion-prenoms flex-horizontal">
+        </div>
+    </section>
+    <section>
+        <h4>Condition</h4>
+        <div class="fusion-conditions flex-vertical">
+        </div>
+    </section>
+    <section>
+        <h4>Relations</h4>
+        <div class="fusion-relations flex-vertical">
+        </div>
+    </section>
+</form>
