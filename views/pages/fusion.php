@@ -37,6 +37,7 @@
     </div>
 </section>
 <form id="fusion-form">
+    <input class="btn btn-primary" id="fusion-submit" type="submit" value="Fusionner">
     <section>
         <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
         <div class="fusion-ids flex-horizontal">
