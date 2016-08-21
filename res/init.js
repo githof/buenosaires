@@ -91,15 +91,19 @@ $(document).ready(function(){
         afterSelect: function(values){
             var that = this;
             that.qs1.cache();
-            if(that.$selectionUl.children(".ms-selected").length >= 2)
+            if(that.$selectionUl.children(".ms-selected").length >= 2){
+                $("#fusion-submit").removeAttr("disabled");
                 that.$selectableUl.children().addClass("disabled");
+            }
             get_personne_infos(values[0]);
         },
         afterDeselect: function(values){
             var that = this;
             that.qs1.cache();
-            if(that.$selectionUl.children(".ms-selected").length < 2)
+            if(that.$selectionUl.children(".ms-selected").length < 2){
+                $("#fusion-submit").attr("disabled", "");
                 that.$selectableUl.children().removeClass("disabled");
+            }
             rm_personne_infos(values[0]);
         }
     });

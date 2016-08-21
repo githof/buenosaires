@@ -286,6 +286,11 @@ section > div {
 
 /* FUSION */
 
+#fusion-submit {
+	display: block;
+	margin: 20px auto;
+}
+
 .personne-A, .personne-B {
 	border: 1px solid white;
 	border-left-width: 10px;
