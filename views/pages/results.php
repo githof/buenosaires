@@ -20,7 +20,7 @@
 
         $select_relation_with_noms = "";
         if(isset($noms_id) && count($noms_id) > 0){
-            $noms = ensemble_str($noms_id, ", ");
+            $noms = array_to_string_with_separator($noms_id, ", ");
             $select_relation_with_noms = "
                 SELECT acte_has_relation.acte_id
                 FROM relation INNER JOIN nom_personne AS nom_personne1
@@ -62,7 +62,7 @@
         $where_prenoms = NULL;
 
         if(isset($noms_id) && count($noms_id) > 0){
-            $noms = ensemble_str($noms_id, ", ");
+            $noms = array_to_string_with_separator($noms_id, ", ");
             $where_noms = "
                 SELECT personne_id
                 FROM nom_personne
@@ -71,7 +71,7 @@
         }
 
         if(isset($prenoms_id) && count($prenoms_id) > 0){
-            $prenoms = ensemble_str($prenoms_id, ", ");
+            $prenoms = array_to_string_with_separator($prenoms_id, ", ");
             $where_prenoms = "
                 SELECT personne_id
                 FROM prenom_personne
@@ -93,19 +93,6 @@
             FROM personne
             $where
         ");
-    }
-
-    function ensemble_str($tab, $separator){
-        $str = "";
-        $i = 0;
-        $length = count($tab);
-        foreach($tab as $entry){
-            $str .= "'$entry'";
-            if($i < $length -1)
-                $str .= "$separator";
-            $i++;
-        }
-        return $str;
     }
 
     function print_result_actes($results){

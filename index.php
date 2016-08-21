@@ -62,6 +62,7 @@
 
     if($is_get){
         include_once($view);
+        echo $alert->html_all();
     }else{
         // HEADER
         include_once(ROOT."views/header.php");
