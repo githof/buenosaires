@@ -10,12 +10,14 @@
         var $personne_source;
         var $personne_destination;
         var $statut_id;
+        var $actes;
 
         function __construct($id = NULL, $personne_source = NULL, $personne_destination = NULL, $statut_id = NULL){
             $this->id = $id;
             $this->set_personne_source($personne_source);
             $this->set_personne_destination($personne_destination);
             $this->set_statut_id($statut_id);
+            $this->actes = [];
         }
 
         function set_personne_source($personne_source){
@@ -43,22 +45,6 @@
                 return $row["valeur"];
             }
             return "";
-        }
-
-        function get_actes(){
-            global $mysqli;
-            $actes = [];
-
-            $result = $mysqli->select(
-                "acte_has_relation",
-                ["acte_id"],
-                "relation_id='$this->id'"
-            );
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc())
-                    $actes[] = new Acte($row["acte_id"]);
-            }
-            return $actes;
         }
 
 

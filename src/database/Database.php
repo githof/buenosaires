@@ -297,13 +297,27 @@
                         $pers_source = new Personne($row["pers_source_id"]);
                         $pers_destination = $personne;
                     }
-                    $personne->relations[] = new Relation(
+                    $relation = new Relation(
                         $row["id"],
                         $pers_source,
                         $pers_destination,
                         $row["statut_id"]
                     );
+                    $this->from_db_relation_list_acte($relation);
+                    $personne->relations[] = $relation;
                 }
+            }
+        }
+
+        private function from_db_relation_list_acte($relation){
+            $result = $this->select(
+                "acte_has_relation",
+                ["acte_id"],
+                "relation_id='$relation->id'"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc())
+                    $relation->actes[] = new Acte($row["acte_id"]);
             }
         }
 
