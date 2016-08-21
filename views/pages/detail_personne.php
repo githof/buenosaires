@@ -29,7 +29,7 @@
 <section>
     <h4>CONDITIONS</h4>
     <div>
-        <?php echo html_conditions($personne->get_conditions(), FALSE); ?>
+        <?php echo html_conditions($personne->conditions, FALSE); ?>
     </div>
 </section>
 <section>

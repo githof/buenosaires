@@ -52,13 +52,13 @@
 <section>
     <h4>CONDITIONS</h4>
     <div>
-        <?php echo html_conditions($acte->get_conditions()); ?>
+        <?php echo html_conditions($acte->conditions); ?>
     </div>
 </section>
 <section>
     <h4>RELATIONS</h4>
     <div>
-        <?php echo html_relations($acte->get_relations()); ?>
+        <?php echo html_relations($acte->relations); ?>
     </div>
 </section>
 <section>

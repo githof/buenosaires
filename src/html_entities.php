@@ -175,9 +175,7 @@
         $a_parrains = [];
         $est_parrains = [];
 
-        $relations = $personne->get_relations();
-
-        foreach($relations as $relation){
+        foreach($personne->relations as $relation){
             $is_source = $personne->id == $relation->personne_source->id;
             switch($relation->statut_id){
                 case STATUT_PERE:

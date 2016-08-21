@@ -2,12 +2,10 @@
 
     function is_fusion_possible($personne_A, $personne_B){
         global $alert;
-        $relations_A = $personne_A->get_relations();
-        $relations_B = $personne_B->get_relations();
 
-        if(count($relations_A) > 0 && count($relations_B) > 0){
-            foreach($relations_A as $relation_A){
-                foreach($relations_B as $relation_B){
+        if(count($personne_A->relations) > 0 && count($personne_B->relations) > 0){
+            foreach($personne_A->relations as $relation_A){
+                foreach($personne_B->relations as $relation_B){
                     if($relation_A->personne_source->id == $relation_B->personne_source->id ||
                         $relation_A->personne_destination->id == $relation_B->personne_destination->id){
                             $alert->warning("Des relations sont en conflits");
