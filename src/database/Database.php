@@ -178,8 +178,11 @@
             $row = NULL;
             if(isset($obj->id)){
                 $row = $this->from_db_by_id($obj);
-                if($obj instanceof Personne)
+                if($obj instanceof Personne){
                     $this->from_db_personne_noms_prenoms($obj);
+                    $this->from_db_personne_relations($obj);
+                    $this->from_db_personne_conditions($obj);
+                }
             }else{
                 if($obj instanceof Personne)
                     $row = $this->from_db_by_same_personne($obj);
@@ -263,6 +266,43 @@
                     if(isset($row["value"]))
                         $attribut = new Attribut($row["a_id"], $row["value"]);
                     $personne->add_nom(new Nom($row["n_id"], $row["nom"], $row["no_accent"], $attribut));
+                }
+            }
+        }
+
+        private function from_db_personne_conditions($personne){
+            $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $personne->conditions[] = new Condition(
+                        $row["id"],
+                        $row["text"],
+                        $personne,
+                        $row["source_id"]
+                    );
+                }
+            }
+        }
+
+        private function from_db_personne_relations($personne){
+            $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $pers_source = NULL;
+                    $pers_destination = NULL;
+                    if($row["pers_source_id"] == $personne->id){
+                        $pers_source = $personne;
+                        $pers_destination = new Personne($row["pers_destination_id"]);
+                    }else{
+                        $pers_source = new Personne($row["pers_source_id"]);
+                        $pers_destination = $personne;
+                    }
+                    $personne->relations[] = new Relation(
+                        $row["id"],
+                        $pers_source,
+                        $pers_destination,
+                        $row["statut_id"]
+                    );
                 }
             }
         }

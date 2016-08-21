@@ -157,42 +157,6 @@
             }
         }
 
-
-        function get_conditions(){
-            global $mysqli;
-            $conditions = [];
-
-            $result = $mysqli->select("condition", ["*"], "personne_id='$this->id'");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $conditions[] = new Condition(
-                        $row["id"],
-                        $row["text"],
-                        new Personne($row["personne_id"]),
-                        $row["source_id"]
-                    );
-                }
-            }
-            return $conditions;
-        }
-
-        function get_relations(){
-            global $mysqli;
-            $relations = [];
-
-            $result = $mysqli->select("relation", ["*"], "pers_source_id='$this->id' OR pers_destination_id='$this->id'");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $relations[] = new Relation(
-                        $row["id"],
-                        new Personne($row["pers_source_id"]),
-                        new Personne($row["pers_destination_id"]),
-                        $row["statut_id"]
-                    );
-                }
-            }
-            return $relations;
-        }
     }
 
 ?>
