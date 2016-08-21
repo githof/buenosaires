@@ -97,7 +97,7 @@
             $html_statut = html_relation_statut($relation->get_statut_name());
             $html_source = html_personne(personne_memory($relation->personne_source->id));
             $html_destination = html_personne(personne_memory($relation->personne_destination->id));
-            $html_actes = html_list_actes($relation->get_actes());
+            $html_actes = html_list_actes($relation->actes);
 
             $rows .= "
                 <tr>
@@ -132,7 +132,7 @@
             $html_text = html_condition_text($condition->text);
             $html_personne = html_personne(personne_memory($condition->personne->id));
             $html_source = html_condition_source($condition->get_source_name());
-            $html_actes = html_list_actes($condition->get_actes());
+            $html_actes = html_list_actes($condition->actes);
 
             $rows .= "
                 <tr>
