@@ -107,7 +107,7 @@
         $html_statut = html_relation_statut($relation->get_statut_name());
         $html_source = html_personne(personne_memory($relation->personne_source->id));
         $html_destination = html_personne(personne_memory($relation->personne_destination->id));
-        $html_actes = html_list_actes($relation->get_actes());
+        $html_actes = html_list_actes($relation->actes);
         return "
             <div class='relation'>
                 $html_source
@@ -209,33 +209,33 @@
             if($personne->id == $relation->personne_destination->id)
                 continue;
             $statut_name = ($relation->statut_id == STATUT_EPOUX)? "est marrié à" : "est marriée à";
-            $str .= html_personne_relation($relation->personne_destination, $statut_name, $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_destination, $statut_name, $relation->actes);
         }
 
         foreach($parents as $relation){
             $statut_name = ($relation->statut_id == STATUT_PERE)? "a pour père" : "a pour mère";
-            $str .= html_personne_relation($relation->personne_source, $statut_name, $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_source, $statut_name, $relation->actes);
         }
 
         foreach($enfants as $relation){
             $statut_name = ($relation->statut_id == STATUT_PERE)? "est père de" : "est mère de";
-            $str .= html_personne_relation($relation->personne_destination, $statut_name, $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_destination, $statut_name, $relation->actes);
         }
 
         foreach($est_temoins as $relation){
-            $str .= html_personne_relation($relation->personne_destination, "est témoin de", $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_destination, "est témoin de", $relation->actes);
         }
 
         foreach($a_temoins as $relation){
-            $str .= html_personne_relation($relation->personne_source, "a pour témoin", $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_source, "a pour témoin", $relation->actes);
         }
 
         foreach($est_parrains as $relation){
-            $str .= html_personne_relation($relation->personne_destination, "est parrain de", $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_destination, "est parrain de", $relation->actes);
         }
 
         foreach($a_parrains as $relation){
-            $str .= html_personne_relation($relation->personne_source, "a pour parrain", $relation->get_actes());
+            $str .= html_personne_relation($relation->personne_source, "a pour parrain", $relation->actes);
         }
 
         return "<div class='relations'>$str</div>";
@@ -245,7 +245,7 @@
         $html_text = html_condition_text($condition->text);
         $html_personne = ($show_personne)? html_personne(personne_memory($condition->personne->id)) : "";
         $html_source = html_condition_source($condition->get_source_name());
-        $html_actes = html_list_actes($condition->get_actes());
+        $html_actes = html_list_actes($condition->actes);
 
         return "
             <div class='condition'>

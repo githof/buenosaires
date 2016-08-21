@@ -104,11 +104,11 @@
 
             $epoux_str = "";
             if(isset($row["epoux"]))
-                $epoux_str = html_personne_link(personne_memory($row["epoux"]));
+                $epoux_str = html_personne(personne_memory($row["epoux"]));
 
             $epouse_str = "";
             if(isset($row["epouse"]))
-                $epouse_str = html_personne_link(personne_memory($row["epouse"]));
+                $epouse_str = html_personne(personne_memory($row["epouse"]));
 
             $str .= "
                 <tr>
@@ -139,7 +139,7 @@
     function print_result_personnes($results){
         $str = "";
         while($row = $results->fetch_assoc()){
-            $html_personne = html_personne_link(personne_memory($row["id"]));
+            $html_personne = html_personne(personne_memory($row["id"]));
             $str .= "<tr><td>$html_personne</td></tr>";
         }
 
