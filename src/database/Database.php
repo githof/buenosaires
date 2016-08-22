@@ -277,12 +277,14 @@
             $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $personne->conditions[] = new Condition(
+                    $condition = new Condition(
                         $row["id"],
                         $row["text"],
                         $personne,
                         $row["source_id"]
                     );
+                    $this->from_db_condition_list_acte($condition);
+                    $personne->conditions[] = $condition;
                 }
             }
         }
@@ -309,6 +311,18 @@
                     $this->from_db_relation_list_acte($relation);
                     $personne->relations[] = $relation;
                 }
+            }
+        }
+
+        private function from_db_condition_list_acte($condition){
+            $result = $this->select(
+                "acte_has_condition",
+                ["acte_id"],
+                "condition_id='$condition->id'"
+            );
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc())
+                    $condition->actes[] = new Acte($row["acte_id"]);
             }
         }
 

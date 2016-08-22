@@ -10,12 +10,14 @@
         var $text;
         var $personne;
         var $source_id;
+        var $actes;
 
         function __construct($id = NULL, $text = NULL, $personne = NULL, $source_id = NULL){
             $this->id = $id;
             $this->set_text($text);
             $this->set_personne($personne);
             $this->set_source_id($source_id);
+            $this->actes = [];
         }
 
         function set_text($text){
@@ -43,22 +45,6 @@
                 return $row["valeur"];
             }
             return "";
-        }
-
-        function get_actes(){
-            global $mysqli;
-            $actes = [];
-
-            $result = $mysqli->select(
-                "acte_has_condition",
-                ["acte_id"],
-                "condition_id='$this->id'"
-            );
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc())
-                    $actes[] = new Acte($row["acte_id"]);
-            }
-            return $actes;
         }
 
 
