@@ -26,13 +26,19 @@ h1{
 
 /* ALERT */
 
-.alert {
+#alert-container {
 	position: fixed;
-	right: 20px;
+	top: 100px;
+	right: 50px;
+	z-index: 1000;
 }
 
 .alert .close {
 	padding-left: 5px;
+}
+
+.alert:hover {
+	border-color: #bbb;
 }
 
 

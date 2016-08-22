@@ -59,7 +59,6 @@
     }
 
 
-
     if($is_get){
         include_once($view);
         echo $alert->html_all();
@@ -89,6 +88,7 @@
         <link href="res/multi-select/css/multi-select.css" rel="stylesheet" />
         <link href="res/style.css" rel="stylesheet" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.6.1/lodash.min.js"></script>
         <title>Buenos Aires</title>
     </head>
     <body>
@@ -98,11 +98,13 @@
             </div>
         </div>
         <div class="main">
-            <?php echo $alerts_output; ?>
             <h1><?php echo $page_title ?></h1>
             <div class="page">
                 <?php echo $page_output; ?>
             </div>
+        </div>
+        <div id="alert-container">
+            <?php echo $alerts_output; ?>
         </div>
         <script src="res/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="res/quicksearch/jquery.quicksearch.js" type="text/javascript"></script>

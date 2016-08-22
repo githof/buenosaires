@@ -11,6 +11,7 @@
                             $alert->warning("Des relations sont en conflits");
                             return FALSE;
                         }
+                }
             }
         }
 
@@ -169,16 +170,16 @@
 
     $html = "";
 
-    if(isset(ARGS["id-personne-A"], ARGS["id-personne-B"], ARGS["id"])){
-        $personne_A = new Personne(ARGS["id-personne-A"]);
-        $personne_B = new Personne(ARGS["id-personne-B"]);
+    if(isset($ARGS["id-personne-A"], $ARGS["id-personne-B"], $ARGS["id"])){
+        $personne_A = new Personne($ARGS["id-personne-A"]);
+        $personne_B = new Personne($ARGS["id-personne-B"]);
 
         $mysqli->from_db($personne_A);
         $mysqli->from_db($personne_B);
 
-        if(is_fusion_possible($persnne_A, $personne_B)){
-            if(ARGS["id"] == $personne_A->id || ARGS["id"] == $personne_B->id){
-                if(ARGS["id"] == $personne_A->id)
+        if(is_fusion_possible($personne_A, $personne_B)){
+            if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
+                if($ARGS["id"] == $personne_A->id)
                     fusion($personne_A, $personne_B);
                 else
                     fusion($personne_B, $personne_A);

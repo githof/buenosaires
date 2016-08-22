@@ -1,3 +1,26 @@
+function animation_alert($alert){
+    $alert.delay(5000).fadeOut(1000, function(){
+        $(this).hide();
+        $(this).remove();
+    });
+}
+
+function show_alert(alert){
+    $(alert).mouseenter(function(){
+        $(this).stop(true, false);
+        $(this).css("opacity", "1");
+    });
+    $(alert).mouseleave(function(){
+        animation_alert($(this));
+    });
+    animation_alert($(alert));
+}
+
+function add_alert($alert){
+    $("#alert-container").append($alert);
+    show_alert($alert);
+}
+
 
 function get_personne_infos(id){
     $.get("get?s=fusion_personne_infos&id="+id, function(data, status){
@@ -15,6 +38,8 @@ function get_personne_infos(id){
         }
 
         var $data = $("<div>"+data+"</div>");
+
+        _.map($data.children(".alert").toArray(), add_alert);
 
         $("#fusion-form").append(
             $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
@@ -109,6 +134,20 @@ $(document).ready(function(){
     });
 
 
+    /* FUSION */
+    $("#fusion-submit").click(function(){
+        var id_A = $("#fusion-form input[name='id-personne-A']").attr("value");
+        var id_B = $("#fusion-form input[name='id-personne-B']").attr("value");
+        var id_select = $("#fusion-form input[name='id']").attr("value");
+        var script = $("#fusion-form input[name='s']").val();
+
+        $.get("get?s="+script+"&id-personne-A="+id_A+"&id-personne-B="+id_B+"&id="+id_select, function(data, status){
+            $data = $("<div>"+data+"</div>");
+            _.map($data.children(".alert").toArray(), add_alert);
+        });
+    });
+
+
     /* TOOLTIPS */
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
@@ -116,11 +155,7 @@ $(document).ready(function(){
 
 
     /* ALERTS */
-    $(".alert").fadeOut(5000, function(){
-        $(this).hide();
-        $(this).remove();
-    });
-
+    _.map($(".alert").toArray(), show_alert);
 
 
     /* ACTE SUPPR BUTTONS */
