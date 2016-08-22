@@ -107,7 +107,7 @@
 
                 if(count($acte_id_update) > 0){
                     $str = array_to_string_with_separator($acte_id_update, ", ");
-                    $mysqli->update("acte_has_condition", ["condition_id" => "$same->id"], "condition_id = '$condition_throw' AND acte_id IN ($str)");
+                    $mysqli->update("acte_has_condition", ["condition_id" => "$same->id"], "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
                 }
 
                 $mysqli->delete("condition", "id = '$condition_throw->id'");

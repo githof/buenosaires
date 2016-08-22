@@ -144,7 +144,8 @@ $(document).ready(function(){
         $.get("get?s="+script+"&id-personne-A="+id_A+"&id-personne-B="+id_B+"&id="+id_select, function(data, status){
             $data = $("<div>"+data+"</div>");
             _.map($data.children(".alert").toArray(), alert_add);
-            console.log(data);
+            rm_personne_infos(id_A);
+            rm_personne_infos(id_B);
         });
     });
 
