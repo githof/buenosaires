@@ -22,6 +22,15 @@ function alert_add(alert){
 }
 
 
+function get_list_personne(){
+    var $select = $("#fusion_personne_list");
+    $select.html("");
+    $.get("get?s=fusion_list_personne", function(data, status){
+        $select.append(data);
+        $select.multiSelect("refresh");
+    });
+}
+
 function get_personne_infos(id){
     $.get("get?s=fusion_personne_infos&id="+id, function(data, status){
         var pers = "personne-A";
@@ -97,6 +106,8 @@ $(document).ready(function(){
         selectionHeader: "<div class='help-block'>Sélection</div>"
     });
 
+
+    /* MULTI SELECT FUSION  */
     $("#fusion_personne_list").multiSelect({
         selectionHeader: "<div class='help-block'>Sélection (max: 2)</div>",
         selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
@@ -132,7 +143,7 @@ $(document).ready(function(){
             rm_personne_infos(values[0]);
         }
     });
-
+    get_list_personne();
 
     /* FUSION */
     $("#fusion-submit").click(function(){
@@ -146,6 +157,7 @@ $(document).ready(function(){
             _.map($data.children(".alert").toArray(), alert_add);
             rm_personne_infos(id_A);
             rm_personne_infos(id_B);
+            get_list_personne();
         });
     });
 
