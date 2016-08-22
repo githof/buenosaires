@@ -16,9 +16,9 @@ function alert_show(alert){
     alert_animation($(alert));
 }
 
-function alert_add($alert){
-    $("#alert-container").append($alert);
-    alert_show($alert);
+function alert_add(alert){
+    $("#alert-container").append($(alert));
+    alert_show(alert);
 }
 
 
@@ -144,6 +144,7 @@ $(document).ready(function(){
         $.get("get?s="+script+"&id-personne-A="+id_A+"&id-personne-B="+id_B+"&id="+id_select, function(data, status){
             $data = $("<div>"+data+"</div>");
             _.map($data.children(".alert").toArray(), alert_add);
+            console.log(data);
         });
     });
 
