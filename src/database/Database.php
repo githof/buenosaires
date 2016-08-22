@@ -175,6 +175,9 @@
 
 
         public function from_db($obj, $update_obj = FALSE){
+            global $log;
+
+            $log->d("from database: ".get_class($obj)." id=$obj->id");
             $row = NULL;
             if(isset($obj->id)){
                 $row = $this->from_db_by_id($obj);

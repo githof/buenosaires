@@ -56,8 +56,9 @@
     }
 
     function fusion_prenoms($personne_keep, $personne_throw){
-        global $mysqli;
+        global $mysqli, $log;
 
+        $log->d("fusion prenoms");
         foreach($personne_throw->prenoms as $prenom){
             $where = "prenom_id='$prenom->id' && personne_id='$personne_throw->id'";
             if(has_same_id($personne_keep->prenoms, $prenom->id))
@@ -68,8 +69,9 @@
     }
 
     function fusion_noms($personne_keep, $personne_throw){
-        global $mysqli;
+        global $mysqli, $log;
 
+        $log->d("fusion noms");
         foreach($personne_throw->noms as $nom){
             $where = "nom_id='$nom->id' && personne_id='$personne_throw->id'";
             if(has_same_id($personne_keep->noms, $nom->id))
@@ -80,8 +82,9 @@
     }
 
     function fusion_conditions($personne_keep, $personne_throw){
-        global $mysqli;
+        global $mysqli, $log;
 
+        $log->d("fusion conditions");
         foreach($personne_throw->conditions as $condition_throw){
             $same = has_same_condition($personne_keep->conditions, $condition_throw);
             if($same != FALSE){
@@ -115,8 +118,9 @@
     }
 
     function fusion_relations($personne_keep, $personne_throw){
-        global $mysqli;
+        global $mysqli, $log;
 
+        $log->d("fusion relations");
         foreach($personne_throw->relations as $relation_throw){
             $is_source_throw = $relation_throw->personne_source->id == $personne_throw->id;
             $same = has_same_relation($personne_keep->relations, $relation_throw, $personne_keep, $personne_throw);
@@ -154,16 +158,20 @@
     }
 
     function fusion($personne_keep, $personne_throw){
-        global $mysqli;
+        global $mysqli, $log;
 
         fusion_prenoms($personne_keep, $personne_throw);
         fusion_noms($personne_keep, $personne_throw);
 
+        $log->d("fusion actes");
         $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
         $mysqli->update("acte", ["epouse" => "$personne_keep->id"], "epouse='$personne_throw->id'");
 
         fusion_conditions($personne_keep, $personne_throw);
         fusion_relations($personne_keep, $personne_throw);
+
+        $log->d("fusion remove personee");
+        $mysqli->delete_personne($personne_throw->id);
     }
 
 
@@ -178,6 +186,7 @@
         $mysqli->from_db($personne_B);
 
         if(is_fusion_possible($personne_A, $personne_B)){
+            $log->d("fusion possible");
             if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
                 if($ARGS["id"] == $personne_A->id)
                     fusion($personne_A, $personne_B);
