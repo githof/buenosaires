@@ -1,24 +1,24 @@
-function animation_alert($alert){
+function alert_animation($alert){
     $alert.delay(5000).fadeOut(1000, function(){
         $(this).hide();
         $(this).remove();
     });
 }
 
-function show_alert(alert){
+function alert_show(alert){
     $(alert).mouseenter(function(){
         $(this).stop(true, false);
         $(this).css("opacity", "1");
     });
     $(alert).mouseleave(function(){
-        animation_alert($(this));
+        alert_animation($(this));
     });
-    animation_alert($(alert));
+    alert_animation($(alert));
 }
 
-function add_alert($alert){
+function alert_add($alert){
     $("#alert-container").append($alert);
-    show_alert($alert);
+    alert_show($alert);
 }
 
 
@@ -39,7 +39,7 @@ function get_personne_infos(id){
 
         var $data = $("<div>"+data+"</div>");
 
-        _.map($data.children(".alert").toArray(), add_alert);
+        _.map($data.children(".alert").toArray(), alert_add);
 
         $("#fusion-form").append(
             $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
@@ -143,7 +143,7 @@ $(document).ready(function(){
 
         $.get("get?s="+script+"&id-personne-A="+id_A+"&id-personne-B="+id_B+"&id="+id_select, function(data, status){
             $data = $("<div>"+data+"</div>");
-            _.map($data.children(".alert").toArray(), add_alert);
+            _.map($data.children(".alert").toArray(), alert_add);
         });
     });
 
@@ -155,7 +155,7 @@ $(document).ready(function(){
 
 
     /* ALERTS */
-    _.map($(".alert").toArray(), show_alert);
+    _.map($(".alert").toArray(), alert_show);
 
 
     /* ACTE SUPPR BUTTONS */
