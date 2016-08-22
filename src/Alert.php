@@ -33,7 +33,7 @@
         private function html($type, $message){
             return
                 "<div class='$type fade in'>
-                    <a hred='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                    <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
                     $message
                 </div>";
         }

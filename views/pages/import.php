@@ -136,8 +136,8 @@
     <h4>
         Avec un fichier
     </h4>
-    <div class="section-inner">
-        <form method="post" enctype="multipart/form-data" action="">
+    <div>
+        <form method="post" enctype="multipart/form-data" action="" class="import-form">
             <div class="form-group">
                 <label for="import_file_source">Source du/des actes(s) : </label>
                 <select name="import_file_source" id="import_file_source">
@@ -163,8 +163,8 @@
     <h4>
         En le(s) copiant ici
     </h4>
-    <div class="section-inner">
-        <form method="post" action="">
+    <div>
+        <form method="post" action="" class="import-form">
             <div class="form-group">
                 <label for="import_text_source">Source du/des actes(s) : </label>
                 <select name="import_text_source" id="import_text_source">

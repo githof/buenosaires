@@ -194,4 +194,12 @@ $(document).ready(function(){
         $("#acte-suppr-4").hide();
         $("#acte-suppr-5").show();
     });
+
+
+    /* IMPORT FORM */
+    $(".import-form input[type='submit']").click(function(){
+        alert_add("<div class='alert alert-info fade in'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>L'importation peut prendre du temps, veuillez patienter</div>");
+        $(".import-form input[type='submit']").val("Importation en cours ...");
+        $(".import-form input[type='submit']").attr("disabled");
+    });
 })
