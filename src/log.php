@@ -28,17 +28,14 @@
                 while(($line = fgets($handle, 4096)) !== FALSE){
                     $lines[] = $line;
                 }
+                ftruncate($handle, 0);
+                rewind($handle);
 
                 $this->logs = array_merge($lines, $this->logs);
-                $max = count($this->logs);
-                $start = $max - LOG_LINES_MAX;
-                if($start < 0)
-                    $start = 0;
+                $this->logs = array_slice($this->logs, -LOG_LINES_MAX, LOG_LINES_MAX);
 
-                fseek($handle, 0);
-                while($start < $max){
-                    fwrite($handle, $this->logs[$start]);
-                    $start++;
+                foreach($this->logs as $line){
+                    fwrite($handle, $line);
                 }
                 flock($handle,LOCK_UN);
                 fclose($handle);
