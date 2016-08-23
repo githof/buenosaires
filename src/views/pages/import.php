@@ -127,6 +127,7 @@
             $reader = new XMLActeReader($source_id);
             $reader->use_xml_file($filename);
             $reader->read_actes($only_new);
+            unlink($filename);
         }
     }
 
