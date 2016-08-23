@@ -56,6 +56,7 @@
         $infos = pathinfo($_FILES["import_file"]["name"]);
         if($infos["extension"] === "xml"){
             $uploadfile = TMP_DIRECTORY . "/" . basename($_FILES["import_file"]["name"]);
+            $uploadfile = append_unique_identifier($uploadfile);
             if(@move_uploaded_file($_FILES["import_file"]["tmp_name"], $uploadfile) === FALSE){
                 $log->e("Erreur fct move_uploaded_file({$_FILES['import_file']['tmp_name']}, $uploadfile)");
                 $alert->error("Erreur interne du serveur lors du téléchargement du fichier");
@@ -75,6 +76,7 @@
         $sources = "<document><ACTES>\n".stripslashes($_POST['import_text'])."\n</ACTES></document>";
 
         $filename = TMP_DIRECTORY . "/new_actes.xml";
+        $filename = append_unique_identifier($filename);
         $tmp_file = @fopen($filename, "w");
         if($tmp_file === FALSE){
             $log->e("Erreur de la fct fopen($filename, 'w')");
@@ -105,6 +107,10 @@
         }
     }
 
+    function append_unique_identifier($filename){
+        srand(intval(date("YmdHis")));
+        return $filename."_".rand(1, 9999999);
+    }
 
 
     if(isset($_POST["form_type"])){
