@@ -1,11 +1,11 @@
 <?php
 
-    include_once(ROOT."src/database/Acte.php");
-    include_once(ROOT."src/database/Personne.php");
-    include_once(ROOT."src/database/Relation.php");
-    include_once(ROOT."src/database/Condition.php");
-    include_once(ROOT."src/database/Nom.php");
-    include_once(ROOT."src/database/Prenom.php");
+    include_once(ROOT."src/class/model/Acte.php");
+    include_once(ROOT."src/class/model/Personne.php");
+    include_once(ROOT."src/class/model/Relation.php");
+    include_once(ROOT."src/class/model/Condition.php");
+    include_once(ROOT."src/class/model/Nom.php");
+    include_once(ROOT."src/class/model/Prenom.php");
 
     class Database extends mysqli{
 

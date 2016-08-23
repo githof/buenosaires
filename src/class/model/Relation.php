@@ -1,7 +1,7 @@
 <?php
 
-    include_once(ROOT."src/database/DatabaseIO.php");
-    include_once(ROOT."src/database/Personne.php");
+    include_once(ROOT."src/class/io/DatabaseIO.php");
+    include_once(ROOT."src/class/model/Personne.php");
 
     class Relation implements DatabaseIO {
 

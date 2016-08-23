@@ -1,7 +1,7 @@
 <?php
 
 
-    include_once(ROOT."src/database/Acte.php");
+    include_once(ROOT."src/class/model/Acte.php");
     include_once(ROOT."src/html_entities.php");
 
 

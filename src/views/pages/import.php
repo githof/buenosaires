@@ -1,6 +1,6 @@
 <?php
 
-    include_once(ROOT."src/XMLActeReader.php");
+    include_once(ROOT."src/class/io/XMLActeReader.php");
 
     function error_message_receive_file($error_code){
         $log = "Erreur ($error_code) inconnue lors du téléchargement du fichier";

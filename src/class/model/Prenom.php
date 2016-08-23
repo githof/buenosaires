@@ -1,6 +1,6 @@
 <?php
 
-    include_once(ROOT."src/database/DatabaseIO.php");
+    include_once(ROOT."src/class/io/DatabaseIO.php");
 
     class Prenom implements DatabaseIO{
 

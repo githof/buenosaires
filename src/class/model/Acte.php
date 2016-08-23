@@ -1,9 +1,9 @@
 <?php
 
-    include_once(ROOT."src/database/DatabaseIO.php");
-    include_once(ROOT."src/database/Personne.php");
-    include_once(ROOT."src/database/Relation.php");
-    include_once(ROOT."src/database/Condition.php");
+    include_once(ROOT."src/class/io/DatabaseIO.php");
+    include_once(ROOT."src/class/model/Personne.php");
+    include_once(ROOT."src/class/model/Relation.php");
+    include_once(ROOT."src/class/model/Condition.php");
 
     class Acte implements DatabaseIO{
 

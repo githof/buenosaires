@@ -1,11 +1,10 @@
 <?php
 
-    include_once(ROOT."src/database/DatabaseIO.php");
-    include_once(ROOT."src/database/Database.php");
-    include_once(ROOT."src/database/Nom.php");
-    include_once(ROOT."src/database/Prenom.php");
-    include_once(ROOT."src/database/Relation.php");
-    include_once(ROOT."src/database/Condition.php");
+    include_once(ROOT."src/class/io/DatabaseIO.php");
+    include_once(ROOT."src/class/model/Nom.php");
+    include_once(ROOT."src/class/model/Prenom.php");
+    include_once(ROOT."src/class/model/Relation.php");
+    include_once(ROOT."src/class/model/Condition.php");
 
     class Personne implements DatabaseIO{
 

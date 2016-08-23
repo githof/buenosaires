@@ -12,10 +12,10 @@
 
     include_once(ROOT."config.php");
     include_once(ROOT."src/utils.php");
-    include_once(ROOT."src/log.php");
-    include_once(ROOT."src/Alert.php");
-    include_once(ROOT."src/account/Account.php");
-    include_once(ROOT."src/database/Database.php");
+    include_once(ROOT."src/class/Log.php");
+    include_once(ROOT."src/class/Alert.php");
+    include_once(ROOT."src/class/model/Account.php");
+    include_once(ROOT."src/class/io/Database.php");
 
     $log = new Log();
     $alert = new Alert();
@@ -47,14 +47,14 @@
     $is_get = FALSE;
     if(isset($url_parsed["page"])){
         if($url_parsed["page"] == "get"){
-            $view = ROOT."views/get/" . $ARGS["s"] . ".php";
+            $view = ROOT."src/views/get/" . $ARGS["s"] . ".php";
             $is_get = TRUE;
         }else{
-            $view = ROOT."views/pages/" . $url_parsed["include"] . ".php";
+            $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
         }
     }else{
-        $view = ROOT."views/pages/404.php";
+        $view = ROOT."src/views/pages/404.php";
         $page_title = "404";
     }
 
@@ -64,7 +64,7 @@
         echo $alert->html_all();
     }else{
         // HEADER
-        include_once(ROOT."views/header.php");
+        include_once(ROOT."src/views/header.php");
         $header_output = ob_get_clean();
         ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
 

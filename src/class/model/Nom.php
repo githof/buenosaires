@@ -1,8 +1,7 @@
 <?php
 
-    include_once(ROOT."src/database/Attribut.php");
-    include_once(ROOT."src/database/DatabaseIO.php");
-    include_once(ROOT."src/database/Database.php");
+    include_once(ROOT."src/class/model/Attribut.php");
+    include_once(ROOT."src/class/io/DatabaseIO.php");
 
     class Nom implements DatabaseIO{
 
