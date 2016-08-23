@@ -141,9 +141,19 @@ section > div {
 
 .log-container {
 	overflow-y: scroll;
-	height: 90%;
-	padding: 20px;
 	border: 1px solid #c3c3c3;
+	border-radius: 3px;
+	min-height: 300px;
+	max-height: 500px;
+}
+
+.log-line {
+	padding: 7px 5px;
+	border-bottom: 1px solid #c3c3c3;
+}
+
+.log-line:hover {
+	background-color: rgba(60, 0, 130, 0.15);
 }
 
 .log-error {
@@ -156,18 +166,17 @@ section > div {
 	background-color: #ffe8bd;
 }
 
-.log-debug {
+.log-debug .log-type {
 	color: blue;
-	background-color: #ceceff;
 }
 
-.log-line {
-	padding: 5px;
-	border-bottom: 1px dashed #d8d8d8;
+.log-date {
+	font-size: 12px;
+	font-style: italic;
 }
 
-.log-line:hover {
-	background-color: rgba(60, 0, 130, 0.15);
+.log-type {
+	font-weight: bold;
 }
 
 

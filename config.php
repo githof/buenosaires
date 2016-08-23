@@ -24,6 +24,9 @@ define("LOG_DEFAULT_OUTPUT", "log.txt");
 //  0: none, 1: error, 2: warning, 3:info, 4:debug
 define("LOG_DEFAULT_LEVEL", 4);
 
+//  log default max lines
+define("LOG_LINES_MAX", 10);
+
 
 // tmp Directory
 define("TMP_DIRECTORY", "./tmp");

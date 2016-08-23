@@ -1,16 +1,27 @@
 <?php
 
+    $log_type_css = [
+        "[ERROR]" => "log-error",
+        "[WARNING]" => "log-warning",
+        "[DEBUG]" => "log-debug"
+    ];
+
     function log_html($line){
+        global $log_type_css;
+
         $class = "log-line";
-
-        if(strstr($line, "[ERROR]") !== FALSE)
-            $class .= " log-error";
-        else if(strstr($line, "[WARNING]") !== FALSE)
-            $class .= " log-warning";
-        else if(strstr($line, "[DEBUG]") !== FALSE)
-            $class .= " log-debug";
-
-        return "<div class='$class'>$line</div>";
+        $regex = "~^(?'date'[\d]{4}-[\d]{2}-[\d]{2}  [\d]{2}:[\d]{2}:[\d]{2}) (?'type'\[.*\]) (?'text'.*)$~i";
+        if(preg_match($regex, $line, $matches)){
+            if(isset($log_type_css[$matches["type"]]))
+                $class .= " " . $log_type_css[$matches["type"]];
+            return "
+                <div class='$class'>
+                    <span class='log-date'>{$matches["date"]}</span>
+                    <span class='log-type'>{$matches["type"]}</span>
+                    <span class='log-text'>{$matches["text"]}</span>
+                </div>";
+        }
+        return "";
     }
 
     function read_logs(){
