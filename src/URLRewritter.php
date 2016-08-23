@@ -52,9 +52,9 @@
                 if(!isset($ARGS[$key]))
                     $ARGS[$key] = [];
                 if(strlen($split[1]) > 0)
-                    $ARGS[$key][] = $mysqli->real_escape_string($split[1]);
+                    $ARGS[$key][] = safe($split[1]);
             }else if(strlen($split[1]) > 0)
-                $ARGS[$split[0]] = $mysqli->real_escape_string($split[1]);
+                $ARGS[$split[0]] = safe($split[1]);
         }
     }
 ?>
