@@ -33,8 +33,9 @@
             return;
         }
 
+        $html = "";
         while(($line = fgets($handle)) !== FALSE){
-            echo log_html($line);
+            $html = log_html($line) . $html;
         }
 
         if(!feof($handle)){
@@ -43,10 +44,12 @@
         }
 
         fclose($handle);
+
+        return $html;
     }
 
 ?>
 
 <div class="log-container">
-    <?php read_logs(); ?>
+    <?php echo read_logs(); ?>
 </div>
