@@ -86,9 +86,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="res/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="res/multi-select/css/multi-select.css" rel="stylesheet" />
+        <link href="res/xmlselect/includes/html5.css" rel="stylesheet" />
         <link href="res/style.css" rel="stylesheet" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.6.1/lodash.min.js"></script>
+        <script type="text/javascript" src="res/xmlselect/tag_set.js"></script>
+        <script type="text/javascript" src="res/xmlselect/xml_node.js"></script>
+        <script type="text/javascript" src="res/xmlselect/taggable_xml.js"></script>
+        <script type="text/javascript" src="res/xmlselect/select_and_show.js"></script>
+        <script type="text/javascript" src="res/xmlselect/xml_parser.js"></script>
+        <script type="text/javascript" src="res/xmlselect/init.js"></script>
         <title>Buenos Aires</title>
     </head>
     <body>
