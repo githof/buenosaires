@@ -22,8 +22,9 @@ function alert_add(alert){
 }
 
 
-function get_list_personne(){
-    var $select = $("#fusion_personne_list");
+function get_list_personne($select){
+    if($select.length == 0)
+        return;
     $select.html("");
     $.get("get?s=fusion_list_personne", function(data, status){
         $select.append(data);
@@ -143,7 +144,7 @@ $(document).ready(function(){
             rm_personne_infos(values[0]);
         }
     });
-    get_list_personne();
+    get_list_personne($("#fusion_personne_list"));
 
     /* FUSION */
     $("#fusion-submit").click(function(){
