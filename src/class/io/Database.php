@@ -336,7 +336,6 @@
                     $acte->conditions[] = $condition;
                 }
             }
-            return $conditions;
         }
 
         private function from_db_acte_relations($acte){
@@ -358,7 +357,6 @@
                     $acte->relations[] = $relation;
                 }
             }
-            return $relations;
         }
 
         private function from_db_condition_list_acte($condition){
@@ -554,8 +552,6 @@
 
         public function delete_acte($acte){
             $personnes_id = [];
-            $relations = $acte->get_relations();
-            $conditions = $acte->get_conditions();
 
             $this->delete("acte_has_relation", "acte_id='$acte->id'");
             $this->delete("acte_has_condition", "acte_id='$acte->id'");
@@ -571,7 +567,7 @@
                     if($row["nb"] > 0)
                         continue;
                     $this->delete("relation", "id='{$row["id"]}'");
-                    foreach($relations as $relation){
+                    foreach($acte->relations as $relation){
                         if($relation->id == $row["id"]){
                             $personnes_id[] = $relation->personne_source->id;
                             $personnes_id[] = $relation->personne_destination->id;
@@ -591,7 +587,7 @@
                     if($row["nb"] > 0)
                         continue;
                     $this->delete("condition", "id='{$row["id"]}'");
-                    foreach($conditions as $condition){
+                    foreach($acte->conditions as $condition){
                         if($condition->id == $row["id"])
                             $personnes_id[] = $condition->personne->id;
                     }
