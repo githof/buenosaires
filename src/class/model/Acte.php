@@ -17,6 +17,8 @@
         var $source_id;
         var $date_start;
         var $date_end;
+        var $relations;
+        var $conditions;
 
         function __construct($id = NULL, $contenu = NULL){
             $this->id = $id;
@@ -28,6 +30,8 @@
             $this->parrains = array();
             $this->date_start = NULL;
             $this->date_end = NULL;
+            $this->conditions = [];
+            $this->relations = [];
         }
 
         function set_contenu($contenu){
@@ -86,52 +90,6 @@
                 "acte_contenu",
                 $values,
                 " ON DUPLICATE KEY UPDATE contenu='$contenu'");
-        }
-
-        function get_conditions(){
-            global $mysqli;
-            $conditions = [];
-
-            $result = $mysqli->query("
-                SELECT *
-                FROM acte_has_condition INNER JOIN `condition`
-                ON acte_has_condition.condition_id = `condition`.id
-                WHERE acte_has_condition.acte_id = '$this->id'
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $conditions[] = new Condition(
-                        $row["id"],
-                        $row["text"],
-                        new Personne($row["personne_id"]),
-                        $row["source_id"]
-                    );
-                }
-            }
-            return $conditions;
-        }
-
-        function get_relations(){
-            global $mysqli;
-            $relations = [];
-
-            $result = $mysqli->query("
-                SELECT *
-                FROM acte_has_relation INNER JOIN relation
-                ON acte_has_relation.relation_id = relation.id
-                WHERE acte_has_relation.acte_id = '$this->id'
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    $relations[] = new Relation(
-                        $row["id"],
-                        new Personne($row["pers_source_id"]),
-                        new Personne($row["pers_destination_id"]),
-                        $row["statut_id"]
-                    );
-                }
-            }
-            return $relations;
         }
 
         function get_contenu(){

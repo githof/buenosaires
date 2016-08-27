@@ -185,6 +185,9 @@
                     $this->from_db_personne_noms_prenoms($obj);
                     $this->from_db_personne_relations($obj);
                     $this->from_db_personne_conditions($obj);
+                }else if($obj instanceof Acte){
+                    $this->from_db_acte_conditions($obj);
+                    $this->from_db_acte_relations($obj);
                 }
             }else{
                 if($obj instanceof Personne)
@@ -312,6 +315,50 @@
                     $personne->relations[] = $relation;
                 }
             }
+        }
+
+        private function from_db_acte_conditions($acte){
+            $result = $this->query("
+                SELECT *
+                FROM acte_has_condition INNER JOIN `condition`
+                ON acte_has_condition.condition_id = `condition`.id
+                WHERE acte_has_condition.acte_id = '$acte->id'
+            ");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $condition = new Condition(
+                        $row["id"],
+                        $row["text"],
+                        new Personne($row["personne_id"]),
+                        $row["source_id"]
+                    );
+                    $this->from_db_condition_list_acte($condition);
+                    $acte->conditions[] = $condition;
+                }
+            }
+            return $conditions;
+        }
+
+        private function from_db_acte_relations($acte){
+            $result = $this->query("
+                SELECT *
+                FROM acte_has_relation INNER JOIN relation
+                ON acte_has_relation.relation_id = relation.id
+                WHERE acte_has_relation.acte_id = '$acte->id'
+            ");
+            if($result != FALSE && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    $relation = new Relation(
+                        $row["id"],
+                        new Personne($row["pers_source_id"]),
+                        new Personne($row["pers_destination_id"]),
+                        $row["statut_id"]
+                    );
+                    $this->from_db_relation_list_acte($relation);
+                    $acte->relations[] = $relation;
+                }
+            }
+            return $relations;
         }
 
         private function from_db_condition_list_acte($condition){

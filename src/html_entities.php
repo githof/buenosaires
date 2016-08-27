@@ -67,7 +67,7 @@
 
 
     function html_acte_contenu($acte_contenu){
-        return "<div class='acte-contenu xmlselect-edit'>".htmlspecialchars($acte_contenu)."</div>";
+        return "<div class='acte-contenu xmlselect-edit editable'>".htmlspecialchars($acte_contenu)."</div>";
     }
 
     function html_acte_small($acte){
