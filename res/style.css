@@ -274,34 +274,34 @@ section > div {
 
 /* MULTI SELECT */
 
-#ms-fusion_personne_list {
+#ms-fusion_personne_list, #ms-dissocier_personne_list {
 	width: auto;
 	height: 150px;
 }
 
-#ms-fusion_personne_list ul {
+#ms-fusion_personne_list ul, #ms-dissocier_personne_list ul{
 	height: 70%;
 }
 
-#ms-fusion_personne_list .help-block {
+#ms-fusion_personne_list .help-block, #ms-dissocier_personne_list .help-block{
 	height: 20%
 }
 
-#ms-fusion_personne_list .ms-selectable, #ms-fusion_personne_list .ms-selection {
+#ms-fusion_personne_list .ms-selectable, #ms-fusion_personne_list .ms-selection, #ms-dissocier_personne_list .ms-selectable, #ms-dissocier_personne_list .ms-selection {
 	float: left;
 	width: 45%;
 	height: 100%;
 }
 
-#ms-fusion_personne_list .ms-selection {
+#ms-fusion_personne_list .ms-selection, #ms-dissocier_personne_list .ms-selection{
 	margin-left: 10%;
 }
 
 
 
-/* FUSION */
+/* FUSION & DISSOCIER */
 
-#fusion-submit {
+#fusion-submit, #dissocier-submit {
 	display: block;
 	margin: 20px auto;
 }

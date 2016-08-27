@@ -23,7 +23,7 @@
         ["Export", "cloud-download", "export"],
         ["Recherche", "search", "recherche"],
         ["Fusion", "resize-small", "fusion"],
-        //["Dissocier", "resize-full", ""],
+        ["Dissocier", "resize-full", "dissocier"],
         ["Tables", "align-justify", "table"],
         ["Logs", "wrench", "logs"],
         //["Groupe", "user", ""]

@@ -21,6 +21,8 @@
             =>  ["import", "import d'acte(s)"],
         "/(?'page'fusion)"
             =>  ["fusion", "fusion"],
+        "/(?'page'dissocier)"
+            => ["dissocier", "dissocier"],
         "/(?'page'logs)"
             =>  ["logs", "logs"],
         "/(?'page'new-account)"
