@@ -8,7 +8,7 @@
     <button class="btn btn-primary" id="dissocier-submit" disabled>Dissocier</button>
     <input type="hidden" name="s" value="dissocier_exec">
     <section>
-        <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
+        <h4>ID  <i>(Choisir l'ID de la seconde personne)</i></h4>
         <div class="dissocier-ids flex-vertical">
         </div>
     </section>

@@ -26,14 +26,14 @@ function get_list_personne($select){
     if($select.length == 0)
         return;
     $select.html("");
-    $.get("get?s=fusion_list_personne", function(data, status){
+    $.get("get?s=multiselect_list_personne", function(data, status){
         $select.append(data);
         $select.multiSelect("refresh");
     });
 }
 
-function get_personne_infos(id){
-    $.get("get?s=fusion_personne_infos&id="+id, function(data, status){
+function fusion_add_personne(id){
+    $.get("get?s=personne_infos&id="+id, function(data, status){
         var pers = "personne-A";
         var input_id_checked = "checked";
 
@@ -48,7 +48,6 @@ function get_personne_infos(id){
         }
 
         var $data = $("<div>"+data+"</div>");
-
         _.map($data.children(".alert").toArray(), alert_add);
 
         $("#fusion-form").append(
@@ -80,13 +79,54 @@ function get_personne_infos(id){
     });
 }
 
-function rm_personne_infos(id){
+function fusion_rm_personne(id){
     var $input = $("#pers-"+id);
     if($input == null)
         return;
 
     var pers = ($input.parent().hasClass("personne-A"))? "personne-A" : "personne-B";
     $("."+pers).remove();
+}
+
+function dissocier_form_info($where, $info, name){
+    var $p = $("<div>");
+    $p.append(
+        $("<input type='radio' name='"+name+"' value='a' checked>"),
+        $("<input type='radio' name='"+name+"' value='b'>"),
+        $info
+    );
+    $where.append($p);
+}
+
+function dissocier_add_personne(id){
+    $.get("get?s=personne_infos&id="+id, function(data, status){
+        var $data = $("<div>"+data+"</div>");
+        _.map($data.children(".alert").toArray(), alert_add);
+
+        $("#dissocier-form").append(
+            $("<input type='hidden' name='id-source' value='"+id+"'>")
+        );
+
+        $(".dissocier-ids").append(
+            $("<div class='personne-A'>"+id+"</div>")
+        );
+
+        $.each($data.children(".nom").toArray(), function(index, value){
+            dissocier_form_info($(".dissocier-noms"), value, "nom")
+        });
+
+        $.each($data.children(".prenom").toArray(), function(index, value){
+            dissocier_form_info($(".dissocier-prenoms"), value, "prenom")
+        });
+
+        $.each($data.children(".condition").toArray(), function(index, value){
+            dissocier_form_info($(".dissocier-conditions"), value, "condition")
+        });
+
+        $.each($data.children(".relation").toArray(), function(index, value){
+            dissocier_form_info($(".dissocier-relations"), value, "relation")
+        });
+    });
 }
 
 
@@ -132,7 +172,7 @@ $(document).ready(function(){
                 $("#fusion-submit").removeAttr("disabled");
                 that.$selectableUl.children().addClass("disabled");
             }
-            get_personne_infos(values[0]);
+            fusion_add_personne(values[0]);
         },
         afterDeselect: function(values){
             var that = this;
@@ -141,7 +181,7 @@ $(document).ready(function(){
                 $("#fusion-submit").attr("disabled", "");
                 that.$selectableUl.children().removeClass("disabled");
             }
-            rm_personne_infos(values[0]);
+            fusion_rm_personne(values[0]);
         }
     });
     get_list_personne($("#fusion_personne_list"));
@@ -170,7 +210,7 @@ $(document).ready(function(){
                 $("#fusion-submit").removeAttr("disabled");
                 that.$selectableUl.children().addClass("disabled");
             }
-
+            dissocier_add_personne(values[0]);
         },
         afterDeselect: function(values){
             var that = this;
@@ -194,8 +234,8 @@ $(document).ready(function(){
         $.get("get?s="+script+"&id-personne-A="+id_A+"&id-personne-B="+id_B+"&id="+id_select, function(data, status){
             $data = $("<div>"+data+"</div>");
             _.map($data.children(".alert").toArray(), alert_add);
-            rm_personne_infos(id_A);
-            rm_personne_infos(id_B);
+            fusion_rm_personne(id_A);
+            fusion_rm_personne(id_B);
             get_list_personne();
         });
     });
