@@ -88,11 +88,14 @@ function fusion_rm_personne(id){
     $("."+pers).remove();
 }
 
-function dissocier_form_info($where, $info, name){
+function dissocier_form_info($where, info){
     var $p = $("<div>");
+    var $info = $(info);
+    var id = $info.attr("id");
+
     $p.append(
-        $("<input type='radio' name='"+name+"' value='a' checked>"),
-        $("<input type='radio' name='"+name+"' value='b'>"),
+        $("<input type='radio' name='"+id+"' value='a' checked>"),
+        $("<input type='radio' name='"+id+"' value='b'>"),
         $info
     );
     $where.append($p);
@@ -112,19 +115,19 @@ function dissocier_add_personne(id){
         );
 
         $.each($data.children(".nom").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-noms"), value, "nom")
+            dissocier_form_info($(".dissocier-noms"), value)
         });
 
         $.each($data.children(".prenom").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-prenoms"), value, "prenom")
+            dissocier_form_info($(".dissocier-prenoms"), value)
         });
 
         $.each($data.children(".condition").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-conditions"), value, "condition")
+            dissocier_form_info($(".dissocier-conditions"), value)
         });
 
         $.each($data.children(".relation").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-relations"), value, "relation")
+            dissocier_form_info($(".dissocier-relations"), value)
         });
     });
 }
