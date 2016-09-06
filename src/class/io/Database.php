@@ -174,7 +174,7 @@
 
 
 
-        public function from_db($obj, $update_obj = FALSE){
+        public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE){
             global $log;
 
             $log->d("from database: ".get_class($obj)." id=$obj->id");
@@ -183,9 +183,11 @@
                 $row = $this->from_db_by_id($obj);
                 if($obj instanceof Personne){
                     $this->from_db_personne_noms_prenoms($obj);
-                    $this->from_db_personne_relations($obj);
-                    $this->from_db_personne_conditions($obj);
-                }else if($obj instanceof Acte){
+                    if($get_relations_conditions){
+                        $this->from_db_personne_relations($obj);
+                        $this->from_db_personne_conditions($obj);
+                    }
+                }else if($obj instanceof Acte && $get_relations_conditions){
                     $this->from_db_acte_conditions($obj);
                     $this->from_db_acte_relations($obj);
                 }
@@ -278,6 +280,7 @@
 
         private function from_db_personne_conditions($personne){
             $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
+            $condition = NULL;
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
                     $condition = new Condition(
@@ -294,10 +297,10 @@
 
         private function from_db_personne_relations($personne){
             $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
+            $pers_source = NULL;
+            $pers_destination = NULL;
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $pers_source = NULL;
-                    $pers_destination = NULL;
                     if($row["pers_source_id"] == $personne->id){
                         $pers_source = $personne;
                         $pers_destination = new Personne($row["pers_destination_id"]);
@@ -324,6 +327,7 @@
                 ON acte_has_condition.condition_id = `condition`.id
                 WHERE acte_has_condition.acte_id = '$acte->id'
             ");
+            $condition = NULL;
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
                     $condition = new Condition(
@@ -345,6 +349,7 @@
                 ON acte_has_relation.relation_id = relation.id
                 WHERE acte_has_relation.acte_id = '$acte->id'
             ");
+            $relation = NULL;
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
                     $relation = new Relation(
@@ -460,7 +465,7 @@
             if(!$obj->pre_into_db())
                 return;
 
-            $values_db = $this->from_db($obj);
+            $values_db = $this->from_db($obj, FALSE, FALSE);
             if(isset($values_db["id"]))
                 $obj->id = $values_db["id"];
             $values_obj = $obj->values_into_db();
