@@ -1,32 +1,15 @@
 
-+ structure
-  # base : toujours mettre l'id dans insert
-    attention à récupérer le return d'insert si erreur (parce que l'id
-    a pu être déjà attrivué par la base), avec un while +1 par ex
++ attributs de noms
+  - faire passer les attributs dans nom_personne
+  - si on veut ajouter "de Belgrano" à "Belgrano", on ajoute juste
+    l'attribut à nom_personne.
+    Si on veut ajouter "Belgrano" à "de Belgrano", on ne fait rien, on
+    l'a déjà
 
-  # base : virer les périodes \o/
+- balise html title
 
-+ création
-  - id max à partir des csv (dans Dropbox/SiteWeb/data) pour personnes
-  # parrains, sur le modèle de temoins
-  # quand on ajoute un acte, n'ajouter les personnes que si elles ont
-    au moins un nom ou un prénom (mais il peut y avoir un nom ou un
-    prénom seul), pour pouvoir faire le test d'homonymie
-
-+ tests
-  - 10 actes Belgrano
-  - acte sans les ids
-  - acte sans balises nom / prenom, puis le même acte, avec un nom / prenom
-  - 100 actes
-
-+ gestion d'erreurs
-  - log en partant de la fin
-
-+ Ced
-  - condition décès
-  - veuf/veuve
-  - bouton loading add actes
-  - même personne qui apparait pas avec les mêmes prenoms/noms (404)
++ affichage acte
+  - ajouter une version compacte de l'acte (sans les balises xml)
 
 Captures d'écran :
 DROPBOX/Belgrano/Chris/Captures*.png
