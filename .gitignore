@@ -5,3 +5,4 @@ log.txt
 *.bak
 tmp
 xmlselect
+local-config.php
