@@ -17,18 +17,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `buenosaires_TPT`.`attribut`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires_TPT`.`attribut` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`attribut` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `buenosaires_TPT`.`nom`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires_TPT`.`nom` ;
@@ -37,16 +25,8 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`nom` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nom` VARCHAR(50) NOT NULL,
   `no_accent` VARCHAR(50) NOT NULL,
-  `attribut_id` INT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_nom_attribut1`
-    FOREIGN KEY (`attribut_id`)
-    REFERENCES `buenosaires_TPT`.`attribut` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_nom_attribut1_idx` ON `buenosaires_TPT`.`nom` (`attribut_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -98,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`nom_personne` (
   `personne_id` INT NOT NULL,
   `nom_id` INT NOT NULL,
   `ordre` INT NOT NULL,
+  `attribut` VARCHAR(45) NULL,
   PRIMARY KEY (`personne_id`, `nom_id`),
   CONSTRAINT `fk_personne_has_nom_personne1`
     FOREIGN KEY (`personne_id`)
@@ -308,19 +289,12 @@ CREATE TABLE IF NOT EXISTS `buenosaires_TPT`.`tag` (
     FOREIGN KEY (`parent_tag`)
     REFERENCES `buenosaires_TPT`.`tag` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tag_attribut1`
-    FOREIGN KEY (`attribut_id`)
-    REFERENCES `buenosaires_TPT`.`attribut` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 CREATE INDEX `fk_tag_categorie1_idx` ON `buenosaires_TPT`.`tag` (`categorie_id` ASC);
 
 CREATE INDEX `fk_tag_tag1_idx` ON `buenosaires_TPT`.`tag` (`parent_tag` ASC);
-
-CREATE INDEX `fk_tag_attribut1_idx` ON `buenosaires_TPT`.`tag` (`attribut_id` ASC);
 
 
 -- -----------------------------------------------------

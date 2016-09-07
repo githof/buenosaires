@@ -260,20 +260,18 @@
             }
 
             $result = $this->query("
-                SELECT nom.id AS n_id, nom, no_accent, value, attribut.id AS a_id
+                SELECT nom.id as n_id, nom, no_accent, attribut, ordre
                 FROM nom_personne INNER JOIN nom
                 ON nom_personne.nom_id = nom.id
-                LEFT JOIN attribut
-                ON attribut.id = nom.attribut_id
                 WHERE nom_personne.personne_id = '$personne->id'
                 ORDER BY nom_personne.ordre"
             );
             if($result != FALSE && $result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
-                    $attribut = NULL;
-                    if(isset($row["value"]))
-                        $attribut = new Attribut($row["a_id"], $row["value"]);
-                    $personne->add_nom(new Nom($row["n_id"], $row["nom"], $row["no_accent"], $attribut));
+                    $personne->add_nom( new Nom($row["n_id"],
+                                                $row["nom"],
+                                                $row["no_accent"],
+                                                $row["attribut"]));
                 }
             }
         }
@@ -536,6 +534,8 @@
                 "nom_id" => $nom->id,
                 "ordre" => $ordre
             ];
+            if(isset($nom->attribut))
+                $values["attribut"] = $nom->attribut;
             return $this->insert(
                 "nom_personne",
                 $values,

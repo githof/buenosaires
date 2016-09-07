@@ -38,14 +38,16 @@
             $this->prenoms[] = $prenom;
         }
 
-        public function add_nom($nom){
+        public function add_nom($nom, $ordre = NULL){
             foreach($this->noms as $_nom){
                 if((isset($_nom->id, $nom->id) && $_nom->id == $nom->id) ||
-                    ($_nom->no_accent == $nom->no_accent &&
-                    (isset($_nom->attribut, $nom->attribut) && $_nom->attribut->value == $nom->attribut->value) || $_nom->attribut == $nom->attribut))
+                    ($_nom->no_accent == $nom->no_accent))
                     return;
             }
-            $this->noms[] = $nom;
+            if(isset($ordre))
+                array_splice($this->noms, $ordre, 0, $nom);
+            else
+                $this->noms[] = $nom;
         }
 
         public function add_condition($text, $source_id){

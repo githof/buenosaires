@@ -13,7 +13,7 @@
 
         function __construct($id = NULL, $nom = NULL, $no_accent = NULL, $attribut = NULL){
             $this->id = $id;
-            $this->set_attribut($attribut);
+            $this->attribut = $attribut;
             $this->set_nom($nom, $no_accent);
         }
 
@@ -29,15 +29,11 @@
                 $this->no_accent = $no_accent;
         }
 
-        function set_attribut($attribut){
-            $this->attribut = $attribut;
-        }
-
         function to_string(){
             $str = "";
-            if(isset($this->attribut, $this->attribut->value))
-                $str = $this->attribut->value . " ";
-            return $str . "$this->nom";
+            if(isset($this->attribut))
+                $str = $this->attribut . " ";
+            return $str . $this->nom;
         }
 
 
@@ -50,12 +46,6 @@
         public function get_same_values(){
             $values = [];
             $values["no_accent"] = $this->no_accent;
-
-            if(isset($this->attribut, $this->attribut->id))
-                $values["attribut_id"] = $this->attribut->id;
-            else
-                $values["attribut_id"] = "NULL";
-
             return $values;
         }
 
@@ -65,28 +55,16 @@
 
             $this->id = $row["id"];
             $this->set_nom($row["nom"], $row["no_accent"]);
-            if(isset($row["attribut_id"]) && $row["attribut_id"] != "NULL")
-                $this->set_attribut(new Attribut($row["attribut_id"]));
-            else
-                $this->attribut = NULL;
         }
 
         public function values_into_db(){
             $values = [];
             $values["nom"] = $this->nom;
             $values["no_accent"] = $this->no_accent;
-            if(isset($this->attribut, $this->attribut->id))
-                $values["attribut_id"] = $this->attribut->id;
-
             return $values;
         }
 
         public function pre_into_db(){
-            global $mysqli;
-
-            if(isset($this->attribut))
-                $mysqli->into_db($this->attribut);
-
             return TRUE;
         }
 

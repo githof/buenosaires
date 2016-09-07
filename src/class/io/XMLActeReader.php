@@ -164,7 +164,7 @@
                         $this->all_nom_attributes_in_one($xml_child);
                         $attribut = NULL;
                         if(isset($xml_child->attributes()["attr"]))
-                            $attribut = new Attribut(NULL, $xml_child->attributes()["attr"]);
+                            $attribut = $xml_child->attributes()["attr"];
                         $personne->add_nom(new Nom(NULL, $xml_child->__toString(), NULL, $attribut));
                         break;
                     case "pere":
