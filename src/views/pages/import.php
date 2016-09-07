@@ -160,7 +160,7 @@
                 <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Envoyer">
+                <button class="import-submit btn btn-primary">Envoyer</button>
             </div>
             <input type="hidden" name="form_type" value="file">
         </form>
@@ -186,7 +186,7 @@
                 <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Envoyer">
+                <button class="import-submit btn btn-primary">Envoyer</button>
             </div>
             <input type="hidden" name="form_type" value="text">
         </form>
