@@ -4,7 +4,7 @@
     include_once(ROOT."src/class/model/Acte.php");
     include_once(ROOT."src/html_entities.php");
 
-
+    $page_title = "Acte {$url_parsed["id"]}";
     $acte = new Acte($url_parsed["id"]);
     $result = $mysqli->from_db($acte, TRUE);
     if(!isset($result)){

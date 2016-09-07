@@ -8,7 +8,7 @@
 
     $url_parsed = [];
     $ARGS = [];
-    $page_title;
+    $page_title = "Buenos Aires";
 
     include_once(ROOT."config.php");
     include_once(ROOT."src/utils.php");
@@ -55,7 +55,7 @@
         }
     }else{
         $view = ROOT."src/views/pages/404.php";
-        $page_title = "404";
+        $page_title = "Page introuvable";
     }
 
 
@@ -99,7 +99,7 @@
         <script type="text/javascript" src="res/xmlselect/select_and_show.js"></script>
         <script type="text/javascript" src="res/xmlselect/xml_parser.js"></script>
         <script type="text/javascript" src="res/xmlselect/init.js"></script>
-        <title>Buenos Aires</title>
+        <title><?php echo $page_title; ?></title>
     </head>
     <body>
         <div class="nav-bar">

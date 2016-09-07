@@ -2,33 +2,33 @@
 
     $urls = [
         "/(?'page'table)/(?'table'[^/]+)"
-            =>  ["table", "table"],
+            =>  ["table", "Table"],
         "/(?'page'table)"
-            =>  ["table", "table"],
+            =>  ["table", "Tables"],
         "/(?'page'personne)/(?'id'\d+)"
-            =>  ["detail_personne", "personne"],
+            =>  ["detail_personne", "Personne"],
         "/(?'page'acte)/(?'id'\d+)"
-            =>  ["detail_acte", "acte"],
+            =>  ["detail_acte", "Acte"],
         "/(?'page'recherche)"
-            =>  ["search", "recherche"],
+            =>  ["search", "Recherche"],
         "/(?'page'resultat)(\?(?'args'[^/]+)){0,1}"
-            =>  ["results", "résultats"],
+            =>  ["results", "Résultats de la recherche"],
         "/(?'page'supprimer)/(?'type'acte)/(?'id'\d+)"
-            =>  ["delete", "supprimer acte"],
+            =>  ["delete", "Supprimer acte"],
         "/(?'page'get)\?(?'args'[^/]+)"
             =>  ["", ""],
         "/(?'page'import)"
-            =>  ["import", "import d'acte(s)"],
+            =>  ["import", "Import"],
         "/(?'page'fusion)"
-            =>  ["fusion", "fusion"],
+            =>  ["fusion", "Fusion"],
         "/(?'page'dissocier)"
-            => ["dissocier", "dissocier"],
+            => ["dissocier", "Dissocier"],
         "/(?'page'logs)"
-            =>  ["logs", "logs"],
+            =>  ["logs", "Logs"],
         "/(?'page'new-account)"
-            =>  ["new_account", "création d'un compte"],
+            =>  ["new_account", "Nouveau compte"],
         "(?'page'/)"
-            =>  ["accueil", "bienvenue"]
+            =>  ["accueil", "Buenos Aires"]
     ];
 
 

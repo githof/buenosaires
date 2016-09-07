@@ -283,7 +283,7 @@
     }
 
     function print_table($table_name){
-        global $mysqli, $alert;
+        global $mysqli, $alert, $page_title;
 
         if($table_name == "nom"){
             $results = $mysqli->query("
@@ -300,26 +300,46 @@
             return;
         }
 
-        if($table_name == "acte")
+        if($table_name == "acte"){
+            $page_title = "Table: Actes";
             return print_table_acte($results);
-        if($table_name == "personne")
+        }
+        if($table_name == "personne"){
+            $page_title = "Table: Personnes";
             return print_table_personne($results);
-        if($table_name == "acte_contenu")
+        }
+        if($table_name == "acte_contenu"){
+            $page_title = "Table: Contenu des actes";
             return print_table_acte_contenu($results);
-        if($table_name == "relation")
+        }
+        if($table_name == "relation"){
+            $page_title = "Table: Relations";
             return print_table_relation($results);
-        if($table_name == "condition")
+        }
+        if($table_name == "condition"){
+            $page_title = "Table: Conditions";
             return print_table_condition($results);
-        if($table_name == "source")
+        }
+        if($table_name == "source"){
+            $page_title = "Table: Sources";
             return print_table_source($results);
-        if($table_name == "statut")
+        }
+        if($table_name == "statut"){
+            $page_title = "Table: Statuts";
             return print_table_status($results);
-        if($table_name == "attribut")
+        }
+        if($table_name == "attribut"){
+            $page_title = "Table: Attributs";
             return print_table_attribut($results);
-        if($table_name == "prenom")
+        }
+        if($table_name == "prenom"){
+            $page_title = "Table: Prenoms";
             return print_table_prenom($results);
-        if($table_name == "nom")
+        }
+        if($table_name == "nom"){
+            $page_title = "Table: Noms";
             return print_table_nom($results);
+        }
     }
 
     function button_table($text, $nom_table){

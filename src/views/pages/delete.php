@@ -4,6 +4,7 @@
     $id = $url_parsed["id"];
 
     $html = "Impossible de réaliser la suppression";
+    $page_title = "Suppression de l'acte $id";
 
     if($type == "acte"){
         $acte = new Acte($id);
