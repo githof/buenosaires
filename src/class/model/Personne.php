@@ -138,7 +138,6 @@
             }
 
             $i = 1;
-            $mysqli->delete("nom_personne", "personne_id='$this->id'");
             foreach($this->noms as $nom){
                 $mysqli->into_db_nom_personne($this, $nom, $i);
                 $i++;

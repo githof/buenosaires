@@ -534,12 +534,15 @@
                 "nom_id" => $nom->id,
                 "ordre" => $ordre
             ];
-            if(isset($nom->attribut))
+            $attr = "";
+            if(isset($nom->attribut)){
                 $values["attribut"] = $nom->attribut;
+                $attr = ", attribut='$nom->attribut'";
+            }
             return $this->insert(
                 "nom_personne",
                 $values,
-                "ON DUPLICATE KEY UPDATE ordre='$ordre'"
+                "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"
             );
         }
 
