@@ -1,7 +1,7 @@
 
 + attributs de noms
-  - faire passer les attributs dans nom_personne
-  - si on veut ajouter "de Belgrano" à "Belgrano", on ajoute juste
+  X faire passer les attributs dans nom_personne
+  X si on veut ajouter "de Belgrano" à "Belgrano", on ajoute juste
     l'attribut à nom_personne.
     Si on veut ajouter "Belgrano" à "de Belgrano", on ne fait rien, on
     l'a déjà
