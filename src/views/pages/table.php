@@ -101,6 +101,7 @@
 
             $rows .= "
                 <tr>
+                    <th>$relation->id</th>
                     <td>$html_source</td>
                     <td>$html_statut</td>
                     <td>$html_destination</td>
@@ -111,6 +112,7 @@
             <table class='table table-striped table-hover'>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Personne source</th>
                         <th>Statut</th>
                         <th>Personne destination</th>
@@ -136,6 +138,7 @@
 
             $rows .= "
                 <tr>
+                    <th>$condition->id</th>
                     <td>$html_text</td>
                     <td>$html_personne</td>
                     <td>$html_source</td>
@@ -146,6 +149,7 @@
             <table class='table table-striped table-hover table-condensed'>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Condition</th>
                         <th>Personne</th>
                         <th>Source</th>
