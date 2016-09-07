@@ -18,7 +18,7 @@
     }
 
     $menu_items = [
-        ["Acceuil", "home", ""],
+        ["Accueil", "home", ""],
         ["Import", "cloud-upload", "import"],
         ["Export", "cloud-download", "export"],
         ["Recherche", "search", "recherche"],
