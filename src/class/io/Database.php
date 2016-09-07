@@ -364,7 +364,7 @@
             }
         }
 
-        private function from_db_condition_list_acte($condition){
+        public function from_db_condition_list_acte($condition){
             $result = $this->select(
                 "acte_has_condition",
                 ["acte_id"],
@@ -376,7 +376,7 @@
             }
         }
 
-        private function from_db_relation_list_acte($relation){
+        public function from_db_relation_list_acte($relation){
             $result = $this->select(
                 "acte_has_relation",
                 ["acte_id"],

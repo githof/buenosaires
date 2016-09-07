@@ -89,10 +89,13 @@
     }
 
     function print_table_relation($results){
+        global $mysqli;
+
         $rows = "";
         while($row = $results->fetch_assoc()){
             $relation = new Relation();
             $relation->result_from_db($row);
+            $mysqli->from_db_relation_list_acte($relation);
 
             $html_statut = html_relation_statut($relation->get_statut_name());
             $html_source = html_personne(personne_memory($relation->personne_source->id));
@@ -126,10 +129,13 @@
     }
 
     function print_table_condition($results){
+        global $mysqli;
+
         $rows = "";
         while($row = $results->fetch_assoc()){
             $condition = new Condition();
             $condition->result_from_db($row);
+            $mysqli->from_db_condition_list_acte($condition);
 
             $html_text = html_condition_text($condition->text);
             $html_personne = html_personne(personne_memory($condition->personne->id));
