@@ -6,10 +6,10 @@
     Si on veut ajouter "Belgrano" à "de Belgrano", on ne fait rien, on
     l'a déjà
 
-- balise html title
+X balise html title
 
 + affichage acte
-  - ajouter une version compacte de l'acte (sans les balises xml)
+  X ajouter une version compacte de l'acte (sans les balises xml)
 
 Captures d'écran :
 DROPBOX/Belgrano/Chris/Captures*.png
