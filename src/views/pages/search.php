@@ -18,17 +18,13 @@
         $str = "";
 
         $result = $mysqli->query("
-            SELECT nom.id AS id, no_accent, value
-            FROM nom LEFT JOIN attribut
-            ON nom.attribut_id = attribut.id
-            ORDER BY nom.no_accent
+            SELECT id, no_accent
+            FROM nom
+            ORDER BY no_accent
         ");
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-                $attribut_str = "";
-                if(isset($row["value"]) && $row["value"] != "NULL")
-                    $attribut_str = "{$row["value"]} ";
-                $str .= "<option value='{$row["id"]}'>$attribut_str{$row["no_accent"]}</option>";
+                $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
             }
         }
         return $str;

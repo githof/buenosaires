@@ -6,7 +6,6 @@
 </section>
 <div id="fusion-form">
     <button class="btn btn-primary" id="fusion-submit" disabled>Fusionner</button>
-    <input type="hidden" name="s" value="fusion_exec">
     <section>
         <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
         <div class="fusion-ids flex-horizontal">
@@ -16,10 +15,18 @@
         <h4>Noms</h4>
         <div class="fusion-noms flex-horizontal">
         </div>
+        <div>
+            <div class="help-block">Les noms séparés par une virgule et leurs attributs en parenthèse si besoin</div>
+            <input type="text" name="noms" placeholder="Ex: PERI, (de) BELGRANO">
+        </div>
     </section>
     <section>
         <h4>Prenoms</h4>
         <div class="fusion-prenoms flex-horizontal">
+        </div>
+        <div>
+            <div class="help-block">Les prénoms séparés par une virgule</div>
+            <input type="text" name="prenoms" placeholder="Ex: Maria, Josefa">
         </div>
     </section>
     <section>

@@ -1,22 +1,22 @@
 <?php
 
-    function is_fusion_possible($personne_A, $personne_B){
-        global $alert;
-
-        if(count($personne_A->relations) > 0 && count($personne_B->relations) > 0){
-            foreach($personne_A->relations as $relation_A){
-                foreach($personne_B->relations as $relation_B){
-                    if($relation_A->personne_source->id == $relation_B->personne_source->id ||
-                        $relation_A->personne_destination->id == $relation_B->personne_destination->id){
-                            $alert->warning("Des relations sont en conflits");
-                            return FALSE;
-                        }
-                }
-            }
-        }
-
-        return TRUE;
-    }
+    // function is_fusion_possible($personne_A, $personne_B){
+    //     global $alert;
+    //
+    //     if(count($personne_A->relations) > 0 && count($personne_B->relations) > 0){
+    //         foreach($personne_A->relations as $relation_A){
+    //             foreach($personne_B->relations as $relation_B){
+    //                 if($relation_A->personne_source->id == $relation_B->personne_source->id ||
+    //                     $relation_A->personne_destination->id == $relation_B->personne_destination->id){
+    //                         $alert->warning("Des relations sont en conflits");
+    //                         return FALSE;
+    //                     }
+    //             }
+    //         }
+    //     }
+    //
+    //     return TRUE;
+    // }
 
     function has_same_id($array, $id){
         foreach($array as $obj){
@@ -53,32 +53,6 @@
                 return TRUE;
         }
         return FALSE;
-    }
-
-    function fusion_prenoms($personne_keep, $personne_throw){
-        global $mysqli, $log;
-
-        $log->d("fusion prenoms");
-        foreach($personne_throw->prenoms as $prenom){
-            $where = "prenom_id='$prenom->id' && personne_id='$personne_throw->id'";
-            if(has_same_id($personne_keep->prenoms, $prenom->id))
-                $mysqli->delete("prenom_personne", $where);
-            else
-                $mysqli->update("prenom_personne", ["personne_id" => "$personne_keep->id"], $where);
-        }
-    }
-
-    function fusion_noms($personne_keep, $personne_throw){
-        global $mysqli, $log;
-
-        $log->d("fusion noms");
-        foreach($personne_throw->noms as $nom){
-            $where = "nom_id='$nom->id' && personne_id='$personne_throw->id'";
-            if(has_same_id($personne_keep->noms, $nom->id))
-                $mysqli->delete("nom_personne", $where);
-            else
-                $mysqli->update("nom_personne", ["personne_id" => "$personne_keep->id"], $where);
-        }
     }
 
     function fusion_conditions($personne_keep, $personne_throw){
@@ -157,11 +131,24 @@
         }
     }
 
-    function fusion($personne_keep, $personne_throw){
+    function fusion($personne_keep, $personne_throw, $noms, $prenoms){
         global $mysqli, $log;
 
-        fusion_prenoms($personne_keep, $personne_throw);
-        fusion_noms($personne_keep, $personne_throw);
+        $mysqli->delete("prenom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
+        $i = 1;
+        foreach($prenoms as $prenom){
+            $mysqli->into_db($prenom);
+            $mysqli->into_db_prenom_personne($personne_keep, $prenom, $i);
+            $i++;
+        }
+
+        $mysqli->delete("nom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
+        $i = 1;
+        foreach($noms as $nom){
+            $mysqli->into_db($nom);
+            $mysqli->into_db_nom_personne($personne_keep, $nom, $i);
+            $i++;
+        }
 
         $log->d("fusion actes");
         $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
@@ -178,25 +165,46 @@
 
     $html = "";
 
-    if(isset($ARGS["id-personne-A"], $ARGS["id-personne-B"], $ARGS["id"])){
+    if(isset($ARGS["id-personne-A"],
+            $ARGS["id-personne-B"],
+            $ARGS["id"],
+            $ARGS["noms"],
+            $ARGS["prenoms"])){
         $personne_A = new Personne($ARGS["id-personne-A"]);
         $personne_B = new Personne($ARGS["id-personne-B"]);
 
         $mysqli->from_db($personne_A);
         $mysqli->from_db($personne_B);
 
-        if(is_fusion_possible($personne_A, $personne_B)){
-            $log->d("fusion possible");
-            if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
-                if($ARGS["id"] == $personne_A->id)
-                    fusion($personne_A, $personne_B);
-                else
-                    fusion($personne_B, $personne_A);
-                $mysqli->remove_unused_prenoms_noms();
-                $alert->success("Succès de la fusion");
+        $noms_str = explode(",", $ARGS["noms"]);
+        $prenoms_str = explode(",", $ARGS["prenoms"]);
+
+        foreach($noms_str as $nom_str){
+            $split = explode(")", $nom_str);
+            if(count($split) == 2){
+                $split0 = explode("(", $split[0]);
+                $attribut = $split0[1];
+                $noms[] = new Nom(NULL, trim($split[1]), NULL, trim($attribut));
             }else{
-                $alert->warning("Erreur dans les ID des personnes");
+                $noms[] = new Nom(NULL, trim($nom_str));
             }
+        }
+
+        foreach($prenoms_str as $prenom_str){
+            $prenoms[] = new Prenom(NULL, $prenom_str);
+        }
+
+
+        $log->d("fusion possible");
+        if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
+            if($ARGS["id"] == $personne_A->id)
+                fusion($personne_A, $personne_B, $noms, $prenoms);
+            else
+                fusion($personne_B, $personne_A, $noms, $prenoms);
+            $mysqli->remove_unused_prenoms_noms();
+            $alert->success("Succès de la fusion");
+        }else{
+            $alert->warning("Erreur dans les ID des personnes");
         }
     }
 

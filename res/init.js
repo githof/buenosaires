@@ -232,14 +232,27 @@ $(document).ready(function(){
         var id_A = $("#fusion-form input[name='id-personne-A']").attr("value");
         var id_B = $("#fusion-form input[name='id-personne-B']").attr("value");
         var id_select = $("#fusion-form input[name='id']").attr("value");
-        var script = $("#fusion-form input[name='s']").val();
+        var noms = $("#fusion-form input[name='noms']").val();
+        var prenoms = $("#fusion-form input[name='prenoms']").val();
 
-        $.get("get?s="+script+"&id-personne-A="+id_A+"&id-personne-B="+id_B+"&id="+id_select, function(data, status){
+        console.log(noms);
+        noms = noms.replace(" ", "+");
+        prenoms = prenoms.replace(" ", "+");
+
+        var url = "get?s=fusion_exec&id-personne-A="+id_A
+            +"&id-personne-B="+id_B
+            +"&id="+id_select
+            +"&noms="+noms
+            +"&prenoms="+prenoms;
+
+        $.get(url, function(data, status){
             $data = $("<div>"+data+"</div>");
             _.map($data.children(".alert").toArray(), alert_add);
+            $("#fusion-form input[name='noms']").val("");
+            $("#fusion-form input[name='prenoms']").val("");
             fusion_rm_personne(id_A);
             fusion_rm_personne(id_B);
-            get_list_personne();
+            get_list_personne($("#fusion_personne_list"));
         });
     });
 
