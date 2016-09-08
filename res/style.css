@@ -324,3 +324,16 @@ section > div {
 .personne-A label, .personne-B label {
 	margin-left: 10px;
 }
+
+
+
+/* TABLES */
+.table-nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.table-nav-btn {
+	margin-right: 10px;
+}

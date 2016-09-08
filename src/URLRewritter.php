@@ -11,11 +11,11 @@
             =>  ["detail_acte", "Acte"],
         "/(?'page'recherche)"
             =>  ["search", "Recherche"],
-        "/(?'page'resultat)(\?(?'args'[^/]+)){0,1}"
+        "/(?'page'resultat)"
             =>  ["results", "Résultats de la recherche"],
         "/(?'page'supprimer)/(?'type'acte)/(?'id'\d+)"
             =>  ["delete", "Supprimer acte"],
-        "/(?'page'get)\?(?'args'[^/]+)"
+        "/(?'page'get)"
             =>  ["", ""],
         "/(?'page'import)"
             =>  ["import", "Import"],
@@ -36,6 +36,13 @@
     $uri = '/' . trim(str_replace($uri, '', $_SERVER['REQUEST_URI']), '/');
     $uri = urldecode($uri);
 
+    $args = NULL;
+    if(strpos($uri, "?") !== FALSE){
+        $split = explode("?", $uri);
+        $uri = $split[0];
+        $args = $split[1];
+    }
+
     foreach($urls as $url => $infos){
         if(preg_match('~^'.$url.'$~i', $uri, $params)){
             $url_parsed = $params;
@@ -45,9 +52,9 @@
         }
     }
 
-    if(isset($url_parsed["args"])){
-        $args = explode("&", $url_parsed["args"]);
-        foreach($args as $arg){
+    if(isset($args)){
+        $args_split = explode("&", $args);
+        foreach($args_split as $arg){
             $split = explode("=", $arg);
             if(endsWith($split[0], "[]")){
                 $key = substr($split[0],0, strlen($split[0]) -2);

@@ -264,52 +264,104 @@
             </table>";
     }
 
-    function print_table($table_name){
+    function print_table($table_name, $page, $nb){
         global $mysqli, $alert, $page_title;
 
-        $results = $mysqli->select($table_name, ["*"]);
+        $str = "";
+
+        $results = $mysqli->query("SELECT COUNT(*) as c FROM $table_name");
+        if($results === FALSE){
+            $alert->error("Erreur d'accès à la table $table_name");
+            return;
+        }
+
+        $nb_rows = $results->fetch_assoc()["c"];
+        $page_max = (int) ceil($nb_rows / $nb);
+
+        $str = button_pages($table_name, $page, $page_max);
+
+        $page--;
+        if($page > $page_max)
+            $page = $page_max;
+
+        $row_offset = $page * $nb;
+        $results = $mysqli->select($table_name, ["*"], "", "LIMIT $row_offset, $nb");
 
         if($results === FALSE){
-            $alert->e("Erreur lors de l'affichage de la table $table_name");
+            $alert->error("Erreur d'accès à la table $table_name");
             return;
         }
 
         if($table_name == "acte"){
             $page_title = "Table: Actes";
-            return print_table_acte($results);
-        }
-        if($table_name == "personne"){
+            $str = print_table_acte($results) . $str;
+        }else if($table_name == "personne"){
             $page_title = "Table: Personnes";
-            return print_table_personne($results);
-        }
-        if($table_name == "acte_contenu"){
+            $str = print_table_personne($results) . $str;
+        }else if($table_name == "acte_contenu"){
             $page_title = "Table: Contenu des actes";
-            return print_table_acte_contenu($results);
-        }
-        if($table_name == "relation"){
+            $str = print_table_acte_contenu($results) . $str;
+        }else if($table_name == "relation"){
             $page_title = "Table: Relations";
-            return print_table_relation($results);
-        }
-        if($table_name == "condition"){
+            $str = print_table_relation($results) . $str;
+        }else if($table_name == "condition"){
             $page_title = "Table: Conditions";
-            return print_table_condition($results);
-        }
-        if($table_name == "source"){
+            $str = print_table_condition($results) . $str;
+        }else if($table_name == "source"){
             $page_title = "Table: Sources";
-            return print_table_source($results);
-        }
-        if($table_name == "statut"){
+            $str = print_table_source($results) . $str;
+        }else if($table_name == "statut"){
             $page_title = "Table: Statuts";
-            return print_table_status($results);
-        }
-        if($table_name == "prenom"){
+            $str = print_table_status($results) . $str;
+        }else if($table_name == "prenom"){
             $page_title = "Table: Prenoms";
-            return print_table_prenom($results);
-        }
-        if($table_name == "nom"){
+            $str = print_table_prenom($results) . $str;
+        }else if($table_name == "nom"){
             $page_title = "Table: Noms";
-            return print_table_nom($results);
+            $str = print_table_nom($results) . $str;
         }
+
+        return $str;
+    }
+
+    function button_pages($table, $current_page, $max_page){
+        $button_start = "
+            <a class='btn btn-default table-nav-btn' href='table/$table'>
+                <span class='glyphicon glyphicon-fast-backward' aria-hidden='true'></span>
+            </a>";
+
+        $button_end = "
+            <a class='btn btn-default table-nav-btn' href='table/$table?page=$max_page'>
+                <span class='glyphicon glyphicon-fast-forward' aria-hidden='true'></span>
+            </a>";
+
+        if($current_page < $max_page)
+            $visible = "visible";
+        else
+            $visible = "hidden";
+        $p = $current_page +1;
+        $button_inc = "
+            <a class='btn btn-default table-nav-btn' href='table/$table?page=$p' style='visibility:$visible'>
+                $p
+            </a>";
+
+        if($current_page > 1)
+            $visible = "visible";
+        else
+            $visible = "hidden";
+        $p = $current_page -1;
+        $button_dec = "
+            <a class='btn btn-default table-nav-btn' href='table/$table?page=$p' style='visibility:$visible'>
+                $p
+            </a>";
+
+        return "
+            <div class='table-nav'>
+                $button_start
+                $button_dec
+                $button_inc
+                $button_end
+            </div>";
     }
 
     function button_table($text, $nom_table){
@@ -337,8 +389,12 @@
     ];
 
     $html_table = "";
+    $page = 1;
+    $nb = 25;
     if(isset($url_parsed["table"])){
-        $html_table = print_table($url_parsed["table"]);
+        if(isset($ARGS["page"]) && $ARGS["page"] > 0)
+            $page = $ARGS["page"];
+        $html_table = print_table($url_parsed["table"], $page, $nb);
     }
 
 ?>
