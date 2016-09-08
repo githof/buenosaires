@@ -3,7 +3,7 @@
 rsync -Cavuz \
       --filter=":- .gitignore" \
       --filter='- .git' \
-      "$BAHOME" BA:www/
+      "$BAHOME/" BA:www/
 rsync -Cavuz \
       --filter='- .git' \
       --filter="- tests" \
