@@ -269,7 +269,7 @@
 
         $str = "";
 
-        $results = $mysqli->query("SELECT COUNT(*) as c FROM $table_name");
+        $results = $mysqli->query("SELECT COUNT(*) as c FROM `$table_name`");
         if($results === FALSE){
             $alert->error("Erreur d'accès à la table $table_name");
             return;
