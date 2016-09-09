@@ -6,8 +6,16 @@
     function html_personne_fusion($personne){
         $html = "<div class='id'>$personne->id</div>";
 
-        foreach($personne->noms as $nom)
-            $html .= "<div id='nom-$nom->id' class='nom'>".$nom->to_string()."</div>";
+        foreach($personne->noms as $nom){
+            $attr = "";
+            if(isset($nom->attribut))
+                $attr = "<div class='nom-attribut'>$nom->attribut</div>";
+            $html .= "
+                <div id='nom-$nom->id' class='nom'>
+                    $attr
+                    <div class='nom-nom'>$nom->nom</div>
+                </div>";
+        }
 
         foreach($personne->prenoms as $prenom)
             $html .= "<div id='prenom-$prenom->id' class='prenom'>".$prenom->to_string()."</div>";

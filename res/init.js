@@ -32,6 +32,28 @@ function get_list_personne($select){
     });
 }
 
+function fusion_set_input_noms_prenoms(){
+    noms_str = "";
+    $.each($(".fusion-noms").children(".nom"), function(index, value){
+        value = $(value);
+        if(noms_str.length > 0)
+            noms_str += ", ";
+        if(value.children(".nom-attribut").length > 0)
+            noms_str += "(" + value.children(".nom-attribut").text() + ") ";
+        noms_str += value.children(".nom-nom").text();
+    });
+    $("#fusion-form input[name='noms']").val(noms_str);
+
+    prenoms_str = "";
+    $.each($(".fusion-prenoms").children(".prenom"), function(index, value){
+        value = $(value);
+        if(prenoms_str.length > 0)
+            prenoms_str += ", ";
+        prenoms_str += value.text();
+    });
+    $("#fusion-form input[name='prenoms']").val(prenoms_str);
+}
+
 function fusion_add_personne(id){
     $.get("get?s=personne_infos&id="+id, function(data, status){
         var pers = "personne-A";
@@ -50,17 +72,6 @@ function fusion_add_personne(id){
         var $data = $("<div>"+data+"</div>");
         _.map($data.children(".alert").toArray(), alert_add);
 
-        $("#fusion-form").append(
-            $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
-        );
-
-        $(".fusion-ids").append(
-            $("<div class='"+pers+"'>").append(
-                $("<input type='radio' name='id' id='pers-"+id+"' value='"+id+"' "+input_id_checked+">"),
-                $("<label for='pers-"+id+"'>"+id+"</label>")
-            )
-        );
-
         $(".fusion-noms").append(
             $data.children(".nom").addClass(pers)
         );
@@ -76,6 +87,19 @@ function fusion_add_personne(id){
         $(".fusion-relations").append(
             $data.children(".relation").addClass(pers)
         );
+
+        $("#fusion-form").append(
+            $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
+        );
+
+        $(".fusion-ids").append(
+            $("<div class='"+pers+"'>").append(
+                $("<input type='radio' name='id' id='pers-"+id+"' value='"+id+"' "+input_id_checked+">"),
+                $("<label for='pers-"+id+"'>"+id+"</label>")
+            )
+        );
+
+        fusion_set_input_noms_prenoms();
     });
 }
 
@@ -86,6 +110,8 @@ function fusion_rm_personne(id){
 
     var pers = ($input.parent().hasClass("personne-A"))? "personne-A" : "personne-B";
     $("."+pers).remove();
+
+    fusion_set_input_noms_prenoms();
 }
 
 function dissocier_form_info($where, info){
