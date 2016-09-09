@@ -325,6 +325,10 @@ section > div {
 	margin-left: 10px;
 }
 
+#fusion-form input[type="text"] {
+	width: 100%;
+}
+
 
 
 /* TABLES */
