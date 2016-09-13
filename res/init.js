@@ -54,6 +54,30 @@ function fusion_set_input_noms_prenoms(){
     $("#fusion-form input[name='prenoms']").val(prenoms_str);
 }
 
+function dissocier_set_input_noms_prenoms(){
+    noms_str = "";
+    $.each($(".dissocier-noms").children(".nom"), function(index, value){
+        value = $(value);
+        if(noms_str.length > 0)
+            noms_str += ", ";
+        if(value.children(".nom-attribut").length > 0)
+            noms_str += "(" + value.children(".nom-attribut").text() + ") ";
+        noms_str += value.children(".nom-nom").text();
+    });
+    $("#dissocier-form input[name='noms-A']").val(noms_str);
+    $("#dissocier-form input[name='noms-B']").val(noms_str);
+
+    prenoms_str = "";
+    $.each($(".dissocier-prenoms").children(".prenom"), function(index, value){
+        value = $(value);
+        if(prenoms_str.length > 0)
+            prenoms_str += ", ";
+        prenoms_str += value.text();
+    });
+    $("#dissocier-form input[name='prenoms-A']").val(prenoms_str);
+    $("#dissocier-form input[name='prenoms-B']").val(prenoms_str);
+}
+
 function fusion_add_personne(id){
     $.get("get?s=personne_infos&id="+id, function(data, status){
         var pers = "personne-A";
@@ -163,6 +187,8 @@ function dissocier_add_personne(id){
         $.each($data.children(".relation").toArray(), function(index, value){
             dissocier_form_info($(".dissocier-relations"), value, id, "relation")
         });
+
+        dissocier_set_input_noms_prenoms();
     });
 }
 
