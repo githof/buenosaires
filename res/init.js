@@ -192,6 +192,18 @@ function dissocier_add_personne(id){
     });
 }
 
+function dissocier_rm_personne(id){
+    var $root = $("#dissocier-form");
+
+    $root.find(".dissocier-ids").children().remove();
+    $root.find(".nom").remove();
+    $root.find(".prenom").remove();
+    $root.find(".condition").parent().remove();
+    $root.find(".relation").parent().remove();
+
+    dissocier_set_input_noms_prenoms();
+}
+
 
 $(document).ready(function(){
 
@@ -282,7 +294,7 @@ $(document).ready(function(){
                 $("#fusion-submit").attr("disabled", "");
                 that.$selectableUl.children().removeClass("disabled");
             }
-
+            dissocier_rm_personne(values[0]);
         }
     });
     get_list_personne($("#dissocier_personne_list"));
