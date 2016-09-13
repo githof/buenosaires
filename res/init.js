@@ -282,7 +282,7 @@ $(document).ready(function(){
             var that = this;
             that.qs1.cache();
             if(that.$selectionUl.children(".ms-selected").length >= 1){
-                $("#fusion-submit").removeAttr("disabled");
+                $("#dissocier-submit").removeAttr("disabled");
                 that.$selectableUl.children().addClass("disabled");
             }
             dissocier_add_personne(values[0]);
@@ -291,7 +291,7 @@ $(document).ready(function(){
             var that = this;
             that.qs1.cache();
             if(that.$selectionUl.children(".ms-selected").length < 1){
-                $("#fusion-submit").attr("disabled", "");
+                $("#dissocier-submit").attr("disabled", "");
                 that.$selectableUl.children().removeClass("disabled");
             }
             dissocier_rm_personne(values[0]);
