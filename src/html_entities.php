@@ -110,7 +110,7 @@
         $html_destination = html_personne(personne_memory($relation->personne_destination->id));
         $html_actes = html_list_actes($relation->actes);
         return "
-            <div class='relation'>
+            <div class='relation' id='relation-$relation->id'>
                 $html_source
                 $html_statut
                 $html_destination
@@ -271,7 +271,7 @@
         $html_actes = html_list_actes($condition->actes);
 
         return "
-            <div class='condition'>
+            <div class='condition' id='condition-$condition->id'>
                 $html_text
                 $html_personne
                 <div class='more'>

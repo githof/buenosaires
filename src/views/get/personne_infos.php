@@ -22,11 +22,11 @@
 
         $conditions = $personne->conditions;
         foreach($conditions as $condition)
-            $html .= "<div id='condition-$condition->id' class='condition'>".html_condition($condition)."</div>";
+            $html .= html_condition($condition);
 
         $relations = $personne->relations;
         foreach($relations as $relation)
-            $html .= "<div id='relation-$relation->id' class='relation'>".html_relation($relation)."</div>";
+            $html .= html_relation($relation);
 
         return $html;
     }

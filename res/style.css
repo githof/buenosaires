@@ -270,6 +270,14 @@ section > div {
 	justify-content: flex-end;
 }
 
+.nom-attribut {
+	display: inline-block;
+}
+
+.nom-nom {
+	display: inline-block;
+}
+
 
 
 /* MULTI SELECT */
@@ -325,8 +333,23 @@ section > div {
 	margin-left: 10px;
 }
 
-#fusion-form input[type="text"] {
+#fusion-form input[type="text"], #dissocier-form input[type="text"]{
 	width: 100%;
+}
+
+.dissocier-radios {
+	border: 1px solid #eee;
+	border-radius: 3px;
+	padding: 2px 5px;
+}
+
+#dissocier-form .relation, #dissocier-form .condition {
+	flex-grow: 2;
+	align-self: center;
+}
+
+.dissocier-radios input[type="radio"] {
+	margin-right: 5px;
 }
 
 
