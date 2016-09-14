@@ -163,13 +163,12 @@ function dissocier_add_personne(id){
         _.map($data.children(".alert").toArray(), alert_add);
 
         $("#dissocier-form").append(
-            $("<input type='hidden' name='id-source' value='"+id+"'>")
+            $("<input type='hidden' name='id' value='"+id+"'>")
         );
 
         $(".dissocier-ids").append(
             $("<div>Personne d'origine: "+id+"</div>"),
-            $("<div>Nouvelle personne : automatiquement généré</div>"),
-            $("<input type='hidden' name='id' value='"+id+"'>")
+            $("<div>Nouvelle personne : automatiquement généré</div>")
         );
 
         $(".dissocier-noms").append(
@@ -307,7 +306,6 @@ $(document).ready(function(){
         var noms = $("#fusion-form input[name='noms']").val();
         var prenoms = $("#fusion-form input[name='prenoms']").val();
 
-        console.log(noms);
         noms = noms.replace(" ", "+");
         prenoms = prenoms.replace(" ", "+");
 
@@ -326,6 +324,12 @@ $(document).ready(function(){
             fusion_rm_personne(id_B);
             get_list_personne($("#fusion_personne_list"));
         });
+    });
+
+
+    /* DISSOCIER */
+    $("#dissocier-submit").click(function(){
+        $("#dissocier-form").submit();
     });
 
 

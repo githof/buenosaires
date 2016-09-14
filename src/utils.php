@@ -63,6 +63,10 @@
         return $str;
     }
 
+    function startsWith($str, $start) {
+        return $start === "" || strrpos($str, $start, -strlen($str)) !== false;
+    }
+
     function endsWith($str, $end){
         $length = strlen($end);
         if ($length == 0) {
@@ -83,6 +87,33 @@
             $i++;
         }
         return $str;
+    }
+
+    function parse_prenoms($prenoms_str){
+        $prenoms_array = explode(",", $prenoms_str);
+        $prenoms = [];
+
+        foreach($prenoms_array as $prenom){
+            $prenoms[] = new Prenom(NULL, $prenom);
+        }
+        return $prenoms;
+    }
+
+    function parse_noms($noms_str){
+        $noms_array = explode(",", $noms_str);
+        $noms = [];
+
+        foreach($noms_array as $nom){
+            $split = explode(")", $nom);
+            if(count($split) == 2){
+                $split0 = explode("(", $split[0]);
+                $attribut = $split0[1];
+                $noms[] = new Nom(NULL, trim($split[1]), NULL, trim($attribut));
+            }else{
+                $noms[] = new Nom(NULL, trim($nom));
+            }
+        }
+        return $noms;
     }
 
 ?>

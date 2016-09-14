@@ -176,24 +176,8 @@
         $mysqli->from_db($personne_A);
         $mysqli->from_db($personne_B);
 
-        $noms_str = explode(",", $ARGS["noms"]);
-        $prenoms_str = explode(",", $ARGS["prenoms"]);
-
-        foreach($noms_str as $nom_str){
-            $split = explode(")", $nom_str);
-            if(count($split) == 2){
-                $split0 = explode("(", $split[0]);
-                $attribut = $split0[1];
-                $noms[] = new Nom(NULL, trim($split[1]), NULL, trim($attribut));
-            }else{
-                $noms[] = new Nom(NULL, trim($nom_str));
-            }
-        }
-
-        foreach($prenoms_str as $prenom_str){
-            $prenoms[] = new Prenom(NULL, $prenom_str);
-        }
-
+        $noms = parse_noms($ARGS["noms"]);
+        $prenoms = parse_prenoms($ARGS["prenoms"]);
 
         $log->d("fusion possible");
         if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
