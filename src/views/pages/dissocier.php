@@ -73,6 +73,7 @@
 
     if(isset($ARGS["id"])){
         dissocier($ARGS["id"]);
+        $alert->success("Dissociation réalisée avec succès");
     }
 
 ?>
