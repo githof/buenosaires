@@ -138,11 +138,10 @@ function fusion_rm_personne(id){
     fusion_set_input_noms_prenoms();
 }
 
-function dissocier_form_info($where, info, id, type){
+function dissocier_form_info($where, info, id){
     var $container = $("<div class='flex-horizontal'>");
     var $info = $(info);
-    var id_info = $info.attr("id");
-    var name = type+"-"+id_info;
+    var name = $info.attr("id");
 
     var $radios = $("<div class='dissocier-radios'>");
     $radios.append(
@@ -169,7 +168,8 @@ function dissocier_add_personne(id){
 
         $(".dissocier-ids").append(
             $("<div>Personne d'origine: "+id+"</div>"),
-            $("<div>Nouvelle personne : automatiquement généré</div>")
+            $("<div>Nouvelle personne : automatiquement généré</div>"),
+            $("<input type='hidden' name='id' value='"+id+"'>")
         );
 
         $(".dissocier-noms").append(
@@ -181,11 +181,11 @@ function dissocier_add_personne(id){
         );
 
         $.each($data.children(".condition").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-conditions"), value, id, "condition")
+            dissocier_form_info($(".dissocier-conditions"), value, id)
         });
 
         $.each($data.children(".relation").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-relations"), value, id, "relation")
+            dissocier_form_info($(".dissocier-relations"), value, id)
         });
 
         dissocier_set_input_noms_prenoms();
