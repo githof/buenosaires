@@ -146,8 +146,8 @@ function dissocier_form_info($where, info, id){
     var $radios = $("<div class='dissocier-radios'>");
     $radios.append(
         $("<div><input type='radio' id='"+name+"-A' name='"+name+"' value='a' checked><label for='"+name+"-A'>"+id+"</label></div>"),
-        $("<div><input type='radio' id='"+name+"-B' name='"+name+"' value='b'><label for='"+name+"-B'>Nouveau</label></div>"),
-        $("<div><input type='radio' id='"+name+"-2' name='"+name+"' value='2'><label for='"+name+"-2'>Les 2</label></div>")
+        $("<div><input type='radio' id='"+name+"-B' name='"+name+"' value='b'><label for='"+name+"-B'>Nouveau</label></div>")
+        //$("<div><input type='radio' id='"+name+"-2' name='"+name+"' value='2'><label for='"+name+"-2'>Les 2</label></div>")
     );
 
     $container.append(
