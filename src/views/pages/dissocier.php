@@ -50,7 +50,7 @@
                     $pers = "pers_destination_id";
                     if($is_source)
                         $pers = "pers_source_id";
-                    $mysqli->update("condition", ["$pers" => "$personne_new->id"], "id='$relation_id'");
+                    $mysqli->update("relation", ["$pers" => "$personne_new->id"], "id='$relation_id'");
                 }
             }
         }
