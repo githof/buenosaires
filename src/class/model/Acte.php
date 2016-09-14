@@ -131,9 +131,9 @@
 
         public function values_into_db(){
             $values = [];
-            if(isset($this->epoux, $this->epoux->id))
+            if(isset($this->epoux, $this->epoux->id) && $this->epoux->is_valid())
                 $values["epoux"] = $this->epoux->id;
-            if(isset($this->epouse, $this->epouse->id))
+            if(isset($this->epouse, $this->epouse->id) && $this->epouse->is_valid())
                 $values["epouse"] = $this->epouse->id;
             if(isset($this->date_start))
                 $values["date_start"] = $this->date_start;

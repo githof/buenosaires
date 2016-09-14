@@ -49,6 +49,8 @@
                 foreach ($actesXML as $xml_acte){
                     if($this->read_acte($xml_acte, $i, $only_new_acte))
                         $success_nb++;
+                    else
+                        break;
                     $i++;
                 }
             }
