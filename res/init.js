@@ -52,7 +52,7 @@ function add_personne_auto_complete_personne(id, html){
     });
     $div_html.append($button_remove);
 
-    $("section").append(
+    $("#form-fusion-select-personnes > div").append(
         $input,
         $div_html
     );

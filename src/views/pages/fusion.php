@@ -13,6 +13,10 @@
                 </div>
                 <div id='auto-complete-results'>
                 </div>
+                <form id='form-fusion-select-personnes' method='get'>
+                    <div></div>
+                    <input type='submit' value='Prévisualisez la fusion'>
+                </form>
             </section>
         ";
     }
