@@ -1,14 +1,30 @@
 
 + Fusion / Dissoc
     - finaliser le choix "les deux"
+    - dans la recherche, enlever le chargement de la liste complète des personnes
+    (l'autocompletion ajax n'est pas prioritaire, je la remets plus
+    bas dans les tâches)
     - dans le cas de dissoc père et fils, le nouveau est le père
     - soumettre formulaire (get ou post)
-    - pas charger la liste complète des personnes dans la recherche
+    + mettre à jour l'id de la personne dans tous les actes concernés
+      Voir dans old/includes/fonctions_all.php les fonctions :
+        - maj_id_xml (pour fusion, plus simple),
+	appelée une seule fois dans old/gestion/fusion.php
+	- maj_id_xml_diss (pour dissociation, plus tricky à utiliser)
+	appelée trois fois dans old/gestion/dissocier.php
     - bouton depuis la page d'une personne vers dissoc de cette personne
+    - autocomplétion des personnes dans l'input de recherche
 
 - virer une relation sur deux pour epoux / epouse (ne conserver que
   épouse de)
 - Restreindre l'accès aux pages selon les rôles (admin, modif,
   lecture)
-- bouton pour envoyer xmlselect vers chargement d'un acte
-- export gdf, csv
+
++ édition du xml
+    - bouton pour envoyer le résultat du xmlselect vers chargement d'un acte
+    - recherche des personnes par le nom pour choisir l'id
+
++ export
+    - xml : les contenus des actes bout à bout, avec autour une balise
+    ACTES, une autre <document> et l'entête xml
+    - gdf, csv (cf old pour les formats)
