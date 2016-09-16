@@ -354,6 +354,13 @@ section > div {
 
 
 
+/* AUTO COMPLETE PERSONNE */
+.autocomplete-search {
+	color: #999;
+}
+
+
+
 /* TABLES */
 .table-nav {
 	display: flex;

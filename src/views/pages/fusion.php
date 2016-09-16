@@ -9,6 +9,7 @@
                 <h4>Choisir deux personnes à fusionner</h4>
                 <div>
                     <input type='text' name='autocomplete' placeholder='Recherche parmis les personnes'>
+                    <span class='autocomplete-search'>recherche en cours ...</span>
                 </div>
                 <div id='auto-complete-results'>
                 </div>

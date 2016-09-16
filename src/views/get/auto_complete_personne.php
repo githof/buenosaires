@@ -28,10 +28,10 @@
     function search($findme, $personnes){
         $results = [];
         foreach($personnes as $personne){
-            if(strpos($personne[1], $findme))
+            if(strpos(strtoupper($personne[1]), strtoupper($findme)))
                 $results[] = "
                     <div>
-                        <span style='display:none;'>".$personne[0]."</span>
+                        <span class='personne-id' style='display:none;'>".$personne[0]."</span>
                         ".$personne[1]."
                     </div>";
         }
