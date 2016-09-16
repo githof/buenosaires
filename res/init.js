@@ -143,18 +143,38 @@ function dissocier_form_info($where, info, id){
     var $info = $(info);
     var name = $info.attr("id");
 
-    var $radios = $("<div class='dissocier-radios'>");
-    $radios.append(
-        $("<div><input type='radio' id='"+name+"-A' name='"+name+"' value='a' checked><label for='"+name+"-A'>"+id+"</label></div>"),
-        $("<div><input type='radio' id='"+name+"-B' name='"+name+"' value='b'><label for='"+name+"-B'>Nouveau</label></div>")
-        //$("<div><input type='radio' id='"+name+"-2' name='"+name+"' value='2'><label for='"+name+"-2'>Les 2</label></div>")
-    );
+    var $acte_refs = $info.find(".acte-ref");
+    if($acte_refs.length > 1){
+        $.each($acte_refs.toArray(), function(index, value){
+            var $value = $(value);
+            var id_acte = $value.html();
+            var $radios = $("<div class='dissocier-radios'>");
+            $radios.append(
+                $("<div>Acte "+id_acte+"</div>"),
+                $("<div><input type='radio' id='"+name+"-"+id_acte+"-A' name='"+name+"-"+id_acte+"' value='a' checked><label for='"+name+"-"+id_acte+"-A'>"+id+"</label></div>"),
+                $("<div><input type='radio' id='"+name+"-"+id_acte+"-B' name='"+name+"-"+id_acte+"' value='b'><label for='"+name+"-"+id_acte+"-B'>Nouveau</label></div>"),
+                $("<div><input type='radio' id='"+name+"-"+id_acte+"-2' name='"+name+"-"+id_acte+"' value='2'><label for='"+name+"-"+id_acte+"-2'>Les 2</label></div>")
 
-    $container.append(
-        $radios,
-        $info
-    );
-    $where.append($container);
+            );
+            $container.append($radios);
+        });
+        $info.find(".list-acte").remove();
+        $container.append($info);
+        $where.append($container);
+    }else{
+        var $radios = $("<div class='dissocier-radios'>");
+        $radios.append(
+            $("<div><input type='radio' id='"+name+"-A' name='"+name+"' value='a' checked><label for='"+name+"-A'>"+id+"</label></div>"),
+            $("<div><input type='radio' id='"+name+"-B' name='"+name+"' value='b'><label for='"+name+"-B'>Nouveau</label></div>"),
+            $("<div><input type='radio' id='"+name+"-2' name='"+name+"' value='2'><label for='"+name+"-2'>Les 2</label></div>")
+        );
+
+        $container.append(
+            $radios,
+            $info
+        );
+        $where.append($container);
+    }
 }
 
 function dissocier_add_personne(id){

@@ -86,7 +86,7 @@
     function html_list_actes($actes){
         $html = "";
         foreach($actes as $acte)
-            $html .= "<a href='acte/$acte->id'>[$acte->id]</a>";
+            $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
         if(strlen($html) == 0)
             return "";
         return "<div class='list-acte'>actes: $html</div>";
