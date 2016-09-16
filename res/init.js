@@ -22,6 +22,14 @@ function alert_add(alert){
 }
 
 
+function send_auto_complete_personne_query(findme){
+    $.get("get?s=auto_complete_personne&str="+findme, function(data, status){
+        $("#auto-complete-results").append(
+            data
+        );
+    });
+}
+
 function get_list_personne($select){
     if($select.length == 0)
         return;
@@ -393,5 +401,20 @@ $(document).ready(function(){
         $(".import-form .import-submit").text("Importation en cours ...");
         $(".import-form .import-submit").attr("disabled", "");
         $(this).parent().parent().submit();
+    });
+
+
+    /* AUTO COMPLETE PERSONNE FUSION */
+    $("input[name='autocomplete']").bind('input keyup', function(){
+        var $this = $(this);
+        var delay = 1000;
+        var val = $this.val();
+
+        clearTimeout($this.data('timer'));
+        $this.data('timer', setTimeout(function(){
+            $this.removeData('timer');
+            $("#auto-complete-results").html("");
+            send_auto_complete_personne_query(val);
+        }, delay));
     });
 })
