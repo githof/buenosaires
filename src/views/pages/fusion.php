@@ -65,11 +65,11 @@
 
     function html_fusion_ids($id_A, $id_B){
         return "
-            <div class='personne-A'>
+            <div>
                 <input type='radio' name='id' id='pers-$id_A' value='$id_A' checked>
                 <label for='pers-$id_A'>$id_A</label>
             </div>
-            <div class='personne-B'>
+            <div>
                 <input type='radio' name='id' id='pers-$id_B' value='$id_B'>
                 <label for='pers-$id_B'>$id_B</label>
             </div>";
