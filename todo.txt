@@ -1,19 +1,14 @@
 
-+ attributs de noms
-  X faire passer les attributs dans nom_personne
-  X si on veut ajouter "de Belgrano" à "Belgrano", on ajoute juste
-    l'attribut à nom_personne.
-    Si on veut ajouter "Belgrano" à "de Belgrano", on ne fait rien, on
-    l'a déjà
++ Fusion / Dissoc
+    - finaliser le choix "les deux"
+    - dans le cas de dissoc père et fils, le nouveau est le père
+    - soumettre formulaire (get ou post)
+    - pas charger la liste complète des personnes dans la recherche
+    - bouton depuis la page d'une personne vers dissoc de cette personne
 
-X balise html title
-
-+ affichage acte
-  X ajouter une version compacte de l'acte (sans les balises xml)
-
-Captures d'écran :
-DROPBOX/Belgrano/Chris/Captures*.png
-
-
-+ Ced questions
-    - Fusion : changer les informations (id, noms, prenoms) dans le contenu des actes ?
+- virer une relation sur deux pour epoux / epouse (ne conserver que
+  épouse de)
+- Restreindre l'accès aux pages selon les rôles (admin, modif,
+  lecture)
+- bouton pour envoyer xmlselect vers chargement d'un acte
+- export gdf, csv
