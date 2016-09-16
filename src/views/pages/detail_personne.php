@@ -4,7 +4,6 @@
     include_once(ROOT."src/html_entities.php");
 
 
-    $page_title = "Personne {$url_parsed["id"]}";
     $personne = new Personne($url_parsed["id"]);
     $result = $mysqli->from_db($personne, TRUE);
     if($result == NULL){
@@ -14,6 +13,14 @@
 </div>
 <?php
     }else{
+        $name = "";
+        foreach($personne->prenoms as $prenom)
+            $name .= $prenom->to_string() . " ";
+
+        foreach($personne->noms as $nom)
+            $name .= $nom->to_string() . " ";
+
+        $page_title = "$name";
 ?>
 <section>
     <?php echo html_personne($personne, FALSE, FALSE); ?>
