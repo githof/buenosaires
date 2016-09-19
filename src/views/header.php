@@ -48,8 +48,8 @@
 <?php if ($account->is_connected){ ?>
 <div class="connected">
     <span><?php echo $account->get_full_name(); ?></span>
-    <?php if ($account->get_rang() > 1){ ?>
-    <a href="accueil/administration.php"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
+    <?php if (can_access($access_pages["administration"])){ ?>
+    <a href="accueil/administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
     <form action="" method="post">
         <input type="hidden" name="action" value="deconnexion">

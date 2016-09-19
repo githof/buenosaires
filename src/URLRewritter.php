@@ -27,6 +27,8 @@
             =>  ["logs", "Logs"],
         "/(?'page'new-account)"
             =>  ["new_account", "Nouveau compte"],
+        "/(?'page'administration)"
+            => ["administration", "Administration"],
         "(?'page'/)"
             =>  ["accueil", "Buenos Aires"]
     ];
