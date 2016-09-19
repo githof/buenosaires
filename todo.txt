@@ -12,10 +12,10 @@
 	appelée une seule fois dans old/gestion/fusion.php
 	- maj_id_xml_diss (pour dissociation, plus tricky à utiliser)
 	appelée trois fois dans old/gestion/dissocier.php
-    - bouton depuis la page d'une personne vers dissoc de cette personne
+    X bouton depuis la page d'une personne vers dissoc de cette personne
     X autocomplétion des personnes dans l'input de recherche
 
-- virer une relation sur deux pour epoux / epouse (ne conserver que
+X virer une relation sur deux pour epoux / epouse (ne conserver que
   épouse de)
 - Restreindre l'accès aux pages selon les rôles (admin, modif,
   lecture)
