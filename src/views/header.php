@@ -49,7 +49,7 @@
 <div class="connected">
     <span><?php echo $account->get_full_name(); ?></span>
     <?php if (can_access($access_pages["administration"])){ ?>
-    <a href="accueil/administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
+    <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
     <form action="" method="post">
         <input type="hidden" name="action" value="deconnexion">
