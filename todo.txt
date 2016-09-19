@@ -1,11 +1,11 @@
 
 + Fusion / Dissoc
     - finaliser le choix "les deux"
-    - dans la recherche, enlever le chargement de la liste complète des personnes
+    X dans la recherche, enlever le chargement de la liste complète des personnes
     (l'autocompletion ajax n'est pas prioritaire, je la remets plus
     bas dans les tâches)
     - dans le cas de dissoc père et fils, le nouveau est le père
-    - soumettre formulaire (get ou post)
+    X soumettre formulaire (get ou post)
     + mettre à jour l'id de la personne dans tous les actes concernés
       Voir dans old/includes/fonctions_all.php les fonctions :
         - maj_id_xml (pour fusion, plus simple),
@@ -13,7 +13,7 @@
 	- maj_id_xml_diss (pour dissociation, plus tricky à utiliser)
 	appelée trois fois dans old/gestion/dissocier.php
     - bouton depuis la page d'une personne vers dissoc de cette personne
-    - autocomplétion des personnes dans l'input de recherche
+    X autocomplétion des personnes dans l'input de recherche
 
 - virer une relation sur deux pour epoux / epouse (ne conserver que
   épouse de)
