@@ -22,6 +22,11 @@
 
         $page_title = "$name";
 ?>
+<div class="detail_options">
+    <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
+        <button class="btn btn-info btn-sm">Dissocier</button>
+    </a>
+</div>
 <section>
     <?php echo html_personne($personne, FALSE, FALSE); ?>
 </section>
