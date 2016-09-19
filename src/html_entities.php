@@ -209,12 +209,13 @@
 
         $str = "";
         foreach($mariage as $relation){
-            if($personne->id == $relation->personne_destination->id)
-                continue;
-            $statut_name = ($relation->statut_id == STATUT_EPOUX)?
-	      "est marié à" :
-	      "est mariée à";
-            $str .= html_personne_relation($relation->personne_destination,
+            $statut_name = "est mariée à";
+            $pers = $relation->personne_destination;
+            if($relation->personne_destination->id == $personne->id){
+                $statut_name = "est marié à";
+                $pers = $relation->personne_source;
+            }
+            $str .= html_personne_relation($pers,
 					   $statut_name,
 					   $relation->actes);
         }

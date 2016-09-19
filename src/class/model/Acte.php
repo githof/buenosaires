@@ -173,7 +173,7 @@
             }
 
             if($valid_epoux && $valid_epouse){
-                $this->epouse->add_relation($this->epoux, $this->epouse, STATUT_EPOUX);
+                //$this->epouse->add_relation($this->epoux, $this->epouse, STATUT_EPOUX);
                 $this->epouse->add_relation($this->epouse, $this->epoux, STATUT_EPOUSE);
             }
 
