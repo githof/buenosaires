@@ -50,8 +50,13 @@
             $view = ROOT."src/views/get/" . $ARGS["s"] . ".php";
             $is_get = TRUE;
         }else{
-            $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
-            $page_title = $url_parsed["title"];
+            if(can_access($access_pages[$url_parsed["page"]])){
+                $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
+                $page_title = $url_parsed["title"];
+            }else{
+                $view = ROOT."src/views/pages/interdit.php";
+                $page_title = "Accès restreint";
+            }
         }
     }else{
         $view = ROOT."src/views/pages/404.php";

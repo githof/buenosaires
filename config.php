@@ -34,4 +34,27 @@ define("STATUT_PARRAIN", 6);
 // default id source
 define("SOURCE_DEFAULT_ID", 1);
 
+// level access name
+$level_access_name = [
+    0 => "Visiteur",
+    1 => "Lecteur",
+    2 => "Editeur",
+    3 => "Administrateur"
+];
+
+// RIGHT LEVEL ACCESS PAGES
+$access_pages  = [
+    "" => 0,
+    "import" => 2,
+    "export" => 2,
+    "acte" => 1,
+    "personne" => 1,
+    "fusion" => 2,
+    "dissocier" => 2,
+    "admin" => 3,
+    "logs" => 3,
+    "table" => 1,
+    "recherche" => 1
+]
+
  ?>

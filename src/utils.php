@@ -180,5 +180,10 @@
         return $str;
     }
 
+    function can_access($level){
+        global $account;
+        
+        return $level <= $account->get_rang();
+    }
 
 ?>

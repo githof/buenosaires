@@ -31,8 +31,10 @@
     ];
 
     $html_menu_items = "";
-    foreach($menu_items as $item)
-        $html_menu_items .= html_item($item[0], $item[1], $item[2]);
+    foreach($menu_items as $item){
+        if(can_access($access_pages[$item[2]]))
+            $html_menu_items .= html_item($item[0], $item[1], $item[2]);
+    }
 
 ?>
 
