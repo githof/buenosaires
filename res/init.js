@@ -127,116 +127,6 @@ function get_list_personne($select){
     });
 }
 
-function dissocier_set_input_noms_prenoms(){
-    noms_str = "";
-    $.each($(".dissocier-noms").children(".nom"), function(index, value){
-        value = $(value);
-        if(noms_str.length > 0)
-            noms_str += ", ";
-        if(value.children(".nom-attribut").length > 0)
-            noms_str += "(" + value.children(".nom-attribut").text() + ") ";
-        noms_str += value.children(".nom-nom").text();
-    });
-    $("#dissocier-form input[name='noms-A']").val(noms_str);
-    $("#dissocier-form input[name='noms-B']").val(noms_str);
-
-    prenoms_str = "";
-    $.each($(".dissocier-prenoms").children(".prenom"), function(index, value){
-        value = $(value);
-        if(prenoms_str.length > 0)
-            prenoms_str += ", ";
-        prenoms_str += value.text();
-    });
-    $("#dissocier-form input[name='prenoms-A']").val(prenoms_str);
-    $("#dissocier-form input[name='prenoms-B']").val(prenoms_str);
-}
-
-function dissocier_form_info($where, info, id){
-    var $container = $("<div class='flex-horizontal'>");
-    var $info = $(info);
-    var name = $info.attr("id");
-
-    var $acte_refs = $info.find(".acte-ref");
-    if($acte_refs.length > 1){
-        $.each($acte_refs.toArray(), function(index, value){
-            var $value = $(value);
-            var id_acte = $value.html();
-            var $radios = $("<div class='dissocier-radios'>");
-            $radios.append(
-                $("<div>Acte "+id_acte+"</div>"),
-                $("<div><input type='radio' id='"+name+"-"+id_acte+"-A' name='"+name+"-"+id_acte+"' value='a' checked><label for='"+name+"-"+id_acte+"-A'>"+id+"</label></div>"),
-                $("<div><input type='radio' id='"+name+"-"+id_acte+"-B' name='"+name+"-"+id_acte+"' value='b'><label for='"+name+"-"+id_acte+"-B'>Nouveau</label></div>"),
-                $("<div><input type='radio' id='"+name+"-"+id_acte+"-2' name='"+name+"-"+id_acte+"' value='2'><label for='"+name+"-"+id_acte+"-2'>Les 2</label></div>")
-
-            );
-            $container.append($radios);
-        });
-        $info.find(".list-acte").remove();
-        $container.append($info);
-        $where.append($container);
-    }else{
-        var $radios = $("<div class='dissocier-radios'>");
-        $radios.append(
-            $("<div><input type='radio' id='"+name+"-A' name='"+name+"' value='a' checked><label for='"+name+"-A'>"+id+"</label></div>"),
-            $("<div><input type='radio' id='"+name+"-B' name='"+name+"' value='b'><label for='"+name+"-B'>Nouveau</label></div>"),
-            $("<div><input type='radio' id='"+name+"-2' name='"+name+"' value='2'><label for='"+name+"-2'>Les 2</label></div>")
-        );
-
-        $container.append(
-            $radios,
-            $info
-        );
-        $where.append($container);
-    }
-}
-
-function dissocier_add_personne(id){
-    $.get("get?s=personne_infos&id="+id, function(data, status){
-        var $data = $("<div>"+data+"</div>");
-        _.map($data.children(".alert").toArray(), alert_add);
-
-        $("#dissocier-form").append(
-            $("<input type='hidden' name='id' value='"+id+"'>")
-        );
-
-        $(".dissocier-ids").append(
-            $("<div>Personne d'origine: "+id+"</div>"),
-            $("<div>Nouvelle personne : automatiquement généré</div>")
-        );
-
-        $(".dissocier-noms").append(
-            $data.children(".nom")
-        );
-
-        $(".dissocier-prenoms").append(
-            $data.children(".prenom")
-        );
-
-        $.each($data.children(".condition").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-conditions"), value, id)
-        });
-
-        $.each($data.children(".relation").toArray(), function(index, value){
-            dissocier_form_info($(".dissocier-relations"), value, id)
-        });
-
-        dissocier_set_input_noms_prenoms();
-    });
-}
-
-function dissocier_rm_personne(id){
-    var $root = $("#dissocier-form");
-
-    $root.find(".dissocier-ids").children().remove();
-    $root.find(".nom").remove();
-    $root.find(".prenom").remove();
-    $root.find(".condition").parent().remove();
-    $root.find(".relation").parent().remove();
-
-    dissocier_set_input_noms_prenoms();
-}
-
-
 $(document).ready(function(){
 
     $("#acte_noms").multiSelect({
@@ -252,11 +142,6 @@ $(document).ready(function(){
     $("#personne_prenoms").multiSelect({
         selectableHeader: "<div class='help-block'>Prénoms</div>",
         selectionHeader: "<div class='help-block'>Sélection</div>"
-    });
-
-    /* DISSOCIER */
-    $("#dissocier-submit").click(function(){
-        $("#dissocier-form").submit();
     });
 
 

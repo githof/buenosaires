@@ -193,7 +193,7 @@
 
         ?>
         <form id="dissocier-form">
-            <button class="btn btn-primary" id="dissocier-submit">Dissocier</button>
+            <input type="submit" class="btn btn-primary" id="dissocier-submit" value='Dissocier'>
             <section>
                 <h4>ID</h4>
                 <div class="dissocier-ids flex-vertical">
