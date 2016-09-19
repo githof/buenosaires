@@ -127,28 +127,6 @@ function get_list_personne($select){
     });
 }
 
-// function fusion_set_input_noms_prenoms(){
-//     noms_str = "";
-//     $.each($(".fusion-noms").children(".nom"), function(index, value){
-//         value = $(value);
-//         if(noms_str.length > 0)
-//             noms_str += ", ";
-//         if(value.children(".nom-attribut").length > 0)
-//             noms_str += "(" + value.children(".nom-attribut").text() + ") ";
-//         noms_str += value.children(".nom-nom").text();
-//     });
-//     $("#fusion-form input[name='noms']").val(noms_str);
-//
-//     prenoms_str = "";
-//     $.each($(".fusion-prenoms").children(".prenom"), function(index, value){
-//         value = $(value);
-//         if(prenoms_str.length > 0)
-//             prenoms_str += ", ";
-//         prenoms_str += value.text();
-//     });
-//     $("#fusion-form input[name='prenoms']").val(prenoms_str);
-// }
-
 function dissocier_set_input_noms_prenoms(){
     noms_str = "";
     $.each($(".dissocier-noms").children(".nom"), function(index, value){
@@ -172,66 +150,6 @@ function dissocier_set_input_noms_prenoms(){
     $("#dissocier-form input[name='prenoms-A']").val(prenoms_str);
     $("#dissocier-form input[name='prenoms-B']").val(prenoms_str);
 }
-
-// function fusion_add_personne(id){
-//     $.get("get?s=personne_infos&id="+id, function(data, status){
-//         var pers = "personne-A";
-//         var input_id_checked = "checked";
-//
-//         var contains_A = $("#fusion-form").find(".personne-A").length > 0;
-//         var contains_B = $("#fusion-form").find(".personne-B").length > 0;
-//
-//         if(contains_A && contains_B)
-//             return;
-//         else if(contains_A){
-//             pers = "personne-B";
-//             input_id_checked = "";
-//         }
-//
-//         var $data = $("<div>"+data+"</div>");
-//         _.map($data.children(".alert").toArray(), alert_add);
-//
-//         $(".fusion-noms").append(
-//             $data.children(".nom").addClass(pers)
-//         );
-//
-//         $(".fusion-prenoms").append(
-//             $data.children(".prenom").addClass(pers)
-//         );
-//
-//         $(".fusion-conditions").append(
-//             $data.children(".condition").addClass(pers)
-//         );
-//
-//         $(".fusion-relations").append(
-//             $data.children(".relation").addClass(pers)
-//         );
-//
-//         $("#fusion-form").append(
-//             $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
-//         );
-//
-//         $(".fusion-ids").append(
-//             $("<div class='"+pers+"'>").append(
-//                 $("<input type='radio' name='id' id='pers-"+id+"' value='"+id+"' "+input_id_checked+">"),
-//                 $("<label for='pers-"+id+"'>"+id+"</label>")
-//             )
-//         );
-//
-//         fusion_set_input_noms_prenoms();
-//     });
-// }
-
-// function fusion_rm_personne(id){
-//     var $input = $("#pers-"+id);
-//     if($input == null)
-//         return;
-//
-//     var pers = ($input.parent().hasClass("personne-A"))? "personne-A" : "personne-B";
-//     $("."+pers).remove();
-//
-//     fusion_set_input_noms_prenoms();
-// }
 
 function dissocier_form_info($where, info, id){
     var $container = $("<div class='flex-horizontal'>");
@@ -335,84 +253,6 @@ $(document).ready(function(){
         selectableHeader: "<div class='help-block'>Prénoms</div>",
         selectionHeader: "<div class='help-block'>Sélection</div>"
     });
-
-
-    /* MULTI SELECT FUSION  */
-    // $("#fusion_personne_list").multiSelect({
-    //     selectionHeader: "<div class='help-block'>Sélection (max: 2)</div>",
-    //     selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
-    //     afterInit: function(ms){
-    //         var that = this,
-    //             $selectableSearch = that.$selectableUl.prev(),
-    //             selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
-    //
-    //         that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-    //             .on('keydown', function(e){
-    //                 if (e.which === 40){
-    //                     that.$selectableUl.focus();
-    //                     return false;
-    //                 }
-    //             });
-    //     },
-    //     afterSelect: function(values){
-    //         var that = this;
-    //         that.qs1.cache();
-    //         if(that.$selectionUl.children(".ms-selected").length >= 2){
-    //             $("#fusion-submit").removeAttr("disabled");
-    //             that.$selectableUl.children().addClass("disabled");
-    //         }
-    //         fusion_add_personne(values[0]);
-    //     },
-    //     afterDeselect: function(values){
-    //         var that = this;
-    //         that.qs1.cache();
-    //         if(that.$selectionUl.children(".ms-selected").length < 2){
-    //             $("#fusion-submit").attr("disabled", "");
-    //             that.$selectableUl.children().removeClass("disabled");
-    //         }
-    //         fusion_rm_personne(values[0]);
-    //     }
-    // });
-    // get_list_personne($("#fusion_personne_list"));
-
-    /* MULTI SELECT DISSOCIER  */
-    // $("#dissocier_personne_list").multiSelect({
-    //     selectionHeader: "<div class='help-block'>Sélection (max: 1)</div>",
-    //     selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
-    //     afterInit: function(ms){
-    //         var that = this,
-    //             $selectableSearch = that.$selectableUl.prev(),
-    //             selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
-    //
-    //         that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-    //             .on('keydown', function(e){
-    //                 if (e.which === 40){
-    //                     that.$selectableUl.focus();
-    //                     return false;
-    //                 }
-    //             });
-    //     },
-    //     afterSelect: function(values){
-    //         var that = this;
-    //         that.qs1.cache();
-    //         if(that.$selectionUl.children(".ms-selected").length >= 1){
-    //             $("#dissocier-submit").removeAttr("disabled");
-    //             that.$selectableUl.children().addClass("disabled");
-    //         }
-    //         dissocier_add_personne(values[0]);
-    //     },
-    //     afterDeselect: function(values){
-    //         var that = this;
-    //         that.qs1.cache();
-    //         if(that.$selectionUl.children(".ms-selected").length < 1){
-    //             $("#dissocier-submit").attr("disabled", "");
-    //             that.$selectableUl.children().removeClass("disabled");
-    //         }
-    //         dissocier_rm_personne(values[0]);
-    //     }
-    // });
-    // get_list_personne($("#dissocier_personne_list"));
-
 
     /* DISSOCIER */
     $("#dissocier-submit").click(function(){

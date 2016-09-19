@@ -191,8 +191,8 @@
     //     $alert->success("Dissociation réalisée avec succès");
     // }
 
-    if(isset($ARGS["id"])){
-        $personne = new Personne($ARGS["id"]);
+    if(isset($ARGS["personne-A"])){
+        $personne = new Personne($ARGS["personne-A"]);
         $mysqli->from_db($personne);
         html_dissocier($personne);
     }else{
