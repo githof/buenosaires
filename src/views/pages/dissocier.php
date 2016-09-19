@@ -188,6 +188,8 @@
         $html_noms = html_dissocier_noms($personne->noms);
         $html_relations = html_dissocier_relations($personne->relations, $personne->id);
         $html_conditions = html_dissocier_conditions($personne->conditions, $personne->id);
+        $input_noms = default_input_noms($personne->noms);
+        $input_prenoms = default_input_prenoms($personne->prenoms);
 
         ?>
         <form id="dissocier-form">
@@ -207,11 +209,11 @@
                     <div class="help-block">Les prénoms séparés par une virgule</div>
                     <div>
                         <label for="dissocier-prenoms-A">Prenoms de la personne d'origine</label>
-                        <input type="text" id="dissocier-prenoms-A" name="prenoms-A" placeholder="Ex: Maria, Josefa">
+                        <input type="text" id="dissocier-prenoms-A" name="prenoms-A" placeholder="Ex: Maria, Josefa" value="<?php echo $input_prenoms; ?>">
                     </div>
                     <div>
                         <label for="dissocier-prenoms-B">Prenoms de la nouvelle personne</label>
-                        <input type="text" id="dissocier-prenoms-B" name="prenoms-B" placeholder="Ex: Maria, Josefa">
+                        <input type="text" id="dissocier-prenoms-B" name="prenoms-B" placeholder="Ex: Maria, Josefa" value="<?php echo $input_prenoms; ?>">
                     </div>
                 </div>
             </section>
@@ -224,11 +226,11 @@
                     <div class="help-block">Les noms séparés par une virgule et leurs attributs en parenthèse si besoin</div>
                     <div>
                         <label for="dissocier-noms-A">Noms de la personne d'origine</label>
-                        <input type="text" id="dissocier-noms-A" name="noms-A" placeholder="Ex: PERI, (de) BELGRANO">
+                        <input type="text" id="dissocier-noms-A" name="noms-A" placeholder="Ex: PERI, (de) BELGRANO" value="<?php echo $input_noms; ?>">
                     </div>
                     <div>
                         <label for="dissocier-noms-B">Noms de la nouvelle personne</label>
-                        <input type="text" id="dissocier-noms-B" name="noms-B" placeholder="Ex: PERI, (de) BELGRANO">
+                        <input type="text" id="dissocier-noms-B" name="noms-B" placeholder="Ex: PERI, (de) BELGRANO" value="<?php echo $input_noms; ?>">
                     </div>
                 </div>
             </section>

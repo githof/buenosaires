@@ -116,4 +116,69 @@
         return $noms;
     }
 
+    function has_prenom($prenoms, $prenom){
+        foreach($prenoms as $p){
+            if($p->id == $prenom->id)
+                return TRUE;
+        }
+        return FALSE;
+    }
+
+    function has_nom($noms, $nom){
+        foreach($noms as $n){
+            if($n->id == $nom->id)
+                return TRUE;
+        }
+        return FALSE;
+    }
+
+    function default_input_prenoms($prenoms_A, $prenoms_B = []){
+        $str = "";
+        $start = TRUE;
+        foreach($prenoms_A as $prenom){
+            if($start)
+                $start = FALSE;
+            else
+                $str .= ", ";
+            $str .= $prenom->to_string();
+        }
+        foreach($prenoms_B as $prenom){
+            if(has_prenom($prenoms_A, $prenom))
+                continue;
+            if($start)
+                $start = FALSE;
+            else
+                $str .= ", ";
+            $str .= $prenom->to_string();
+        }
+        return $str;
+    }
+
+    function default_input_noms($noms_A, $noms_B = []){
+        $str = "";
+        $start = TRUE;
+        foreach($noms_A as $nom){
+            if($start)
+                $start = FALSE;
+            else
+                $str .= ", ";
+            if(isset($nom->attribut))
+                $str .= "($nom->attribut) ";
+            $str .= $nom->nom;
+        }
+        foreach($noms_B as $nom){
+            if(has_nom($noms_A, $nom))
+                continue;
+            if($start)
+                $start = FALSE;
+            else
+                $str .= ", ";
+            if(isset($nom->attribut))
+                $str .= "($nom->attribut) ";
+            $str .= $nom->nom;
+        }
+        return $str;
+    }
+
+
 ?>
