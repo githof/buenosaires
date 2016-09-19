@@ -104,11 +104,13 @@
         return "<div class='condition-text'>$text</div>";
     }
 
-    function html_relation($relation){
+    function html_relation($relation, $show_actes = TRUE){
         $html_statut = html_relation_statut($relation->get_statut_name());
         $html_source = html_personne(personne_memory($relation->personne_source->id));
         $html_destination = html_personne(personne_memory($relation->personne_destination->id));
-        $html_actes = html_list_actes($relation->actes);
+        $html_actes = ($show_actes)?
+            html_list_actes($relation->actes) :
+            "";
         return "
             <div class='relation' id='relation-$relation->id'>
                 $html_source
@@ -262,13 +264,15 @@
         return "<div class='relations'>$str</div>";
     }
 
-    function html_condition($condition, $show_personne = TRUE){
+    function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
         $html_text = html_condition_text($condition->text);
         $html_personne = ($show_personne)?
-	  html_personne(personne_memory($condition->personne->id)) :
-	  "";
+            html_personne(personne_memory($condition->personne->id)) :
+            "";
         $html_source = html_condition_source($condition->get_source_name());
-        $html_actes = html_list_actes($condition->actes);
+        $html_actes = ($show_actes)?
+            html_list_actes($condition->actes) :
+            "";
 
         return "
             <div class='condition' id='condition-$condition->id'>

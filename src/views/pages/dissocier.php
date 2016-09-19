@@ -1,5 +1,7 @@
 <?php
 
+    include_once(ROOT."src/html_entities.php");
+
 
     function dissocier_noms_prenoms($personne_source, $personne_new){
         global $mysqli, $ARGS;
@@ -124,10 +126,68 @@
         return $html;
     }
 
+    function html_form_per_acte($entity, $personne_id){
+        $name = "";
+        $html_entity = "";
+        if($entity instanceof Condition){
+            $name = "condition-$entity->id";
+            $html_entity = html_condition($entity, FALSE, FALSE);
+        }else if($entity instanceof Relation){
+            $name = "relation-$entity->id";
+            $html_entity = html_relation($entity, FALSE);
+        }
+
+        $html_actes = "";
+        foreach($entity->actes as $acte){
+            $name_acte = $name."-".$acte->id;
+            $html_actes .= "
+                    <div class='dissocier-radios'>
+                        <div>Acte $acte->id</div>
+                        <div>
+                            <input type='radio' id='$name_acte-A' name='$name_acte' value='a' checked>
+                            <label for='$name_acte-A'>$personne_id</label>
+                        </div>
+                        <div>
+                            <input type='radio' id='$name_acte-B' name='$name_acte' value='b'>
+                            <label for='$name_acte-B'>Nouveau</label>
+                        </div>
+                        <div>
+                            <input type='radio' id='$name_acte-2' name='$name_acte'
+                            value='2'>
+                            <label for='$name_acte-2'>Les deux</label>
+                        </div>
+                    </div>
+                ";
+        }
+
+        return "
+            <div class='flex-horizontal'>
+                $html_actes
+                $html_entity
+            </div>
+        ";
+    }
+
+    function html_dissocier_conditions($conditions, $personne_id){
+        $html = "";
+        foreach($conditions as $condition)
+            $html .= html_form_per_acte($condition, $personne_id);
+        return $html;
+    }
+
+    function html_dissocier_relations($relations, $personne_id){
+        $html = "";
+        foreach($relations as $relation)
+            $html .= html_form_per_acte($relation, $personne_id);
+        return $html;
+    }
+
     function html_dissocier($personne){
         $html_ids = html_dissocier_ids($personne->id);
         $html_prenoms = html_dissocier_prenoms($personne->prenoms);
         $html_noms = html_dissocier_noms($personne->noms);
+        $html_relations = html_dissocier_relations($personne->relations, $personne->id);
+        $html_conditions = html_dissocier_conditions($personne->conditions, $personne->id);
 
         ?>
         <form id="dissocier-form">
@@ -175,11 +235,13 @@
             <section>
                 <h4>Condition</h4>
                 <div class="dissocier-conditions flex-vertical">
+                    <?php echo $html_conditions; ?>
                 </div>
             </section>
             <section>
                 <h4>Relations</h4>
                 <div class="dissocier-relations flex-vertical">
+                    <?php echo $html_relations; ?>
                 </div>
             </section>
         </form>
