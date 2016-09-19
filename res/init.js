@@ -21,15 +21,45 @@ function alert_add(alert){
     alert_show(alert);
 }
 
-function add_personne_auto_complete_personne(id, html){
+
+function setup_button_delete_acte(){
+    $("#acte-suppr-2").hide();
+    $("#acte-suppr-3").hide();
+    $("#acte-suppr-4").hide();
+    $("#acte-suppr-5").hide();
+
+    $("#acte-suppr-1").click(function(){
+        $("#acte-suppr-1").hide();
+        $("#acte-suppr-2").show();
+    });
+    $("#acte-suppr-2").click(function(){
+        $("#acte-suppr-2").hide();
+        $("#acte-suppr-3").show();
+    });
+    $("#acte-suppr-3").click(function(){
+        $("#acte-suppr-3").hide();
+        $("#acte-suppr-4").show();
+    });
+    $("#acte-suppr-4").click(function(){
+        $("#acte-suppr-4").hide();
+        $("#acte-suppr-5").show();
+    });
+}
+
+
+function add_personne_auto_complete_personne(id, html, $div_form, max){
     var pers = "A";
     if($("input[name='personne-A']").length > 0){
-        pers = "B";
+        if(max > 1)
+            pers = "B";
         $(".btn-add-personne").attr("disabled", "");
+    }else{
+        if(max == 1)
+            $(".btn-add-personne").attr("disabled", "");
     }
 
     var $input = $("<input type='hidden' name='personne-"+pers+"' value='"+id+"'>");
-    var $div_html = $("<div class='personne-"+pers+"'>"+html+"</div>");
+    var $div_html = $("<div>"+html+"</div>");
     var $button_remove = $("<button>");
     $button_remove.append("<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>");
     $button_remove.click(function(){
@@ -52,16 +82,16 @@ function add_personne_auto_complete_personne(id, html){
     });
     $div_html.append($button_remove);
 
-    $("#form-fusion-select-personnes > div").append(
+    $div_form.append(
         $input,
         $div_html
     );
 }
 
-function send_auto_complete_personne_query(findme){
+function send_auto_complete_personne_query(findme, $div_results, $div_form, max){
     $(".autocomplete-search").show();
     $.get("get?s=auto_complete_personne&str="+findme, function(data, status){
-        $("#auto-complete-results").html("");
+        $div_results.html("");
         var $data = $("<div>"+data+"</div>");
         $.each($data.children().toArray(), function(index, value){
             var $value = $(value);
@@ -74,9 +104,14 @@ function send_auto_complete_personne_query(findme){
             if($("input[name='personne-B']").length > 0)
                 $button.disable();
             $button.click(function(){
-                add_personne_auto_complete_personne($value.find(".personne-id").html(), html);
+                add_personne_auto_complete_personne(
+                    $value.find(".personne-id").html(),
+                    html,
+                    $div_form,
+                    max
+                );
             });
-            $("#auto-complete-results").append($value);
+            $div_results.append($value);
         });
         $(".autocomplete-search").hide();
     });
@@ -92,27 +127,27 @@ function get_list_personne($select){
     });
 }
 
-function fusion_set_input_noms_prenoms(){
-    noms_str = "";
-    $.each($(".fusion-noms").children(".nom"), function(index, value){
-        value = $(value);
-        if(noms_str.length > 0)
-            noms_str += ", ";
-        if(value.children(".nom-attribut").length > 0)
-            noms_str += "(" + value.children(".nom-attribut").text() + ") ";
-        noms_str += value.children(".nom-nom").text();
-    });
-    $("#fusion-form input[name='noms']").val(noms_str);
-
-    prenoms_str = "";
-    $.each($(".fusion-prenoms").children(".prenom"), function(index, value){
-        value = $(value);
-        if(prenoms_str.length > 0)
-            prenoms_str += ", ";
-        prenoms_str += value.text();
-    });
-    $("#fusion-form input[name='prenoms']").val(prenoms_str);
-}
+// function fusion_set_input_noms_prenoms(){
+//     noms_str = "";
+//     $.each($(".fusion-noms").children(".nom"), function(index, value){
+//         value = $(value);
+//         if(noms_str.length > 0)
+//             noms_str += ", ";
+//         if(value.children(".nom-attribut").length > 0)
+//             noms_str += "(" + value.children(".nom-attribut").text() + ") ";
+//         noms_str += value.children(".nom-nom").text();
+//     });
+//     $("#fusion-form input[name='noms']").val(noms_str);
+//
+//     prenoms_str = "";
+//     $.each($(".fusion-prenoms").children(".prenom"), function(index, value){
+//         value = $(value);
+//         if(prenoms_str.length > 0)
+//             prenoms_str += ", ";
+//         prenoms_str += value.text();
+//     });
+//     $("#fusion-form input[name='prenoms']").val(prenoms_str);
+// }
 
 function dissocier_set_input_noms_prenoms(){
     noms_str = "";
@@ -138,65 +173,65 @@ function dissocier_set_input_noms_prenoms(){
     $("#dissocier-form input[name='prenoms-B']").val(prenoms_str);
 }
 
-function fusion_add_personne(id){
-    $.get("get?s=personne_infos&id="+id, function(data, status){
-        var pers = "personne-A";
-        var input_id_checked = "checked";
+// function fusion_add_personne(id){
+//     $.get("get?s=personne_infos&id="+id, function(data, status){
+//         var pers = "personne-A";
+//         var input_id_checked = "checked";
+//
+//         var contains_A = $("#fusion-form").find(".personne-A").length > 0;
+//         var contains_B = $("#fusion-form").find(".personne-B").length > 0;
+//
+//         if(contains_A && contains_B)
+//             return;
+//         else if(contains_A){
+//             pers = "personne-B";
+//             input_id_checked = "";
+//         }
+//
+//         var $data = $("<div>"+data+"</div>");
+//         _.map($data.children(".alert").toArray(), alert_add);
+//
+//         $(".fusion-noms").append(
+//             $data.children(".nom").addClass(pers)
+//         );
+//
+//         $(".fusion-prenoms").append(
+//             $data.children(".prenom").addClass(pers)
+//         );
+//
+//         $(".fusion-conditions").append(
+//             $data.children(".condition").addClass(pers)
+//         );
+//
+//         $(".fusion-relations").append(
+//             $data.children(".relation").addClass(pers)
+//         );
+//
+//         $("#fusion-form").append(
+//             $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
+//         );
+//
+//         $(".fusion-ids").append(
+//             $("<div class='"+pers+"'>").append(
+//                 $("<input type='radio' name='id' id='pers-"+id+"' value='"+id+"' "+input_id_checked+">"),
+//                 $("<label for='pers-"+id+"'>"+id+"</label>")
+//             )
+//         );
+//
+//         fusion_set_input_noms_prenoms();
+//     });
+// }
 
-        var contains_A = $("#fusion-form").find(".personne-A").length > 0;
-        var contains_B = $("#fusion-form").find(".personne-B").length > 0;
-
-        if(contains_A && contains_B)
-            return;
-        else if(contains_A){
-            pers = "personne-B";
-            input_id_checked = "";
-        }
-
-        var $data = $("<div>"+data+"</div>");
-        _.map($data.children(".alert").toArray(), alert_add);
-
-        $(".fusion-noms").append(
-            $data.children(".nom").addClass(pers)
-        );
-
-        $(".fusion-prenoms").append(
-            $data.children(".prenom").addClass(pers)
-        );
-
-        $(".fusion-conditions").append(
-            $data.children(".condition").addClass(pers)
-        );
-
-        $(".fusion-relations").append(
-            $data.children(".relation").addClass(pers)
-        );
-
-        $("#fusion-form").append(
-            $("<input class='"+pers+"' type='hidden' name='id-"+pers+"' value='"+id+"'>")
-        );
-
-        $(".fusion-ids").append(
-            $("<div class='"+pers+"'>").append(
-                $("<input type='radio' name='id' id='pers-"+id+"' value='"+id+"' "+input_id_checked+">"),
-                $("<label for='pers-"+id+"'>"+id+"</label>")
-            )
-        );
-
-        fusion_set_input_noms_prenoms();
-    });
-}
-
-function fusion_rm_personne(id){
-    var $input = $("#pers-"+id);
-    if($input == null)
-        return;
-
-    var pers = ($input.parent().hasClass("personne-A"))? "personne-A" : "personne-B";
-    $("."+pers).remove();
-
-    fusion_set_input_noms_prenoms();
-}
+// function fusion_rm_personne(id){
+//     var $input = $("#pers-"+id);
+//     if($input == null)
+//         return;
+//
+//     var pers = ($input.parent().hasClass("personne-A"))? "personne-A" : "personne-B";
+//     $("."+pers).remove();
+//
+//     fusion_set_input_noms_prenoms();
+// }
 
 function dissocier_form_info($where, info, id){
     var $container = $("<div class='flex-horizontal'>");
@@ -303,80 +338,80 @@ $(document).ready(function(){
 
 
     /* MULTI SELECT FUSION  */
-    $("#fusion_personne_list").multiSelect({
-        selectionHeader: "<div class='help-block'>Sélection (max: 2)</div>",
-        selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
-        afterInit: function(ms){
-            var that = this,
-                $selectableSearch = that.$selectableUl.prev(),
-                selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
-
-            that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                .on('keydown', function(e){
-                    if (e.which === 40){
-                        that.$selectableUl.focus();
-                        return false;
-                    }
-                });
-        },
-        afterSelect: function(values){
-            var that = this;
-            that.qs1.cache();
-            if(that.$selectionUl.children(".ms-selected").length >= 2){
-                $("#fusion-submit").removeAttr("disabled");
-                that.$selectableUl.children().addClass("disabled");
-            }
-            fusion_add_personne(values[0]);
-        },
-        afterDeselect: function(values){
-            var that = this;
-            that.qs1.cache();
-            if(that.$selectionUl.children(".ms-selected").length < 2){
-                $("#fusion-submit").attr("disabled", "");
-                that.$selectableUl.children().removeClass("disabled");
-            }
-            fusion_rm_personne(values[0]);
-        }
-    });
-    get_list_personne($("#fusion_personne_list"));
+    // $("#fusion_personne_list").multiSelect({
+    //     selectionHeader: "<div class='help-block'>Sélection (max: 2)</div>",
+    //     selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
+    //     afterInit: function(ms){
+    //         var that = this,
+    //             $selectableSearch = that.$selectableUl.prev(),
+    //             selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
+    //
+    //         that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+    //             .on('keydown', function(e){
+    //                 if (e.which === 40){
+    //                     that.$selectableUl.focus();
+    //                     return false;
+    //                 }
+    //             });
+    //     },
+    //     afterSelect: function(values){
+    //         var that = this;
+    //         that.qs1.cache();
+    //         if(that.$selectionUl.children(".ms-selected").length >= 2){
+    //             $("#fusion-submit").removeAttr("disabled");
+    //             that.$selectableUl.children().addClass("disabled");
+    //         }
+    //         fusion_add_personne(values[0]);
+    //     },
+    //     afterDeselect: function(values){
+    //         var that = this;
+    //         that.qs1.cache();
+    //         if(that.$selectionUl.children(".ms-selected").length < 2){
+    //             $("#fusion-submit").attr("disabled", "");
+    //             that.$selectableUl.children().removeClass("disabled");
+    //         }
+    //         fusion_rm_personne(values[0]);
+    //     }
+    // });
+    // get_list_personne($("#fusion_personne_list"));
 
     /* MULTI SELECT DISSOCIER  */
-    $("#dissocier_personne_list").multiSelect({
-        selectionHeader: "<div class='help-block'>Sélection (max: 1)</div>",
-        selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
-        afterInit: function(ms){
-            var that = this,
-                $selectableSearch = that.$selectableUl.prev(),
-                selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
-
-            that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                .on('keydown', function(e){
-                    if (e.which === 40){
-                        that.$selectableUl.focus();
-                        return false;
-                    }
-                });
-        },
-        afterSelect: function(values){
-            var that = this;
-            that.qs1.cache();
-            if(that.$selectionUl.children(".ms-selected").length >= 1){
-                $("#dissocier-submit").removeAttr("disabled");
-                that.$selectableUl.children().addClass("disabled");
-            }
-            dissocier_add_personne(values[0]);
-        },
-        afterDeselect: function(values){
-            var that = this;
-            that.qs1.cache();
-            if(that.$selectionUl.children(".ms-selected").length < 1){
-                $("#dissocier-submit").attr("disabled", "");
-                that.$selectableUl.children().removeClass("disabled");
-            }
-            dissocier_rm_personne(values[0]);
-        }
-    });
-    get_list_personne($("#dissocier_personne_list"));
+    // $("#dissocier_personne_list").multiSelect({
+    //     selectionHeader: "<div class='help-block'>Sélection (max: 1)</div>",
+    //     selectableHeader: "<input type='text' class='help-block' autocomplete='off' placeholder='Rechercher une personne'>",
+    //     afterInit: function(ms){
+    //         var that = this,
+    //             $selectableSearch = that.$selectableUl.prev(),
+    //             selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)';
+    //
+    //         that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+    //             .on('keydown', function(e){
+    //                 if (e.which === 40){
+    //                     that.$selectableUl.focus();
+    //                     return false;
+    //                 }
+    //             });
+    //     },
+    //     afterSelect: function(values){
+    //         var that = this;
+    //         that.qs1.cache();
+    //         if(that.$selectionUl.children(".ms-selected").length >= 1){
+    //             $("#dissocier-submit").removeAttr("disabled");
+    //             that.$selectableUl.children().addClass("disabled");
+    //         }
+    //         dissocier_add_personne(values[0]);
+    //     },
+    //     afterDeselect: function(values){
+    //         var that = this;
+    //         that.qs1.cache();
+    //         if(that.$selectionUl.children(".ms-selected").length < 1){
+    //             $("#dissocier-submit").attr("disabled", "");
+    //             that.$selectableUl.children().removeClass("disabled");
+    //         }
+    //         dissocier_rm_personne(values[0]);
+    //     }
+    // });
+    // get_list_personne($("#dissocier_personne_list"));
 
 
     /* DISSOCIER */
@@ -396,27 +431,7 @@ $(document).ready(function(){
 
 
     /* ACTE SUPPR BUTTONS */
-    $("#acte-suppr-2").hide();
-    $("#acte-suppr-3").hide();
-    $("#acte-suppr-4").hide();
-    $("#acte-suppr-5").hide();
-
-    $("#acte-suppr-1").click(function(){
-        $("#acte-suppr-1").hide();
-        $("#acte-suppr-2").show();
-    });
-    $("#acte-suppr-2").click(function(){
-        $("#acte-suppr-2").hide();
-        $("#acte-suppr-3").show();
-    });
-    $("#acte-suppr-3").click(function(){
-        $("#acte-suppr-3").hide();
-        $("#acte-suppr-4").show();
-    });
-    $("#acte-suppr-4").click(function(){
-        $("#acte-suppr-4").hide();
-        $("#acte-suppr-5").show();
-    });
+    setup_button_delete_acte();
 
 
     /* IMPORT FORM */
@@ -435,10 +450,19 @@ $(document).ready(function(){
         var delay = 1000;
         var val = $this.val();
 
+        var max = 1;
+        if($this.parent().parent().hasClass("max-2"))
+            max = 2;
+
         clearTimeout($this.data('timer'));
         $this.data('timer', setTimeout(function(){
             $this.removeData('timer');
-            send_auto_complete_personne_query(val);
+            send_auto_complete_personne_query(
+                val,
+                $this.parent().parent().children("#auto-complete-results"),
+                $this.parent().parent().children("form").children("div"),
+                max
+            );
         }, delay));
     });
 })

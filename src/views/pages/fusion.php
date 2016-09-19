@@ -149,7 +149,7 @@
 
     function html_select_personnes(){
         return "
-            <section>
+            <section class='max-2'>
                 <h4>Choisir deux personnes à fusionner</h4>
                 <div>
                     <input type='text' name='autocomplete' placeholder='Recherche parmis les personnes'>
@@ -339,7 +339,7 @@
                     <?php echo $html_relations; ?>
                 </div>
             </section>
-        </div>
+        </form>
         <?php
     }
 
