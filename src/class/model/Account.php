@@ -111,6 +111,10 @@
             return null;
         }
 
+        public function get_id(){
+            return $this->get("id");
+        }
+
         public function get_prenom(){
             return $this->get("prenom");
         }
