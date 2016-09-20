@@ -86,7 +86,7 @@
 
 
         // IF EXPORT
-        if($ARGS["export"])
+        if(isset($ARGS["export"]))
             echo $page_output;
         else{
 ?>

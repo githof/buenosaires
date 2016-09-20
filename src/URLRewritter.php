@@ -19,6 +19,8 @@
             =>  ["", ""],
         "/(?'page'import)"
             =>  ["import", "Import"],
+        "/(?'page'export)"
+            =>  ["export", "Export"],
         "/(?'page'fusion)"
             =>  ["fusion", "Fusion"],
         "/(?'page'dissocier)"

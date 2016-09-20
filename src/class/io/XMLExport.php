@@ -2,41 +2,54 @@
 
     class XMLExport {
 
-
-        var $xml;
         var $actes_id;
 
-        function __construct($actes_id){
+        function __construct($actes_id = []){
             $this->actes_id = $actes_id;
         }
 
         public function export(){
             global $mysqli;
 
+            $this->entete();
+
             foreach($this->actes_id as $acte_id){
                 $results = $mysqli->select("acte_contenu", ["contenu"], "acte_id = '$acte_id'");
                 if($results != FALSE && $results->num_rows == 1){
-                    $row = $results->fetch_assoc();
-                    $this->xml .= $row["contenu"];
+                    echo $results->fetch_assoc()["contenu"] . PHP_EOL;
                 }
             }
 
-            $this->add_entete();
-            $this->write();
+            $this->footer();
         }
 
-        private function add_entete(){
-            $this->xml =
-                '<?xml version="1.0" encoding="UTF-8"?><document><ACTES>' .
-                $this->xml .
-                '</ACTES></document>';
+        public function export_all(){
+            global $mysqli;
+
+            $this->entete();
+
+            $results = $mysqli->select("acte_contenu", ["contenu"]);
+            if($results != FALSE && $results->num_rows > 0){
+                while($row = $results->fetch_assoc()){
+                    echo $row["contenu"] . PHP_EOL;
+                }
+            }
+
+            $this->footer();
         }
 
-        private function write(){
+        private function entete(){
             header('Content-type: text/xml');
             header('Content-Disposition: attachment; filename="export.xml"');
 
-            echo $this->xml;
+            echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.
+                '<document>'.PHP_EOL.
+                '<ACTES>'.PHP_EOL;
+
+        }
+
+        private function footer(){
+            echo '</ACTES>'.PHP_EOL.'</document>';
         }
     }
 
