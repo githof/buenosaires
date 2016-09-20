@@ -26,7 +26,9 @@
 
             $this->entete();
 
-            echo "id".$this->CSV_SEPARATOR."noms".$this->CSV_SEPARATOR."prenoms".PHP_EOL;
+            echo "id".$this->CSV_SEPARATOR.
+                "noms".$this->CSV_SEPARATOR.
+                "prenoms".PHP_EOL;
 
             $results = $mysqli->select("personne", ["id"]);
             if($results != FALSE && $results->num_rows){
@@ -49,7 +51,33 @@
                         $noms,
                         " ");
 
-                    echo "$personne->id".$this->CSV_SEPARATOR."$noms".$this->CSV_SEPARATOR."$prenoms".PHP_EOL;
+                    echo $personne->id . $this->CSV_SEPARATOR .
+                        $noms . $this->CSV_SEPARATOR .
+                        $prenoms . PHP_EOL;
+                }
+            }
+        }
+
+        function export_relations(){
+            global $mysqli;
+
+            $this->entete();
+
+            echo "id".$this->CSV_SEPARATOR.
+                "source".$this->CSV_SEPARATOR.
+                "destination".$this->CSV_SEPARATOR.
+                "statut".PHP_EOL;
+
+            $results = $mysqli->select("relation", ["*"]);
+            if($results != FALSE && $results->num_rows){
+                while($row = $results->fetch_assoc()){
+                    $relation = new Relation();
+                    $relation->result_from_db($row);
+
+                    echo $relation->id . $this->CSV_SEPARATOR .
+                        $relation->personne_source->id . $this->CSV_SEPARATOR .
+                        $relation->personne_destination->id . $this->CSV_SEPARATOR .
+                        $relation->get_statut_name() . PHP_EOL;
                 }
             }
         }

@@ -17,6 +17,12 @@
                     $export->export_personnes();
                 }
                 break;
+            case "all_relations":
+                if($ARGS["export"] == "csv"){
+                    $export = new CSVExport();
+                    $export->export_relations();
+                }
+                break;
         }
     }else{
 ?>
