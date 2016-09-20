@@ -13,7 +13,7 @@
     Aucun acte enregistré avec cet id
 <?php
     }else{
-?>
+        if(can_access($access_pages["supprimer"])){?>
 <div class="detail_options">
     <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
     <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
@@ -21,6 +21,7 @@
     <button class="btn btn-danger btn-sm" id="acte-suppr-4">Dernière chance ?</button>
     <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
 </div>
+<?php   } ?>
 <section>
     <h4>ID</h4>
     <div>

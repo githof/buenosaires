@@ -54,7 +54,8 @@ $access_pages  = [
     "administration" => 3,
     "logs" => 3,
     "table" => 1,
-    "recherche" => 1
+    "recherche" => 1,
+    "supprimer" => 2
 ]
 
  ?>
