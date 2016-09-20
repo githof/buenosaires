@@ -189,6 +189,11 @@ section > div {
 	justify-content: flex-end;
 }
 
+.detail_options > a, .detail_options > button {
+	margin-left: 10px;
+	font-weight: bold;
+}
+
 #tables-buttons {
 	margin-bottom: 20px;
 }

@@ -84,6 +84,11 @@
         // ALERTS
         $alerts_output = $alert->html_all();
 
+
+        // IF EXPORT
+        if($ARGS["export"])
+            echo $page_output;
+        else{
 ?>
 
 <!DOCTYPE HTML>
@@ -133,6 +138,7 @@
 </html>
 
 <?php
+        }
     }
 
     $mysqli->close();
