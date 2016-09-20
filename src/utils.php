@@ -182,8 +182,8 @@
 
     function can_access($level){
         global $account;
-        
-        return $level <= $account->get_rang();
+
+        return $level <= $account->get_rang() && $account->is_connected || $level == 0;
     }
 
 ?>
