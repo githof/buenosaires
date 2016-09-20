@@ -21,12 +21,13 @@
             $name .= $nom->to_string() . " ";
 
         $page_title = "$name";
-?>
+    if(can_access($access_pages["dissocier"])){?>
 <div class="detail_options">
     <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
         <button class="btn btn-info btn-sm">Dissocier</button>
     </a>
 </div>
+<?php } ?>
 <section>
     <?php echo html_personne($personne, FALSE, FALSE); ?>
 </section>
