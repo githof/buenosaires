@@ -47,8 +47,12 @@
     $is_get = FALSE;
     if(isset($url_parsed["page"])){
         if($url_parsed["page"] == "get"){
-            $view = ROOT."src/views/get/" . $ARGS["s"] . ".php";
-            $is_get = TRUE;
+            if(can_access($access_pages[$ARGS["s"]])){
+                $view = ROOT."src/views/get/" . $ARGS["s"] . ".php";
+                $is_get = TRUE;
+            }else{
+                $alert->warning("Accès a un contenu restreint");
+            }
         }else{
             if(can_access($access_pages[$url_parsed["page"]])){
                 $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";

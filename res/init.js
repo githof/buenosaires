@@ -91,6 +91,7 @@ function add_personne_auto_complete_personne(id, html, $div_form, max){
 function send_auto_complete_personne_query(findme, $div_results, $div_form, max){
     $(".autocomplete-search").show();
     $.get("get?s=auto_complete_personne&str="+findme, function(data, status){
+        console.log(data);
         $div_results.html("");
         var $data = $("<div>"+data+"</div>");
         $.each($data.children().toArray(), function(index, value){

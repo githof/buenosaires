@@ -45,6 +45,7 @@ $level_access_name = [
 // RIGHT LEVEL ACCESS PAGES
 $access_pages  = [
     "" => 0,
+    "/" => 0,
     "import" => 2,
     "export" => 2,
     "acte" => 1,
@@ -55,7 +56,8 @@ $access_pages  = [
     "logs" => 3,
     "table" => 1,
     "recherche" => 1,
-    "supprimer" => 2
+    "supprimer" => 2,
+    "auto_complete_personne" => 1
 ]
 
  ?>
