@@ -183,6 +183,10 @@ section > div {
 
 /* FOO */
 
+.bold {
+	font-weight: bold;
+}
+
 .detail_options {
 	display: flex;
 	flex-flow: row nowrap;
