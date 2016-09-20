@@ -130,6 +130,9 @@
 <section>
     <h4>Utilisateurs</h4>
     <div>
+        <div class='help-block'>
+            Il n'est pas possible de modifier le rang des administrateurs
+        </div>
         <?php echo html_users(); ?>
     </div>
 </section>
