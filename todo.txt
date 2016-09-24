@@ -17,7 +17,7 @@
 
 X virer une relation sur deux pour epoux / epouse (ne conserver que
   épouse de)
-- Restreindre l'accès aux pages selon les rôles (admin, modif,
+X Restreindre l'accès aux pages selon les rôles (admin, modif,
   lecture)
 
 + édition du xml

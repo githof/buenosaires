@@ -49,7 +49,7 @@
                         return;
                     }
             }
-            this->noms[] = $nom;
+            $this->noms[] = $nom;
         }
 
         public function add_condition($text, $source_id){

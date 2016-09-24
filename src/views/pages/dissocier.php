@@ -3,74 +3,196 @@
     include_once(ROOT."src/html_entities.php");
 
 
-    function dissocier_noms_prenoms($personne_source, $personne_new){
+    function dissocier_get_conditions($conditions){
         global $mysqli, $ARGS;
+        $tab = [];
 
-        $personne_source->prenoms = parse_prenoms($ARGS["prenoms-A"]);
-        $personne_source->noms = parse_noms($ARGS["noms-A"]);
-
-        $personne_new->prenoms = parse_prenoms($ARGS["prenoms-B"]);
-        $personne_new->noms = parse_noms($ARGS["noms-B"]);
-
-        $mysqli->delete("prenom_personne", "personne_id='$personne_source->id'");
-        $i = 1;
-        foreach($personne_source->prenoms as $prenom){
-            $mysqli->into_db($prenom);
-            $mysqli->into_db_prenom_personne($personne_source, $prenom, $i);
-            $i++;
-        }
-
-        $mysqli->delete("nom_personne", "personne_id='$personne_source->id'");
-        $i = 1;
-        foreach($personne_source->noms as $nom){
-            $mysqli->into_db($nom);
-            $mysqli->into_db_nom_personne($personne_source, $nom, $i);
-            $i++;
+        foreach($conditions as $condition){
+            $cond = new Condition($condition);
         }
     }
 
-    function dissocier_conditions_relations($personne_source, $personne_new){
-        global $mysqli, $ARGS;
+    function dissocier_split_input($input){
+        $split = explode("-", $input);
+        return [
+            "id" => $split[1],
+            "acte" => $split[2]
+        ];
+    }
+
+    function dissocier_input_conditions_relations()
+    {
+        global $ARGS, $mysqli;
+        $conditions_source = [];
+        $conditions_new = [];
+        $relations_source = [];
+        $relations_new = [];
 
         foreach($ARGS as $key => $value){
-            if(startsWith($key, "condition-")){
-                $split = explode("-", $key);
-                $condition_id = $split[1];
-                if($value == "b"){
-                    $mysqli->update("condition", ["personne_id" => "$personne_new->id"], "id='$condition_id'");
-                }
-            }else if(startsWith($key, "relation-")){
-                $split = explode("-", $key);
-                $relation_id = $split[1];
-                if($value == "b"){
-                    foreach($personne_source->relations as $relation){
-                        if($relation->id == $relation_id){
-                            $is_source = $relation->personne_source->id == $personne_source->id;
-                            break;
-                        }
+            $source; $new; $item; $split;
+            if(startsWith($key, "condition")){
+                $split = dissocier_split_input($key);
+                $source = $conditions_source;
+                $new = $conditions_new;
+                $item = new Condition($split["id"]);
+            }else if(startsWith($key, "relation")){
+                $split = dissocier_split_input($key);
+                $source = $relations_source;
+                $new = $relations_new;
+                $item = new Relation($split["id"]);
+            }else
+                continue;
+            $mysqli->from_db($item, TRUE);
+            $id = "{$split["id"]}";
+            switch($value){
+                case "a":
+                    if(isset($source[$id]))
+                        $source[$id]->actes[] = new Acte($split["acte"]);
+                    else{
+                        $item->actes[] = new Acte($split["acte"]);
+                        $source[$id] = $item;
                     }
-                    $pers = "pers_destination_id";
-                    if($is_source)
-                        $pers = "pers_source_id";
-                    $mysqli->update("relation", ["$pers" => "$personne_new->id"], "id='$relation_id'");
-                }
+                    break;
+                case "b":
+                    $item->id = NULL;
+                    if(isset($new[$id]))
+                        $new[$id]->actes[] = new Acte($split["acte"]);
+                    else{
+                        $item->actes[] = new Acte($split["acte"]);
+                        $new[$id] = $item;
+                    }
+                    break;
+                case "2":
+                    if(isset($source[$id]))
+                        $source[$id]->actes[] = new Acte($split["acte"]);
+                    else{
+                        $item->actes[] = new Acte($split["acte"]);
+                        $source[$id] = $item;
+                    }
+
+                    if(startsWith($key, "condition"))
+                        $item = new Condition($id);
+                    else if(startsWith($key, "relation"))
+                        $item = new Relation($id);
+                    $mysqli->from_db($item, TRUE);
+
+                    $item->id = NULL;
+                    if(isset($new[$id]))
+                        $new[$id]->actes[] = new Acte($split["acte"]);
+                    else{
+                        $item->actes[] = new Acte($split["acte"]);
+                        $new[$id] = $item;
+                    }
+                    break;
+            }
+
+            if(startsWith($key, "condition")){
+                $conditions_source = $source;
+                $conditions_new = $new;
+            }else if(startsWith($key, "relation")){
+                $relations_source = $source;
+                $relations_new = $new;
             }
         }
+
+        return [
+            $conditions_source,
+            $conditions_new,
+            $relations_source,
+            $relations_source
+        ];
     }
 
-    function dissocier($id){
+    function dissocier(
+        $personne_source,
+        $prenoms_source,
+        $noms_source,
+        $prenoms_new,
+        $noms_new,
+        $conditions_source,
+        $conditions_new,
+        $relations_source,
+        $relations_new)
+        {
         global $mysqli;
-
-        $personne_source = new Personne($id);
-        $mysqli->from_db($personne_source);
 
         $personne_new = new Personne();
 
-        dissocier_noms_prenoms($personne_source, $personne_new);
+        $personne_source->prenoms = $prenoms_source;
+        $personne_source->noms = $noms_source;
+        $personne_new->prenoms = $prenoms_new;
+        $personne_new->noms = $noms_new;
 
         $mysqli->into_db($personne_new);
 
-        dissocier_conditions_relations($personne_source, $personne_new);
+        $personne_source->condition = [];
+        $personne_new->relations = [];
+        $mysqli->into_db($personne_source);
+
+        $mysqli->delete(
+            "acte_has_condition",
+            "condition_id IN (
+                SELECT id
+                FROM `condition`
+                WHERE personne_id = '$personne_source->id')"
+            );
+        $mysqli->delete(
+            "acte_has_relation",
+            "relation_id IN (
+                SELECT id
+                FROM `relation`
+                WHERE pers_source_id = '$personne_source->id'
+                OR pers_destination_id = '$personne_source->id')"
+            );
+
+        $tab = [];
+        foreach($conditions_source as $key => $value)
+            $tab[] = $key;
+
+        $mysqli->delete(
+            "condition",
+            "id NOT IN (".array_to_string_with_separator($tab, ", ").")
+            AND personne_id = '$personne_source->id'"
+        );
+
+        $tab = [];
+        foreach($relations_source as $key => $value)
+            $tab[] = $key;
+
+        $mysqli->delete(
+            "relation",
+            "id NOT IN (".array_to_string_with_separator($tab, ", ").")
+            AND (pers_source_id = '$personne_source->id'
+            OR pers_destination_id = '$personne_source->id')"
+        );
+
+        foreach($conditions_source as $condition){
+            foreach($condition->actes as $acte)
+                $mysqli->into_db_acte_has_condition($acte, $condition);
+        }
+
+        foreach($conditions_new as $condition){
+            $condition->personne = $personne_new;
+            $mysqli->into_db($condition);
+            foreach($condition->actes as $actes)
+                $mysqli->into_db_acte_has_condition($acte, $condition);
+        }
+
+        foreach($relations_source as $relation){
+            foreach($relation->actes as $acte)
+                $mysqli->into_db_acte_has_relation($acte, $relation);
+        }
+
+        foreach($relations_new as $relation){
+            if($relation->personne_source->id == $personne_source->id)
+                $relation->personne_source = $personne_new;
+            else
+                $relation->personne_destination = $personne_new;
+            $mysqli->into_db($relation);
+            foreach($relation->actes as $acte)
+                $mysqli->into_db_acte_has_relation($acte, $relation);
+        }
+
     }
 
 
@@ -250,12 +372,31 @@
     <?php
     }
 
-    // if(isset($ARGS["id"])){
-    //     dissocier($ARGS["id"]);
-    //     $alert->success("Dissociation réalisée avec succès");
-    // }
 
-    if(isset($ARGS["personne-A"])){
+    if(isset($ARGS["id"])){
+        $prenoms_A = parse_prenoms($ARGS["prenoms-A"]);
+        $prenoms_B = parse_prenoms($ARGS["prenoms-B"]);
+        $noms_A = parse_noms($ARGS["noms-A"]);
+        $noms_B = parse_noms($ARGS["noms-B"]);
+
+        $personne = new Personne($ARGS["id"]);
+        $mysqli->from_db($personne);
+
+        $res = dissocier_input_conditions_relations();
+        $conditions_A = $res[0];
+        $conditions_B = $res[1];
+        $relations_A = $res[2];
+        $relations_B = $res[3];
+
+        dissocier(
+            $personne,
+            $prenoms_A, $noms_A,
+            $prenoms_B, $noms_B,
+            $conditions_A, $conditions_B,
+            $relations_A, $relations_B
+        );
+
+    }else if(isset($ARGS["personne-A"])){
         $personne = new Personne($ARGS["personne-A"]);
         $mysqli->from_db($personne);
         html_dissocier($personne);
