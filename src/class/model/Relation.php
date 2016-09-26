@@ -83,15 +83,15 @@
         public function pre_into_db(){
             global $mysqli;
 
-            if(!$this->personne_source->is_valid() ||
-                !$this->personne_destination->is_valid())
-                return FALSE;
-
             if(!$this->personne_source->is_updated_in_db)
                 $mysqli->into_db($this->personne_source);
 
             if(!$this->personne_destination->is_updated_in_db)
                 $mysqli->into_db($this->personne_destination);
+
+            if(!$this->personne_source->is_valid() ||
+                !$this->personne_destination->is_valid())
+                return FALSE;
 
             return TRUE;
         }

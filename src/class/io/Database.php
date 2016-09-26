@@ -456,11 +456,11 @@
             return $updated;
         }
 
-        public function into_db($obj){
+        public function into_db($obj, $force_insert = FALSE){
             $result = FALSE;
             $new_id = NULL;
 
-            if(!$obj->pre_into_db())
+            if(!$force_insert && !$obj->pre_into_db())
                 return;
 
             $values_db = $this->from_db($obj, FALSE, FALSE);

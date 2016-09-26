@@ -20,8 +20,7 @@
         ];
     }
 
-    function dissocier_input_conditions_relations()
-    {
+    function dissocier_input_conditions_relations(){
         global $ARGS, $mysqli;
         $conditions_source = [];
         $conditions_new = [];
@@ -99,7 +98,7 @@
             $conditions_source,
             $conditions_new,
             $relations_source,
-            $relations_source
+            $relations_new
         ];
     }
 
@@ -188,7 +187,7 @@
                 $relation->personne_source = $personne_new;
             else
                 $relation->personne_destination = $personne_new;
-            $mysqli->into_db($relation);
+            $mysqli->into_db($relation, TRUE);
             foreach($relation->actes as $acte)
                 $mysqli->into_db_acte_has_relation($acte, $relation);
         }
