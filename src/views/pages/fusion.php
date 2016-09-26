@@ -116,6 +116,36 @@
         }
     }
 
+    function fusion_update_contenu_acte($personne_id){
+        global $mysqli;
+
+        $personne = new Personne($personne_id);
+        $mysqli->from_db($personne);
+
+        $actes = [];
+
+        $results = $mysqli->select(
+            "acte",
+            ["id"],
+            "epoux='$personne_id' OR epouse='$personne_id'"
+        );
+        if($results != FALSE && $results->num_rows > 0){
+            while($row = $results->fetch_assoc())
+                $actes[] = new Acte($row["id"]);
+        }
+
+        $actes = array_unique(array_merge(
+            $actes,
+            $personne->conditions->actes,
+            $personne->relations->actes
+        ));
+
+        foreach($actes as $acte){
+            $results = $mysqli->select("acte_contenu", ["contenu"], "acte_id='$acte->id'");
+            // simplexml xpath
+        }
+    }
+
     function fusion($personne_keep, $personne_throw, $noms, $prenoms){
         global $mysqli, $log;
 
@@ -142,7 +172,7 @@
         fusion_conditions($personne_keep, $personne_throw);
         fusion_relations($personne_keep, $personne_throw);
 
-        $log->d("fusion remove personee");
+        $log->d("fusion remove personne");
         $mysqli->delete_personne($personne_throw->id);
     }
 
