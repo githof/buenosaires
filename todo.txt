@@ -1,6 +1,6 @@
 
 + Fusion / Dissoc
-    - finaliser le choix "les deux"
+    X finaliser le choix "les deux"
     X dans la recherche, enlever le chargement de la liste complète des personnes
     (l'autocompletion ajax n'est pas prioritaire, je la remets plus
     bas dans les tâches)
