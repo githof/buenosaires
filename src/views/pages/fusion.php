@@ -116,10 +116,10 @@
         }
     }
 
-    function fusion_update_contenu_acte($personne_id){
+    function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
         global $mysqli;
 
-        $personne = new Personne($personne_id);
+        $personne = new Personne($personne_id_old);
         $mysqli->from_db($personne);
 
         $actes = [];
@@ -127,22 +127,51 @@
         $results = $mysqli->select(
             "acte",
             ["id"],
-            "epoux='$personne_id' OR epouse='$personne_id'"
+            "epoux='$personne_id_old' OR epouse='$personne_id_old'"
         );
         if($results != FALSE && $results->num_rows > 0){
             while($row = $results->fetch_assoc())
                 $actes[] = new Acte($row["id"]);
         }
 
-        $actes = array_unique(array_merge(
-            $actes,
-            $personne->conditions->actes,
-            $personne->relations->actes
-        ));
+        foreach($personne->conditions as $condition)
+            $actes = array_merge($actes, $condition->actes);
+
+        foreach($personne->relations as $relation)
+            $actes = array_merge($actes, $relation->actes);
+
+        $actes = array_unique($actes);
 
         foreach($actes as $acte){
-            $results = $mysqli->select("acte_contenu", ["contenu"], "acte_id='$acte->id'");
-            // simplexml xpath
+            $results = $mysqli->select(
+                "acte_contenu",
+                ["contenu"],
+                "acte_id='$acte->id'"
+            );
+            $contenu = $results->fetch_assoc()["contenu"];
+            $xml = new SimpleXMLElement($contenu);
+
+            $paths = [
+                "epoux", "epouse", "epoux/pere", "epoux/mere", "epouse/pere",
+                "epouse/mere", "temoins/temoin", "temoins/temoin/pere",
+                "temoins/temoin/mere"
+            ];
+
+            foreach($paths as $path){
+                $results = $xml->xpath($path);
+                while(list( , $node) = each($results)){
+                    $attr = $node->attributes();
+                    if($attr["id"] == $personne_id_old)
+                        $attr["id"] = $personne_id_new;
+                }
+            }
+            $contenu = $xml->asXML();
+
+            $mysqli->update(
+                "acte_contenu",
+                ["contenu" => $contenu],
+                "acte_id='$acte->id'"
+            );
         }
     }
 
@@ -164,6 +193,8 @@
             $mysqli->into_db_nom_personne($personne_keep, $nom, $i);
             $i++;
         }
+
+        fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
 
         $log->d("fusion actes");
         $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
