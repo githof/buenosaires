@@ -14,7 +14,7 @@ define("LOG_LINES_MAX", 10000);
 
 
 // tmp Directory
-define("TMP_DIRECTORY", "./tmp");
+define("TMP_DIRECTORY", "tmp");
 
 
 // default periode

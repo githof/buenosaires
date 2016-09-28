@@ -72,11 +72,15 @@
     function receive_text(){
         global $alert, $log;
 
-        $sources = '<?xml version="1.0" encoding="UTF-8"?>';
-        $sources = "<document><ACTES>\n".stripslashes($_POST['import_text'])."\n</ACTES></document>";
+        $sources =
+            "<document><ACTES>".PHP_EOL.
+            stripslashes($_POST['import_text']).PHP_EOL.
+            "</ACTES></document>";
+        $sources = '<?xml version="1.0" encoding="UTF-8"?>' . $sources;
 
-        $filename = TMP_DIRECTORY . "/new_actes.xml";
+        $filename = TMP_DIRECTORY . "/new_actes";
         $filename = append_unique_identifier($filename);
+        $filename = $filename . ".xml";
         $tmp_file = @fopen($filename, "w");
         if($tmp_file === FALSE){
             $log->e("Erreur de la fct fopen($filename, 'w')");
@@ -88,6 +92,7 @@
             $alert->error("Erreur interne du serveur lors de l'import");
             return NULL;
         }
+        fclose($tmp_file);
         return $filename;
     }
 

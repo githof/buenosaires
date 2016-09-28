@@ -20,11 +20,16 @@
                 return FALSE;
             }
 
+            $use_errors = libxml_use_internal_errors(TRUE);
             $this->xml = simplexml_load_file($filename);
             if($this->xml === FALSE){
                 $log->e("Erreur lors de la lecture du fichier xml $filename");
+                foreach(libxml_get_errors() as $error)
+                    $log->e($error->message);
                 return FALSE;
             }
+            libxml_clear_errors();
+            libxml_use_internal_errors($use_errors);
             return TRUE;
         }
 
