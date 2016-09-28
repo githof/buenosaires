@@ -102,6 +102,57 @@
         ];
     }
 
+    function dissocier_update_contenu_acte($relations, $id_source, $id_new){
+        global $mysqli;
+
+        $paths = [
+            STATUT_EPOUX => [
+                ["epouse"],
+                ["epoux"]],
+            STATUT_PERE => [
+                ["epoux/pere", "epouse/pere"],
+                ["epoux", "epouse"]],
+            STATUT_MERE => [
+                ["epoux/mere", "epouse/mere"],
+                ["epoux", "epouse"]],
+            STATUT_TEMOIN => [
+                ["temoins/temoin"],
+                ["epoux", "epouse"]],
+            STATUT_PARRAIN => [
+                ["parrains/parrain"],
+                ["epoux", "epouse"]]
+        ];
+
+        foreach($relations as $relation){
+            foreach($relation->actes as $acte){
+                $is_source = ($relation->personne_source->id == $id_source) ?
+                    0 : 1;
+                $results = $mysqli->select(
+                    "acte_contenu",
+                    ["contenu"],
+                    "acte_id='$acte->id'"
+                );
+                $contenu = $results->fetch_assoc()["contenu"];
+                $xml = new SimpleXMLElement($contenu);
+                foreach($paths[$relation->statut_id][$is_source] as $path){
+                    $results = $xml->xpath($path);
+                    while(list( , $node) = each($results)){
+                        $attr = $node->attributes();
+                        if($attr["id"] == $id_source)
+                            $attr["id"] = $id_new;
+                    }
+                }
+                $contenu = $xml->asXML();
+
+                $mysqli->update(
+                    "acte_contenu",
+                    ["contenu" => $contenu],
+                    "acte_id='$acte->id'"
+                );
+            }
+        }
+    }
+
     function dissocier(
         $personne_source,
         $prenoms_source,
@@ -192,6 +243,11 @@
                 $mysqli->into_db_acte_has_relation($acte, $relation);
         }
 
+        dissocier_update_contenu_acte(
+            $relations_new,
+            $personne_source->id,
+            $personne_new->id
+        );
     }
 
 
