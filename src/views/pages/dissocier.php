@@ -164,7 +164,7 @@
         $relations_source,
         $relations_new)
         {
-        global $mysqli;
+        global $mysqli, $log;
 
         $personne_new = new Personne();
 
@@ -173,7 +173,8 @@
         $personne_new->prenoms = $prenoms_new;
         $personne_new->noms = $noms_new;
 
-        $mysqli->into_db($personne_new);
+        $log->d("ICI");
+        $mysqli->into_db($personne_new, FALSE, TRUE);
 
         $personne_source->condition = [];
         $personne_new->relations = [];
@@ -234,7 +235,10 @@
         }
 
         foreach($relations_new as $relation){
-            if($relation->personne_source->id == $personne_source->id)
+            if($relation->personne_source->id == $relation->personne_destination->id){
+                $relation->personne_source = $personne_new;
+                $relation->personne_destination = $personne_source;
+            }else if($relation->personne_source->id == $personne_source->id)
                 $relation->personne_source = $personne_new;
             else
                 $relation->personne_destination = $personne_new;

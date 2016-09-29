@@ -456,14 +456,15 @@
             return $updated;
         }
 
-        public function into_db($obj, $force_insert = FALSE){
+        public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE){
             $result = FALSE;
             $new_id = NULL;
 
             if(!$force_insert && !$obj->pre_into_db())
                 return;
 
-            $values_db = $this->from_db($obj, FALSE, FALSE);
+            if(!$skip_check_same)
+                $values_db = $this->from_db($obj, FALSE, FALSE);
             if(isset($values_db["id"]))
                 $obj->id = $values_db["id"];
             $values_obj = $obj->values_into_db();

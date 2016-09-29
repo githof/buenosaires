@@ -131,14 +131,18 @@
         );
         if($results != FALSE && $results->num_rows > 0){
             while($row = $results->fetch_assoc())
-                $actes[] = new Acte($row["id"]);
+                $actes[] = $row["id"];
         }
 
-        foreach($personne->conditions as $condition)
-            $actes = array_merge($actes, $condition->actes);
+        foreach($personne->conditions as $condition){
+            foreach($condition->actes as $acte)
+                $actes[] = $acte->id;
+        }
 
-        foreach($personne->relations as $relation)
-            $actes = array_merge($actes, $relation->actes);
+        foreach($personne->relations as $relation){
+            foreach($relation->actes as $acte)
+                $actes[] = $acte->id;
+        }
 
         $actes = array_unique($actes);
 
@@ -146,7 +150,7 @@
             $results = $mysqli->select(
                 "acte_contenu",
                 ["contenu"],
-                "acte_id='$acte->id'"
+                "acte_id='$acte'"
             );
             $contenu = $results->fetch_assoc()["contenu"];
             $xml = new SimpleXMLElement($contenu);
@@ -170,7 +174,7 @@
             $mysqli->update(
                 "acte_contenu",
                 ["contenu" => $contenu],
-                "acte_id='$acte->id'"
+                "acte_id='$acte'"
             );
         }
     }
