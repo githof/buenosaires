@@ -106,7 +106,7 @@
         global $mysqli;
 
         $paths = [
-            STATUT_EPOUX => [
+            STATUT_EPOUSE => [
                 ["epouse"],
                 ["epoux"]],
             STATUT_PERE => [
@@ -125,7 +125,7 @@
 
         foreach($relations as $relation){
             foreach($relation->actes as $acte){
-                $is_source = ($relation->personne_source->id == $id_source) ?
+                $is_source = ($relation->personne_source->id == $id_new) ?
                     0 : 1;
                 $results = $mysqli->select(
                     "acte_contenu",
@@ -173,7 +173,6 @@
         $personne_new->prenoms = $prenoms_new;
         $personne_new->noms = $noms_new;
 
-        $log->d("ICI");
         $mysqli->into_db($personne_new, FALSE, TRUE);
 
         $personne_source->condition = [];
