@@ -4,7 +4,7 @@
     X dans la recherche, enlever le chargement de la liste complète des personnes
     (l'autocompletion ajax n'est pas prioritaire, je la remets plus
     bas dans les tâches)
-    - dans le cas de dissoc père et fils, le nouveau est le père
+    X dans le cas de dissoc père et fils, le nouveau est le père
     X soumettre formulaire (get ou post)
     X mettre à jour l'id de la personne dans tous les actes concernés
       Voir dans old/includes/fonctions_all.php les fonctions :
