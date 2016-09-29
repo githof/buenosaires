@@ -15,6 +15,9 @@
         var $relations;
         var $conditions;
 
+        var $pere;
+        var $mere;
+
         var $xml;
 
         var $is_updated_in_db;
@@ -25,6 +28,8 @@
             $this->noms = [];
             $this->conditions = [];
             $this->relations = [];
+            $this->pere = NULL;
+            $this->mere = NULL;
             $this->is_updated_in_db = FALSE;
         }
 
@@ -67,10 +72,12 @@
 
         public function set_pere($pere){
             $this->add_relation($pere, $this, STATUT_PERE);
+            $this->pere = $pere;
         }
 
         public function set_mere($mere){
             $this->add_relation($mere, $this, STATUT_MERE);
+            $this->mere = $mere;
         }
 
         public function set_xml($xml){
