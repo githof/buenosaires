@@ -1,25 +1,4 @@
 
-+ Fusion / Dissoc
-    X finaliser le choix "les deux"
-    X dans la recherche, enlever le chargement de la liste complète des personnes
-    (l'autocompletion ajax n'est pas prioritaire, je la remets plus
-    bas dans les tâches)
-    X dans le cas de dissoc père et fils, le nouveau est le père
-    X soumettre formulaire (get ou post)
-    X mettre à jour l'id de la personne dans tous les actes concernés
-      Voir dans old/includes/fonctions_all.php les fonctions :
-        - maj_id_xml (pour fusion, plus simple),
-	appelée une seule fois dans old/gestion/fusion.php
-	X maj_id_xml_diss (pour dissociation, plus tricky à utiliser)
-	appelée trois fois dans old/gestion/dissocier.php
-    X bouton depuis la page d'une personne vers dissoc de cette personne
-    X autocomplétion des personnes dans l'input de recherche
-
-X virer une relation sur deux pour epoux / epouse (ne conserver que
-  épouse de)
-X Restreindre l'accès aux pages selon les rôles (admin, modif,
-  lecture)
-
 + édition du xml
     - bouton pour envoyer le résultat du xmlselect vers chargement d'un acte
     - recherche des personnes par le nom pour choisir l'id
@@ -32,3 +11,8 @@ X Restreindre l'accès aux pages selon les rôles (admin, modif,
 + import
     - si on import un acte contenant des personnes sans ID, le nouvel ID généré
     n'est pas ajouté au contenu de l'acte
+
++ bugs
+  - import : quand erreur parsing dans le xml, erreur dans le fichier
+    log mais pas de message dans l'interface (exemple sur un attribut
+    avec guillemet pas fermé)
