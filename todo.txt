@@ -1,7 +1,19 @@
 
 + édition du xml
-    - bouton pour envoyer le résultat du xmlselect vers chargement d'un acte
+>   - bouton pour envoyer le résultat du xmlselect vers chargement
+      d'un acte
     - recherche des personnes par le nom pour choisir l'id
+
++ xmlselect
+    - le texte affiché doit reproduire le xml (quand on copie / colle,
+        c'est du xml qui sort) : espace entre balise et attributs +
+    	guillemets aux attributs (ajouter les guillemets quand on saisit
+	la valeur d'un attribut)
+    - pour chaque élément, proposer une liste de couples
+      attribut / valeur prédéfinis (dans tag_set.js),
+      p.ex { "don" : "true" } pour les personnes
+      et pour les noms { "attr" : "de la" }, { "attr" : "de" }
+      "de los" et "del" (je crois)
 
 + export
     - xml : les contenus des actes bout à bout, avec autour une balise
@@ -9,8 +21,8 @@
     - gdf, csv (cf old pour les formats)
 
 + import
-    - si on import un acte contenant des personnes sans ID, le nouvel ID généré
-    n'est pas ajouté au contenu de l'acte
+>   - BUG : si on import un acte contenant des personnes sans ID, le nouvel ID généré
+    n'est pas ajouté au contenu xml de l'acte
 
 + bugs
   - import : quand erreur parsing dans le xml, erreur dans le fichier
