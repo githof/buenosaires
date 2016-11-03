@@ -25,6 +25,6 @@
     n'est pas ajouté au contenu xml de l'acte
 
 + bugs
-  - import : quand erreur parsing dans le xml, erreur dans le fichier
+  X import : quand erreur parsing dans le xml, erreur dans le fichier
     log mais pas de message dans l'interface (exemple sur un attribut
     avec guillemet pas fermé)

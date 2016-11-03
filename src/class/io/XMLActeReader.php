@@ -13,10 +13,11 @@
         }
 
         public function use_xml_file($filename){
-            global $log;
+            global $log, $alert;
 
             if(!file_exists($filename)){
                 $log->e("Impossible d'ouvrir le fichier $filename");
+                $alert->error("Erreur lors de l'upload du/des actes(s)");
                 return FALSE;
             }
 
@@ -24,6 +25,7 @@
             $this->xml = simplexml_load_file($filename);
             if($this->xml === FALSE){
                 $log->e("Erreur lors de la lecture du fichier xml $filename");
+                $alert->error("Erreur lors de la lecture du fichier xml (Voir les logs)");
                 foreach(libxml_get_errors() as $error)
                     $log->e($error->message);
                 return FALSE;
