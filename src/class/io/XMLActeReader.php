@@ -35,6 +35,23 @@
             return TRUE;
         }
 
+        public function use_xml_text($text){
+            global $log, $alert;
+
+            $use_errors = libxml_use_internal_errors(TRUE);
+            $this->xml = simplexml_load_string($text);
+            if($this->xml === FALSE){
+                $log->e("Erreur lors du parsing xml $filename");
+                $alert->error("Erreur lors du parsing xml (Voir les logs)");
+                foreach(libxml_get_errors() as $error)
+                    $log->e($error->message);
+                return FALSE;
+            }
+            libxml_clear_errors();
+            libxml_use_internal_errors($use_errors);
+            return TRUE;
+        }
+
         public function read_actes($only_new_acte = FALSE){
             global $log, $alert;
             $actesXML = NULL;
@@ -188,6 +205,69 @@
                 }
             }
             return $personne;
+        }
+
+        function update_xml($acte){
+            $xml_acte = $this->xml;
+            foreach($xml_acte->children() as $xml_child){
+                switch($xml_child->getName()){
+                    case "epoux":
+                        if(isset($acte->epoux, $acte->epoux->id) && $acte->epoux->is_valid())
+                            $this->update_attribute($xml_child, "id", $acte->epoux->id);
+                        $this->update_attribute_parents($xml_child, $acte);
+                        break;
+                    case "epouse":
+                        if(isset($acte->epouse, $acte->epoux->id) && $acte->epouse->is_valid())
+                            $this->update_attribute($xml_child, "id", $acte->epouse->id);
+                        $this->update_attribute_parents($xml_child, $acte);
+                        break;
+                    case "temoins":
+                        $i = 0;
+                        foreach($xml_child->children() as $xml_temoin){
+                            if($xml_temoin->getName() === "temoin"){
+                                if(isset($acte->temoins[$i], $acte->temoins[$i]->id) &&
+                                    $acte->temoins[$i]->is_valid())
+                                    $this->update_attribute($xml_temoin, "id", $acte->temoins[$i]->id);
+                                $i++;
+                            }
+                        }
+                        break;
+                    case "parrains":
+                        $i = 0;
+                        foreach($xml_child->children() as $xml_parrain){
+                            if($xml_parrain->getName() === "parrain"){
+                                if(isset($acte->parrains[$i], $acte->parrains[$i]->id) &&
+                                    $acte->parrains[$i]->is_valid())
+                                    $this->update_attribute($xml_parrain, "id", $acte->parrains[$i]->id);
+                                $i++;
+                            }
+                        }
+                        break;
+                }
+            }
+            $acte->set_contenu($xml_acte->asXML());
+        }
+
+        function update_attribute_parents($xml_element, $acte){
+            foreach($xml_element->children() as $xml_parent){
+                if($xml_parent->getName() === "pere" &&
+                    isset($acte->epoux, $acte->epoux->pere, $acte->epoux->pere->id)
+                    && $acte->epoux->pere->is_valid()){
+                    $this->update_attribute($xml_parent, "id", $acte->epoux->pere);
+                }else if($xml_parent->getName() === "mere" &&
+                    isset($acte->epoux, $acte->epoux->mere, $acte->epoux->mere->id)
+                    && $acte->epoux->mere->is_valid()){
+                    $this->update_attribute($xml_parent, "id", $acte->epoux->mere);
+                }
+            }
+        }
+
+        function update_attribute($xml_element, $attr, $value){
+            $attrs = $xml_element->attributes();
+            if(isset($attrs[$attr]))
+                $attrs[$attr] = $value."";
+            else
+                $xml_element->addAttribute($attr, $value."");
         }
 
         function all_nom_attributes_in_one($xml_nom){

@@ -207,6 +207,10 @@
                 $this->recursive_link_conditions_and_relations($personne);
             }
 
+            $reader = new XMLActeReader($this->source_id);
+            $reader->use_xml_text($this->contenu);
+            $reader->update_xml($this);
+
             $this->contenu_into_db();
             $mysqli->end_transaction();
         }

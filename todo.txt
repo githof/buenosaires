@@ -21,7 +21,7 @@
     - gdf, csv (cf old pour les formats)
 
 + import
->   - BUG : si on import un acte contenant des personnes sans ID, le nouvel ID généré
+>   X BUG : si on import un acte contenant des personnes sans ID, le nouvel ID généré
     n'est pas ajouté au contenu xml de l'acte
 
 + bugs
