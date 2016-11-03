@@ -3,7 +3,6 @@
     include_once(ROOT."src/class/model/Personne.php");
     include_once(ROOT."src/html_entities.php");
 
-
     $personne = new Personne($url_parsed["id"]);
     $result = $mysqli->from_db($personne, TRUE);
     if($result == NULL){
@@ -39,6 +38,7 @@
 </section>
 <section>
     <h4>PERIODE</h4>
+    <?php echo html_personne_periode($personne->id); ?>
 </section>
 <section>
     <h4>CONDITIONS</h4>

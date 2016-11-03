@@ -327,4 +327,57 @@
         return "<div class='date'>$str</div>";
     }
 
+    function html_personne_periode($personne_id){
+        global $mysqli;
+        $date_max = null;
+        $date_min = null;
+
+        $result = $mysqli->query("
+            SELECT date_start, date_end
+            FROM acte
+            WHERE acte.id IN (
+                SELECT acte_id
+                FROM relation INNER JOIN acte_has_relation
+                ON relation.id = acte_has_relation.relation_id
+                WHERE pers_source_id = $personne_id
+                OR pers_destination_id = $personne_id
+            ) OR acte.id IN (
+                SELECT acte_id
+                FROM `condition` INNER JOIN acte_has_condition
+                ON `condition`.id = acte_has_condition.condition_id
+                WHERE personne_id = $personne_id
+            ) OR epoux = $personne_id
+            OR epouse = $personne_id");
+
+        if($result != FALSE && $result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $date_start = new DateTime($row["date_start"]);
+                $date_end = new DateTime($row["date_end"]);
+
+                if($date_max == null || $date_end > $date_max)
+                    $date_max = $date_end;
+
+                if($date_min == null || $date_start < $date_min)
+                    $date_min = $date_start;
+            }
+        }
+
+        if($date_min == null || $date_max == null)
+            return "Aucune période trouvée";
+
+        $date_max_s = $date_max->format("Y-m-d");
+        $date_min_s = $date_min->format("Y-m-d");
+
+        $interval = $date_max->diff($date_min);
+        $interval_s = $interval->format("%d jours");
+        if($interval->m > 0)
+            $interval_s = $interval->format("%m mois, ") . $interval_s;
+        if($interval->y > 0)
+            $interval_s = $interval->format("%Y ans, ") . $interval_s;
+
+        return "<div class='personne-periode'>
+                    $interval_s (de $date_min_s à $date_max_s)
+                </div>";
+    }
+
 ?>
