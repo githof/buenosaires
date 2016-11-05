@@ -5,7 +5,7 @@
     - recherche des personnes par le nom pour choisir l'id
 
 + xmlselect
-    - le texte affiché doit reproduire le xml (quand on copie / colle,
+    X le texte affiché doit reproduire le xml (quand on copie / colle,
         c'est du xml qui sort) : espace entre balise et attributs +
     	guillemets aux attributs (ajouter les guillemets quand on saisit
 	la valeur d'un attribut)
