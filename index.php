@@ -107,6 +107,7 @@
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
             crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.6.1/lodash.min.js"></script>
+        <script type="text/javascript" src="res/clipboard.min.js"></script>
         <script type="text/javascript" src="res/xmlselect/tag_set.js"></script>
         <script type="text/javascript" src="res/xmlselect/xml_node.js"></script>
         <script type="text/javascript" src="res/xmlselect/taggable_xml.js"></script>

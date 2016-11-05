@@ -84,7 +84,7 @@
     </div>
 </section>
 <section>
-    <h4>CONTENU BALISÉ</h4>
+    <h4>CONTENU BALISÉ<button class='btn-section-title' id='btn-copy-xml'>Copier XML</button></h4>
     <div>
         <?php echo html_acte_contenu($acte->get_contenu()); ?>
     </div>

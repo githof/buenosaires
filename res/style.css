@@ -131,6 +131,10 @@ section > h4{
 	font-weight: bold;
 }
 
+.btn-section-title {
+	float: right;
+}
+
 section > div {
 	margin: 10px;
 }
