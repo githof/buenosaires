@@ -84,7 +84,14 @@
     </div>
 </section>
 <section>
-    <h4>CONTENU BALISÉ<button class='btn-section-title' id='btn-copy-xml'>Copier XML</button></h4>
+    <h4>CONTENU BALISÉ
+        <button class='btn-section-title' id='btn-copy-xml'>Copier XML</button>
+        <?php if(can_access($access_pages["fusion"])){ ?>
+            <button class='btn-section-title' id='btn-edit-xml'>Editer XML</button>
+            <button class='btn-section-title' id='btn-cancel-edit-xml'>Annuler l'édition</button>
+            <button class='btn-section-title' id='btn-save-edit-xml'>Sauvegarder les changements</button>
+        <?php } ?>
+    </h4>
     <div>
         <?php echo html_acte_contenu($acte->get_contenu()); ?>
     </div>

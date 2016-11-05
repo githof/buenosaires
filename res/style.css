@@ -133,6 +133,11 @@ section > h4{
 
 .btn-section-title {
 	float: right;
+	margin-left: 10px;
+}
+
+#btn-cancel-edit-xml, #btn-save-edit-xml {
+	display: none;
 }
 
 section > div {
