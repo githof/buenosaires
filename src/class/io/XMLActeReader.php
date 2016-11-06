@@ -253,11 +253,11 @@
                 if($xml_parent->getName() === "pere" &&
                     isset($acte->epoux, $acte->epoux->pere, $acte->epoux->pere->id)
                     && $acte->epoux->pere->is_valid()){
-                    $this->update_attribute($xml_parent, "id", $acte->epoux->pere);
+                    $this->update_attribute($xml_parent, "id", $acte->epoux->pere->id);
                 }else if($xml_parent->getName() === "mere" &&
                     isset($acte->epoux, $acte->epoux->mere, $acte->epoux->mere->id)
                     && $acte->epoux->mere->is_valid()){
-                    $this->update_attribute($xml_parent, "id", $acte->epoux->mere);
+                    $this->update_attribute($xml_parent, "id", $acte->epoux->mere->id);
                 }
             }
         }

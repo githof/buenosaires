@@ -4,6 +4,21 @@
     include_once(ROOT."src/class/model/Acte.php");
     include_once(ROOT."src/html_entities.php");
     include_once(ROOT."src/class/io/XMLExport.php");
+    include_once(ROOT."src/utils.php");
+
+    if(isset($_POST["edit_acte"])){
+        $filename = receive_text("raw_xml");
+        $only_new = TRUE;
+        $source_id = $_POST["source_id"];
+
+        if($filename != NULL){
+            chmod($filename, 0776);
+            $reader = new XMLActeReader($source_id);
+            $reader->use_xml_file($filename);
+            $reader->read_actes($only_new);
+            unlink($filename);
+        }
+    }
 
     $page_title = "Acte {$url_parsed["id"]}";
     $acte = new Acte($url_parsed["id"]);
@@ -37,9 +52,10 @@
                 <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
 <?php       }?>
 </div>
+<input id='acte_source_id' type="hidden" value="<?php echo $acte->source_id; ?>">
 <section>
     <h4>ID</h4>
-    <div>
+    <div id="acte-id">
         <?php echo $acte->id ?>
     </div>
 </section>
