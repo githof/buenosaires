@@ -1,6 +1,7 @@
 <?php
 
     include_once(ROOT."src/class/model/Acte.php");
+    include_once(ROOT."src/utils.php");
 
 
     class XMLActeReader {
@@ -38,6 +39,7 @@
         public function use_xml_text($text){
             global $log, $alert;
 
+            $text = pre_process_acte_xml($text);
             var_dump($text);
             $use_errors = libxml_use_internal_errors(TRUE);
             $this->xml = simplexml_load_string($text);

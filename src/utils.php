@@ -37,6 +37,10 @@
         );
     }
 
+    function pre_process_acte_xml($acte_xml){
+        return preg_replace('!\s+!', ' ', $acte_xml);
+    }
+
     function read_date($date){
         $split = explode('-', trim($date));
         if(count($split) == 3){
