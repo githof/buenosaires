@@ -7,7 +7,8 @@
     include_once(ROOT."src/utils.php");
     include_once(ROOT."src/class/io/XMLActeReader.php");
 
-    if(isset($_POST["raw_xml"], $_POST["source_id"])){
+    if(can_access($access_pages["acte"]) &&
+        isset($_POST["raw_xml"], $_POST["source_id"])){
         $only_new = FALSE;
         $source_id = $_POST["source_id"];
 
