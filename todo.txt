@@ -1,6 +1,6 @@
 
 + édition du xml
->   - bouton pour envoyer le résultat du xmlselect vers chargement
+>   X bouton pour envoyer le résultat du xmlselect vers chargement
       d'un acte
     - recherche des personnes par le nom pour choisir l'id
 
