@@ -245,11 +245,17 @@
         if($infos["extension"] === "xml"){
             $uploadfile = TMP_DIRECTORY . "/" . basename($_FILES[$key]["name"]);
             $uploadfile = append_unique_identifier($uploadfile);
-            if(@move_uploaded_file($_FILES[$key]["tmp_name"], $uploadfile) === FALSE){
-                $log->e("Erreur fct move_uploaded_file({$_FILES[$key]['tmp_name']}, $uploadfile)");
-                $alert->error("Erreur interne du serveur lors du téléchargement du fichier");
-                return NULL;
+
+            $source = fopen($_FILES[$key]["tmp_name"], "r");
+            $destination = fopen($uploadfile, "w");
+
+            while($line = fgets($source)){
+                fputs($destination, pre_process_acte_xml($line)."\n");
             }
+
+            fclose($source);
+            fclose($destination);
+            
             return $uploadfile;
         }else{
             $alert->error("Le fichier doit être au format XML");
