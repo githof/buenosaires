@@ -40,7 +40,6 @@
             global $log, $alert;
 
             $text = pre_process_acte_xml($text);
-            var_dump($text);
             $use_errors = libxml_use_internal_errors(TRUE);
             $this->xml = simplexml_load_string($text);
             if($this->xml === FALSE){
@@ -60,8 +59,6 @@
             $actesXML = NULL;
             $i = 1;
             $success_nb = 0;
-
-            var_dump($this->xml);
 
             if(!isset($this->xml)){
                 $log->e("L'objet xml est null");
