@@ -26,7 +26,7 @@
         $source_id;
 
         if($_POST["form_type"] === "file"){
-            $filename = receive_file($_POST["import_file"]);
+            $filename = receive_file("import_file");
             $only_new = isset($_POST["import_file_only_new"]);
             $source_id = $_POST["import_file_source"];
         }else if($_POST["form_type"] === "text"){

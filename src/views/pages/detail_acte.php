@@ -5,19 +5,17 @@
     include_once(ROOT."src/html_entities.php");
     include_once(ROOT."src/class/io/XMLExport.php");
     include_once(ROOT."src/utils.php");
+    include_once(ROOT."src/class/io/XMLActeReader.php");
 
-    if(isset($_POST["edit_acte"])){
-        $filename = receive_text("raw_xml");
-        $only_new = TRUE;
+    if(isset($_POST["raw_xml"], $_POST["source_id"])){
+        $only_new = FALSE;
         $source_id = $_POST["source_id"];
 
-        if($filename != NULL){
-            chmod($filename, 0776);
-            $reader = new XMLActeReader($source_id);
-            $reader->use_xml_file($filename);
-            $reader->read_actes($only_new);
-            unlink($filename);
-        }
+        $reader = new XMLActeReader($source_id);
+        $reader->use_xml_text($_POST["raw_xml"]);
+        $reader->read_actes($only_new);
+
+        $alert->info("Acte mit à jour");
     }
 
     $page_title = "Acte {$url_parsed["id"]}";
@@ -109,7 +107,14 @@
         <?php } ?>
     </h4>
     <div>
-        <?php echo html_acte_contenu($acte->get_contenu()); ?>
+        <div class='acte-contenu xmlselect-edit'>
+            <form method='post' id='form-raw-xml'>
+                <input type='hidden' name='source_id' value='<?php echo $acte->source_id; ?>'>
+                <textarea style='display: none;' id='raw-xml' name='raw_xml'>
+                    <?php echo $acte->get_contenu(); ?>
+                </textarea>
+            </form>
+        </div>
     </div>
 </section>
 <?php

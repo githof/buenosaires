@@ -38,6 +38,7 @@
         public function use_xml_text($text){
             global $log, $alert;
 
+            var_dump($text);
             $use_errors = libxml_use_internal_errors(TRUE);
             $this->xml = simplexml_load_string($text);
             if($this->xml === FALSE){
@@ -58,6 +59,8 @@
             $i = 1;
             $success_nb = 0;
 
+            var_dump($this->xml);
+
             if(!isset($this->xml)){
                 $log->e("L'objet xml est null");
                 return FALSE;
@@ -65,11 +68,6 @@
 
             if(isset($this->xml->ACTES, $this->xml->ACTES->ACTE)){
                 $actesXML = $this->xml->ACTES->ACTE;
-            }else if(isset($this->xml->ACTE)){
-                $actesXML = $this->xml->ACTE;
-            }
-
-            if(isset($actesXML)){
                 foreach ($actesXML as $xml_acte){
                     if($this->read_acte($xml_acte, $i, $only_new_acte))
                         $success_nb++;
@@ -77,6 +75,9 @@
                         break;
                     $i++;
                 }
+            }else if($this->xml->getName() == "ACTE"){
+                if($this->read_acte($this->xml, $i, $only_new_acte))
+                    $success_nb++;
             }
 
             if($success_nb > 0){
@@ -167,7 +168,9 @@
                         break;
                 }
             }
-            $acte->set_contenu($xml_acte->asXML());
+            $xml_str = $xml_acte->asXML();
+            $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
+            $acte->set_contenu($xml_str);
         }
 
         function read_personne_node($xml_personne){
@@ -245,7 +248,9 @@
                         break;
                 }
             }
-            $acte->set_contenu($xml_acte->asXML());
+            $xml_str = $xml_acte->asXML();
+            $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
+            $acte->set_contenu($xml_str);
         }
 
         function update_attribute_parents($xml_element, $acte){

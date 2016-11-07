@@ -66,14 +66,6 @@
     }
 
 
-    function html_acte_contenu($acte_contenu){
-        return "<div class='acte-contenu xmlselect-edit'>
-                    <div class='raw-xml'>"
-	                   .htmlspecialchars($acte_contenu)
-	                ."</div>
-                </div>";
-    }
-
     function html_acte_small($acte){
         $periode = html_periode(periode_memory($acte->values["periode_id"]));
 
