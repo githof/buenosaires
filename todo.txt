@@ -9,20 +9,30 @@
       p.ex { "don" : "true" } pour les personnes
       et pour les noms { "attr" : "de la" }, { "attr" : "de" }
       "de los" et "del" (je crois)
+    - BUG : l'info-bulle de la flèche pour sortir un truc de la balise,
+      empêche parfois de cliquer sur le bouton la deuxième fois
+    - info-bulle : parler ptet de "sortir de la balise" plutôt que
+      "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
     -> csv des relations (jointure avec id, prénom, nom des personnes)
+      voir ce qu'on fait dans l'affichage des relations
     -> virer les accents (et idéalement, option pour les garder)
     - gdf
 
++ recherche
+    - input text en plus de la liste
+    - possibilité de ne mettre que l'année
 
 + réimporter les actes
     - (à cause du trim des espaces doubles), par fichiers de 2000
+      mais partir d'un export à jour
 
 + import
 >    BUG : voir acte 5020, dans le xml, père et mère de l'épouse (qui
     ne sont pas balisés) ont récupéré l'id de père et mère de l'époux
     (qu'on vient de créer)
+
 
 + fusion
     - montrer le résultat à la fin (plutôt qu'une page vide)
@@ -31,4 +41,14 @@
 + modifs ponctuelles
     - Cristina
     - balisage d'un acte
-    - fusion Francisco Belgrano
+    - fusions Francisco Belgrano
+
++ base
+    - dump pour Access
+    - voir ce que sont devenues les précédentes fusion et dissoc
+      (voir par exemple parmi toutes les versions du xml
+      Domingo Belgrano pour fusions et Manuel Frutos pour dissoc)
+    - mettre le fichier xml lui-même sur un git
+
++ site
+    - "mit" à jour
