@@ -32,7 +32,8 @@
 >    BUG : voir acte 5020, dans le xml, père et mère de l'épouse (qui
     ne sont pas balisés) ont récupéré l'id de père et mère de l'époux
     (qu'on vient de créer)
-
+    -> BUG : acte 6254, l'époux récupère les parents de l'épouse,
+      c'est cheulou
 
 + fusion
     - montrer le résultat à la fin (plutôt qu'une page vide)
