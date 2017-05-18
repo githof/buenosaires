@@ -37,5 +37,4 @@
     n'est pas ajouté au contenu xml de l'acte
 
 + site
-    - "mit" à jour
     BUG : menu s'affiche pas sur IE
