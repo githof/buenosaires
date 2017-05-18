@@ -16,15 +16,26 @@
       "de los" et "del" (je crois)
 
 + export
-    - xml : les contenus des actes bout à bout, avec autour une balise
-    ACTES, une autre <document> et l'entête xml
-    - gdf, csv (cf old pour les formats)
+    BUG : sur export xml, y'a quelques <?xml version="1.0"?> qui se
+    baladent
+    BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
+    -> csv des relations (jointure avec id, prénom, nom des personnes)
+      voir ce qu'on fait dans l'affichage des relations
+    -> virer les accents (et idéalement, option pour les garder)
+    - gdf
+
++ recherche
+    - input text en plus de la liste
+    - possibilité de ne mettre que l'année
+
++ réimporter les actes
+    - (à cause du trim des espaces doubles), par fichiers de 2000
+      mais partir d'un export à jour
 
 + import
 >   X BUG : si on import un acte contenant des personnes sans ID, le nouvel ID généré
     n'est pas ajouté au contenu xml de l'acte
 
-+ bugs
-  X import : quand erreur parsing dans le xml, erreur dans le fichier
-    log mais pas de message dans l'interface (exemple sur un attribut
-    avec guillemet pas fermé)
++ site
+    - "mit" à jour
+    BUG : menu s'affiche pas sur IE
