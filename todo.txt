@@ -15,6 +15,9 @@
       "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
+    BUG : sur export xml, y'a quelques <?xml version="1.0"?> qui se
+    baladent
+    BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
     -> csv des relations (jointure avec id, prénom, nom des personnes)
       voir ce qu'on fait dans l'affichage des relations
     -> virer les accents (et idéalement, option pour les garder)
@@ -53,3 +56,4 @@
 
 + site
     - "mit" à jour
+    BUG : menu s'affiche pas sur IE
