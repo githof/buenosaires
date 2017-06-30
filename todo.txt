@@ -1,6 +1,4 @@
 
-Voir aussi DROPBOX/Organisation/CR.txt
-
 + édition du xml
 >   X bouton pour envoyer le résultat du xmlselect vers chargement
       d'un acte
@@ -23,7 +21,6 @@ Voir aussi DROPBOX/Organisation/CR.txt
     BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
     -> csv des relations (jointure avec id, prénom, nom des personnes)
       voir ce qu'on fait dans l'affichage des relations
-      (et si le gros bug persiste, virer les nouveaux ids)
     -> virer les accents (et idéalement, option pour les garder)
     - gdf
 
@@ -40,4 +37,5 @@ Voir aussi DROPBOX/Organisation/CR.txt
     n'est pas ajouté au contenu xml de l'acte
 
 + site
+    - "mit" à jour
     BUG : menu s'affiche pas sur IE
