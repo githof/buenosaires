@@ -1,0 +1,7 @@
+
+## Big bug import :
+
+Traverse XMLActeReader->read_acte_node sans qu'un id soit attribué aux parents
+Si quelque chose se passe, c'est dans $mysqli->into_db($acte), appelé par read_acte
+(mais je sais pas où est créé $mysqli, variable globale utilisée un peu partout)
+
