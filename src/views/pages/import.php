@@ -36,6 +36,13 @@
             $source_id = $_POST["import_text_source"];
         }
 
+	/*
+	  dans les instructions ci-dessous, le traitement des noeuds xml
+	  des actes sera fait dans la fonction
+	  XMLActeReader->read_acte_node
+	  (via l'appel $reader->read_actes)
+	 */
+	
         if($filename != NULL){
             chmod($filename, 0776);
             $reader = new XMLActeReader($source_id);
