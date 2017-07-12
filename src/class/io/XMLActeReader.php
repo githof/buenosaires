@@ -214,18 +214,18 @@
             foreach($xml_acte->children() as $xml_child){
                 switch($xml_child->getName()){
                     case "epoux":
-  		      update_id_if_obj_ok($acte->epoux, $xml_child);
+  		      $this->update_id_if_obj_ok($acte->epoux, $xml_child);
 		      $this->update_attribute_parents($acte->epoux, $xml_child);
 		      break;
                     case "epouse":
-		      update_id_if_obj_ok($acte->epouse, $xml_child);
+		      $this->update_id_if_obj_ok($acte->epouse, $xml_child);
 		      $this->update_attribute_parents($acte->epouse, $xml_child);
 		      break;
                     case "temoins":
                         $i = 0;
                         foreach($xml_child->children() as $xml_temoin){
                             if($xml_temoin->getName() === "temoin"){
-			      update_id_if_obj_ok($acte->temoins[$i], $xml_temoin);
+			      $this->update_id_if_obj_ok($acte->temoins[$i], $xml_temoin);
 			      $i++;
                             }
                         }
@@ -256,9 +256,9 @@
         function update_attribute_parents($epouxse, $xml_element){
             foreach($xml_element->children() as $xml_parent){
 	      if($xml_parent->getName() === "pere" && isset($epouxse))
-		 update_id_if_obj_ok($epouxse->pere, $xml_parent);
+		 $this->update_id_if_obj_ok($epouxse->pere, $xml_parent);
 	      else if($xml_parent->getName() === "mere" && isset($epouxse))
-		 update_id_if_obj_ok($epouxse->mere, $xml_parent);
+		 $this->update_id_if_obj_ok($epouxse->mere, $xml_parent);
             }
         }
 
