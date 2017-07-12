@@ -219,7 +219,7 @@
                         $this->update_attribute_parents($xml_child, $acte);
                         break;
                     case "epouse":
-                        if(isset($acte->epouse, $acte->epoux->id) && $acte->epouse->is_valid())
+                        if(isset($acte->epouse, $acte->epouse->id) && $acte->epouse->is_valid())
                             $this->update_attribute($xml_child, "id", $acte->epouse->id);
                         $this->update_attribute_parents($xml_child, $acte);
                         break;
