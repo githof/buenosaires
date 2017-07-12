@@ -27,10 +27,6 @@
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
 
-+ réimporter les actes
-    - (à cause du trim des espaces doubles), par fichiers de 2000
-      mais partir d'un export à jour
-
 + import
 >    BUG : voir acte 5020, dans le xml, père et mère de l'épouse (qui
     ne sont pas balisés) ont récupéré l'id de père et mère de l'époux
@@ -48,10 +44,15 @@
     - fusions Francisco Belgrano
 
 + base
+    -> réinitialiser pour virer les ids foireux du big bug import
+      - trouver de quel xml repartir (peut-être buenosaires (7), mais
+      en remplaçant les attributs num par des id)
+      - voir ce que sont devenues les précédentes fusion et dissoc
+        (voir par exemple parmi toutes les versions du xml
+        Domingo Belgrano pour fusions et Manuel Frutos pour dissoc
+	et aussi lister celles dont on a la trace dans les logs de la
+	nouvelle base)
     - dump pour Access
-    - voir ce que sont devenues les précédentes fusion et dissoc
-      (voir par exemple parmi toutes les versions du xml
-      Domingo Belgrano pour fusions et Manuel Frutos pour dissoc)
     - mettre le fichier xml lui-même sur un git
 
 + site
