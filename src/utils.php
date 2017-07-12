@@ -1,5 +1,11 @@
 <?php
 
+function console_log( $data ){
+  echo '<script>';
+  echo 'console.log('. json_encode( $data ) .')';
+  echo '</script>';
+}
+
     function safe($string){
         global $mysqli;
         return htmlspecialchars($mysqli->real_escape_string(trim($string)));
