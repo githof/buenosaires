@@ -18,3 +18,6 @@ du coup les témoins ont été entrés en premier dans la base,
 puis les parents en même temps que les époux
 
 et là, bug sur les parents, ce qui est intéressant c'est que pour la mère x2, ce n'est pas un nouvel id mais un ancien parce qu'une Juana Martinez existe déjà dans la base, donc le bug ne vient pas de la création d'un id
+
+-> repartir de read_acte_node
+
