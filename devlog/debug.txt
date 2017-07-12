@@ -9,6 +9,10 @@ Database->next_id,
 appelé par Database->into_db_insert
 Faut tracker ça à l'import d'un acte avec deux parents sans id
 
+got it for good!
+XMLActeReader->update_attribute_parents
+ne prend en compte que epoux, pas epouse
+
 ### Manips sur la base
 
 + Acte 4997
