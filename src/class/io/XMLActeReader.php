@@ -225,8 +225,8 @@
                         $i = 0;
                         foreach($xml_child->children() as $xml_temoin){
                             if($xml_temoin->getName() === "temoin"){
-			        update_id_if_obj_ok($acte->temoins[$i], $xml_temoin)
-                                $i++;
+			      update_id_if_obj_ok($acte->temoins[$i], $xml_temoin);
+			      $i++;
                             }
                         }
                         break;
@@ -250,7 +250,7 @@
 
 	function update_id_if_obj_ok($obj, $xml_element){
 	  if(isset($obj, $obj->id) && $obj->is_valid())
-	    $this->update_attribute($xml_element, "id", $obj->id)
+	    $this->update_attribute($xml_element, "id", $obj->id);
 	}
 	
         function update_attribute_parents($epouxse, $xml_element){
