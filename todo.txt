@@ -51,9 +51,13 @@
         (voir par exemple parmi toutes les versions du xml
         Domingo Belgrano pour fusions et Manuel Frutos pour dissoc
 	et aussi lister celles dont on a la trace dans les logs de la
-	nouvelle base)
+	nouvelle base, enfin ce qu'il en reste)
     - dump pour Access
     - mettre le fichier xml lui-même sur un git
+
++ interne
+    - sauvegarder le fichier de log dans history quand atteint la
+        limite (Log.php)
 
 + site
     - "mit" à jour
