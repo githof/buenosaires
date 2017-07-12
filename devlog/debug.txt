@@ -3,9 +3,18 @@
 
 Traverse XMLActeReader->read_acte_node sans qu'un id soit attribué aux parents
 Si quelque chose se passe, c'est dans $mysqli->into_db($acte), appelé par read_acte
-(mais je sais pas où est créé $mysqli, variable globale utilisée un peu partout)
 
 spotted!
 Database->next_id,
 appelé par Database->into_db_insert
 Faut tracker ça à l'import d'un acte avec deux parents sans id
+
+### Manips sur la base
+
++ Acte 4997
+balisage parents + témoins,
+puis balisage époux
+du coup les témoins ont été entrés en premier dans la base,
+puis les parents en même temps que les époux
+
+et là, bug sur les parents, ce qui est intéressant c'est que pour la mère x2, ce n'est pas un nouvel id mais un ancien parce qu'une Juana Martinez existe déjà dans la base, donc le bug ne vient pas de la création d'un id
