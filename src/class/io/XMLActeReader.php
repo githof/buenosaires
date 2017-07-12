@@ -234,10 +234,8 @@
                         $i = 0;
                         foreach($xml_child->children() as $xml_parrain){
                             if($xml_parrain->getName() === "parrain"){
-                                if(isset($acte->parrains[$i], $acte->parrains[$i]->id) &&
-                                    $acte->parrains[$i]->is_valid())
-                                    $this->update_attribute($xml_parrain, "id", $acte->parrains[$i]->id);
-                                $i++;
+			      $this->update_id_if_obj_ok($acte->parrains[$i], $xml_parrain);
+			      $i++;
                             }
                         }
                         break;
