@@ -47,6 +47,7 @@
     -> réinitialiser pour virer les ids foireux du big bug import
       - trouver de quel xml repartir (peut-être buenosaires (7), mais
       en remplaçant les attributs num par des id)
+      - trier ce fichier par id pour faire un diff avec l'export courant
       - voir ce que sont devenues les précédentes fusion et dissoc
         (voir par exemple parmi toutes les versions du xml
         Domingo Belgrano pour fusions et Manuel Frutos pour dissoc
