@@ -129,11 +129,6 @@ join_xml ()
     out=`echo $xml | sed 's#\.xml#-join.xml#'`
     cat $xml \
 	| id_colon_xml \
-	      | tee test-colon \
-	| grep '^[0-9]*:' \
-	       | tee test-grep \
-	| join -t ':' $ids_bug - \
-	| sed 's#^[0-9]*:##' \
-	      > $out
+	      > test-colon
 }
 join_xml $before
