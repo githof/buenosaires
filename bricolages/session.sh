@@ -91,11 +91,11 @@ ids_bug=DATA/ids-bug
 
 id_colon_xml ()
 {
-    xml=$1
-    cat $xml \
+    xml_or_none=$1
+    cat $xml_or_none \
 	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#'
 }
-head $before | id_colon_xml
+# head $before | id_colon_xml
 
 before_bug ()
 {
@@ -120,11 +120,12 @@ ids_diff_before_after ()
     diff -y --suppress-common-lines $before $after \
 	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p'
 }
-# ids_diff_before_after > $ids_bug
+ids_diff_before_after > $ids_bug
 
 join_xml ()
 {
     xml=$1
-    
+    cat $xml \
+	id_colon_xml
 }
 
