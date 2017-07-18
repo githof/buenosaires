@@ -95,7 +95,8 @@ id_colon_xml ()
     cat $xml_or_none \
 	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#'
 }
-# head $before | id_colon_xml
+# head $before | id_colon_xml > test-colon
+# cat $before | id_colon_xml | head -1700 | tee test-colon2 > /dev/null
 
 before_bug ()
 {
@@ -120,12 +121,19 @@ ids_diff_before_after ()
     diff -y --suppress-common-lines $before $after \
 	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p'
 }
-ids_diff_before_after > $ids_bug
+# ids_diff_before_after > $ids_bug
 
 join_xml ()
 {
     xml=$1
+    out=`echo $xml | sed 's#\.xml#-join.xml#'`
     cat $xml \
-	id_colon_xml
+	| id_colon_xml \
+	      | tee test-colon \
+	| grep '^[0-9]*:' \
+	       | tee test-grep \
+	| join -t ':' $ids_bug - \
+	| sed 's#^[0-9]*:##' \
+	      > $out
 }
-
+join_xml $before
