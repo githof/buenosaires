@@ -89,7 +89,9 @@ before_bug ()
 	| sed 's#ACTE num="#ACTE id="#' \
 	      | tee test-id.xml \
 	| sed 's#\(<ACTE id="\)\([0-9]*\)"#\2:\1\2"#' \
+	      | tee test-num.xml \
 	| sort -t ':' -n \
+	       | tee test-sort.xml \
 	| sed 's#^[^:]*:##' \
 	      > DATA/before.xml
 }
