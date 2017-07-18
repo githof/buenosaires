@@ -83,6 +83,11 @@ actes_from_relations ()
 }
 # actes_from_relations > actes-belgrano.ids
 
+#___ big bug import 2017 ___
+
+before=DATA/matrimonios-before-2016-bug.xml
+after=DATA/matrimonios-2017-after-bug.xml
+
 before_bug ()
 {
     cat "$xml" \
@@ -95,8 +100,15 @@ before_bug ()
 	| sed -e '1{H;d;}' -e '${p;x;s/^\n//;}' \
 	      | tee test-end.xml \
 	| sed 's#^[^:]*:##' \
-	      > DATA/before.xml
+	      > $before
     # pour le sed qui met la première ligne à la fin :
     # https://stackoverflow.com/questions/26433652/sed-move-multiple-lines-to-the-end-of-a-text-file#answer-26433778
 }
 # before_bug
+
+ids_diff_before_after ()
+{
+    diff -y --suppress-common-lines $before $after \
+	 | sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p'
+}
+ids_diff_before_after
