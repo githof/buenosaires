@@ -87,6 +87,7 @@ before_bug ()
 {
     cat "$xml" \
 	| sed 's#ACTE num="#ACTE id="#' \
+	      | tee test-id.xml \
 	| sed 's#\(<ACTE id="\)\([0-9]*\)"#\2:\1\2"#' \
 	| sort -t ':' -n \
 	| sed 's#^[^:]*:##' \
