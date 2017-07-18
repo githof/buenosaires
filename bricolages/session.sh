@@ -87,13 +87,22 @@ actes_from_relations ()
 
 before=DATA/matrimonios-before-2016-bug.xml
 after=DATA/matrimonios-2017-after-bug.xml
+ids_bug=DATA/ids-bug
+
+id_colon_xml ()
+{
+    xml=$1
+    cat $xml \
+	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#'
+}
+head $before | id_colon_xml
 
 before_bug ()
 {
     cat "$xml" \
 	| sed 's#\(ACTE[^>]*\) num="#\1 id="#' \
 	      | tee test-id.xml \
-	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
+	| id_colon_xml \
 	      | tee test-num.xml \
 	| sort -t ':' -n \
 	      | tee test-sort.xml \
@@ -109,6 +118,13 @@ before_bug ()
 ids_diff_before_after ()
 {
     diff -y --suppress-common-lines $before $after \
-	 | sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p'
+	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p'
 }
-ids_diff_before_after
+# ids_diff_before_after > $ids_bug
+
+join_xml ()
+{
+    xml=$1
+    
+}
+
