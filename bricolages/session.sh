@@ -86,9 +86,9 @@ actes_from_relations ()
 before_bug ()
 {
     cat "$xml" \
-	| sed 's#\(ACTE [^>]*\) num="#\1 id="#' \
+	| sed 's#\(ACTE[^>]*\) num="#\1 id="#' \
 	      | tee test-id.xml \
-	| sed 's#\(<ACTE [^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
+	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
 	      | tee test-num.xml \
 	| sort -t ':' -n \
 	       | tee test-sort.xml \
