@@ -130,6 +130,7 @@ join_xml ()
     cat $xml \
 	| id_colon_xml \
 	| grep '^[0-9]*:' \
-	       > test-colon
+	| join -t ':' $ids_bug - \
+	       > test-join
 }
 join_xml $before
