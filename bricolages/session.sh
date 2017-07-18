@@ -91,8 +91,12 @@ before_bug ()
 	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
 	      | tee test-num.xml \
 	| sort -t ':' -n \
-	       | tee test-sort.xml \
+	      | tee test-sort.xml \
+	| sed -e '1{H;d;}' -e '${p;x;s/^\n//;}' \
+	      | tee test-end.xml \
 	| sed 's#^[^:]*:##' \
 	      > DATA/before.xml
+    # pour le sed qui met la première ligne à la fin :
+    # https://stackoverflow.com/questions/26433652/sed-move-multiple-lines-to-the-end-of-a-text-file#answer-26433778
 }
-before_bug
+# before_bug
