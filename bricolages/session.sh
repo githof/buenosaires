@@ -131,6 +131,14 @@ join_xml ()
 	| id_colon_xml \
 	| grep '^[0-9]*:' \
 	| join -t ':' $ids_bug - \
-	       > test-join
+	| sed 's#^[0-9]*:##' \
+	      > $out
 }
-join_xml $before
+# join_xml $before
+
+trunc ()
+{
+    sed 's#^\(...........................................\).*$#\1#'
+}
+
+$*
