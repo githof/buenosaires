@@ -92,10 +92,14 @@ ids_bug=DATA/ids-bug
 id_colon_xml ()
 {
     xml_or_none=$1
+    awkbs='BEGIN { OFS=FS=":" }'
+    awkbs=$awkbs'{ if(NF > 1) { printf("%5d", $1); $1="";}'
+    awkbs=$awkbs'  print $0 }'
     cat $xml_or_none \
-	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#'
+	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
+	| awk "$awkbs"
 }
-# head $before | id_colon_xml > test-colon
+head $before | id_colon_xml > test-colon
 # cat $before | id_colon_xml | head -1700 | tee test-colon2 > /dev/null
 
 before_bug ()
@@ -120,9 +124,9 @@ ids_diff_before_after ()
 {
     diff -y --suppress-common-lines $before $after \
 	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p' \
-	| awk '{ printf("%05d\n", $1) }'
+	| awk '{ printf("%5d\n", $1) }'
 }
-# ids_diff_before_after > $ids_bug
+ids_diff_before_after > $ids_bug
 
 join_xml ()
 {
