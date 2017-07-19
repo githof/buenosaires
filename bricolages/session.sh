@@ -99,7 +99,7 @@ id_colon_xml ()
 	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
 	| awk "$awkbs"
 }
-head $before | id_colon_xml > test-colon
+# head -20 $before | id_colon_xml > test-colon
 # cat $before | id_colon_xml | head -1700 | tee test-colon2 > /dev/null
 
 before_bug ()
@@ -126,7 +126,7 @@ ids_diff_before_after ()
 	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p' \
 	| awk '{ printf("%5d\n", $1) }'
 }
-ids_diff_before_after > $ids_bug
+# ids_diff_before_after > $ids_bug
 
 join_xml ()
 {
