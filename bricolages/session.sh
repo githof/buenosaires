@@ -119,7 +119,8 @@ before_bug ()
 ids_diff_before_after ()
 {
     diff -y --suppress-common-lines $before $after \
-	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p'
+	| sed -n 's#^<ACTE[^>]* id="\([0-9]*\)".*$#\1#p' \
+	| awk '{ printf("%05d\n", $1) }'
 }
 # ids_diff_before_after > $ids_bug
 
