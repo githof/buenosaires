@@ -103,6 +103,15 @@ id_colon_xml ()
 # head -20 $before | id_colon_xml > test-colon
 # cat $before | id_colon_xml | head -1700 | tee test-colon2 > /dev/null
 
+rm_id_colon ()
+{
+    f_or_none=$1
+    cat $f_or_none \
+	| sed 's#^ *[0-9]*:##' \
+	      
+}
+# cat test-colon | rm_id_colon | head -3
+
 before_bug ()
 {
     cat "$xml" \
@@ -132,19 +141,27 @@ ids_diff_before_after ()
 join_xml ()
 {
     xml=$1
-    out=`echo $xml | sed 's#\.xml#-join.xml#'`
+    out=`echo $xml | sed 's#\.xml#-join#'`
     cat $xml \
 	| id_colon_xml \
 	| grep '^ *[0-9]*:' \
 	| join -t ':' $ids_bug - \
-	| sed 's#^ *[0-9]*:##' \
 	      > $out
 }
 # join_xml $before
+
+
 
 trunc ()
 {
     sed 's#^\(...........................................\).*$#\1#'
 }
+
+diff_before_after ()
+{
+    join_xml $before
+    join_xml $after
+}
+# diff_before_after
 
 $*
