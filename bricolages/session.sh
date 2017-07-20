@@ -87,6 +87,8 @@ actes_from_relations ()
 
 before=DATA/matrimonios-before-2016-bug.xml
 after=DATA/matrimonios-2017-after-bug.xml
+before_join=DATA/matrimonios-before-2016-bug-join
+after_join=DATA/matrimonios-before-2016-bug-join
 ids_bug=DATA/ids-bug
 
 id_colon_xml ()
@@ -111,6 +113,15 @@ rm_id_colon ()
 	      
 }
 # cat test-colon | rm_id_colon | head -3
+
+ids_id_colon ()
+{
+    f_or_none=$1
+    cat $f_or_none \
+	| sed -n 's#^\( *[0-9]*\):.*$#\1#p' \
+	
+}
+ids_id_colon test-colon  | head -3
 
 before_bug ()
 {
@@ -159,6 +170,9 @@ diff_before_after ()
 {
     join_xml $before
     join_xml $after
+    ids_id_colon $before_join > ids-before
+    ids_id_colon $after_join > ids-after
+    diff -y --suppress-common-lines ids-before ids-after > ids-diff
 }
 # diff_before_after
 
