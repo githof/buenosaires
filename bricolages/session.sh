@@ -88,7 +88,7 @@ actes_from_relations ()
 before=DATA/matrimonios-before-2016-bug.xml
 after=DATA/matrimonios-2017-after-bug.xml
 before_join=DATA/matrimonios-before-2016-bug-join
-after_join=DATA/matrimonios-after-2016-bug-join
+after_join=DATA/matrimonios-2017-after-bug-join
 ids_bug=DATA/ids-bug
 
 id_colon_xml ()
