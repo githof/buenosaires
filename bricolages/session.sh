@@ -95,6 +95,7 @@ id_colon_xml ()
     awkbs='BEGIN { OFS=FS=":" }'
     awkbs=$awkbs'{ if(NF > 1) { printf("%5d", $1); $1="";}'
     awkbs=$awkbs'  print $0 }'
+    
     cat $xml_or_none \
 	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
 	| awk "$awkbs"
@@ -134,12 +135,12 @@ join_xml ()
     out=`echo $xml | sed 's#\.xml#-join.xml#'`
     cat $xml \
 	| id_colon_xml \
-	| grep '^[0-9]*:' \
+	| grep ' *^[0-9]*:' \
 	| join -t ':' $ids_bug - \
 	| sed 's#^[0-9]*:##' \
 	      > $out
 }
-# join_xml $before
+join_xml $before
 
 trunc ()
 {
