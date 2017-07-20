@@ -135,12 +135,12 @@ join_xml ()
     out=`echo $xml | sed 's#\.xml#-join.xml#'`
     cat $xml \
 	| id_colon_xml \
-	| grep ' *^[0-9]*:' \
+	| grep '^ *[0-9]*:' \
 	| join -t ':' $ids_bug - \
-	| sed 's#^[0-9]*:##' \
+	| sed 's#^ *[0-9]*:##' \
 	      > $out
 }
-join_xml $before
+# join_xml $before
 
 trunc ()
 {
