@@ -173,7 +173,9 @@ diff_before_after ()
     ids_id_colon $before_join > ids-before
     ids_id_colon $after_join > ids-after
     diff -y --suppress-common-lines ids-before ids-after > ids-diff
+    # -> 107 ids dans ids-before qui ne sont pas dans ids-after,
+    # tous ceux que j'ai testés sont effectivement absents de after xml
 }
-diff_before_after
+# diff_before_after
 
 $*
