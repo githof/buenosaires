@@ -185,6 +185,14 @@ get_one_from_join ()
     cat $f_or_none \
 	| sed -n 's#^ *'$acte':\(.*\)$#\1#p'
 }
-get_one_from_join 1 $after_join
+# get_one_from_join 1 $before_join
+
+diff_acte1 ()
+{
+    get_one_from_join 1 $before_join | sed 's#>#>@#g' | tr '@' '\n' > acte1-before
+    get_one_from_join 1 $after_join | sed 's#>#>@#g' | tr '@' '\n' > acte1-after
+    diff -y --suppress-common-lines acte1-before acte1-after
+}
+diff_acte1
 
 $*
