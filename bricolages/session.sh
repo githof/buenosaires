@@ -187,14 +187,27 @@ get_one_from_join ()
 }
 # get_one_from_join 1 $before_join
 
+newline_rm_id ()
+{
+    f_or_none=$1
+    cat $f_or_none \
+	| rm_id_colon \
+	| sed 's#>#>@#g' \
+	| tr '@' '\n' 
+}
+
 diff_with_newlines ()
 {
-    cat $before_join | sed 's#>#>@#g' | tr '@' '\n' > before-newlines
-    cat $after_join | sed 's#>#>@#g' | tr '@' '\n' > after-newlines
+    cat $before_join \
+	| newline_rm_id \
+	      > before-newlines
+    cat $after_join \
+	| newline_rm_id \
+	      > after-newlines
     diff -y --suppress-common-lines before-newlines after-newlines \
 	 > diff-newlines
 
-    pattr='<nom *[a-zA-Z]*="true".*<nom *attr='
+    patternattr='<nom *attr='
     cat diff-newlines \
 	| grep "$patternattr" \
 	       > diff-attr
