@@ -191,7 +191,16 @@ diff_with_newlines ()
 {
     cat $before_join | sed 's#>#>@#g' | tr '@' '\n' > before-newlines
     cat $after_join | sed 's#>#>@#g' | tr '@' '\n' > after-newlines
-    diff -y --suppress-common-lines before-newlines after-newlines > diff-newlines
+    diff -y --suppress-common-lines before-newlines after-newlines \
+	 > diff-newlines
+
+    pattr='<nom *[a-zA-Z]*="true".*<nom *attr='
+    cat diff-newlines \
+	| grep "$patternattr" \
+	       > diff-attr
+    cat diff-newlines \
+	| grep -v "$patternattr" \
+	       > diff-others
 }
 diff_with_newlines
 
