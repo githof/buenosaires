@@ -207,7 +207,7 @@ diff_with_newlines ()
     diff -y --suppress-common-lines before-newlines after-newlines \
 	 > diff-newlines
 
-    patternattr='<nom *attr='
+    patternattr='<nom [^>]*attr='
     cat diff-newlines \
 	| grep "$patternattr" \
 	       > diff-attr
@@ -215,6 +215,6 @@ diff_with_newlines ()
 	| grep -v "$patternattr" \
 	       > diff-others
 }
-diff_with_newlines
+# diff_with_newlines
 
 $*
