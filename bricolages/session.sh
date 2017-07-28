@@ -178,4 +178,13 @@ diff_before_after ()
 }
 # diff_before_after
 
+get_one_from_join ()
+{
+    acte=$1
+    f_or_none=$2
+    cat $f_or_none \
+	| sed -n 's#^ *'$acte':\(.*\)$#\1#p'
+}
+get_one_from_join 1 $after_join
+
 $*
