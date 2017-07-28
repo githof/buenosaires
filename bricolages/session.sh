@@ -216,5 +216,6 @@ diff_with_newlines ()
 	       > diff-others
 }
 # diff_with_newlines
+# cat diff-others | grep '<epoux.*<epoux'
 
 $*
