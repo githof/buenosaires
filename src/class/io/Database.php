@@ -559,6 +559,12 @@
             ");
         }
 
+	/*
+	  ATTENTION, je doute très fort que cette fonction soit
+	  correcte : il me semble qu'elle appelle delete_personne sans
+	  vérifier que les personnes ne sont pas référencées ailleurs
+	 */
+	/*
         public function delete_acte($acte){
             $personnes_id = [];
 
@@ -619,6 +625,7 @@
 
             $this->remove_unused_prenoms_noms();
         }
+	*/
 
         public function delete_personne($personne_id){
             $result = $this->select("condition", ["COUNT(*) AS nb"], "personne_id='$personne_id'");
