@@ -1,4 +1,6 @@
 
+Voir DROPBOX/Organisation/CR.txt
+
 + édition du xml
     - recherche des personnes par le nom pour choisir l'id
 
