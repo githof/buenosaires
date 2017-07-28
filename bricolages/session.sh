@@ -187,12 +187,12 @@ get_one_from_join ()
 }
 # get_one_from_join 1 $before_join
 
-diff_acte1 ()
+diff_with_newlines ()
 {
-    get_one_from_join 1 $before_join | sed 's#>#>@#g' | tr '@' '\n' > acte1-before
-    get_one_from_join 1 $after_join | sed 's#>#>@#g' | tr '@' '\n' > acte1-after
-    diff -y --suppress-common-lines acte1-before acte1-after
+    cat $before_join | sed 's#>#>@#g' | tr '@' '\n' > before-newlines
+    cat $after_join | sed 's#>#>@#g' | tr '@' '\n' > after-newlines
+    diff -y --suppress-common-lines before-newlines after-newlines > diff-newlines
 }
-diff_acte1
+diff_with_newlines
 
 $*
