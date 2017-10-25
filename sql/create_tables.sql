@@ -6,6 +6,140 @@ CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 COLLATE utf
 USE `buenosaires` ;
 
 -- -----------------------------------------------------
+--
+-- Tables pour les métadonnées 
+--
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`statut`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`statut` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`statut` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `valeur` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Data for table `buenosaires`.`statut`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `buenosaires`;
+INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (1, 'epoux');
+INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (2, 'epouse');
+INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (3, 'pere');
+INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (4, 'mere');
+INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (5, 'temoin');
+INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (6, 'parrain');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`source`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`source` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `valeur` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Data for table `buenosaires`.`source`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `buenosaires`;
+INSERT INTO `buenosaires`.`source` (`id`, `valeur`) VALUES (1, 'Matrimonios');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Ci-dessous, tables `attribut`, `categorie` et `tag`,
+-- qui me semblent inutilisées, à supprimer prudemment ?
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Table structure for table `attribut`
+-- -----------------------------------------------------
+-- From dump 2017, c'était pas dans le git,
+-- je vois pas où c'est utilisé à part dans `tag`,
+-- qui lui même ne me semble pas utilisé
+
+DROP TABLE IF EXISTS `attribut`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attribut` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `attribut`
+--
+
+LOCK TABLES `attribut` WRITE;
+/*!40000 ALTER TABLE `attribut` DISABLE KEYS */;
+INSERT INTO `attribut` VALUES (1,'de la'),(2,'de'),(3,'y');
+/*!40000 ALTER TABLE `attribut` ENABLE KEYS */;
+UNLOCK TABLES;
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`categorie`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`categorie` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`categorie` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`tag`
+-- -----------------------------------------------------
+-- Je vois pas où c'est utilisé, c'est vide dans le dump
+
+DROP TABLE IF EXISTS `buenosaires`.`tag` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`tag` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(45) NOT NULL,
+  `categorie_id` INT NOT NULL,
+  `parent_tag` INT NOT NULL,
+  `attribut_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_tag_categorie1`
+    FOREIGN KEY (`categorie_id`)
+    REFERENCES `buenosaires`.`categorie` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tag_tag1`
+    FOREIGN KEY (`parent_tag`)
+    REFERENCES `buenosaires`.`tag` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_tag_categorie1_idx` ON `buenosaires`.`tag` (`categorie_id` ASC);
+
+CREATE INDEX `fk_tag_tag1_idx` ON `buenosaires`.`tag` (`parent_tag` ASC);
+
+
+-- -----------------------------------------------------
+--
+-- Tables pour les données 
+--
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
 -- Table `buenosaires`.`personne`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`personne` ;
@@ -127,14 +261,19 @@ CREATE INDEX `fk_acte_personne2_idx` ON `buenosaires`.`acte` (`epouse` ASC);
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`statut`
+-- Table `buenosaires`.`acte_contenu`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`statut` ;
+DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
 
-CREATE TABLE IF NOT EXISTS `buenosaires`.`statut` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `valeur` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`id`))
+CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
+  `acte_id` INT NOT NULL,
+  `contenu` TEXT NOT NULL,
+  PRIMARY KEY (`acte_id`),
+  CONSTRAINT `fk_acte_contenu_acte1`
+    FOREIGN KEY (`acte_id`)
+    REFERENCES `buenosaires`.`acte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -200,24 +339,6 @@ CREATE INDEX `fk_acte_has_relation_acte1_idx` ON `buenosaires`.`acte_has_relatio
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`source`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`source` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `valeur` TEXT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
---
--- data for table `source`
---
-LOCK TABLES `source` WRITE;
-INSERT INTO `source` VALUES (1,'Matrimonios');
-UNLOCK TABLES;
-
-
--- -----------------------------------------------------
 -- Table `buenosaires`.`condition`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`condition` ;
@@ -247,23 +368,6 @@ CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires`.`condition` (`personne_id`
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`acte_contenu`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
-  `acte_id` INT NOT NULL,
-  `contenu` TEXT NOT NULL,
-  PRIMARY KEY (`acte_id`),
-  CONSTRAINT `fk_acte_contenu_acte1`
-    FOREIGN KEY (`acte_id`)
-    REFERENCES `buenosaires`.`acte` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `buenosaires`.`acte_has_condition`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`acte_has_condition` ;
@@ -289,46 +393,6 @@ CREATE INDEX `fk_acte_has_condition_condition1_idx` ON `buenosaires`.`acte_has_c
 CREATE INDEX `fk_acte_has_condition_acte1_idx` ON `buenosaires`.`acte_has_condition` (`acte_id` ASC);
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
--- -----------------------------------------------------
--- Data for table `buenosaires`.`statut`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `buenosaires`;
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (1, 'epoux');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (2, 'epouse');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (3, 'pere');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (4, 'mere');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (5, 'temoin');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (6, 'parrain');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`source`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`source` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `valeur` TEXT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Data for table `buenosaires`.`source`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `buenosaires`;
-INSERT INTO `buenosaires`.`source` (`id`, `valeur`) VALUES (1, 'Matrimonios');
-
-COMMIT;
-
-
 -- -----------------------------------------------------
 -- Table `buenosaires`.`variable`
 -- -----------------------------------------------------
@@ -350,78 +414,12 @@ INSERT INTO `buenosaires`.`variable` (`id`, `nom`, `valeur`) VALUES (NULL, 'PERS
 
 COMMIT;
 
--- -----------------------------------------------------
--- Ci-dessous, tables `attribut`, `categorie` et `tag`,
--- qui me semblent inutilisées, à supprimer prudemment ?
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table structure for table `attribut`
--- -----------------------------------------------------
--- From dump 2017, c'était pas dans le git,
--- je vois pas où c'est utilisé à part dans `tag`,
--- qui lui même ne me semble pas utilisé
-
-DROP TABLE IF EXISTS `attribut`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `attribut` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 --
--- Dumping data for table `attribut`
+-- Tables pour le site
 --
-
-LOCK TABLES `attribut` WRITE;
-/*!40000 ALTER TABLE `attribut` DISABLE KEYS */;
-INSERT INTO `attribut` VALUES (1,'de la'),(2,'de'),(3,'y');
-/*!40000 ALTER TABLE `attribut` ENABLE KEYS */;
-UNLOCK TABLES;
-
 -- -----------------------------------------------------
--- Table `buenosaires`.`categorie`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`categorie` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`categorie` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table `buenosaires`.`tag`
--- -----------------------------------------------------
--- Je vois pas où c'est utilisé, c'est vide dans le dump
-
-DROP TABLE IF EXISTS `buenosaires`.`tag` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`tag` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(45) NOT NULL,
-  `categorie_id` INT NOT NULL,
-  `parent_tag` INT NOT NULL,
-  `attribut_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_tag_categorie1`
-    FOREIGN KEY (`categorie_id`)
-    REFERENCES `buenosaires`.`categorie` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tag_tag1`
-    FOREIGN KEY (`parent_tag`)
-    REFERENCES `buenosaires`.`tag` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE INDEX `fk_tag_categorie1_idx` ON `buenosaires`.`tag` (`categorie_id` ASC);
-
-CREATE INDEX `fk_tag_tag1_idx` ON `buenosaires`.`tag` (`parent_tag` ASC);
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`utilisateurs`
@@ -446,4 +444,8 @@ ENGINE = InnoDB;
 LOCK TABLES `utilisateurs` WRITE;
 INSERT INTO `utilisateurs` VALUES (1,'Des','Ced','aa@aa.com','440ac85892ca43ad26d44c7ad9d47d3e','2016-09-20',3),(2,'Prieur','Christophe','prieur@didiode.fr','f0f9c00c80dd888f66c3020b61e04e1e','2016-09-20',3),(3,'Moutoukias','Zacarias','zacarias.moutoukias@univ-paris-diderot.fr','f59484ac49e4281cf6d8e17ebd8d997e','2017-04-06',3);
 UNLOCK TABLES;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
