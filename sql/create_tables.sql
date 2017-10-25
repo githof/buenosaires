@@ -264,19 +264,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`variable`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`variable` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`variable` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(100) NOT NULL,
-  `valeur` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `buenosaires`.`acte_has_condition`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`acte_has_condition` ;
@@ -341,6 +328,18 @@ INSERT INTO `buenosaires`.`source` (`id`, `valeur`) VALUES (1, 'Matrimonios');
 
 COMMIT;
 
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`variable`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`variable` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`variable` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(100) NOT NULL,
+  `valeur` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Data for table `buenosaires`.`variable`
