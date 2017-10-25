@@ -172,6 +172,7 @@ CREATE TABLE `nom_personne` (
 --
 -- Table structure for table `periode`
 --
+-- vieux truc de la version d'Axelle, on garde pas
 
 DROP TABLE IF EXISTS `periode`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
