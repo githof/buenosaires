@@ -209,6 +209,12 @@ CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
   `valeur` TEXT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
+--
+-- data for table `source`
+--
+LOCK TABLES `source` WRITE;
+INSERT INTO `source` VALUES (1,'Matrimonios');
+UNLOCK TABLES;
 
 
 -- -----------------------------------------------------
@@ -237,23 +243,6 @@ ENGINE = InnoDB;
 CREATE INDEX `fk_cond_source1_idx` ON `buenosaires`.`condition` (`source_id` ASC);
 
 CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires`.`condition` (`personne_id` ASC);
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`utilisateurs`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`utilisateurs` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`utilisateurs` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(50) NOT NULL,
-  `prenom` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(100) NOT NULL,
-  `pwd` VARCHAR(100) NOT NULL,
-  `date_inscr` DATE NOT NULL,
-  `rang` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 
@@ -331,6 +320,17 @@ INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (6, 'parrain');
 
 COMMIT;
 
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`source`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`source` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `valeur` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Data for table `buenosaires`.`source`
@@ -423,4 +423,28 @@ ENGINE = InnoDB;
 CREATE INDEX `fk_tag_categorie1_idx` ON `buenosaires`.`tag` (`categorie_id` ASC);
 
 CREATE INDEX `fk_tag_tag1_idx` ON `buenosaires`.`tag` (`parent_tag` ASC);
+
+-- -----------------------------------------------------
+-- Table `buenosaires`.`utilisateurs`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `buenosaires`.`utilisateurs` ;
+
+CREATE TABLE IF NOT EXISTS `buenosaires`.`utilisateurs` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(50) NOT NULL,
+  `prenom` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `pwd` VARCHAR(100) NOT NULL,
+  `date_inscr` DATE NOT NULL,
+  `rang` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+--
+-- Dumping data for table `utilisateurs`
+--
+
+LOCK TABLES `utilisateurs` WRITE;
+INSERT INTO `utilisateurs` VALUES (1,'Des','Ced','aa@aa.com','440ac85892ca43ad26d44c7ad9d47d3e','2016-09-20',3),(2,'Prieur','Christophe','prieur@didiode.fr','f0f9c00c80dd888f66c3020b61e04e1e','2016-09-20',3),(3,'Moutoukias','Zacarias','zacarias.moutoukias@univ-paris-diderot.fr','f59484ac49e4281cf6d8e17ebd8d997e','2017-04-06',3);
+UNLOCK TABLES;
 
