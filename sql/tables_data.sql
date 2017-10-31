@@ -2,8 +2,11 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `buenosaires` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `buenosaires` ;
+-- -----------------------------------------------------
+--
+-- Tables pour les données 
+--
+-- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- Table `buenosaires`.`personne`
@@ -127,14 +130,19 @@ CREATE INDEX `fk_acte_personne2_idx` ON `buenosaires`.`acte` (`epouse` ASC);
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`statut`
+-- Table `buenosaires`.`acte_contenu`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`statut` ;
+DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
 
-CREATE TABLE IF NOT EXISTS `buenosaires`.`statut` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `valeur` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`id`))
+CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
+  `acte_id` INT NOT NULL,
+  `contenu` TEXT NOT NULL,
+  PRIMARY KEY (`acte_id`),
+  CONSTRAINT `fk_acte_contenu_acte1`
+    FOREIGN KEY (`acte_id`)
+    REFERENCES `buenosaires`.`acte` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -200,18 +208,6 @@ CREATE INDEX `fk_acte_has_relation_acte1_idx` ON `buenosaires`.`acte_has_relatio
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`source`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`source` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`source` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `valeur` TEXT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `buenosaires`.`condition`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`condition` ;
@@ -238,93 +234,6 @@ CREATE INDEX `fk_cond_source1_idx` ON `buenosaires`.`condition` (`source_id` ASC
 
 CREATE INDEX `fk_cond_personne1_idx` ON `buenosaires`.`condition` (`personne_id` ASC);
 
-
--- -----------------------------------------------------
--- Table `buenosaires`.`utilisateurs`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`utilisateurs` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`utilisateurs` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(50) NOT NULL,
-  `prenom` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(100) NOT NULL,
-  `pwd` VARCHAR(100) NOT NULL,
-  `date_inscr` DATE NOT NULL,
-  `rang` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`categorie`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`categorie` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`categorie` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`tag`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`tag` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`tag` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `value` VARCHAR(45) NOT NULL,
-  `categorie_id` INT NOT NULL,
-  `parent_tag` INT NOT NULL,
-  `attribut_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_tag_categorie1`
-    FOREIGN KEY (`categorie_id`)
-    REFERENCES `buenosaires`.`categorie` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tag_tag1`
-    FOREIGN KEY (`parent_tag`)
-    REFERENCES `buenosaires`.`tag` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE INDEX `fk_tag_categorie1_idx` ON `buenosaires`.`tag` (`categorie_id` ASC);
-
-CREATE INDEX `fk_tag_tag1_idx` ON `buenosaires`.`tag` (`parent_tag` ASC);
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`acte_contenu`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`acte_contenu` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`acte_contenu` (
-  `acte_id` INT NOT NULL,
-  `contenu` TEXT NOT NULL,
-  PRIMARY KEY (`acte_id`),
-  CONSTRAINT `fk_acte_contenu_acte1`
-    FOREIGN KEY (`acte_id`)
-    REFERENCES `buenosaires`.`acte` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `buenosaires`.`variable`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `buenosaires`.`variable` ;
-
-CREATE TABLE IF NOT EXISTS `buenosaires`.`variable` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(100) NOT NULL,
-  `valeur` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -353,34 +262,17 @@ CREATE INDEX `fk_acte_has_condition_condition1_idx` ON `buenosaires`.`acte_has_c
 CREATE INDEX `fk_acte_has_condition_acte1_idx` ON `buenosaires`.`acte_has_condition` (`acte_id` ASC);
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
 -- -----------------------------------------------------
--- Data for table `buenosaires`.`statut`
+-- Table `buenosaires`.`variable`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `buenosaires`;
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (1, 'epoux');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (2, 'epouse');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (3, 'pere');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (4, 'mere');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (5, 'temoin');
-INSERT INTO `buenosaires`.`statut` (`id`, `valeur`) VALUES (6, 'parrain');
+DROP TABLE IF EXISTS `buenosaires`.`variable` ;
 
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `buenosaires`.`source`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `buenosaires`;
-INSERT INTO `buenosaires`.`source` (`id`, `valeur`) VALUES (1, 'Matrimonios');
-
-COMMIT;
-
+CREATE TABLE IF NOT EXISTS `buenosaires`.`variable` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(100) NOT NULL,
+  `valeur` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Data for table `buenosaires`.`variable`
@@ -390,3 +282,8 @@ USE `buenosaires`;
 INSERT INTO `buenosaires`.`variable` (`id`, `nom`, `valeur`) VALUES (NULL, 'PERSONNE_ID_MAX', '10000');
 
 COMMIT;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
