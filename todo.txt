@@ -29,13 +29,6 @@ Voir DROPBOX/Organisation/CR.txt
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
 
-+ import
->    BUG : voir acte 5020, dans le xml, père et mère de l'épouse (qui
-    ne sont pas balisés) ont récupéré l'id de père et mère de l'époux
-    (qu'on vient de créer)
-    -> BUG : acte 6254, l'époux récupère les parents de l'épouse,
-      c'est cheulou
-
 + fusion
     - montrer le résultat à la fin (plutôt qu'une page vide)
     BUG : le nom s'affiche dans la liste des prénoms
@@ -46,6 +39,8 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
+    - recharger actes balisés en 2016-2017 et perdus au reinit
+      (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
     - mettre le fichier xml lui-même sur un git
 
