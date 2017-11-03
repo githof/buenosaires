@@ -15,7 +15,7 @@
 
     class CSVExport {
 
-        var $CSV_SEPARATOR = ",";
+        var $CSV_SEPARATOR = ";";
 
         function __construct(){
 

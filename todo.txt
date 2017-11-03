@@ -1,6 +1,11 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
++ code
+    - dans model/Personne.php, fonction agnostique pour lister les relations,
+      à partir de src/html_entities.php/html_personne_relations()
+      avec sortie en html dans html_entities
+
 + édition du xml
     - recherche des personnes par le nom pour choisir l'id
 
