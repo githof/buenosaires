@@ -2,9 +2,6 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + code
-    - dans model/Personne.php, fonction agnostique pour lister les relations,
-      à partir de src/html_entities.php/html_personne_relations()
-      avec sortie en html dans html_entities
     - dispatcher io/Database.php/from_db() en méthode de chaque classe
 
 + édition du xml
@@ -28,6 +25,14 @@ Voir DROPBOX/Organisation/CR.txt
     BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
     -> csv des relations (jointure avec id, prénom, nom des personnes)
       voir ce qu'on fait dans l'affichage des relations
+          + dans model/Personne.php, fonction agnostique pour lister les relations,
+      	    à partir de src/html_entities.php/html_personne_relations()
+      	    avec sortie en html dans html_entities
+ 	  x trouver où l'instance $personne est remplie avec les relations [|15]
+	  - relations_par_type dans Personne.php
+	  - factoriser html
+	  - version csv
+
     -> virer les accents (et idéalement, option pour les garder)
     - gdf
 
