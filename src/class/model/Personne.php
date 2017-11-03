@@ -159,6 +159,11 @@
             }
         }
 
+	/*
+	  Import from db is in src/io/IO/Database.php from_db()
+	  (which is ugly i know)
+	 */
+
     }
 
 ?>
