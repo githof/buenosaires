@@ -13,6 +13,7 @@
         var $prenoms;
         var $noms;
         var $relations;
+	var $relations_by_type;
         var $conditions;
 
         var $pere;
@@ -28,6 +29,7 @@
             $this->noms = [];
             $this->conditions = [];
             $this->relations = [];
+	    $this->relations_by_type = [];
             $this->pere = NULL;
             $this->mere = NULL;
             $this->is_updated_in_db = FALSE;
@@ -88,6 +90,11 @@
             return count($this->prenoms) > 0 || count($this->noms) > 0;
         }
 
+	// appelée par Database.php/from_db()
+	public function dispatch_relations_by_type(){
+	  
+	}
+	
         // DATABASE IO
 
         public function get_table_name(){
