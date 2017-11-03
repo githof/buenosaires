@@ -121,6 +121,8 @@
         $parrains = [];
         $all = [];
 
+	// Là on va réordonner la liste de relations pour l'affichage
+	// (enfin je crois que c'est ça...)
         foreach($relations as $relation){
             switch($relation->statut_id){
                 case STATUT_EPOUX:
