@@ -28,10 +28,10 @@ Voir DROPBOX/Organisation/CR.txt
           + dans model/Personne.php, fonction agnostique pour lister les relations,
       	    à partir de src/html_entities.php/html_personne_relations()
       	    avec sortie en html dans html_entities
- 	  x trouver où l'instance $personne est remplie avec les relations [|15]
-	  - relations_par_type dans Personne.php
-	  - factoriser html
-	  - version csv
+            x trouver où l'instance $personne est remplie avec les relations [|15]
+            - relations_par_type dans Personne.php
+            - factoriser html
+            - version csv
 
     -> virer les accents (et idéalement, option pour les garder)
     - gdf
