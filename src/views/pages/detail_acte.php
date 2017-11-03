@@ -16,7 +16,7 @@
         $reader->use_xml_text($_POST["raw_xml"]);
         $reader->read_actes($only_new);
 
-        $alert->info("Acte mit à jour");
+        $alert->info("Acte mis à jour");
     }
 
     $page_title = "Acte {$url_parsed["id"]}";

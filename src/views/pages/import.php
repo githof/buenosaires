@@ -31,10 +31,18 @@
             $source_id = $_POST["import_file_source"];
         }else if($_POST["form_type"] === "text"){
             $filename = receive_text($_POST['import_text']);
+	    // le texte est copié dans un fichier temporaire
             $only_new = isset($_POST["import_text_only_new"]);
             $source_id = $_POST["import_text_source"];
         }
 
+	/*
+	  dans les instructions ci-dessous, le traitement des noeuds xml
+	  des actes sera fait dans la fonction
+	  XMLActeReader->read_acte_node
+	  (via l'appel $reader->read_actes)
+	 */
+	
         if($filename != NULL){
             chmod($filename, 0776);
             $reader = new XMLActeReader($source_id);

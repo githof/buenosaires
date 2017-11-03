@@ -1,30 +1,61 @@
 
+Voir DROPBOX/Organisation/CR.txt
+
 + édition du xml
->   X bouton pour envoyer le résultat du xmlselect vers chargement
-      d'un acte
     - recherche des personnes par le nom pour choisir l'id
 
 + xmlselect
-    X le texte affiché doit reproduire le xml (quand on copie / colle,
-        c'est du xml qui sort) : espace entre balise et attributs +
-    	guillemets aux attributs (ajouter les guillemets quand on saisit
-	la valeur d'un attribut)
+    -> comment ça se passe pour les attributs ??
     - pour chaque élément, proposer une liste de couples
       attribut / valeur prédéfinis (dans tag_set.js),
       p.ex { "don" : "true" } pour les personnes
       et pour les noms { "attr" : "de la" }, { "attr" : "de" }
       "de los" et "del" (je crois)
+    - BUG : l'info-bulle de la flèche pour sortir un truc de la balise,
+      empêche parfois de cliquer sur le bouton la deuxième fois
+    - info-bulle : parler ptet de "sortir de la balise" plutôt que
+      "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
-    - xml : les contenus des actes bout à bout, avec autour une balise
-    ACTES, une autre <document> et l'entête xml
-    - gdf, csv (cf old pour les formats)
+    BUG : sur export xml, y'a quelques <?xml version="1.0"?> qui se
+    baladent
+    BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
+    -> csv des relations (jointure avec id, prénom, nom des personnes)
+      voir ce qu'on fait dans l'affichage des relations
+    -> virer les accents (et idéalement, option pour les garder)
+    - gdf
+
++ recherche
+    - input text en plus de la liste
+    - possibilité de ne mettre que l'année
 
 + import
->   X BUG : si on import un acte contenant des personnes sans ID, le nouvel ID généré
-    n'est pas ajouté au contenu xml de l'acte
+>    BUG : voir acte 5020, dans le xml, père et mère de l'épouse (qui
+    ne sont pas balisés) ont récupéré l'id de père et mère de l'époux
+    (qu'on vient de créer)
+    -> BUG : acte 6254, l'époux récupère les parents de l'épouse,
+      c'est cheulou
 
-+ bugs
-  X import : quand erreur parsing dans le xml, erreur dans le fichier
-    log mais pas de message dans l'interface (exemple sur un attribut
-    avec guillemet pas fermé)
++ fusion
+    - montrer le résultat à la fin (plutôt qu'une page vide)
+    BUG : le nom s'affiche dans la liste des prénoms
+
++ modifs ponctuelles
+    - Cristina
+    - balisage d'un acte
+    - fusions Francisco Belgrano
+
++ base
+    - dump pour Access
+    - mettre le fichier xml lui-même sur un git
+
++ interne
+    - sauvegarder le fichier de log dans history quand atteint la
+        limite (Log.php)
+
++ site
+    - "mit" à jour
+    BUG : menu s'affiche pas sur IE
+
++ problèmes
+    - acte 6813, xml bizarre sur la page, et témoin 419
