@@ -1,6 +1,10 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
++ admin
+    -> réinitialiser le mot de passe
+    -> problème de chmod à la création de compte
+
 + édition du xml
     - recherche des personnes par le nom pour choisir l'id
 
@@ -30,8 +34,15 @@ Voir DROPBOX/Organisation/CR.txt
     - possibilité de ne mettre que l'année
 
 + fusion
+    BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)
     - montrer le résultat à la fin (plutôt qu'une page vide)
     BUG : le nom s'affiche dans la liste des prénoms
+    - confusion entre recherche et prévisualiser :
+      désactiver le bouton tant qu'on n'a pas sélectionné deux
+
++ classes
+    - supprimer des entrées (relations, conditions, etc.)
+    - éditer les champs depuis les pages
 
 + modifs ponctuelles
     - Cristina
@@ -39,13 +50,14 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
+    -> BUG acte 7379, parse error sur xml, deux en-têtes
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
     - mettre le fichier xml lui-même sur un git
 
 + interne
-    - sauvegarder le fichier de log dans history quand atteint la
+    -> sauvegarder le fichier de log dans history quand atteint la
         limite (Log.php)
 
 + site
