@@ -1,6 +1,9 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
++ BUG fusion
+    -> voir CR.txt 5 déc Francisco Belgrano
+
 + admin
     -> réinitialiser le mot de passe
     -> problème de chmod à la création de compte
@@ -37,8 +40,8 @@ Voir DROPBOX/Organisation/CR.txt
     BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)
     - montrer le résultat à la fin (plutôt qu'une page vide)
     BUG : le nom s'affiche dans la liste des prénoms
-    - confusion entre recherche et prévisualiser :
-      désactiver le bouton tant qu'on n'a pas sélectionné deux
+    - confusion entre recherche et prévisualiser (désactiver le bouton
+    tant qu'on n'a pas sélectionné deux)
 
 + classes
     - supprimer des entrées (relations, conditions, etc.)
