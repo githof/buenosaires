@@ -3,8 +3,6 @@ Voir DROPBOX/Organisation/CR.txt
 
 + BUG fusion (!! prioritaire)
     -> voir CR.txt 5 déc Francisco Belgrano
-    - supprimer à la main mysql personne 481,
-    - supprimer à la main mysql 2 relations en trop acte 7374
     - localiser pb xml acte 7374 (voir à la main mysql déjà)
     - chercher une autre fusion Francisco Belgrano à faire
     - réparer (!)
@@ -60,7 +58,7 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
-    -> BUG acte 7379, parse error sur xml, deux en-têtes
+    -> BUG acte 7379, parse error sur xml, en-tête <?xml version="1.0"?> en trop
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
