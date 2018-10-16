@@ -4,6 +4,7 @@ Voir DROPBOX/Organisation/CR.txt
 + BUG fusion (!! prioritaire)
     -> voir CR.txt 5 déc Francisco Belgrano
     - chercher une autre fusion Francisco Belgrano à faire
+    - identifier
     - réparer (!)
     - vérifier les suppression (notamment suppression de personne et has_relation)
     - ...
