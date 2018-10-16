@@ -1,8 +1,15 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
-+ BUG fusion
++ BUG fusion (!! prioritaire)
     -> voir CR.txt 5 déc Francisco Belgrano
+    - supprimer à la main mysql personne 481,
+    - supprimer à la main mysql 2 relations en trop acte 7374
+    - localiser pb xml acte 7374 (voir à la main mysql déjà)
+    - chercher une autre fusion Francisco Belgrano à faire
+    - réparer (!)
+    - ...
+    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
 
 + admin
     -> réinitialiser le mot de passe
