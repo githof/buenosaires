@@ -3,14 +3,13 @@ Voir DROPBOX/Organisation/CR.txt
 
 + BUG fusion (!! prioritaire)
     -> voir CR.txt 5 déc Francisco Belgrano
-    - localiser pb xml acte 7374 (voir à la main mysql déjà)
     - chercher une autre fusion Francisco Belgrano à faire
     - réparer (!)
     - ...
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
 
 + admin
-    -> réinitialiser le mot de passe
+    -> fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
 
 + édition du xml
@@ -29,8 +28,6 @@ Voir DROPBOX/Organisation/CR.txt
       "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
-    BUG : sur export xml, y'a quelques <?xml version="1.0"?> qui se
-    baladent
     BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
     -> csv des relations (jointure avec id, prénom, nom des personnes)
       voir ce qu'on fait dans l'affichage des relations
@@ -58,7 +55,8 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
-    -> BUG acte 7379, parse error sur xml, en-tête <?xml version="1.0"?> en trop
+    -> BUG certains actes ?, parse error sur xml, en-tête <?xml version="1.0"?> en trop
+      (acte 7379 corrigé à la main 16 oct 2018)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
