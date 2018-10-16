@@ -5,6 +5,7 @@ Voir DROPBOX/Organisation/CR.txt
     -> voir CR.txt 5 déc Francisco Belgrano
     - chercher une autre fusion Francisco Belgrano à faire
     - réparer (!)
+    - vérifier les suppression (notamment suppression de personne et has_relation)
     - ...
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
 
