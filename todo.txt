@@ -1,11 +1,17 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
++ reset base, cf. CR.txt 31 oct 2017
+
 + BUG fusion
-    -> voir CR.txt 5 déc Francisco Belgrano
+    -> voir CR.txt 17 oct 2018
+    - réparer (!)
+    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
+    - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
+      et réparer Francisco Belgrano 419 (acte 6813)
 
 + admin
-    -> réinitialiser le mot de passe
+    -> fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
 
 + édition du xml
@@ -24,8 +30,6 @@ Voir DROPBOX/Organisation/CR.txt
       "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
-    BUG : sur export xml, y'a quelques <?xml version="1.0"?> qui se
-    baladent
     BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
     -> csv des relations (jointure avec id, prénom, nom des personnes)
       voir ce qu'on fait dans l'affichage des relations
@@ -33,6 +37,7 @@ Voir DROPBOX/Organisation/CR.txt
     - gdf
 
 + recherche
+    -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
 
@@ -53,7 +58,9 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
-    -> BUG acte 7379, parse error sur xml, deux en-têtes
+    -> BUG certains actes ?, parse error sur xml, en-tête <?xml version="1.0"?> en trop
+      (acte 7379 corrigé à la main 16 oct 2018, acte 6813)
+      possiblement à la suite de modifs faites par fusion (voir CR.txt 17 oct 2018)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
