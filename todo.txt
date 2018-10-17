@@ -9,6 +9,7 @@ Voir DROPBOX/Organisation/CR.txt
     - vérifier les suppression (notamment suppression de personne et has_relation)
     - ...
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
+    - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
 
 + admin
     -> fonction réinitialiser le mot de passe
