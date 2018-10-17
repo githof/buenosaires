@@ -1,7 +1,9 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
-+ BUG fusion (!! prioritaire)
++ reset base, cf. CR.txt 31 oct 2017
+
++ BUG fusion
     -> voir CR.txt 17 oct 2018
     - réparer (!)
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
