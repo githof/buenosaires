@@ -37,6 +37,7 @@ Voir DROPBOX/Organisation/CR.txt
     - gdf
 
 + recherche
+    -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
 
