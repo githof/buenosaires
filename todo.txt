@@ -2,14 +2,11 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + BUG fusion (!! prioritaire)
-    -> voir CR.txt 5 déc Francisco Belgrano
-    - chercher une autre fusion Francisco Belgrano à faire
-    - identifier
+    -> voir CR.txt 17 oct 2018
     - réparer (!)
-    - vérifier les suppression (notamment suppression de personne et has_relation)
-    - ...
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
     - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
+      et réparer Francisco Belgrano 419 (acte 6813)
 
 + admin
     -> fonction réinitialiser le mot de passe
@@ -60,7 +57,8 @@ Voir DROPBOX/Organisation/CR.txt
 
 + base
     -> BUG certains actes ?, parse error sur xml, en-tête <?xml version="1.0"?> en trop
-      (acte 7379 corrigé à la main 16 oct 2018)
+      (acte 7379 corrigé à la main 16 oct 2018, acte 6813)
+      possiblement à la suite de modifs faites par fusion (voir CR.txt 17 oct 2018)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
