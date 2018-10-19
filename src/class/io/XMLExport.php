@@ -8,6 +8,10 @@
             $this->actes_id = $actes_id;
         }
 
+	function export_line($line){
+	  echo html_entity_decode($line, ENT_NOQUOTES, 'UTF-8') . PHP_EOL;
+	}
+	
         public function export(){
             global $mysqli;
 
@@ -16,7 +20,7 @@
             foreach($this->actes_id as $acte_id){
                 $results = $mysqli->select("acte_contenu", ["contenu"], "acte_id = '$acte_id'");
                 if($results != FALSE && $results->num_rows == 1){
-                    echo $results->fetch_assoc()["contenu"] . PHP_EOL;
+		  export_line($results->fetch_assoc()["contenu"]);
                 }
             }
 
@@ -31,7 +35,7 @@
             $results = $mysqli->select("acte_contenu", ["contenu"]);
             if($results != FALSE && $results->num_rows > 0){
                 while($row = $results->fetch_assoc()){
-                    echo $row["contenu"] . PHP_EOL;
+		  export_line($row["contenu"]);
                 }
             }
 
@@ -39,17 +43,17 @@
         }
 
         private function entete(){
-            header('Content-type: text/xml');
-            header('Content-Disposition: attachment; filename="export.xml"');
-
-            echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.
-                '<document>'.PHP_EOL.
-                '<ACTES>'.PHP_EOL;
-
+	  header('Content-type: text/xml');
+	  header('Content-Disposition: attachment; filename="export.xml"');
+	  
+	  export_line('<?xml version="1.0" encoding="UTF-8"?>');
+	  export_line('<document>');
+	  export_line('<ACTES>');
         }
 
         private function footer(){
-            echo '</ACTES>'.PHP_EOL.'</document>';
+	  export_line('</ACTES>');
+	  export_line('</document>');
         }
     }
 
