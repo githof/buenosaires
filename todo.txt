@@ -2,7 +2,7 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + reset base, cf. CR.txt 31 oct 2017
-  - voir export pb encodage :(
+  - diff export xml now et matrimonios-before-2016.xml
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018
