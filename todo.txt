@@ -28,6 +28,8 @@ Voir DROPBOX/Organisation/CR.txt
     -> problème de chmod à la création de compte
 
 + édition du xml
+    - glitch sur la flèche gauche (remonter) quand le mot est petit,
+    l'infobulle vient par-dessus le bouton en clignotant, difficile de le choper
     - recherche des personnes par le nom pour choisir l'id
 
 + xmlselect
