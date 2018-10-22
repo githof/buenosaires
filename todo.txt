@@ -2,7 +2,12 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + reset base, cf. CR.txt 31 oct 2017
-  - diff export xml now et matrimonios-before-2016.xml
+  - diff export-2018.xml et matrimonios-before-2016.xml
+  - réinit tables_data.sql
+  - admin/xml/split.sh
+  - import DATA/matrimonios-before-2016-aaaa[a-g].xml
+  - test navigation plateforme
+  - rm export-oct-2018-bug-fusion.xml
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018
