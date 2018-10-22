@@ -1,6 +1,8 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
+-> GREGORIO (de las Heras et de Espinoza)
+
 -> export
   - csv relations (id, prénoms noms src et dest, type de relation)
 
@@ -10,8 +12,6 @@ Voir DROPBOX/Organisation/CR.txt
 
 -> édition xml
   - attributs
-
--> GREGORIO (de las Heras et de Espinoza)
 
 -> edition nom d'une personne
 
