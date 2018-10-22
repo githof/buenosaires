@@ -218,4 +218,65 @@ diff_with_newlines ()
 # diff_with_newlines
 # cat diff-others | grep '<epoux.*<epoux'
 
+#___________________________________________________________________
+# oct 2018 : tests diff 2016 / 2018
+
+DATA=DATA
+
+no_blank_lines ()
+{
+    grep -v '^>* *$'
+}
+
+adjust_before ()
+{
+    tr -s ' ' \
+       | no_blank_lines \
+       | sed 's# de="true" la="true"# attr="de la"#g' \
+       | sed 's# de="true"# attr="de"#g' \
+       | sed 's# y="true"# attr="y"#g'
+}
+
+by_words ()
+{
+    tr ' ' '\n' \
+       | grep -v '^ *$'
+}
+
+diff_versions ()
+{
+    cd $DATA
+    before=matrimonios-before-2016.xml
+    now=export-2018.xml
+    cat $before \
+	| adjust_before \
+	| diff - $now \
+	| no_blank_lines \
+	       >| diff.xml
+    cat diff.xml \
+	| sed -n 's#^.*<ACTE id="\([0-9]*\)">.*$#\1#p' \
+	| uniq \
+	| wc -l
+    cat $now \
+	| by_words \
+	     > now-words.txt
+
+    cat $before \
+	| adjust_before \
+	| by_words \
+	| diff - now-words.txt \
+	       >| diff-words.txt    
+}
+# diff_versions
+
+nettoie_diff ()
+{
+    cd $DATA
+    cat diff.xml \
+	| grep -v '^[0-9]*a[0-9]*,[0-9]*$' \
+	       > diff-2006-2008.xml
+}
+# nettoie_diff
+
+
 $*

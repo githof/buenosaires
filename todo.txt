@@ -2,12 +2,7 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + reset base, cf. CR.txt 31 oct 2017
-  - diff export-2018.xml et matrimonios-before-2016.xml
-  - réinit tables_data.sql
-  - admin/xml/split.sh
-  - import DATA/matrimonios-before-2016-aaaa[a-g].xml
   - test navigation plateforme
-  - rm export-oct-2018-bug-fusion.xml
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018
@@ -64,9 +59,8 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
-    -> BUG certains actes ?, parse error sur xml, en-tête <?xml version="1.0"?> en trop
-      (acte 7379 corrigé à la main 16 oct 2018, acte 6813)
-      possiblement à la suite de modifs faites par fusion (voir CR.txt 17 oct 2018)
+    -> BUG en-tête <?xml version="1.0"?> en trop sur actes quand
+    modifiés (peut-être par fusion, voir CR.txt 17 oct 2018)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
     - dump pour Access
@@ -79,6 +73,3 @@ Voir DROPBOX/Organisation/CR.txt
 + site
     - "mit" à jour
     BUG : menu s'affiche pas sur IE
-
-+ problèmes
-    - acte 6813, xml bizarre sur la page, et témoin 419
