@@ -1,10 +1,10 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
--> GREGORIO (de las Heras et de Espinoza)
-
 -> export
   - csv relations (id, prénoms noms src et dest, type de relation)
+
+-> GREGORIO (de las Heras et de Espinoza)
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
