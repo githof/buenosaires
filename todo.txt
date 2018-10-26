@@ -2,7 +2,10 @@
 Voir DROPBOX/Organisation/CR.txt
 
 -> export
-  - csv relations (id, prénoms noms src et dest, type de relation)
+    -> csv des relations (jointure avec id, prénom, nom des personnes)
+    voir CR, 3 nov 2017, branche zacarias-export
+    voir ce qu'on fait dans l'affichage des relations
+    -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
 
@@ -45,10 +48,6 @@ Voir DROPBOX/Organisation/CR.txt
       "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
-    BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
-    -> csv des relations (jointure avec id, prénom, nom des personnes)
-      voir ce qu'on fait dans l'affichage des relations
-    -> virer les accents (et idéalement, option pour les garder)
     - gdf
 
 + recherche
