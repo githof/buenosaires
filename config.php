@@ -10,7 +10,7 @@ define("LOG_DEFAULT_OUTPUT", "log.txt");
 define("LOG_DEFAULT_LEVEL", 4);
 
 //  log default max lines
-define("LOG_LINES_MAX", 10000);
+define("LOG_LINES_MAX", 100000);
 
 
 // tmp Directory

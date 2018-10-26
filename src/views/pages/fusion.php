@@ -155,6 +155,9 @@
             $contenu = $results->fetch_assoc()["contenu"];
             $xml = new SimpleXMLElement($contenu);
 
+	    /* Ouch, d'où c'est exhaustif ?
+	       Faudrait pas mettre ça ailleurs, un peu plus paramétrable ?
+	       Voire, faire un parcours systématique plutôt ? */
             $paths = [
                 "epoux", "epouse", "epoux/pere", "epoux/mere", "epouse/pere",
                 "epouse/mere", "temoins/temoin", "temoins/temoin/pere",
@@ -179,9 +182,18 @@
         }
     }
 
+/*__ FUSION __ */
+/*
+BUG : la fusion ne se fait que sur les actes où la personne est époux/se
+MAIS le prénom et le nom sont virés même quand la fusion n'est pas faite !!
+Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les relations et les conditions dans ce cas, parce que les appels sont quand même faits
+
+ */
     function fusion($personne_keep, $personne_throw, $noms, $prenoms){
         global $mysqli, $log;
 
+	/* Déjà faudrait ptet attendre d'être sûrs que les trucs soient créés
+	   avant de supprimer */
         $mysqli->delete("prenom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
         $i = 1;
         foreach($prenoms as $prenom){
@@ -198,9 +210,12 @@
             $i++;
         }
 
+	/* là-dedans on ne s'occupe que des actes où la personne est époux/se */
         fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
 
-        $log->d("fusion actes");
+        $log->d("fusion actes"); // pourquoi ici ??
+	
+	/* idem, du coup */
         $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
         $mysqli->update("acte", ["epouse" => "$personne_keep->id"], "epouse='$personne_throw->id'");
 
@@ -358,6 +373,7 @@
         $noms = parse_noms($ARGS["noms"]);
         $prenoms = parse_prenoms($ARGS["prenoms"]);
 
+/* L'appel à fusion est ici */
         $log->d("fusion possible");
         if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
             if($ARGS["id"] == $personne_A->id)
