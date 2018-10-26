@@ -10,8 +10,10 @@ Voir DROPBOX/Organisation/CR.txt
       	    avec sortie en html dans html_entities
             x trouver où l'instance $personne est remplie avec les relations [|15]
             x dispatch_relations_by_type dans Personne.php [|10]
-	    - relations_by_type qui appelle systématiquement dispatch, pour le moment
-            - factoriser html
+	    x relations_by_type qui appelle systématiquement dispatch,
+	       pour le moment
+    	    - html_relations
+            - factoriser html [?]
             - version csv
 	  + virer Personne->relations pour le remplacer complètement
     	  _by_type

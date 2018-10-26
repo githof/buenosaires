@@ -90,9 +90,10 @@
             return count($this->prenoms) > 0 || count($this->noms) > 0;
         }
 
-	// (vouée à être ?) appelée par Database.php/from_db()
-	// en fait faudrait faire de relations_by_type l'unique
+	// En fait faudrait faire de relations_by_type l'unique
 	// champ relations, sinon va y'avoir des problème de synchro
+	// Pour le moment je vais appeler systématiquement cette
+	// fonction à chaque requête de liste de relations
 	public function dispatch_relations_by_type()
 	{
 	  $mariage = [];
@@ -122,6 +123,12 @@
 	  $this->relations_by_type['parents'] = $parents;
 	  $this->relations_by_type['temoins'] = $temoins;
 	  $this->relations_by_type['parrains'] = $parrains;
+	}
+
+	public function relations_by_type()
+	{
+	  $this->dispatch_relations_by_type();
+	  return $this->relations_by_type;
 	}
 	
         // DATABASE IO
