@@ -9,9 +9,12 @@ Voir DROPBOX/Organisation/CR.txt
       	    à partir de src/html_entities.php/html_personne_relations()
       	    avec sortie en html dans html_entities
             x trouver où l'instance $personne est remplie avec les relations [|15]
-            - relations_par_type dans Personne.php
+            x dispatch_relations_by_type dans Personne.php [|10]
+	    - relations_by_type qui appelle systématiquement dispatch, pour le moment
             - factoriser html
             - version csv
+	  + virer Personne->relations pour le remplacer complètement
+    	  _by_type
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)

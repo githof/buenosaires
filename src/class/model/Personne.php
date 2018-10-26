@@ -91,8 +91,37 @@
         }
 
 	// (vouée à être ?) appelée par Database.php/from_db()
-	public function dispatch_relations_by_type(){
+	// en fait faudrait faire de relations_by_type l'unique
+	// champ relations, sinon va y'avoir des problème de synchro
+	public function dispatch_relations_by_type()
+	{
+	  $mariage = [];
+	  $parents = [];
+	  $temoins = [];
+	  $parrains = [];
 	  
+	  foreach($this->relations as $relation){
+	    switch($relation->statut_id){
+	    case STATUT_EPOUX:
+	    case STATUT_EPOUSE:
+	      $mariage[] = $relation;
+	      break;
+	    case STATUT_PERE:
+	    case STATUT_MERE:
+	      $parents[] = $relation;
+	      break;
+	    case STATUT_TEMOIN:
+	      $temoins[] = $relation;
+	      break;
+	    case STATUT_PARRAIN:
+	      $parrains[] = $relation;
+	      break;	      
+	    }
+	  }
+	  $this->relations_by_type['mariage'] = $mariage;
+	  $this->relations_by_type['parents'] = $parents;
+	  $this->relations_by_type['temoins'] = $temoins;
+	  $this->relations_by_type['parrains'] = $parrains;
 	}
 	
         // DATABASE IO
