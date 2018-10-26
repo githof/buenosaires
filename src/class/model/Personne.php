@@ -90,7 +90,7 @@
             return count($this->prenoms) > 0 || count($this->noms) > 0;
         }
 
-	// appelée par Database.php/from_db()
+	// (vouée à être ?) appelée par Database.php/from_db()
 	public function dispatch_relations_by_type(){
 	  
 	}
