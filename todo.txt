@@ -15,8 +15,7 @@ Voir DROPBOX/Organisation/CR.txt
     	    - html_relations
             - factoriser html [?]
             - version csv
-	  + virer Personne->relations pour le remplacer complètement
-    	  _by_type
+	  + virer Personne->relations pour le remplacer complètement par _by_type
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
