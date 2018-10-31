@@ -155,7 +155,7 @@
 	  $this->dispatch_relations_by_type();
 	  return $this->relations_by_type;
 	}
-	
+
         // DATABASE IO
 
         public function get_table_name(){
