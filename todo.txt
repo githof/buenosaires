@@ -12,10 +12,11 @@ Voir DROPBOX/Organisation/CR.txt
             x dispatch_relations_by_type dans Personne.php [|10]
 	    x relations_by_type qui appelle systématiquement dispatch,
 	       pour le moment
-	    - voir avec html_personne_relations si j'ai pas oublié des
-               trucs dans relations_by_type :(
-    	    - html_personne_relations
-            - factoriser html [?]
+	    x voir avec html_personne_relations si j'ai pas oublié des
+               trucs dans relations_by_type [|15]
+    	    x html_personne_relations [|20]
+	    - tester toujours ok
+            - factoriser html
             - version csv
 	  + virer Personne->relations pour le remplacer complètement par _by_type
     -> virer les accents (et idéalement, option pour les garder)
