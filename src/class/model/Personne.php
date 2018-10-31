@@ -98,10 +98,16 @@
 	{
 	  $mariage = [];
 	  $parents = [];
-	  $temoins = [];
-	  $parrains = [];
+	  $enfants = [];
+	  $a_temoins = [];
+	  $est_temoin = [];
+	  $a_parrains = [];
+	  $est_parrain = [];
 	  
-	  foreach($this->relations as $relation){
+	  foreach($this->relations as $relation)
+	  {
+            $is_source = ($personne->id == $relation->personne_source->id);
+
 	    switch($relation->statut_id){
 	    case STATUT_EPOUX:
 	    case STATUT_EPOUSE:
@@ -109,20 +115,39 @@
 	      break;
 	    case STATUT_PERE:
 	    case STATUT_MERE:
-	      $parents[] = $relation;
+	      if($is_source)
+		$enfants[] = $relation;
+	      else
+		$parents[] = $relation;
 	      break;
 	    case STATUT_TEMOIN:
-	      $temoins[] = $relation;
+	      if($is_source)
+		$est_temoin[] = $relation;
+	      else
+		$a_temoins[] = $relation;
 	      break;
 	    case STATUT_PARRAIN:
-	      $parrains[] = $relation;
+	      if($is_source)
+		$est_parrain[] = $relation;
+	      else
+		$a_parrains[] = $relation;
 	      break;	      
 	    }
 	  }
-	  $this->relations_by_type['mariage'] = $mariage;
-	  $this->relations_by_type['parents'] = $parents;
-	  $this->relations_by_type['temoins'] = $temoins;
-	  $this->relations_by_type['parrains'] = $parrains;
+
+	  $match = [
+		    'mariage' => $mariage,
+		    'parents' => $parents,
+		    'enfants' => $enfants,
+		    'a_temoins' => $a_temoins,
+		    'est_temoin' => $est_temoin,
+		    'a_parrains' => $a_parrains,
+		    'est_parrain' => $est_parrain
+		    ];
+	  foreach($match as $word => $list)
+	  {
+	    $this->relations_by_type[$word] = $list;
+	  }
 	}
 
 	public function relations_by_type()
