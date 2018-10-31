@@ -4,19 +4,9 @@ Voir DROPBOX/Organisation/CR.txt
 -> export
     -> csv des relations (jointure avec id, prénom, nom des personnes)
     voir CR, 3 nov 2017, branche zacarias-export
-    voir ce qu'on fait dans l'affichage des relations
-          + dans model/Personne.php, fonction agnostique pour lister les relations,
-      	    à partir de src/html_entities.php/html_personne_relations()
-      	    avec sortie en html dans html_entities
-            x trouver où l'instance $personne est remplie avec les relations [|15]
-            x dispatch_relations_by_type dans Personne.php [|10]
-	    x relations_by_type qui appelle systématiquement dispatch,
-	       pour le moment
-	    x voir avec html_personne_relations si j'ai pas oublié des
-               trucs dans relations_by_type [|15]
-    	    x html_personne_relations [|20]
-	    x tester toujours ok [|15]
-            - version csv jointure
+ 	  + CSVExport->export_relations_full
+            - load_personnes
+	    - relations
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
