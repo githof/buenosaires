@@ -106,7 +106,7 @@
 	  
 	  foreach($this->relations as $relation)
 	  {
-            $is_source = ($personne->id == $relation->personne_source->id);
+            $is_source = ($this->id == $relation->personne_source->id);
 
 	    switch($relation->statut_id){
 	    case STATUT_EPOUX:
