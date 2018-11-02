@@ -185,12 +185,12 @@
 	    C'est juste pour pouvoir utiliser la fonction from_db où a
 	    priori tous les cas sont traités
 	  */ 
-	  $results = $mysqli->select("personne", ["id"]);
+	  $results = $this->select("personne", ["id"]);
 	  if($results != FALSE && $results->num_rows){
 	    while($row = $results->fetch_assoc()){
 	      $id = $row["id"];
 	      $personne = new Personne($id);
-	      $mysqli->from_db($personne, $get_relations_conditions);
+	      $this->from_db($personne, $get_relations_conditions);
 	      $personnes[$id] = $personne;
 	    }
 	  }
