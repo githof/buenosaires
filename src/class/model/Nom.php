@@ -33,11 +33,15 @@
                 $this->no_accent = $no_accent;
         }
 
-        function to_string(){
-            $str = "";
+        function to_string($no_accent = FALSE){
+            $attr = "";
             if(isset($this->attribut))
-                $str = $this->attribut . " ";
-            return $str . $this->nom;
+                $attr = $this->attribut . " ";
+	    $nom = $no_accent ?
+	      $this->nom :
+	      $this->no_accent;
+
+            return $attr . $nom;
         }
 
 

@@ -11,7 +11,9 @@
         var $id;
 
         var $prenoms;
+	var $prenoms_str;
         var $noms;
+	var $noms_str;
         var $relations;
 	var $relations_by_type;
         var $conditions;
@@ -26,7 +28,9 @@
         function __construct($id = NULL){
             $this->id = $id;
             $this->prenoms = [];
+	    $this->prenoms_str = "";
             $this->noms = [];
+	    $this->noms_str = "";
             $this->conditions = [];
             $this->relations = [];
 	    $this->relations_by_type = [];
@@ -43,6 +47,8 @@
                     return;
             }
             $this->prenoms[] = $prenom;
+	    $str = $this->prenoms_str;
+	    $this->prenoms_str = ($str == "" ? "" : " ") . $prenom->to_string();
         }
 
         public function add_nom($nom){
@@ -57,6 +63,8 @@
                     }
             }
             $this->noms[] = $nom;
+	    $str = $this->noms_str;
+	    $this->noms_str = ($str == "" ? "" : " ") . $nom->to_string();
         }
 
         public function add_condition($text, $source_id){
