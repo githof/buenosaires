@@ -5,7 +5,7 @@ Voir DROPBOX/Organisation/CR.txt
     -> csv des relations (jointure avec id, prénom, nom des personnes)
     voir CR, 3 nov 2017, branche zacarias-export
  	  + CSVExport->export_relations_full
-            - load_personnes
+            x load_personnes [|20]
 	    - relations
 	    - factoriser : itérateur personnes pour Database, pour voir
     -> virer les accents (et idéalement, option pour les garder)

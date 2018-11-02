@@ -173,7 +173,6 @@
         }
 
 
-
         public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE){
             global $log;
 

@@ -34,7 +34,7 @@
             if($results != FALSE && $results->num_rows){
                 while($row = $results->fetch_assoc()){
                     $personne = new Personne($row["id"]);
-                    $mysqli->from_db($personne);
+                    $mysqli->from_db($personne, FALSE);
 
                     $prenoms = [];
                     foreach($personne->prenoms as $prenom)
@@ -71,7 +71,7 @@
 	    while($row = $results->fetch_assoc()){
 	      $id = $row["id"];
 	      $personne = new Personne($id);
-	      $mysqli->from_db($personne);
+	      $mysqli->from_db($personne, FALSE);
 	      $personnes[$id] = $personne;
 	    }
 	  }
