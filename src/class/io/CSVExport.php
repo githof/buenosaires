@@ -72,23 +72,57 @@
 	    }
 	}
 
-        function export_relations(){
+	private function add_personne_to_line($line, $p,
+					      $names = FALSE)
+	{
+	  if($p instanceof Personne)
+	  {
+	    $line[] = $p->id;
+	    if($names)
+	    {
+	      $line[] = $p->prenoms_str;
+	      $line[] = $p->noms_str;
+	    }
+	  }
+	  elseif(is_string($p))
+	  {
+	    $line[] = $p."_id";
+	    if($names)
+	    {
+	      $line[] = $p."_prenoms";
+	      $line[] = $p."_noms";
+	    }
+	  }
+	}
+	
+        function export_relations($names = FALSE){
             global $mysqli;
 
             $this->entete();
 
-	    $this->export_line(array("id","source","destination","statut"));
+	    $line = [];
+	    $line[] = "id";
+	    $this->add_personne_to_line($line, "src", $names);
+	    $this->add_personne_to_line($line, "dest", $names);
+	    $line[] = "statut";
+	    $this->export_line($line);
 
+	    // faire un Database->get_relations() comme get_personnes
             $results = $mysqli->select("relation", ["*"]);
             if($results != FALSE && $results->num_rows){
                 while($row = $results->fetch_assoc()){
                     $relation = new Relation();
                     $relation->result_from_db($row);
 
-		    $line = array($relation->id,
-				  $relation->personne_source->id,
-				  $relation->personne_destination->id,
-				  $relation->get_statut_name());
+		    $line = [];
+		    $line[] = $relation->id;
+		    $this->add_personne_to_line($line,
+						$relation->personne_source,
+						$names);
+		    $this->add_personne_to_line($line,
+						$relation->personne_destination,
+						$names);
+		    $line[] = $relation->get_statut_name();
 		    
 		    $this->export_line($line);
                 }
