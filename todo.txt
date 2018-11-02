@@ -8,7 +8,7 @@ Voir DROPBOX/Organisation/CR.txt
             x load_personnes [|20]
 	    x Database->get_personnes [|35]
 	    x CSV export_line [|20]
-	    - relations noms
+	    - relations noms (BUG)
 	    - relations date (mariage en priorité)
     -> virer les accents (et idéalement, option pour les garder)
 
