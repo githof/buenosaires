@@ -172,8 +172,40 @@
             return $this->query("COMMIT");
         }
 
+	// À généraliser, j'en avais besoin je l'ai mis là tant qu'à faire
+	public function get_personnes($get_relations_conditions = TRUE)
+	{
+	  $personnes = [];
 
-        public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE){
+	  /*
+	    pas du tout optimal : je fais un premier select pour
+	    avoir la liste des ids, puis un select par id
+	    C'est juste pour pouvoir utiliser la fonction from_db où a
+	    priori tous les cas sont traités
+	  */ 
+	  $results = $mysqli->select("personne", ["id"]);
+	  if($results != FALSE && $results->num_rows){
+	    while($row = $results->fetch_assoc()){
+	      $id = $row["id"];
+	      $personne = new Personne($id);
+	      $mysqli->from_db($personne, $get_relations_conditions);
+	      $personnes[$id] = $personne;
+	    }
+	  }
+	  return $personnes;
+	}
+
+        public function from_db($obj,
+				$update_obj = FALSE,
+				$get_relations_conditions = TRUE){
+	  /*
+	    De ce qu'il me semble, $update_obj sert à renseigner l'id
+	    de $obj s'il ne l'est pas.
+	    En tout cas il ne sert à pas à indiquer si on veut
+	    modifier $obj :
+	    en pratique $obj est toujours rempli par les fonctions
+	    appelées ici.
+	   */
             global $log;
 
             $log->d("from database: ".get_class($obj)." id=$obj->id");

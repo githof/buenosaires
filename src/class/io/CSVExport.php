@@ -58,26 +58,6 @@
             }
         }
 
-	private function load_personnes (){
-	  global $mysqli;
-	  $personnes = [];
-
-	  // Récupéré 5 lignes dans export_personnes
-	  // À factoriser donc
-	  // Typiquement un itérateur, pour Database
-	  // ou bien simplement une méthode qui renvoie le tableau de personnes
-	  $results = $mysqli->select("personne", ["id"]);
-	  if($results != FALSE && $results->num_rows){
-	    while($row = $results->fetch_assoc()){
-	      $id = $row["id"];
-	      $personne = new Personne($id);
-	      $mysqli->from_db($personne, FALSE);
-	      $personnes[$id] = $personne;
-	    }
-	  }
-	  return $personnes;
-	}
-
         function export_relations(){
             global $mysqli;
 
