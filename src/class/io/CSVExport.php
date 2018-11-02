@@ -21,6 +21,21 @@
 
         }
 
+	private function export_line($line)
+	{
+	  $first = TRUE;
+	  foreach($line as $field)
+	  {
+	    if($first)
+	      first = FALSE;
+	    else
+	      echo $this->CSV_SEPARATOR;
+
+	    echo $field;
+	  }
+	  echo PHP_EOL;
+	}
+	
         function export_personnes(){
             global $mysqli;
 
