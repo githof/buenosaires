@@ -6,8 +6,8 @@ Voir DROPBOX/Organisation/CR.txt
     voir CR, 3 nov 2017, branche zacarias-export
  	  + CSVExport->export_relations_full
             x load_personnes [|20]
+	    x Database->get_personnes [|35]
 	    - relations
-	    - factoriser : itérateur personnes pour Database, pour voir
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
@@ -34,6 +34,8 @@ Voir DROPBOX/Organisation/CR.txt
     -> problème de chmod à la création de compte
 
 + code
+    - optimiser l'export : Database->get_personnes
+      (peut-être mettre dans select des trucs de from_db)
     - dispatcher io/Database.php/from_db() en méthode de chaque classe
     - factoriser html_personne_relations, voire dispatcher dans Personne
     - virer Personne->relations pour le remplacer complètement par _by_type
