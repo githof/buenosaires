@@ -27,7 +27,7 @@
 	  foreach($line as $field)
 	  {
 	    if($first)
-	      first = FALSE;
+	      $first = FALSE;
 	    else
 	      echo $this->CSV_SEPARATOR;
 
