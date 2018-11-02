@@ -2,6 +2,10 @@
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
+/*
+  Nom et Prenom pourraient hériter d'une même classe...
+ */
+
     class Prenom implements DatabaseIO{
 
         var $id;

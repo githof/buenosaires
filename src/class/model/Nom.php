@@ -3,6 +3,10 @@
     include_once(ROOT."src/class/model/Attribut.php");
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
+/*
+  Nom et Prenom pourraient hériter d'une même classe...
+ */
+
     class Nom implements DatabaseIO{
 
         var $id;

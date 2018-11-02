@@ -31,7 +31,15 @@
                 "prenoms".PHP_EOL;
 
 	    $personnes = $mysqli->get_personnes(FALSE);
-	    foreach($personnes as $id => $personne){
+	    
+	    foreach($personnes as $id => $personne)
+	    {
+	      /*
+		bricolage sur les tableaux de noms et prénoms
+		ça pourrait être un utilitaire des classes Nom et
+		Prenom,
+		qui d'ailleurs pourraient hériter d'une même classe
+	      */
 	      $prenoms = [];
 	      foreach($personne->prenoms as $prenom)
 		$prenoms[] = $prenom->to_string();
