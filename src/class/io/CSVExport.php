@@ -70,9 +70,7 @@
 				      $noms,
 				      " ");
 
-	      echo $id . $this->CSV_SEPARATOR .
-		$noms . $this->CSV_SEPARATOR .
-		$prenoms . PHP_EOL;
+	      export_line(array($id, $noms, $prenoms));
 	    }
 	}
 
