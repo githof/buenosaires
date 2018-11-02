@@ -30,33 +30,28 @@
                 "noms".$this->CSV_SEPARATOR.
                 "prenoms".PHP_EOL;
 
-            $results = $mysqli->select("personne", ["id"]);
-            if($results != FALSE && $results->num_rows){
-                while($row = $results->fetch_assoc()){
-                    $personne = new Personne($row["id"]);
-                    $mysqli->from_db($personne, FALSE);
+	    $personnes = $mysqli->get_personnes(FALSE);
+	    foreach($personnes as $id => $personne){
+	      $prenoms = [];
+	      foreach($personne->prenoms as $prenom)
+		$prenoms[] = $prenom->to_string();
 
-                    $prenoms = [];
-                    foreach($personne->prenoms as $prenom)
-                        $prenoms[] = $prenom->to_string();
+	      $noms = [];
+	      foreach($personne->noms as $nom)
+		$noms[] = $nom->to_string();
 
-                    $noms = [];
-                    foreach($personne->noms as $nom)
-                        $noms[] = $nom->to_string();
+	      $prenoms = array_to_string(
+					 $prenoms,
+					 " ");
+	      $noms = array_to_string(
+				      $noms,
+				      " ");
 
-                    $prenoms = array_to_string(
-                        $prenoms,
-                        " ");
-                    $noms = array_to_string(
-                        $noms,
-                        " ");
-
-                    echo $personne->id . $this->CSV_SEPARATOR .
-                        $noms . $this->CSV_SEPARATOR .
-                        $prenoms . PHP_EOL;
-                }
-            }
-        }
+	      echo $id . $this->CSV_SEPARATOR .
+		$noms . $this->CSV_SEPARATOR .
+		$prenoms . PHP_EOL;
+	    }
+	}
 
         function export_relations(){
             global $mysqli;

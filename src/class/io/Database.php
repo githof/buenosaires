@@ -172,7 +172,9 @@
             return $this->query("COMMIT");
         }
 
-	// À généraliser, j'en avais besoin je l'ai mis là tant qu'à faire
+	// À généraliser, j'en avais besoin je l'ai mis là tant qu'à
+	// faire
+	// [ id => personne ]
 	public function get_personnes($get_relations_conditions = TRUE)
 	{
 	  $personnes = [];
