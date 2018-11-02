@@ -7,8 +7,9 @@ Voir DROPBOX/Organisation/CR.txt
  	  + CSVExport->export_relations_full
             x load_personnes [|20]
 	    x Database->get_personnes [|35]
-	    - CSV export_line
-	    - relations
+	    x CSV export_line [|20]
+	    - relations noms
+	    - relations date (mariage en priorité)
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
