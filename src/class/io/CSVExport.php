@@ -70,7 +70,7 @@
 				      $noms,
 				      " ");
 
-	      export_line(array($id, $noms, $prenoms));
+	      $this->export_line(array($id, $noms, $prenoms));
 	    }
 	}
 
