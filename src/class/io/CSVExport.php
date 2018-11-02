@@ -41,9 +41,7 @@
 
             $this->entete();
 
-            echo "id".$this->CSV_SEPARATOR.
-                "noms".$this->CSV_SEPARATOR.
-                "prenoms".PHP_EOL;
+	    $this->export_line(array("id","noms","prenoms"));
 
 	    $personnes = $mysqli->get_personnes(FALSE);
 	    
@@ -79,10 +77,7 @@
 
             $this->entete();
 
-            echo "id".$this->CSV_SEPARATOR.
-                "source".$this->CSV_SEPARATOR.
-                "destination".$this->CSV_SEPARATOR.
-                "statut".PHP_EOL;
+	    $this->export_line(array("id","source","destination","statut"));
 
             $results = $mysqli->select("relation", ["*"]);
             if($results != FALSE && $results->num_rows){
@@ -90,10 +85,12 @@
                     $relation = new Relation();
                     $relation->result_from_db($row);
 
-                    echo $relation->id . $this->CSV_SEPARATOR .
-                        $relation->personne_source->id . $this->CSV_SEPARATOR .
-                        $relation->personne_destination->id . $this->CSV_SEPARATOR .
-                        $relation->get_statut_name() . PHP_EOL;
+		    $line = array($relation->id,
+				  $relation->personne_source->id,
+				  $relation->personne_destination->id,
+				  $relation->get_statut_name());
+		    
+		    $this->export_line($line);
                 }
             }
         }
