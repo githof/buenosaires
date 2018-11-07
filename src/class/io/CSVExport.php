@@ -72,7 +72,7 @@
 	    }
 	}
 
-	private function add_personne_to_line($line, $p,
+	private function add_personne_to_line(&$line, $p,
 					      $names = FALSE)
 	{
 	  if($p instanceof Personne)
