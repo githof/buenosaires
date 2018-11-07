@@ -49,7 +49,8 @@
             $this->prenoms[] = $prenom;
 	    $str = $this->prenoms_str;
 	    $this->prenoms_str = ($str == "" ? "" : " ") . $prenom->to_string();
-	    syslog(LOG_DEBUG, "add_prenom $prenom -> $this->prenoms_str");
+	    error_log("add_prenom $prenom -> $this->prenoms_str");
+	    //	    syslog(LOG_DEBUG, "add_prenom $prenom -> $this->prenoms_str");
         }
 
         public function add_nom($nom){
