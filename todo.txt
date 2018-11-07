@@ -9,7 +9,8 @@ Voir DROPBOX/Organisation/CR.txt
 	    x Database->get_personnes [|35]
 	    x CSV export_line [|20]
 	    x relations noms  [|5]
-	    - ajout dans l'interface (pour case à cocher, voir import)
+	    x ajout un peu triché dans l'interface (sans l'option) [|15]
+	    - bug noms
 	    - relations date (mariage en priorité)
     -> virer les accents (et idéalement, option pour les garder)
 
