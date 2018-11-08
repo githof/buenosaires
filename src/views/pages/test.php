@@ -9,7 +9,8 @@ $personne = new Personne(1);
 $prenom = new Prenom(10000, "Bob", "Bob");
 $personne->add_prenom($prenom);
 echo "<p>";
-echo "to_string = $personne->prenoms[0]<br>";
+$p0 = $personne->prenoms[0];
+echo "to_string = $p0<br>";
 echo "_str = $personne->prenoms_str<br>";
 echo "</p>";
 
