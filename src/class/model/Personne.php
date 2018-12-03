@@ -48,7 +48,7 @@
             }
             $this->prenoms[] = $prenom;
 	    $str = $this->prenoms_str;
-	    $this->prenoms_str = ($str == "" ? "" : " ") . $prenom->to_string();
+	    $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
         }
 
         public function add_nom($nom){
