@@ -96,8 +96,14 @@
 	    }
 	  }
 	}
+
+	private function add_date(&$line, $actes)
+	{
+	  // TODO
+	  $line[] = "";
+	}
 	
-        function export_relations($names = FALSE){
+        function export_relations($names = FALSE, $dates = FALSE){
             global $mysqli;
 
             $this->entete();
@@ -107,6 +113,8 @@
 	    $this->add_personne_to_line($line, "src", $names);
 	    $this->add_personne_to_line($line, "dest", $names);
 	    $line[] = "statut";
+	    if($dates)
+	      $line[] = "date";
 	    $this->export_line($line);
 
 	    $this->personnes = $mysqli->get_personnes(FALSE);
@@ -127,6 +135,8 @@
 						$relation->personne_destination,
 						$names);
 		    $line[] = $relation->get_statut_name();
+		    if($dates)
+		      $this->add_date($line, $relation->actes)
 		    
 		    $this->export_line($line);
                 }
