@@ -1,5 +1,7 @@
 <?php
 
+    include_once(ROOT."src/class/model/Acte.php");
+
     function array_to_string($array, $separator){
         $str = "";
         $i = 0;
@@ -100,6 +102,7 @@
 	private function add_date(&$line, $actes)
 	{
 	  // TODO
+	  // Acte::find_date($actes);
 	  $line[] = "";
 	}
 	

@@ -12,7 +12,9 @@ Voir DROPBOX/Organisation/CR.txt
 	    x ajout un peu triché dans l'interface (sans l'option) [|15]
 	    x faire une page test bac à sable	   [|35]
 	    x récup personnes pour add_personne_to_line (!)
-	    - relations date (mariage en priorité)
+	    - Acte::find_date() (branche export-relations)
+	      (cf html_entities > html_personne_relation)
+	    - CSVExport->add_date()
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
