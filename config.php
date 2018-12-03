@@ -57,7 +57,8 @@ $access_pages  = [
     "table" => 1,
     "recherche" => 1,
     "supprimer" => 2,
-    "auto_complete_personne" => 1
+    "auto_complete_personne" => 1,
+    "test" => 3
 ]
 
  ?>

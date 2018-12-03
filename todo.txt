@@ -4,7 +4,15 @@ Voir DROPBOX/Organisation/CR.txt
 -> export
     -> csv des relations (jointure avec id, prénom, nom des personnes)
     voir CR, 3 nov 2017, branche zacarias-export
-    voir ce qu'on fait dans l'affichage des relations
+ 	  + CSVExport->export_relations_full
+            x load_personnes [|20]
+	    x Database->get_personnes [|35]
+	    x CSV export_line [|20]
+	    x relations noms  [|5]
+	    x ajout un peu triché dans l'interface (sans l'option) [|15]
+	    x faire une page test bac à sable	   [|35]
+	    x récup personnes pour add_personne_to_line (!)
+	    - relations date (mariage en priorité)
     -> virer les accents (et idéalement, option pour les garder)
 
 -> GREGORIO (de las Heras et de Espinoza)
@@ -29,6 +37,13 @@ Voir DROPBOX/Organisation/CR.txt
 + admin
     -> fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
+
++ code
+    - optimiser l'export : Database->get_personnes
+      (peut-être mettre dans select des trucs de from_db)
+    - dispatcher io/Database.php/from_db() en méthode de chaque classe
+    - factoriser html_personne_relations, voire dispatcher dans Personne
+    - virer Personne->relations pour le remplacer complètement par _by_type
 
 + édition du xml
     - glitch sur la flèche gauche (remonter) quand le mot est petit,

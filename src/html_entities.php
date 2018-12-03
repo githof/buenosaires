@@ -121,6 +121,8 @@
         $parrains = [];
         $all = [];
 
+	// Là on va réordonner la liste de relations pour l'affichage
+	// (enfin je crois que c'est ça...)
         foreach($relations as $relation){
             switch($relation->statut_id){
                 case STATUT_EPOUX:
@@ -163,46 +165,13 @@
             </div>";
     }
 
+// Y'a du boulot de factorisation à faire ici :)
+//
     function html_personne_relations($personne){
-        $parents = [];
-        $enfants = [];
-        $mariage = [];
-        $a_temoins = [];
-        $est_temoins = [];
-        $a_parrains = [];
-        $est_parrains = [];
-
-        foreach($personne->relations as $relation){
-            $is_source = $personne->id == $relation->personne_source->id;
-            switch($relation->statut_id){
-                case STATUT_PERE:
-                case STATUT_MERE:
-                    if($is_source)
-                        $enfants[] = $relation;
-                    else
-                        $parents[] = $relation;
-                    break;
-                case STATUT_EPOUX:
-                case STATUT_EPOUSE:
-                    $mariage[] = $relation;
-                    break;
-                case STATUT_TEMOIN:
-                    if($is_source)
-                        $est_temoins[] = $relation;
-                    else
-                        $a_temoins[] = $relation;
-                    break;
-                case STATUT_PARRAIN:
-                    if($is_source)
-                        $est_parrains[] = $relation;
-                    else
-                        $a_parrains[] = $relation;
-                    break;
-            }
-        }
-
+        $rel_btype = $personne->get_relations_by_type();
+	
         $str = "";
-        foreach($mariage as $relation){
+        foreach($rel_btype['mariage'] as $relation){
             $statut_name = "est mariée à";
             $pers = $relation->personne_destination;
             if($relation->personne_destination->id == $personne->id){
@@ -214,7 +183,7 @@
 					   $relation->actes);
         }
 
-        foreach($parents as $relation){
+        foreach($rel_btype['parents'] as $relation){
             $statut_name = ($relation->statut_id == STATUT_PERE)?
 	      "a pour père" :
 	      "a pour mère";
@@ -223,7 +192,7 @@
 					   $relation->actes);
         }
 
-        foreach($enfants as $relation){
+        foreach($rel_btype['enfants'] as $relation){
             $statut_name = ($relation->statut_id == STATUT_PERE)?
 	      "est père de" :
 	      "est mère de";
@@ -232,25 +201,25 @@
 					   $relation->actes);
         }
 
-        foreach($est_temoins as $relation){
+        foreach($rel_btype['est_temoin'] as $relation){
             $str .= html_personne_relation($relation->personne_destination,
 					   "est témoin de",
 					   $relation->actes);
         }
 
-        foreach($a_temoins as $relation){
+        foreach($rel_btype['a_temoins'] as $relation){
             $str .= html_personne_relation($relation->personne_source,
 					   "a pour témoin",
 					   $relation->actes);
         }
 
-        foreach($est_parrains as $relation){
+        foreach($rel_btype['est_parrain'] as $relation){
             $str .= html_personne_relation($relation->personne_destination,
 					   "est parrain de",
 					   $relation->actes);
         }
 
-        foreach($a_parrains as $relation){
+        foreach($rel_btype['a_parrains'] as $relation){
             $str .= html_personne_relation($relation->personne_source,
 					   "a pour parrain",
 					   $relation->actes);

@@ -15,69 +15,120 @@
 
     class CSVExport {
 
-        var $CSV_SEPARATOR = ",";
+        var $CSV_SEPARATOR = ";";
+	var $personnes;
 
         function __construct(){
 
         }
 
+	private function export_line($line)
+	{
+	  $first = TRUE;
+	  foreach($line as $field)
+	  {
+	    if($first)
+	      $first = FALSE;
+	    else
+	      echo $this->CSV_SEPARATOR;
+
+	    echo $field;
+	  }
+	  echo PHP_EOL;
+	}
+	
         function export_personnes(){
             global $mysqli;
 
             $this->entete();
 
-            echo "id".$this->CSV_SEPARATOR.
-                "noms".$this->CSV_SEPARATOR.
-                "prenoms".PHP_EOL;
+	    $this->export_line(array("id","noms","prenoms"));
 
-            $results = $mysqli->select("personne", ["id"]);
-            if($results != FALSE && $results->num_rows){
-                while($row = $results->fetch_assoc()){
-                    $personne = new Personne($row["id"]);
-                    $mysqli->from_db($personne);
+	    $personnes = $mysqli->get_personnes(FALSE);
+	    
+	    foreach($personnes as $id => $personne)
+	    {
+	      /*
+		bricolage sur les tableaux de noms et prénoms
+		ça pourrait être un utilitaire des classes Nom et
+		Prenom,
+		qui d'ailleurs pourraient hériter d'une même classe
+	      */
+	      $prenoms = [];
+	      foreach($personne->prenoms as $prenom)
+		$prenoms[] = $prenom->to_string();
 
-                    $prenoms = [];
-                    foreach($personne->prenoms as $prenom)
-                        $prenoms[] = $prenom->to_string();
+	      $noms = [];
+	      foreach($personne->noms as $nom)
+		$noms[] = $nom->to_string();
 
-                    $noms = [];
-                    foreach($personne->noms as $nom)
-                        $noms[] = $nom->to_string();
+	      $prenoms = array_to_string(
+					 $prenoms,
+					 " ");
+	      $noms = array_to_string(
+				      $noms,
+				      " ");
 
-                    $prenoms = array_to_string(
-                        $prenoms,
-                        " ");
-                    $noms = array_to_string(
-                        $noms,
-                        " ");
+	      $this->export_line(array($id, $noms, $prenoms));
+	    }
+	}
 
-                    echo $personne->id . $this->CSV_SEPARATOR .
-                        $noms . $this->CSV_SEPARATOR .
-                        $prenoms . PHP_EOL;
-                }
-            }
-        }
-
-        function export_relations(){
+	private function add_personne_to_line(&$line, $p,
+					      $names = FALSE)
+	{
+	  if($p instanceof Personne)
+	  {
+	    $line[] = $p->id;
+	    if($names)
+	    {
+	      $personne = $this->personnes[$p->id];
+	      $line[] = $personne->prenoms_str;
+	      $line[] = $personne->noms_str;
+	    }
+	  }
+	  elseif(is_string($p))
+	  {
+	    $line[] = $p."_id";
+	    if($names)
+	    {
+	      $line[] = $p."_prenoms";
+	      $line[] = $p."_noms";
+	    }
+	  }
+	}
+	
+        function export_relations($names = FALSE){
             global $mysqli;
 
             $this->entete();
 
-            echo "id".$this->CSV_SEPARATOR.
-                "source".$this->CSV_SEPARATOR.
-                "destination".$this->CSV_SEPARATOR.
-                "statut".PHP_EOL;
+	    $line = [];
+	    $line[] = "id";
+	    $this->add_personne_to_line($line, "src", $names);
+	    $this->add_personne_to_line($line, "dest", $names);
+	    $line[] = "statut";
+	    $this->export_line($line);
 
+	    $this->personnes = $mysqli->get_personnes(FALSE);
+
+	    // faire un Database->get_relations() comme get_personnes
             $results = $mysqli->select("relation", ["*"]);
             if($results != FALSE && $results->num_rows){
                 while($row = $results->fetch_assoc()){
                     $relation = new Relation();
                     $relation->result_from_db($row);
 
-                    echo $relation->id . $this->CSV_SEPARATOR .
-                        $relation->personne_source->id . $this->CSV_SEPARATOR .
-                        $relation->personne_destination->id . $this->CSV_SEPARATOR .
-                        $relation->get_statut_name() . PHP_EOL;
+		    $line = [];
+		    $line[] = $relation->id;
+		    $this->add_personne_to_line($line,
+						$relation->personne_source,
+						$names);
+		    $this->add_personne_to_line($line,
+						$relation->personne_destination,
+						$names);
+		    $line[] = $relation->get_statut_name();
+		    
+		    $this->export_line($line);
                 }
             }
         }
