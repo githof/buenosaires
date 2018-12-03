@@ -1,7 +1,53 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
+-> export
+    -> csv des relations (jointure avec id, prénom, nom des personnes)
+    voir CR, 3 nov 2017, branche zacarias-export
+ 	  + CSVExport->export_relations_full
+            x load_personnes [|20]
+	    x Database->get_personnes [|35]
+	    x CSV export_line [|20]
+	    x relations noms  [|5]
+	    x ajout un peu triché dans l'interface (sans l'option) [|15]
+	    x faire une page test bac à sable	   [|35]
+	    x récup personnes pour add_personne_to_line (!)
+	    - relations date (mariage en priorité)
+    -> virer les accents (et idéalement, option pour les garder)
+
+-> GREGORIO (de las Heras et de Espinoza)
+
+-> recherche
+  - sur plain text (pour baliser), avec liste d'actes comme la table
+  - contenu
+
+-> édition xml
+  - attributs
+
+-> edition nom d'une personne
+
+
++ BUG fusion
+    -> voir CR.txt 17 oct 2018
+    - réparer (!)
+    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
+    - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
+      et réparer Francisco Belgrano 419 (acte 6813)
+
++ admin
+    -> fonction réinitialiser le mot de passe
+    -> problème de chmod à la création de compte
+
++ code
+    - optimiser l'export : Database->get_personnes
+      (peut-être mettre dans select des trucs de from_db)
+    - dispatcher io/Database.php/from_db() en méthode de chaque classe
+    - factoriser html_personne_relations, voire dispatcher dans Personne
+    - virer Personne->relations pour le remplacer complètement par _by_type
+
 + édition du xml
+    - glitch sur la flèche gauche (remonter) quand le mot est petit,
+    l'infobulle vient par-dessus le bouton en clignotant, difficile de le choper
     - recherche des personnes par le nom pour choisir l'id
 
 + xmlselect
@@ -17,21 +63,23 @@ Voir DROPBOX/Organisation/CR.txt
       "remonter" (confusion possible avec monter d'un cran verticalement)
 
 + export
-    BUG : sur export xml, y'a quelques <?xml version="1.0"?> qui se
-    baladent
-    BUG : des &#xED avec des accents, sur 12 lignes de l'export (!)
-    -> csv des relations (jointure avec id, prénom, nom des personnes)
-      voir ce qu'on fait dans l'affichage des relations
-    -> virer les accents (et idéalement, option pour les garder)
     - gdf
 
 + recherche
+    -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
 
 + fusion
+    BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)
     - montrer le résultat à la fin (plutôt qu'une page vide)
     BUG : le nom s'affiche dans la liste des prénoms
+    - confusion entre recherche et prévisualiser (désactiver le bouton
+    tant qu'on n'a pas sélectionné deux)
+
++ classes
+    - supprimer des entrées (relations, conditions, etc.)
+    - éditer les champs depuis les pages
 
 + modifs ponctuelles
     - Cristina
@@ -39,18 +87,20 @@ Voir DROPBOX/Organisation/CR.txt
     - fusions Francisco Belgrano
 
 + base
+    -> BUG en-tête <?xml version="1.0"?> en trop sur actes quand
+    modifiés (peut-être par fusion, voir CR.txt 17 oct 2018)
     - recharger actes balisés en 2016-2017 et perdus au reinit
-      (voir bricolages/diff-others (cf diff_with_newlines dans session.sh)
+      (voir bricolages/diff-others, cf diff_with_newlines dans
+      session.sh)
+      bon, je crois qu'y en a genre 8, j'ai fait le 1086
+      ATTENTION aux ids nouveaux
     - dump pour Access
     - mettre le fichier xml lui-même sur un git
 
 + interne
-    - sauvegarder le fichier de log dans history quand atteint la
+    -> sauvegarder le fichier de log dans history quand atteint la
         limite (Log.php)
 
 + site
     - "mit" à jour
     BUG : menu s'affiche pas sur IE
-
-+ problèmes
-    - acte 6813, xml bizarre sur la page, et témoin 419

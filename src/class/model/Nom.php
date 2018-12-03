@@ -3,6 +3,10 @@
     include_once(ROOT."src/class/model/Attribut.php");
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
+/*
+  Nom et Prenom pourraient hériter d'une même classe...
+ */
+
     class Nom implements DatabaseIO{
 
         var $id;
@@ -29,11 +33,15 @@
                 $this->no_accent = $no_accent;
         }
 
-        function to_string(){
-            $str = "";
+        function to_string($no_accent = FALSE){
+            $attr = "";
             if(isset($this->attribut))
-                $str = $this->attribut . " ";
-            return $str . $this->nom;
+                $attr = $this->attribut . " ";
+	    $nom = $no_accent ?
+	      $this->nom :
+	      $this->no_accent;
+
+            return $attr . $nom;
         }
 
 

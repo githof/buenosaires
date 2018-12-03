@@ -2,6 +2,10 @@
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
+/*
+  Nom et Prenom pourraient hériter d'une même classe...
+ */
+
     class Prenom implements DatabaseIO{
 
         var $id;
@@ -26,8 +30,10 @@
             $this->no_accent = $no_accent;
         }
 
-        function to_string(){
-            return $this->prenom;
+        function to_string($no_accent = FALSE){
+	  return $no_accent ?
+	    $this->no_accent :
+	    $this->prenom;
         }
 
 

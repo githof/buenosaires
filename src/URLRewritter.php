@@ -31,6 +31,8 @@
             =>  ["new_account", "Nouveau compte"],
         "/(?'page'administration)"
             => ["administration", "Administration"],
+        "/(?'page'test)"
+            =>  ["test", "Test"],
         "(?'page'/)"
             =>  ["accueil", "Buenos Aires"]
     ];
