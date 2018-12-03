@@ -16,6 +16,7 @@
     class CSVExport {
 
         var $CSV_SEPARATOR = ";";
+	var $personnes;
 
         function __construct(){
 
@@ -80,8 +81,9 @@
 	    $line[] = $p->id;
 	    if($names)
 	    {
-	      $line[] = $p->prenoms_str;
-	      $line[] = $p->noms_str;
+	      $personne = $this->personnes[$p->id];
+	      $line[] = $personne->prenoms_str;
+	      $line[] = $personne->noms_str;
 	    }
 	  }
 	  elseif(is_string($p))
@@ -106,6 +108,8 @@
 	    $this->add_personne_to_line($line, "dest", $names);
 	    $line[] = "statut";
 	    $this->export_line($line);
+
+	    $this->personnes = $mysqli->get_personnes(FALSE);
 
 	    // faire un Database->get_relations() comme get_personnes
             $results = $mysqli->select("relation", ["*"]);

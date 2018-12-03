@@ -64,7 +64,7 @@
             }
             $this->noms[] = $nom;
 	    $str = $this->noms_str;
-	    $this->noms_str = ($str == "" ? "" : " ") . $nom->to_string();
+	    $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string();
         }
 
         public function add_condition($text, $source_id){
