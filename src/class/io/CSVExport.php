@@ -101,17 +101,7 @@
 
 	private function add_date(&$line, $relation)
 	{
-	  global $mysqli;
-
-	  $mysqli->from_db_relation_list_acte($relation);
-	  $acte = $relation->actes[0];
-	  /* je prends le premier qui vient
-	     tfaçon y'aura une date pour chaque type de relation
-	     donc pour la relation epoux/se y'aura juste l'acte qui va
-	     bien
-	   */
-	  $mysqli->from_db($acte, FALSE, FALSE);
-	  $date = $acte->date;
+	  $date = $relation->get_date();
 	  $line[] = "$date";
 	}
 	
@@ -148,7 +138,7 @@
 						$names);
 		    $line[] = $relation->get_statut_name();
 		    if($dates)
-		      $this->add_date($line, $relation)
+		      $this->add_date($line, $relation);
 		    
 		    $this->export_line($line);
                 }

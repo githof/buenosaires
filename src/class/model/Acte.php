@@ -103,6 +103,12 @@
             return "";
         }
 
+	function get_date()
+	{
+	  global $mysqli;
+	  $mysqli->from_db($this, FALSE, FALSE);
+	  return $this->date;
+	}
 
         // DATABASE IO
 

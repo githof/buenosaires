@@ -47,6 +47,18 @@
             return "";
         }
 
+	function get_date(){
+	  global $mysqli;
+
+	  $mysqli->from_db_relation_list_acte($this);
+	  $acte = $relation->actes[0];
+	  /* je prends le premier qui vient
+	     tfaçon y'aura une date pour chaque type de relation
+	     donc pour la relation epoux/se y'aura juste l'acte qui va
+	     bien
+	   */
+	  return $acte->get_date();
+	}
 
         // DATABASE IO
 
