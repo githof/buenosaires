@@ -106,8 +106,8 @@
 	function get_date()
 	{
 	  global $mysqli;
-	  $mysqli->from_db($this, FALSE, FALSE);
-	  return $this->date;
+	  $mysqli->from_db($this, TRUE, FALSE);
+	  return $this->date_start;
 	}
 
         // DATABASE IO

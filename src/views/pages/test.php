@@ -25,6 +25,6 @@ $acte = new Acte(6813);
 $date = $acte->get_date();
 echo "date : $date";
 
-echo "</p>";
+echo "</p>\n";
 
 ?>
