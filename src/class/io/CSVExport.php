@@ -99,11 +99,20 @@
 	  }
 	}
 
-	private function add_date(&$line, $actes)
+	private function add_date(&$line, $relation)
 	{
-	  // TODO
-	  // Acte::find_date($actes);
-	  $line[] = "";
+	  global $mysqli;
+
+	  $mysqli->from_db_relation_list_acte($relation);
+	  $acte = $relation->actes[0];
+	  /* je prends le premier qui vient
+	     tfaçon y'aura une date pour chaque type de relation
+	     donc pour la relation epoux/se y'aura juste l'acte qui va
+	     bien
+	   */
+	  $mysqli->from_db($acte, FALSE, FALSE);
+	  $date = $acte->date;
+	  $line[] = "$date";
 	}
 	
         function export_relations($names = FALSE, $dates = FALSE){
@@ -139,7 +148,7 @@
 						$names);
 		    $line[] = $relation->get_statut_name();
 		    if($dates)
-		      $this->add_date($line, $relation->actes)
+		      $this->add_date($line, $relation)
 		    
 		    $this->export_line($line);
                 }
