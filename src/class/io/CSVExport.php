@@ -1,5 +1,7 @@
 <?php
 
+    include_once(ROOT."src/class/model/Acte.php");
+
     function array_to_string($array, $separator){
         $str = "";
         $i = 0;
@@ -96,8 +98,14 @@
 	    }
 	  }
 	}
+
+	private function add_date(&$line, $relation)
+	{
+	  $date = $relation->get_date();
+	  $line[] = "$date";
+	}
 	
-        function export_relations($names = FALSE){
+        function export_relations($names = FALSE, $dates = FALSE){
             global $mysqli;
 
             $this->entete();
@@ -107,6 +115,8 @@
 	    $this->add_personne_to_line($line, "src", $names);
 	    $this->add_personne_to_line($line, "dest", $names);
 	    $line[] = "statut";
+	    if($dates)
+	      $line[] = "date";
 	    $this->export_line($line);
 
 	    $this->personnes = $mysqli->get_personnes(FALSE);
@@ -127,6 +137,8 @@
 						$relation->personne_destination,
 						$names);
 		    $line[] = $relation->get_statut_name();
+		    if($dates)
+		      $this->add_date($line, $relation);
 		    
 		    $this->export_line($line);
                 }

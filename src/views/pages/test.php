@@ -20,6 +20,11 @@ $p1 = $personne->prenoms[1]->to_string();
 echo "to_string = $p1<br>";
 echo "_str = $personne->prenoms_str<br>";
 
-echo "</p>";
+echo "<h2>Acte</h2>";
+$acte = new Acte(6813);
+$date = $acte->get_date();
+echo "date : $date";
+
+echo "</p>\n";
 
 ?>

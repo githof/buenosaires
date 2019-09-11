@@ -2,20 +2,13 @@
 Voir DROPBOX/Organisation/CR.txt
 
 -> export
-    -> csv des relations (jointure avec id, prénom, nom des personnes)
-    voir CR, 3 nov 2017, branche zacarias-export
- 	  + CSVExport->export_relations_full
-            x load_personnes [|20]
-	    x Database->get_personnes [|35]
-	    x CSV export_line [|20]
-	    x relations noms  [|5]
-	    x ajout un peu triché dans l'interface (sans l'option) [|15]
-	    x faire une page test bac à sable	   [|35]
-	    x récup personnes pour add_personne_to_line (!)
-	    - relations date (mariage en priorité)
-    -> virer les accents (et idéalement, option pour les garder)
+   -> relation dans les deux sens
+   - virer les accents (idéalement, option pour les garder)
 
--> GREGORIO (de las Heras et de Espinoza)
+-> erreurs (ponctuelles ?)
+  - GREGORIO (de las Heras et de Espinoza)
+  - Jose Manuel de ALTOLAGUIRRE
+  (JOSE à virer du nom : fusion mal passée ?)
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
@@ -26,6 +19,8 @@ Voir DROPBOX/Organisation/CR.txt
 
 -> edition nom d'une personne
 
++ sous-réseau
+    - par exemple sur les résultats d'une recherche	de personnes
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018
@@ -83,7 +78,6 @@ Voir DROPBOX/Organisation/CR.txt
 
 + modifs ponctuelles
     - Cristina
-    - balisage d'un acte
     - fusions Francisco Belgrano
 
 + base
