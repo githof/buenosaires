@@ -245,6 +245,18 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         ";
     }
 
+    function html_fusion_debut(){
+      return "
+      <form method="get" id="fusion-form">
+          <button class="btn btn-primary" id="fusion-submit">Fusionner</button>
+      ";
+    }
+    function html_fusion_fin(){
+      return "
+      </form>
+      ";
+    }
+
     function html_fusion_noms($noms){
         $html = "";
         foreach($noms as $nom){
@@ -315,9 +327,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $input_prenoms = default_input_prenoms($personne_A->prenoms, $personne_B->prenoms);
         $input_noms = default_input_noms($personne_A->noms, $personne_B->noms);
 
+        echo html_fusion_debut();
+        echo html_fusion_fin();
         ?>
-        <form method="get" id="fusion-form">
-            <button class="btn btn-primary" id="fusion-submit">Fusionner</button>
             <section>
                 <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
                 <div class="fusion-ids flex-horizontal">
@@ -356,7 +368,6 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
                     <?php echo $html_relations; ?>
                 </div>
             </section>
-        </form>
         <?php
     }
 
