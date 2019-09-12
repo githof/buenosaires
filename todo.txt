@@ -24,6 +24,7 @@ Voir DROPBOX/Organisation/CR.txt
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
+    + découper html_fusion pour séparer html et appel à fusion
     + réécrire proprement la fonction fusion
       - voir dans CR quel cas a posé problème
       - changer le nom de $personne_keep
