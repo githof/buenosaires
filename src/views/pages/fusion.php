@@ -376,33 +376,27 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     }
 
     // Une fois qu'on a sélectionné qui on fusionne, on arrive ici
-    function html_fusion($pA, $pB){
-        $html_noms = html_fusion_noms($pA->noms)
-            . html_fusion_noms($pB->noms);
-        $html_conditions = html_fusion_conditions($pA->conditions)
-            . html_fusion_conditions($pB->conditions);
-        $html_relations = html_fusion_relations($pA->relations)
-            . html_fusion_relations($pB->relations);
-
+    function html_fusion($pA, $pB)
+    {
         echo html_fusion_debut();
+
         echo html_fusion_section_keep($pA->id, $pB->id);
         echo html_fusion_section_prenoms($pA->prenoms, $pB->prenoms);
         echo html_fusion_section_noms($pA->noms, $pB->noms);
+
+        $html_conditions = html_fusion_conditions($pA->conditions)
+            . html_fusion_conditions($pB->conditions);
+        echo html_fusion_section(
+          'Conditions', 'conditions', 'vertical',
+          $html_conditions);
+
+        $html_relations = html_fusion_relations($pA->relations)
+              . html_fusion_relations($pB->relations);
+        echo html_fusion_section(
+          'Relations', 'relations', 'vertical',
+          $html_relations);
+
         echo html_fusion_fin();
-        ?>
-            <section>
-                <h4>Condition</h4>
-                <div class="fusion-conditions flex-vertical">
-                    <?php echo $html_conditions; ?>
-                </div>
-            </section>
-            <section>
-                <h4>Relations</h4>
-                <div class="fusion-relations flex-vertical">
-                    <?php echo $html_relations; ?>
-                </div>
-            </section>
-        <?php
     }
 
     if(isset($ARGS["personne-A"],
