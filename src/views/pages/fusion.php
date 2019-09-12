@@ -295,7 +295,6 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     }
 
     function html_fusion_section_prenoms($prenomsA, $prenomsB){
-
       $html_prenomsA = html_fusion_div_prenoms($pA->prenoms);
       $html_prenomsB = html_fusion_div_prenoms($pB->prenoms);
       $input_prenoms = default_input_prenoms($prenomsA, $prenomsB);
@@ -308,13 +307,13 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
           </div>
           <div>
               <div class=\"help-block\">Les prénoms séparés par une virgule</div>
-              <input type=\"text\" name=\"prenoms\" placeholder=\"Ex: Maria, Josefa\" value=\"$input_prenoms; ?>\">
+              <input type=\"text\" name=\"prenoms\" placeholder=\"Ex: Maria, Josefa\" value=\"$input_prenoms\">
           </div>
       </section>
       ";
     }
 
-    function html_fusion_noms($noms){
+    function html_fusion_div_noms($noms){
         $html = "";
         foreach($noms as $nom){
             $attr = "";
@@ -327,6 +326,25 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
                 </div>";
         }
         return $html;
+    }
+
+    function html_fusion_section_noms($nomsA, $nomsB){
+      $html_nomsA = html_fusion_div_noms($nomsA);
+      $html_nomsB = html_fusion_div_noms($nomsB);
+      $input_noms = default_input_noms($pA->noms, $pB->noms);
+      return "
+      <section>
+          <h4>Noms</h4>
+          <div class=\"fusion-noms flex-horizontal\">
+              $html_nomsA
+              $html_nomsB
+          </div>
+          <div>
+              <div class=\"help-block\">Les noms séparés par une virgule et leurs attributs en parenthèse si besoin</div>
+              <input type=\"text\" name=\"noms\" placeholder=\"Ex: PERI, (de) BELGRANO\" value=\"$input_noms\">
+          </div>
+      </section>
+      ";
     }
 
     function html_fusion_conditions($conditions){
@@ -353,23 +371,13 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
             . html_fusion_conditions($pB->conditions);
         $html_relations = html_fusion_relations($pA->relations)
             . html_fusion_relations($pB->relations);
-        $input_noms = default_input_noms($pA->noms, $pB->noms);
 
         echo html_fusion_debut();
         echo html_fusion_section_keep($pA->id, $pB->id);
         echo html_fusion_section_prenoms($pA->prenoms, $pB->prenoms);
+        echo html_fusion_section_noms($pA->noms, $pB->noms);
         echo html_fusion_fin();
         ?>
-            <section>
-                <h4>Noms</h4>
-                <div class="fusion-noms flex-horizontal">
-                    <?php echo $html_noms; ?>
-                </div>
-                <div>
-                    <div class="help-block">Les noms séparés par une virgule et leurs attributs en parenthèse si besoin</div>
-                    <input type="text" name="noms" placeholder="Ex: PERI, (de) BELGRANO" value="<?php echo $input_noms; ?>">
-                </div>
-            </section>
             <section>
                 <h4>Condition</h4>
                 <div class="fusion-conditions flex-vertical">
