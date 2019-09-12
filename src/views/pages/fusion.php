@@ -257,6 +257,32 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
       ";
     }
 
+    function html_fusion_radio_id($AB, $id){
+        return "
+            <div>
+                <input type='radio' name='id' id='radio-pers-$AB' value='$id' checked='checked'>
+                <label for='radio-pers-$AB'>$id</label>
+                <input type='hidden' name='personne-$AB' value='$id'>
+            </div>
+        ";
+        // je comprends pas à quoi sert le hidden ici
+    }
+
+    function html_fusion_keep($id_A, $id_B){
+      echo "
+      <section>
+          <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
+          <div class="fusion-ids flex-horizontal">
+      "
+      echo html_fusion_radio_id('A', $id_A);
+      echo html_fusion_radio_id('B', $id_B);
+      echo "
+          </div>
+      </section>
+      "
+    }
+
+
     function html_fusion_noms($noms){
         $html = "";
         foreach($noms as $nom){
@@ -299,20 +325,6 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         return $html;
     }
 
-    function html_fusion_ids($id_A, $id_B){
-        return "
-            <div>
-                <input type='radio' name='id' id='pers-$id_A' value='$id_A' checked>
-                <label for='pers-$id_A'>$id_A</label>
-                <input type='hidden' name='personne-A' value='$id_A'>
-            </div>
-            <div>
-                <input type='radio' name='id' id='pers-$id_B' value='$id_B'>
-                <label for='pers-$id_B'>$id_B</label>
-                <input type='hidden' name='personne-B' value='$id_B'>
-            </div>";
-    }
-
     // Une fois qu'on a sélectionné qui on fusionne, on arrive ici
     function html_fusion($pA, $pB){
         $html_noms = html_fusion_noms($pA->noms)
@@ -323,20 +335,13 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
             . html_fusion_conditions($pB->conditions);
         $html_relations = html_fusion_relations($pA->relations)
             . html_fusion_relations($pB->relations);
-        $html_ids = html_fusion_ids($pA->id, $pB->id);
         $input_prenoms = default_input_prenoms($pA->prenoms, $pB->prenoms);
         $input_noms = default_input_noms($pA->noms, $pB->noms);
 
         echo html_fusion_debut();
-        echo html_fusion_choix_keep($pA->id, $pB->id);
+        echo html_fusion_keep($pA->id, $pB->id);
         echo html_fusion_fin();
         ?>
-            <section>
-                <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
-                <div class="fusion-ids flex-horizontal">
-                    <?php echo $html_ids; ?>
-                </div>
-            </section>
             <section>
                 <h4>Prenoms</h4>
                 <div class="fusion-prenoms flex-horizontal">
