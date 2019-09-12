@@ -258,6 +258,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     }
 
     function html_fusion_section($titre, $classe,
+                                 $flex_orientation,
                                  $contenu,
                                  $input_suite, $help){
         if($suite)
@@ -272,7 +273,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         return "
         <section>
             <h4>$titre</h4>
-            <div class=\"fusion-$classe flex-vertical\">
+            <div class=\"fusion-$classe flex-$flex_orientation\">
                 $contenu
             </div> $div_suite
         </section>
@@ -294,9 +295,13 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
       $radioA = html_fusion_radio_id('A', $id_A);
       $radioB = html_fusion_radio_id('B', $id_B);
 
-      return "
+      return html_fusion_section(
+          'ID  <i>(Choisir l\'ID à conserver)</i>',
+          'ids',
+
+        )
       <section>
-          <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
+          <h4></h4>
           <div class=\"fusion-ids flex-horizontal\">
           $radioA
           $radioB
