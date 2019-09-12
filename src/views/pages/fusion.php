@@ -314,20 +314,21 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     }
 
     // Une fois qu'on a sélectionné qui on fusionne, on arrive ici
-    function html_fusion($personne_A, $personne_B){
-        $html_noms = html_fusion_noms($personne_A->noms)
-            . html_fusion_noms($personne_B->noms);
-        $html_prenoms = html_fusion_prenoms($personne_A->prenoms)
-            . html_fusion_prenoms($personne_B->prenoms);
-        $html_conditions = html_fusion_conditions($personne_A->conditions)
-            . html_fusion_conditions($personne_B->conditions);
-        $html_relations = html_fusion_relations($personne_A->relations)
-            . html_fusion_relations($personne_B->relations);
-        $html_ids = html_fusion_ids($personne_A->id, $personne_B->id);
-        $input_prenoms = default_input_prenoms($personne_A->prenoms, $personne_B->prenoms);
-        $input_noms = default_input_noms($personne_A->noms, $personne_B->noms);
+    function html_fusion($pA, $pB){
+        $html_noms = html_fusion_noms($pA->noms)
+            . html_fusion_noms($pB->noms);
+        $html_prenoms = html_fusion_prenoms($pA->prenoms)
+            . html_fusion_prenoms($pB->prenoms);
+        $html_conditions = html_fusion_conditions($pA->conditions)
+            . html_fusion_conditions($pB->conditions);
+        $html_relations = html_fusion_relations($pA->relations)
+            . html_fusion_relations($pB->relations);
+        $html_ids = html_fusion_ids($pA->id, $pB->id);
+        $input_prenoms = default_input_prenoms($pA->prenoms, $pB->prenoms);
+        $input_noms = default_input_noms($pA->noms, $pB->noms);
 
         echo html_fusion_debut();
+        echo html_fusion_choix_keep($pA->id, $pB->id);
         echo html_fusion_fin();
         ?>
             <section>
