@@ -350,10 +350,11 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
       $input_noms = default_input_noms($nomsA, $nomsB);
       $input_suite = "
               <input type=\"text\" name=\"noms\" placeholder=\"Ex: PERI, (de) BELGRANO\" value=\"$input_noms\">
-      "
+      ";
+
       return html_fusion_section(
           'Noms', 'noms', 'horizontal',
-          $html_nomsA $html_nomsB,
+          "$html_nomsA $html_nomsB",
           $input_suite,
           'Les noms séparés par une virgule et leurs attributs entre parenthèses si besoin'
       );
