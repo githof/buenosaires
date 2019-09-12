@@ -376,7 +376,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     }
 
     // Une fois qu'on a sélectionné qui on fusionne, on arrive ici
-    function html_fusion($pA, $pB)
+    function html_preview_fusion($pA, $pB)
     {
         echo html_fusion_debut();
 
