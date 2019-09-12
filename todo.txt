@@ -36,6 +36,8 @@ Voir DROPBOX/Organisation/CR.txt
     - écrire quelques actes tests
     - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
     - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
+    NB : pour les tests, utiliser les url get :
+    https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
     - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
       et réparer Francisco Belgrano 419 (acte 6813)
@@ -82,6 +84,7 @@ Voir DROPBOX/Organisation/CR.txt
     BUG : le nom s'affiche dans la liste des prénoms
     - confusion entre recherche et prévisualiser (désactiver le bouton
     tant qu'on n'a pas sélectionné deux)
+    - pour la sélection des ids, faire en sorte que le formulaire qui puisse aussi marcher sans ajax
 
 + classes
     - supprimer des entrées (relations, conditions, etc.)

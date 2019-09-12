@@ -214,7 +214,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
 
         $log->d("fusion actes"); // pourquoi ici ??
-	
+
 	/* idem, du coup */
         $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
         $mysqli->update("acte", ["epouse" => "$personne_keep->id"], "epouse='$personne_throw->id'");
@@ -301,6 +301,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
             </div>";
     }
 
+    // Une fois qu'on a sélectionné qui on fusionne, on arrive ici
     function html_fusion($personne_A, $personne_B){
         $html_noms = html_fusion_noms($personne_A->noms)
             . html_fusion_noms($personne_B->noms);
