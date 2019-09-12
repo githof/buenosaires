@@ -257,6 +257,28 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
       ";
     }
 
+    function html_fusion_section($titre, $classe,
+                                 $contenu,
+                                 $input_suite, $help){
+        if($suite)
+          $div_suite ="
+          <div>
+              <div class=\"help-block\">$help</div>
+              $input_suite
+          </div>
+          "
+        else $div_help = $div_suite = ""
+
+        return "
+        <section>
+            <h4>$titre</h4>
+            <div class=\"fusion-$classe flex-vertical\">
+                $contenu
+            </div> $div_suite
+        </section>
+        ";
+    }
+
     function html_fusion_radio_id($AB, $id){
         return "
             <div>
