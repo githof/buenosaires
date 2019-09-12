@@ -24,21 +24,30 @@ Voir DROPBOX/Organisation/CR.txt
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
+    x exploration [|45]
     + découper html_fusion  [1h+]
+      x code découpé [2h]
+      x renommé html_fusion en html_preview_fusion
+      x debug syntaxe [25]
+      - test : prénoms et noms s'affichent pas :(
+
       -> séparer html, recherche ajax, et appel à fusion
+
     + réécrire proprement la fonction fusion
-      - voir dans CR quel cas a posé problème
       - changer le nom de $personne_keep
       + mettre à jour tout ce qui concerne $personne_throw
         - conditions
         - voir comment ça se répercute sur le texte de l'acte
         - relations (idem pour texte de l'acte)
+
     - écrire quelques actes tests
     - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
     - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
+
     NB : pour les tests, utiliser les url get :
     https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
-    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
+
+    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base (et en nov 2018 aussi)
     - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
       et réparer Francisco Belgrano 419 (acte 6813)
 
