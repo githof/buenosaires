@@ -25,6 +25,8 @@ Voir DROPBOX/Organisation/CR.txt
 + BUG fusion
     -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
     - réécrire proprement la fonction fusion
+    - écrire quelques actes tests
+    - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
     - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
     - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
