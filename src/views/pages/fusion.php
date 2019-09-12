@@ -432,7 +432,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $mysqli->from_db($personne_A);
         $mysqli->from_db($personne_B);
 
-        echo html_fusion($personne_A, $personne_B);
+        echo html_preview_fusion($personne_A, $personne_B);
     }else{
         echo html_select_personnes();
     }
