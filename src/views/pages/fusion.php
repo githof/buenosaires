@@ -246,10 +246,10 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     }
 
     function html_fusion_debut(){
-      return "
+      return '
       <form method="get" id="fusion-form">
           <button class="btn btn-primary" id="fusion-submit">Fusionner</button>
-      ";
+      ';
     }
     function html_fusion_fin(){
       return "
