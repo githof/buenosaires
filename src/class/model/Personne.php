@@ -11,8 +11,11 @@
         var $id;
 
         var $prenoms;
+	var $prenoms_str;
         var $noms;
+	var $noms_str;
         var $relations;
+	var $relations_by_type;
         var $conditions;
 
         var $pere;
@@ -25,9 +28,12 @@
         function __construct($id = NULL){
             $this->id = $id;
             $this->prenoms = [];
+	    $this->prenoms_str = "";
             $this->noms = [];
+	    $this->noms_str = "";
             $this->conditions = [];
             $this->relations = [];
+	    $this->relations_by_type = [];
             $this->pere = NULL;
             $this->mere = NULL;
             $this->is_updated_in_db = FALSE;
@@ -41,6 +47,8 @@
                     return;
             }
             $this->prenoms[] = $prenom;
+	    $str = $this->prenoms_str;
+	    $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
         }
 
         public function add_nom($nom){
@@ -55,6 +63,8 @@
                     }
             }
             $this->noms[] = $nom;
+	    $str = $this->noms_str;
+	    $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string();
         }
 
         public function add_condition($text, $source_id){
@@ -87,6 +97,72 @@
         public function is_valid(){
             return count($this->prenoms) > 0 || count($this->noms) > 0;
         }
+
+	// En fait faudrait faire de relations_by_type l'unique
+	// champ relations, sinon va y'avoir des problème de synchro
+	// Pour le moment je vais appeler systématiquement cette
+	// fonction à chaque requête de liste de relations
+	private function dispatch_relations_by_type()
+	{
+	  $mariage = [];
+	  $parents = [];
+	  $enfants = [];
+	  $a_temoins = [];
+	  $est_temoin = [];
+	  $a_parrains = [];
+	  $est_parrain = [];
+	  
+	  foreach($this->relations as $relation)
+	  {
+            $is_source = ($this->id == $relation->personne_source->id);
+
+	    switch($relation->statut_id){
+	    case STATUT_EPOUX:
+	    case STATUT_EPOUSE:
+	      $mariage[] = $relation;
+	      break;
+	    case STATUT_PERE:
+	    case STATUT_MERE:
+	      if($is_source)
+		$enfants[] = $relation;
+	      else
+		$parents[] = $relation;
+	      break;
+	    case STATUT_TEMOIN:
+	      if($is_source)
+		$est_temoin[] = $relation;
+	      else
+		$a_temoins[] = $relation;
+	      break;
+	    case STATUT_PARRAIN:
+	      if($is_source)
+		$est_parrain[] = $relation;
+	      else
+		$a_parrains[] = $relation;
+	      break;	      
+	    }
+	  }
+
+	  $match = [
+		    'mariage' => $mariage,
+		    'parents' => $parents,
+		    'enfants' => $enfants,
+		    'a_temoins' => $a_temoins,
+		    'est_temoin' => $est_temoin,
+		    'a_parrains' => $a_parrains,
+		    'est_parrain' => $est_parrain
+		    ];
+	  foreach($match as $word => $list)
+	  {
+	    $this->relations_by_type[$word] = $list;
+	  }
+	}
+
+	public function get_relations_by_type()
+	{
+	  $this->dispatch_relations_by_type();
+	  return $this->relations_by_type;
+	}
 
         // DATABASE IO
 
@@ -158,6 +234,11 @@
                     $this->xml->addAttribute("id", "$this->id");
             }
         }
+
+	/*
+	  Import from db is in src/io/IO/Database.php from_db()
+	  (which is ugly i know)
+	 */
 
     }
 
