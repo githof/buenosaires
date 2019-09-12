@@ -262,13 +262,13 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
                                  $contenu,
                                  $input_suite, $help){
         if($suite)
-          $div_suite ="
+          $div_suite = "
           <div>
               <div class=\"help-block\">$help</div>
               $input_suite
           </div>
-          "
-        else $div_help = $div_suite = ""
+          ";
+        else $div_help = $div_suite = "";
 
         return "
         <section>
