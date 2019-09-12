@@ -268,20 +268,51 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         // je comprends pas à quoi sert le hidden ici
     }
 
-    function html_fusion_keep($id_A, $id_B){
-      echo "
+    function html_fusion_section_keep($id_A, $id_B){
+      $radioA = html_fusion_radio_id('A', $id_A);
+      $radioB = html_fusion_radio_id('B', $id_B);
+
+      return "
       <section>
           <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
-          <div class="fusion-ids flex-horizontal">
-      "
-      echo html_fusion_radio_id('A', $id_A);
-      echo html_fusion_radio_id('B', $id_B);
-      echo "
+          <div class=\"fusion-ids flex-horizontal\">
+          $radioA
+          $radioB
           </div>
       </section>
       "
     }
 
+    function html_fusion_div_prenoms($prenoms){
+        $html = "";
+        foreach($prenoms as $prenom){
+            $html .=
+                "<div id='prenom-$prenom->id' class='prenom'>"
+                .$prenom->to_string().
+                "</div>";
+        }
+        return $html;
+    }
+
+    function html_fusion_section_prenoms($prenomsA, $prenomsB){
+
+      $html_prenomsA = html_fusion_div_prenoms($pA->prenoms);
+      $html_prenomsB = html_fusion_div_prenoms($pB->prenoms);
+      $input_prenoms = default_input_prenoms($prenomsA, $prenomsB);
+      return "
+      <section>
+          <h4>Prenoms</h4>
+          <div class=\"fusion-prenoms flex-horizontal\">
+          $html_prenomsA
+          $html_prenomsB
+          </div>
+          <div>
+              <div class=\"help-block\">Les prénoms séparés par une virgule</div>
+              <input type=\"text\" name=\"prenoms\" placeholder=\"Ex: Maria, Josefa\" value=\"$input_prenoms; ?>\">
+          </div>
+      </section>
+      ";
+    }
 
     function html_fusion_noms($noms){
         $html = "";
@@ -294,17 +325,6 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
                     $attr
                     <div class='nom-nom'>$nom->nom</div>
                 </div>";
-        }
-        return $html;
-    }
-
-    function html_fusion_prenoms($prenoms){
-        $html = "";
-        foreach($prenoms as $prenom){
-            $html .=
-                "<div id='prenom-$prenom->id' class='prenom'>"
-                .$prenom->to_string().
-                "</div>";
         }
         return $html;
     }
@@ -329,29 +349,17 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     function html_fusion($pA, $pB){
         $html_noms = html_fusion_noms($pA->noms)
             . html_fusion_noms($pB->noms);
-        $html_prenoms = html_fusion_prenoms($pA->prenoms)
-            . html_fusion_prenoms($pB->prenoms);
         $html_conditions = html_fusion_conditions($pA->conditions)
             . html_fusion_conditions($pB->conditions);
         $html_relations = html_fusion_relations($pA->relations)
             . html_fusion_relations($pB->relations);
-        $input_prenoms = default_input_prenoms($pA->prenoms, $pB->prenoms);
         $input_noms = default_input_noms($pA->noms, $pB->noms);
 
         echo html_fusion_debut();
-        echo html_fusion_keep($pA->id, $pB->id);
+        echo html_fusion_section_keep($pA->id, $pB->id);
+        echo html_fusion_section_prenoms($pA->prenoms, $pB->prenoms);
         echo html_fusion_fin();
         ?>
-            <section>
-                <h4>Prenoms</h4>
-                <div class="fusion-prenoms flex-horizontal">
-                    <?php echo $html_prenoms; ?>
-                </div>
-                <div>
-                    <div class="help-block">Les prénoms séparés par une virgule</div>
-                    <input type="text" name="prenoms" placeholder="Ex: Maria, Josefa" value="<?php echo $input_prenoms; ?>">
-                </div>
-            </section>
             <section>
                 <h4>Noms</h4>
                 <div class="fusion-noms flex-horizontal">
