@@ -191,9 +191,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
  */
     function fusion($personne_keep, $personne_throw, $noms, $prenoms)
     // pour l'instant je ne fais rien, je teste juste.
-    // J'ai renommé celle qui fait en bugged_fusion, juste après
+    // J'ai renommé en bugged_fusion, juste après, celle qui fait vraiment
     {
-
+      
     }
 
     function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
@@ -233,6 +233,8 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $mysqli->delete_personne($personne_throw->id);
     }
 
+
+/*__ SELCTION PERSONNES __ */
 
     function html_select_personnes(){
         return "
@@ -413,6 +415,8 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
 
         echo html_fusion_fin();
     }
+
+/*__ MAIN __ */
 
     if(isset($ARGS["personne-A"],
             $ARGS["personne-B"],
