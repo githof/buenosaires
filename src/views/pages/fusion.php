@@ -261,7 +261,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
                                  $flex_orientation,
                                  $contenu,
                                  $input_suite, $help){
-        if($suite)
+        if($input_suite)
           $div_suite = "
           <div>
               <div class=\"help-block\">$help</div>
