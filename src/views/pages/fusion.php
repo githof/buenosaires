@@ -324,6 +324,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
       return html_fusion_section(
           'Prénoms', 'prenoms', 'horizontal',
           "$html_prenomsA $html_prenomsB",
+          $input_suite,
           'Les prénoms séparés par une virgule'
         );
     }
