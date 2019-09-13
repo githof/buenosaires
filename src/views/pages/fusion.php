@@ -314,8 +314,8 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
 
     function html_fusion_section_prenoms($prenomsA, $prenomsB)
     {
-      $html_prenomsA = html_fusion_div_prenoms($pA->prenoms);
-      $html_prenomsB = html_fusion_div_prenoms($pB->prenoms);
+      $html_prenomsA = html_fusion_div_prenoms($prenomsA);
+      $html_prenomsB = html_fusion_div_prenoms($prenomsB);
       $input_prenoms = default_input_prenoms($prenomsA, $prenomsB);
       $input_suite = "
               <input type=\"text\" name=\"prenoms\" placeholder=\"Ex: Maria, Josefa\" value=\"$input_prenoms\">
