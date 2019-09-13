@@ -99,6 +99,27 @@ function console_log( $data ){
         return $str;
     }
 
+    function renommer_personne($personne, $noms, $prenoms)
+    {
+      $global $mysqli;
+
+      $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
+      $i = 1;
+      foreach($prenoms as $prenom){
+          $mysqli->into_db($prenom);
+          $mysqli->into_db_prenom_personne($personne, $prenom, $i);
+          $i++;
+      }
+
+      $mysqli->delete("nom_personne", "personne_id='$personne->id'");
+      $i = 1;
+      foreach($noms as $nom){
+          $mysqli->into_db($nom);
+          $mysqli->into_db_nom_personne($personne, $nom, $i);
+          $i++;
+      }
+    }
+
     function parse_prenoms($prenoms_str){
         $prenoms_array = explode(",", $prenoms_str);
         $prenoms = [];
@@ -261,7 +282,7 @@ function console_log( $data ){
 
             fclose($source);
             fclose($destination);
-            
+
             return $uploadfile;
         }else{
             $alert->error("Le fichier doit être au format XML");

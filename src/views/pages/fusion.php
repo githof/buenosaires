@@ -190,10 +190,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
 
  */
     function fusion($personne_keep, $personne_throw, $noms, $prenoms)
-    // pour l'instant je ne fais rien, je teste juste.
-    // J'ai renommé en bugged_fusion, juste après, celle qui fait vraiment
+    // Voir l'ancienne version, bugged_fusion, juste après
     {
-      
+      renommer_personne($personne_keep, $noms, $prenoms);
     }
 
     function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
