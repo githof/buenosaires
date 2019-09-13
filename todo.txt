@@ -25,14 +25,15 @@ Voir DROPBOX/Organisation/CR.txt
 + BUG fusion
     -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
     x exploration [|45]
-    + découper html_fusion  [1h+]
+    x découper html_fusion  [1h+|2h45]
       x code découpé [2h]
       x renommé html_fusion en html_preview_fusion
       x debug syntaxe [25]
-      - test : prénoms et noms s'affichent pas :(
+      x test : prénoms et noms s'affichent pas (fixed) [20]
 
       -> séparer html, recherche ajax, et appel à fusion
 
+    + exploration : comment est validé le formulaire preview ?!
     + réécrire proprement la fonction fusion
       - changer le nom de $personne_keep
       + mettre à jour tout ce qui concerne $personne_throw

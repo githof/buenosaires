@@ -189,7 +189,14 @@ MAIS le prénom et le nom sont virés même quand la fusion n'est pas faite !!
 Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les relations et les conditions dans ce cas, parce que les appels sont quand même faits
 
  */
-    function fusion($personne_keep, $personne_throw, $noms, $prenoms){
+    function fusion($personne_keep, $personne_throw, $noms, $prenoms)
+    // pour l'instant je ne fais rien, je teste juste.
+    // J'ai renommé celle qui fait en bugged_fusion, juste après
+    {
+
+    }
+
+    function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
         global $mysqli, $log;
 
 	/* Déjà faudrait ptet attendre d'être sûrs que les trucs soient créés
@@ -244,6 +251,12 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
             </section>
         ";
     }
+
+/*__ PREVIEW_FUSION __ */
+/*
+  Formulaire pour prévisualiser la fusion
+  (fonction html_preview_fusion tout en bas)
+*/
 
     function html_fusion_debut(){
       return '
