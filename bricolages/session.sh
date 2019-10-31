@@ -83,6 +83,13 @@ actes_from_relations ()
 }
 # actes_from_relations > actes-belgrano.ids
 
+dates ()
+{
+  cat $xml \
+  | sed -n 's#^<ACTE num="\([0-9]*\)">.*<date>\([0-9-]*\)</date>.*$#\1;\2#p'
+}
+# dates > dates.csv
+
 #_______________________________________________________________________
 #___ big bug import 2017 ___
 
@@ -98,7 +105,7 @@ id_colon_xml ()
     awkbs='BEGIN { OFS=FS=":" }'
     awkbs=$awkbs'{ if(NF > 1) { printf("%5d", $1); $1="";}'
     awkbs=$awkbs'  print $0 }'
-    
+
     cat $xml_or_none \
 	| sed 's#\(<ACTE[^>]* id="\)\([0-9]*\)"#\2:\1\2"#' \
 	| awk "$awkbs"
@@ -111,7 +118,7 @@ rm_id_colon ()
     f_or_none=$1
     cat $f_or_none \
 	| sed 's#^ *[0-9]*:##' \
-	      
+
 }
 # cat test-colon | rm_id_colon | head -3
 
@@ -120,7 +127,7 @@ ids_id_colon ()
     f_or_none=$1
     cat $f_or_none \
 	| sed -n 's#^\( *[0-9]*\):.*$#\1#p' \
-	
+
 }
 # ids_id_colon test-colon  | head -3
 
@@ -194,7 +201,7 @@ newline_rm_id ()
     cat $f_or_none \
 	| rm_id_colon \
 	| sed 's#>#>@#g' \
-	| tr '@' '\n' 
+	| tr '@' '\n'
 }
 
 diff_with_newlines ()
@@ -266,7 +273,7 @@ diff_versions ()
 	| adjust_before \
 	| by_words \
 	| diff - now-words.txt \
-	       >| diff-words.txt    
+	       >| diff-words.txt
 }
 # diff_versions
 
