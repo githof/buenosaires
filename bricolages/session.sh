@@ -105,10 +105,10 @@ annees_triees ()
 }
 # xml | dates_triees > acte-annee-sorted.csv
 
-periode ()
+grep_date ()
 {
-  annee_debut=$1
-  annee_fin=$2
+  date=$1
+  grep "$date</date>"
 }
 
 grep_nom ()
