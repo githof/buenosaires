@@ -1,5 +1,5 @@
 
-xml=DATA/"buenosaires (7).xml"
+xml=DATA/"export-reset-2018.xml"
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
 # id_acte,epoux,epouse,periode
@@ -104,6 +104,12 @@ annees_triees ()
   | sort -t';' -k2,2
 }
 # xml | dates_triees > acte-annee-sorted.csv
+
+periode ()
+{
+  annee_debut=$1
+  annee_fin=$2
+}
 
 grep_nom ()
 {
