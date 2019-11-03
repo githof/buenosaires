@@ -135,6 +135,40 @@ get_by_decade ()
 }
 # get_by_decade 179
 
+get_decades ()
+{
+  decades="$*"
+
+  for dec in $decades
+  do
+    get_by_decade $dec
+  done
+}
+# get_decades 178 179 180
+
+make_decades ()
+{
+  century=$1
+  shift
+  ddd="$*"
+  decades=""
+  for d in $ddd
+  do
+    decades="$decades $century$d"
+  done
+  echo $decades
+}
+#   make_decades 17 4 5 6 7 8 9
+
+get_periode ()
+{
+  decades=`make_decades 17 4 5 6 7 8 9`
+  get_decades $decades
+  decades=`make_decades 18 0 1 2`
+  get_decades $decades
+}
+# get_periode | grep_nom belgrano
+
 grep_nom ()
 {
   nom="$1"
