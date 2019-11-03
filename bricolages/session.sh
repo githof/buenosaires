@@ -112,13 +112,28 @@ grep_date ()
 }
 # xml | grep_date 1799
 
-get_date ()
+get_by_date ()
 {
   date=$1
   xml \
   | grep_date "$date"
 }
-# grep_date 1799
+# get_by_date 1799
+
+grep_decade ()
+{
+  decade=$1
+  grep "$decade[0-9]</date>"
+}
+# xml | grep_decade 179
+
+get_by_decade ()
+{
+  decade="$1"
+  xml \
+  | grep_decade "$decade"
+}
+# get_by_decade 179
 
 grep_nom ()
 {
@@ -134,14 +149,14 @@ grep_noms ()
 }
 # xml | grep_noms noms.txt
 
-get_nom_date ()
+get_by_nom_date ()
 {
   nom="$1"
   date="$2"
-  get_date "$date" \
+  get_by_date "$date" \
   | grep_nom "$nom"
 }
-# get_nom_date Lezica 1799
+# get_by_nom_date Lezica 1799
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
