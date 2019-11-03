@@ -93,18 +93,17 @@ actes_from_relations ()
 
 dates ()
 {
-  cat $xml \
-  | sed -n 's#^<ACTE num="\([0-9]*\)">.*<date>\([0-9-]*\)</date>.*$#\1;\2#p'
+  sed -n 's#^<ACTE num="\([0-9]*\)">.*<date>\([0-9-]*\)</date>.*$#\1;\2#p'
 }
-# dates > dates.csv
+# xml | dates > dates.csv
 
-dates_triees ()
+annees_triees ()
 {
   dates \
   | sed 's#[0-9]*-[0-9]*-##' \
   | sort -t';' -k2,2
 }
-# dates_triees > acte-annee-sorted.csv
+# xml | dates_triees > acte-annee-sorted.csv
 
 grep_nom ()
 {
