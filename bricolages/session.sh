@@ -106,7 +106,12 @@ dates_triees ()
 }
 # dates_triees > acte-annee-sorted.csv
 
-
+grep_nom ()
+{
+  nom="$1"
+  xml \
+  | grep $nom
+}
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
