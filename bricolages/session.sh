@@ -110,13 +110,31 @@ grep_date ()
   date=$1
   grep "$date</date>"
 }
+# xml | grep_date 1799
+
+get_date ()
+{
+  date=$1
+  xml \
+  | grep_date "$date"
+}
+# grep_date 1799
 
 grep_nom ()
 {
   nom="$1"
-  xml \
-  | grep $nom
+  grep $nom
 }
+# xml | grep_nom Lezica
+
+get_nom_date ()
+{
+  nom="$1"
+  date="$2"
+  get_date "$date" \
+  | grep_nom "$nom"
+}
+# get_nom_date Lezica 1799
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
