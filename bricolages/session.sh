@@ -90,6 +90,14 @@ dates ()
 }
 # dates > dates.csv
 
+dates_triees ()
+{
+  dates \
+  | sed 's#[0-9]*-[0-9]*-##' \
+  | sort -t';' -k2,2
+}
+# dates_triees > acte-annee-sorted.csv
+
 #_______________________________________________________________________
 #___ big bug import 2017 ___
 
