@@ -127,6 +127,13 @@ grep_nom ()
 }
 # xml | grep_nom lezica
 
+grep_noms ()
+{
+  file="$1"
+  grep -i -f $file
+}
+# xml | grep_noms noms.txt
+
 get_nom_date ()
 {
   nom="$1"
