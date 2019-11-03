@@ -9,6 +9,11 @@ relations=DATAWEB/relations.csv
 bids=belgrano.ids
 actesb=actes-belgrano.ids
 
+xml ()
+{
+  cat $xml
+}
+
 get_ids ()
 {
     f="$1"
@@ -83,6 +88,9 @@ actes_from_relations ()
 }
 # actes_from_relations > actes-belgrano.ids
 
+#___________________________________________________________________
+# nov 2019 : corpus
+
 dates ()
 {
   cat $xml \
@@ -97,6 +105,8 @@ dates_triees ()
   | sort -t';' -k2,2
 }
 # dates_triees > acte-annee-sorted.csv
+
+
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
