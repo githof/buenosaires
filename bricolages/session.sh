@@ -11,7 +11,7 @@ actesb=actes-belgrano.ids
 
 xml ()
 {
-  cat $xml
+  cat "$xml"
 }
 
 get_ids ()
