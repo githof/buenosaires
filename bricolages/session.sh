@@ -123,9 +123,9 @@ get_date ()
 grep_nom ()
 {
   nom="$1"
-  grep $nom
+  grep -i $nom
 }
-# xml | grep_nom Lezica
+# xml | grep_nom lezica
 
 get_nom_date ()
 {
