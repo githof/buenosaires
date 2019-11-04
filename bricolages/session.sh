@@ -93,7 +93,7 @@ actes_from_relations ()
 
 dates ()
 {
-  sed -n 's#^<ACTE num="\([0-9]*\)">.*<date>\([0-9-]*\)</date>.*$#\1;\2#p'
+  sed -n 's#^<ACTE id="\([0-9]*\)">.*<date>\([0-9-]*\)</date>.*$#\1;\2#p'
 }
 # xml | dates > dates.csv
 
@@ -103,7 +103,7 @@ annees_triees ()
   | sed 's#[0-9]*-[0-9]*-##' \
   | sort -t';' -k2,2
 }
-# xml | dates_triees > acte-annee-sorted.csv
+# xml | annees_triees > acte-annee-sorted.csv
 
 grep_date ()
 {
@@ -191,6 +191,11 @@ get_by_nom_date ()
   | grep_nom "$nom"
 }
 # get_by_nom_date Lezica 1799
+
+epoux_non_balises ()
+{
+  grep -v '<epoux.*<prenom.*<epouse.*<prenom.*</epouse>'
+}
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
