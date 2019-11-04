@@ -196,6 +196,7 @@ epoux_non_balises ()
 {
   grep -v '<epoux.*<prenom.*<epouse.*<prenom.*</epouse>'
 }
+# get_periode | grep_nom lezica | epoux_non_balises | annees_triees > actes-lezica-todo.csv
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
