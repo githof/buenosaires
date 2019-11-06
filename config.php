@@ -50,8 +50,10 @@ $access_pages  = [
     "export" => 2,
     "acte" => 1,
     "personne" => 1,
-    "fusion" => 2,
-    "dissocier" => 2,
+    // je désactive fusion et dissoc en attendant le bug fix
+    "fusion" => 3,
+    "dissocier" => 3,
+    //
     "administration" => 3,
     "logs" => 3,
     "table" => 1,
