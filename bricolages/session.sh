@@ -204,10 +204,17 @@ update_periode_corpus ()
 {
   get_periode \
   >| $periode
-  
+
   cat $periode \
   | grep "$REGEXP_EPOUX_BALISES" \
   >| $corpus
+}
+
+prenoms_noms ()
+{
+  sed -n 's#\(<[pre]*nom[^<]*<\/[pre]*nom>\)#\1#pg'
+#  | tr '@' '\n' \
+#  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
 }
 
 #_______________________________________________________________________
