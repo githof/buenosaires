@@ -1,10 +1,14 @@
 
 xml=LASTDATA/matrimonios.xml
+periode=LASTDATA/periode.xml
+corpus=LASTDATA/corpus.xml
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
 # id_acte,epoux,epouse,periode
 relations=DATAWEB/relations.csv
 # id,personne1,personne2,type,periode
+
+REGEXP_EPOUX_BALISES='<epoux.*<prenom.*<epouse.*<prenom.*</epouse>'
 
 bids=belgrano.ids
 actesb=actes-belgrano.ids
@@ -192,9 +196,19 @@ get_by_nom_date ()
 
 epoux_non_balises ()
 {
-  grep -v '<epoux.*<prenom.*<epouse.*<prenom.*</epouse>'
+  grep -v "$REGEXP_EPOUX_BALISES"
 }
 # get_periode | grep_nom lezica | epoux_non_balises | annees_triees > actes-lezica-todo.csv
+
+update_periode_corpus ()
+{
+  get_periode \
+  >| $periode
+  
+  cat $periode \
+  | grep "$REGEXP_EPOUX_BALISES" \
+  >| $corpus
+}
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
