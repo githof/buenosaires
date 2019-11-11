@@ -247,6 +247,14 @@ nom_plus_un ()
 }
 # nom_plus_un belgrano
 
+nom_non_balise ()
+{
+  nom="$1"
+  periode \
+  | grep_nom "$nom" \
+  | epoux_non_balises
+}
+
 #_______________________________________________________________________
 #___ big bug import 2017 ___
 
