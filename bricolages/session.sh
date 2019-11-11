@@ -212,7 +212,7 @@ update_periode_corpus ()
 
 prenoms_noms ()
 {
-  sed -n 's#\(<[pre]*nom[^<]*<\/[pre]*nom>\)#\1#pg'
+  sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
 #  | tr '@' '\n' \
 #  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
 }
