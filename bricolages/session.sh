@@ -121,7 +121,7 @@ grep_date ()
 {
   date=$1
   grep "$date</date>"
-}@
+}
 # xml | grep_date 1799
 
 get_by_date ()
