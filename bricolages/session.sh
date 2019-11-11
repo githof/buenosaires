@@ -23,7 +23,7 @@ corpus ()
   cat "$corpus"
 }
 
-perdiode ()
+periode ()
 {
   cat "$periode"
 }
