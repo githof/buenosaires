@@ -211,10 +211,17 @@ update_periode_corpus ()
 }
 
 prenoms_noms ()
+# en chantier, voir avec grep -o
 {
   sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
 #  | tr '@' '\n' \
 #  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
+}
+
+noms ()
+{
+  grep -o '<nom[^>]*>[^<]*<\/nom>' \
+  | sed 's#<[^>]*>##g'
 }
 
 #_______________________________________________________________________
