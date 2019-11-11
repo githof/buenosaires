@@ -231,8 +231,21 @@ prenoms_noms ()
 noms ()
 {
   grep -o '<nom[^>]*>[^<]*<\/nom>' \
-  | sed 's#<[^>]*>##g'
+  | sed 's#<[^>]*> *##g' \
+  | sort \
+  | uniq -c \
+  | sort -r
 }
+# xml | extract_actes 2434 | noms
+
+nom_plus_un ()
+{
+  nom="$1"
+  periode \
+  | grep_nom "$nom" \
+  | noms
+}
+# nom_plus_un belgrano
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
