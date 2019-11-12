@@ -15,6 +15,7 @@ Voir DROPBOX/Organisation/CR.txt
   - acte 4968 : la mère de l'épouse (Juana Belgrano !!) est sortie de la balise et les prénoms de l'épouse  sont incorrectement balisés
   - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
   - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
+  - acte 5911 : pourquoi le père de l'époux a un id mais n'est pas balisé ??
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
