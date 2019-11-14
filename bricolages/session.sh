@@ -51,6 +51,12 @@ grep_ids ()
 }
 # grep_ids "404 413" $xml_belgrano
 
+ids_actes ()
+{
+  sed -n 's#^<ACTE id="\([0-9]*\)".*$#\1#p'
+}
+# get_by_date 1799 | ids_actes
+
 extract_actes ()
 {
     ids=$1
