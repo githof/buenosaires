@@ -1,6 +1,9 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
+- balise mention
+  signaler une personne présente (voir pex 5495, Manuel de la Torre)
+
 -> bug droits (6 nov 2019)
   depuis changement accès 338ec04 dans config.php, seul un admin peut éditer le xml, je comprends pas pourquoi
 
