@@ -194,6 +194,14 @@ grep_nom ()
 }
 # xml | grep_nom lezica
 
+grep_prenom ()
+{
+  prenom="$1"
+  nom="$2"
+  grep -i "$prenom.*$nom"
+}
+# xml | grep_prenom pastor lezica
+
 grep_noms ()
 {
   file="$1"
@@ -228,11 +236,16 @@ update_periode_corpus ()
 
 update_git ()
 {
-  if [ "$1" != "" ]
+  if [ "$1" = "" ]
   then
-    msg="$1"
+    echo "message ? [update matrimonios]"
+    read msg
+    if [ "$msg" = "" ]
+    then
+      msg="update matrimonios"
+    fi
   else
-    msg="update matrimonios"
+    msg="$1"
   fi
 
   mv ~/Downloads/export.xml $xml
