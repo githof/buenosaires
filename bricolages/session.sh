@@ -226,6 +226,24 @@ update_periode_corpus ()
   >| $corpus
 }
 
+update_git ()
+{
+  if [ "$1" != "" ]
+  then
+    msg="$1"
+  else
+    msg="update matrimonios"
+  fi
+
+  mv ~/Downloads/export.xml $xml
+  cd LASTDATA
+  git ci "$msg"
+  cd -
+  update_periode_corpus
+  cd -
+  git ci 'update periode corpus'
+}
+
 prenoms_noms ()
 # en chantier, voir avec grep -o
 {
