@@ -28,6 +28,14 @@ periode ()
   cat "$periode"
 }
 
+on ()
+{
+  src="$1"
+  shift
+  "$src" | $*
+}
+# on xml grep_prenom pastor lezica
+
 get_ids ()
 {
     f="$1"
