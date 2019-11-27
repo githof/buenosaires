@@ -256,7 +256,12 @@ update_git ()
     msg="$1"
   fi
 
-  mv ~/Downloads/export.xml $xml
+  export=~/Downloads/export.xml
+  cat "$export" \
+  | grep -v '^ *$' \
+  >| $xml
+  rm "$export"
+  
   cd LASTDATA
   git ci "$msg"
   cd -
