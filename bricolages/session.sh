@@ -261,7 +261,7 @@ update_git ()
   | grep -v '^ *$' \
   >| $xml
   rm "$export"
-  
+
   cd LASTDATA
   git ci "$msg"
   cd -
@@ -303,6 +303,15 @@ nom_non_balise ()
   periode \
   | grep_nom "$nom" \
   | epoux_non_balises
+}
+
+non_balises_annee ()
+{
+  annee=$1
+  periode \
+  | grep_date $annee \
+  | epoux_non_balises \
+  | ids_actes
 }
 
 #_______________________________________________________________________
