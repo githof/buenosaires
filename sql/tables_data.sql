@@ -4,7 +4,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 --
--- Tables pour les données 
+-- Tables pour les données
 --
 -- -----------------------------------------------------
 
@@ -279,11 +279,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `buenosaires`;
-INSERT INTO `buenosaires`.`variable` (`id`, `nom`, `valeur`) VALUES (NULL, 'PERSONNE_ID_MAX', '10000');
+INSERT INTO `buenosaires`.`variable` (`id`, `nom`, `valeur`) VALUES (NULL, 'PERSONNE_ID_MAX', '13834');
 
 COMMIT;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
