@@ -78,6 +78,14 @@ extract_actes ()
 # echo $ids
 # xml | extract_actes "$ids"
 
+ids_personnes ()
+{
+  sed 's#<ACTE id="[0-9]*">##' \
+  | grep -o 'id="[0-9]*"' \
+  | sed 's#id="\([0-9]*\)"#\1#' \
+  | sort -n
+}
+
 filter_csv ()
 {
     f_ids=$1
