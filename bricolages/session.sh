@@ -85,6 +85,7 @@ ids_personnes ()
   | sed 's#id="\([0-9]*\)"#\1#' \
   | sort -n
 }
+# xml | ids_personnes | tail
 
 filter_csv ()
 {
