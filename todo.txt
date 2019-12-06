@@ -41,6 +41,7 @@ Voir DROPBOX/Organisation/CR.txt
       et réparer Francisco Belgrano 419 (acte 6813)
 
 + admin
+    -> problème de droits pour le log, y'a plus de log…
     -> fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
 
