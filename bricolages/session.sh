@@ -322,6 +322,7 @@ non_balises_annee ()
   | epoux_non_balises \
   | ids_actes
 }
+# non_balises_annee 1795 > NICOLE/actes-1795.txt
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
