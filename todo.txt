@@ -76,6 +76,7 @@ Voir DROPBOX/Organisation/CR.txt
     -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
+    - dans le résultat : faire apparaître explicitement le nom recherché
 
 + fusion
     BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)
