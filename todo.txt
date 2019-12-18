@@ -1,6 +1,12 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
+- balise mention
+  signaler une personne présente (voir pex 5495, Manuel de la Torre)
+
+-> bug droits (6 nov 2019)
+  depuis changement accès 338ec04 dans config.php, seul un admin peut éditer le xml, je comprends pas pourquoi
+
 -> export
    -> relation dans les deux sens
    - virer les accents (idéalement, option pour les garder)
@@ -9,6 +15,10 @@ Voir DROPBOX/Organisation/CR.txt
   - GREGORIO (de las Heras et de Espinoza)
   - Jose Manuel de ALTOLAGUIRRE
   (JOSE à virer du nom : fusion mal passée ?)
+  - acte 4968 : la mère de l'épouse (Juana Belgrano !!) est sortie de la balise et les prénoms de l'épouse  sont incorrectement balisés
+  - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
+  - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
+  - acte 5911 : pourquoi le père de l'époux a un id mais n'est pas balisé ??
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
@@ -23,13 +33,15 @@ Voir DROPBOX/Organisation/CR.txt
     - par exemple sur les résultats d'une recherche	de personnes
 
 + BUG fusion
-    -> voir CR.txt 17 oct 2018
-    - réparer (!)
+    -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
+    - réécrire proprement la fonction fusion
+    - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
     - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
       et réparer Francisco Belgrano 419 (acte 6813)
 
 + admin
+    -> problème de droits pour le log, y'a plus de log…
     -> fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
 
@@ -60,10 +72,15 @@ Voir DROPBOX/Organisation/CR.txt
 + export
     - gdf
 
++ import
+    - vérifier ce qui se passe sur les noms (parfois ça doublonne)
+    - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment)
+
 + recherche
     -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
     - input text en plus de la liste
     - possibilité de ne mettre que l'année
+    - dans le résultat : faire apparaître explicitement le nom recherché
 
 + fusion
     BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)

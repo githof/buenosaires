@@ -28,6 +28,14 @@ periode ()
   cat "$periode"
 }
 
+on ()
+{
+  src="$1"
+  shift
+  "$src" | $*
+}
+# on xml grep_prenom pastor lezica
+
 get_ids ()
 {
     f="$1"
@@ -69,6 +77,15 @@ extract_actes ()
 # ids=`cat  actes-belgrano.ids`
 # echo $ids
 # xml | extract_actes "$ids"
+
+ids_personnes ()
+{
+  sed 's#<ACTE id="[0-9]*">##' \
+  | grep -o 'id="[0-9]*"' \
+  | sed 's#id="\([0-9]*\)"#\1#' \
+  | sort -n
+}
+# xml | ids_personnes | tail
 
 filter_csv ()
 {
@@ -194,6 +211,14 @@ grep_nom ()
 }
 # xml | grep_nom lezica
 
+grep_prenom ()
+{
+  prenom="$1"
+  nom="$2"
+  grep -i "$prenom.*$nom"
+}
+# xml | grep_prenom pastor lezica
+
 grep_noms ()
 {
   file="$1"
@@ -224,6 +249,35 @@ update_periode_corpus ()
   cat $periode \
   | grep "$REGEXP_EPOUX_BALISES" \
   >| $corpus
+}
+
+update_git ()
+{
+  if [ "$1" = "" ]
+  then
+    echo "message ? [update matrimonios]"
+    read msg
+    if [ "$msg" = "" ]
+    then
+      msg="update matrimonios"
+    fi
+  else
+    msg="$1"
+  fi
+
+  export=~/Downloads/export.xml
+  cat "$export" \
+  | grep -v '^ *$' \
+  >| $xml
+  rm "$export"
+
+  cd LASTDATA
+  git ci "$msg"
+  cd -
+  update_periode_corpus
+  cd -
+  git ci 'update periode corpus'
+  echo "Attention $PWD"
 }
 
 prenoms_noms ()
@@ -260,6 +314,16 @@ nom_non_balise ()
   | grep_nom "$nom" \
   | epoux_non_balises
 }
+
+non_balises_annee ()
+{
+  annee=$1
+  periode \
+  | grep_date $annee \
+  | epoux_non_balises \
+  | ids_actes
+}
+# non_balises_annee 1795 > NICOLE/actes-1795.txt
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
