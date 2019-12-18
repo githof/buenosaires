@@ -291,11 +291,12 @@ update_git ()
 prenoms_noms ()
 # en chantier, voir avec grep -o
 {
-#  grep -oE '(<prenom[^>]*>[^<]*<\/prenom>)*[^<]*(<nom[^>]*>[^<]*<\/nom>)*'
-  sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
+  grep -oE '(<prenom[^>]*>[^<]*<\/prenom>)+[^<]*(<nom[^>]*>[^<]*<\/nom>)+'
+#  sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
 #  | tr '@' '\n' \
 #  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
 }
+# acte 2794 | prenoms_noms
 
 noms ()
 {
