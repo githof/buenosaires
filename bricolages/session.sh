@@ -74,6 +74,14 @@ extract_actes ()
 # xml | extract_actes "806 925 927"
 # xml | extract_actes "2434 2435 3756 3757 528 529 530 531 534 538 538 539 540 556 557 558 558 559 566 568 570 571 572 572 573 574 576 577 578 578 579 580 582 594 595 596 597 604 606 642 643 648 649 654 654 655 656 656 657 688 689 766 767 782 783 784 785 788 789 789 790 791 803 804 805 806 807 811 813 911 912 913 913 914 915 915 916 917 919 920 921 922 925 927 929"
 
+acte ()
+{
+  id=$1
+  xml \
+  | grep 'ACTE id="'$id'"'
+}
+#acte 2434
+
 # ids=`cat  actes-belgrano.ids`
 # echo $ids
 # xml | extract_actes "$ids"
@@ -283,6 +291,7 @@ update_git ()
 prenoms_noms ()
 # en chantier, voir avec grep -o
 {
+#  grep -oE '(<prenom[^>]*>[^<]*<\/prenom>)*[^<]*(<nom[^>]*>[^<]*<\/nom>)*'
   sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
 #  | tr '@' '\n' \
 #  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
