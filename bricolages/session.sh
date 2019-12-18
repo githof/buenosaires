@@ -288,15 +288,14 @@ update_git ()
   echo "Attention $PWD"
 }
 
-prenoms_noms ()
-# en chantier, voir avec grep -o
+noms_complets ()
 {
-  grep -oE '(<prenom[^>]*>[^<]*<\/prenom>)+[^<]*(<nom[^>]*>[^<]*<\/nom>)+'
+  grep -oE '(<prenom[^>]*>[^<]*<\/prenom>[^<]*)+([^<]*<nom[^>]*>[^<]*<\/nom>)+'
 #  sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
 #  | tr '@' '\n' \
 #  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
 }
-# acte 2794 | prenoms_noms
+# acte 2794 | noms_complets
 
 noms ()
 {
