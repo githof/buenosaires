@@ -297,6 +297,12 @@ noms_complets ()
 }
 # acte 2794 | noms_complets
 
+untag ()
+{
+  sed 's#<[^>]*>##g'
+}
+# acte 10535 | noms_complets | untag
+
 noms ()
 {
   grep -o '<nom[^>]*>[^<]*<\/nom>' \
