@@ -252,7 +252,7 @@ epoux_non_balises ()
 scan_nom ()
 {
   xml \
-  | grep_nom $* \
+  | grep_nom "$*" \
   | epoux_non_balises \
   | less
 }
@@ -260,8 +260,10 @@ scan_nom ()
 
 scan_prenom ()
 {
+  prenom="$1"
+  nom="$2"
   xml \
-  | grep_prenom $* \
+  | grep_prenom "$prenom" "$nom" \
   | epoux_non_balises \
   | less
 }
