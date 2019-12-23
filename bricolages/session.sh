@@ -249,6 +249,24 @@ epoux_non_balises ()
 }
 # get_periode | grep_nom lezica | epoux_non_balises | annees_triees > actes-lezica-todo.csv
 
+scan_nom ()
+{
+  xml \
+  | grep_nom $* \
+  | epoux_non_balises \
+  | less
+}
+# scan_nom caballero
+
+scan_prenom ()
+{
+  xml \
+  | grep_prenom $* \
+  | epoux_non_balises \
+  | less
+}
+# scan_prenom francisco caballero
+
 update_periode_corpus ()
 {
   get_periode \
@@ -302,6 +320,15 @@ untag ()
   sed 's#<[^>]*>##g'
 }
 # acte 10535 | noms_complets | untag
+
+noms_acte ()
+{
+  acte="$1"
+  acte "$acte" \
+  | noms_complets \
+  | untag
+}
+# noms_acte 10535
 
 noms ()
 {
