@@ -54,6 +54,7 @@ Voir DROPBOX/Organisation/CR.txt
     - dispatcher io/Database.php/from_db() en méthode de chaque classe
     - factoriser html_personne_relations, voire dispatcher dans Personne
     - virer Personne->relations pour le remplacer complètement par _by_type
+    - fermer les connexions à la base (j'ai l'impression qu'elles le sont rarement)
 
 + édition du xml
     - glitch sur la flèche gauche (remonter) quand le mot est petit,
@@ -74,6 +75,10 @@ Voir DROPBOX/Organisation/CR.txt
 
 + export
     - gdf
+
++ import
+    - vérifier ce qui se passe sur les noms (parfois ça doublonne)
+    - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment)
 
 + recherche
     -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
@@ -105,7 +110,6 @@ Voir DROPBOX/Organisation/CR.txt
       bon, je crois qu'y en a genre 8, j'ai fait le 1086
       ATTENTION aux ids nouveaux
     - dump pour Access
-    - mettre le fichier xml lui-même sur un git
 
 + interne
     -> sauvegarder le fichier de log dans history quand atteint la

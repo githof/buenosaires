@@ -277,6 +277,7 @@ update_git ()
   update_periode_corpus
   cd -
   git ci 'update periode corpus'
+  echo "Attention $PWD"
 }
 
 prenoms_noms ()
