@@ -212,6 +212,13 @@ get_periode ()
 }
 # get_periode | grep_nom belgrano
 
+get_periode_test ()
+{
+  corpus \
+  | grep_date '\(179[5-9]\|1800\)'
+}
+# get_periode_test
+
 grep_nom ()
 {
   nom="$1"
