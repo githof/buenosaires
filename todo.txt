@@ -22,6 +22,7 @@ Voir DROPBOX/Organisation/CR.txt
   - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
   - acte 5911 : pourquoi le père de l'époux a un id mais n'est pas balisé ??
   - Ventura n'est pas un prénom (Juana, 13181)
+  - FUSION : Maria Mercedes Sarratea 152, 683
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
@@ -78,6 +79,7 @@ Voir DROPBOX/Organisation/CR.txt
 
 + import
     - vérifier ce qui se passe sur les noms (parfois ça doublonne)
+    par ex Maria Mercedes Sarratea 152, 683)
     - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment)
 
 + recherche
