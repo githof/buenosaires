@@ -2,6 +2,7 @@
 xml=LASTDATA/matrimonios.xml
 periode=LASTDATA/periode.xml
 corpus=LASTDATA/corpus.xml
+periode_test=LASTDATA/periode-test.xml
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
 # id_acte,epoux,epouse,periode
@@ -284,6 +285,9 @@ update_periode_corpus ()
   cat $periode \
   | grep "$REGEXP_EPOUX_BALISES" \
   >| $corpus
+
+  get_periode_test \
+  >| $periode_test
 }
 
 update_git ()
