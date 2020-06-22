@@ -38,7 +38,7 @@
 	  }
 	  echo PHP_EOL;
 	}
-	
+
         function export_personnes(){
             global $mysqli;
 
@@ -47,7 +47,7 @@
 	    $this->export_line(array("id","noms","prenoms"));
 
 	    $personnes = $mysqli->get_personnes(FALSE);
-	    
+
 	    foreach($personnes as $id => $personne)
 	    {
 	      /*
@@ -104,7 +104,35 @@
 	  $date = $relation->get_date();
 	  $line[] = "$date";
 	}
-	
+
+  private function export_relation($relation,
+                      $names, $dates, $reverse)
+  {
+    $line = [];
+    $line[] = $reverse ? -$relation->id : $relation->id;
+    if($reverse){
+      $this->add_personne_to_line($line,
+          $relation->personne_destination,
+          $names);
+      $this->add_personne_to_line($line,
+          $relation->personne_source,
+          $names);
+    }
+    else {
+      $this->add_personne_to_line($line,
+          $relation->personne_source,
+          $names);
+      $this->add_personne_to_line($line,
+          $relation->personne_destination,
+          $names);
+    }
+    $line[] = $relation->get_statut_name();
+    if($dates)
+      $this->add_date($line, $relation);
+
+    $this->export_line($line);
+  }
+
         function export_relations($names = FALSE, $dates = FALSE){
             global $mysqli;
 
@@ -128,19 +156,10 @@
                     $relation = new Relation();
                     $relation->result_from_db($row);
 
-		    $line = [];
-		    $line[] = $relation->id;
-		    $this->add_personne_to_line($line,
-						$relation->personne_source,
-						$names);
-		    $this->add_personne_to_line($line,
-						$relation->personne_destination,
-						$names);
-		    $line[] = $relation->get_statut_name();
-		    if($dates)
-		      $this->add_date($line, $relation);
-		    
-		    $this->export_line($line);
+                    $this->export_relation(
+                      $relation, $names, $dates, FALSE);
+                    $this->export_relation(
+                      $relation, $names, $dates, TRUE);
                 }
             }
         }
