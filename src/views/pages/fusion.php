@@ -63,25 +63,29 @@
       return $dispatch_actes;
     }
 
+    function traite_dispatch_actes($operation, $dispatch_actes,
+                                   $throw_id, $keep_id = null)
+    {
+      global $mysqli;
+
+      $str = array_to_string_with_separator($dispatch_actes[$operation], ", ");
+      $req = "condition_id = '$throw_id' AND acte_id IN ($str)";
+      if($operation = 'delete')
+        $mysqli->delete("acte_has_condition", $req);
+      else
+        $mysqli->update("acte_has_condition",
+                       ["condition_id" => "$keep_id"],
+                       $req);
+    }
+
     function fusion_condition($keep, $throw)
     {
+      global $mysqli;
+      
       $dispatch_actes = dispatch_actes_condition($throw->id);
-
-      if(count($dispatch_actes['delete']) > 0){
-          $str = array_to_string_with_separator($dispatch_actes['delete'], ", ");
-          $req = "condition_id = '$throw->id' AND acte_id IN ($str)";
-          $mysqli->delete("acte_has_condition", $req);
-      }
-
-      if(count($dispatch_actes['update']) > 0){
-          $str = array_to_string_with_separator($dispatch_actes['update'], ", ");
-          $req = "condition_id = '$throw->id' AND acte_id IN ($str)"
-          $mysqli->update("acte_has_condition",
-                         ["condition_id" => "$same->id"],
-                         $req);
-      }
-
-      $mysqli->delete("condition", "id = '$condition_throw->id'");
+      traite_dispatch_actes('delete', $dispatch_actes, $throw->id);
+      traite_dispatch_actes('update', $dispatch_actes, $throw->id, $keep->id);
+      $mysqli->delete("condition", "id = '$throw->id'");
     }
 
     function fusion_conditions($personne_keep, $personne_throw){
