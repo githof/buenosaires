@@ -50,7 +50,7 @@
       $result = $mysqli->select("acte_has_condition",
                                ["acte_id"],
                                 "condition_id = '$id'");
-                                
+
       if($result && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $acte_id = $row["acte_id"]
@@ -67,14 +67,18 @@
     {
       $dispatch_actes = dispatch_actes_condition($throw->id);
 
-      if(count($acte_id_delete) > 0){
-          $str = array_to_string_with_separator($acte_id_delete, ", ");
-          $mysqli->delete("acte_has_condition", "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
+      if(count($dispatch_actes['delete']) > 0){
+          $str = array_to_string_with_separator($dispatch_actes['delete'], ", ");
+          $req = "condition_id = '$throw->id' AND acte_id IN ($str)";
+          $mysqli->delete("acte_has_condition", $req);
       }
 
-      if(count($acte_id_update) > 0){
-          $str = array_to_string_with_separator($acte_id_update, ", ");
-          $mysqli->update("acte_has_condition", ["condition_id" => "$same->id"], "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
+      if(count($dispatch_actes['update']) > 0){
+          $str = array_to_string_with_separator($dispatch_actes['update'], ", ");
+          $req = "condition_id = '$throw->id' AND acte_id IN ($str)"
+          $mysqli->update("acte_has_condition",
+                         ["condition_id" => "$same->id"],
+                         $req);
       }
 
       $mysqli->delete("condition", "id = '$condition_throw->id'");
