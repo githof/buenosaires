@@ -50,7 +50,7 @@ Voir DROPBOX/Organisation/CR.txt
     + exploration : comment est validé le formulaire preview ?!
     + réécrire proprement la fonction fusion
       + mettre à jour tout ce qui contient $personne_throw->id
-        - table conditions
+        x table conditions  [1h35]
         - table relations
         - acte
         - voir comment ça se répercute sur le texte de l'acte

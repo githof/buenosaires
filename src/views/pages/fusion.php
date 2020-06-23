@@ -105,13 +105,11 @@
         }
     }
 
-    // À virer une fois réécrit
-    function fusion_relations_old($personne_keep, $personne_throw){
+    function fusion_relations($personne_keep, $personne_throw){
         global $mysqli, $log;
 
         $log->d("fusion relations");
         foreach($personne_throw->relations as $relation_throw){
-            $is_source_throw = $relation_throw->personne_source->id == $personne_throw->id;
             $same = has_same_relation($personne_keep->relations, $relation_throw, $personne_keep, $personne_throw);
             if($same != FALSE){
                 $acte_id_delete = [];
@@ -138,9 +136,11 @@
 
                 $mysqli->delete("relation", "id='$relation_throw->id'");
             }else{
-                $pers = "pers_destination_id";
-                if($is_source_throw)
+                if($relation_throw->personne_source->id == $personne_throw->id)
                     $pers = "pers_source_id";
+                else
+                    $pers = "pers_destination_id";
+                    
                 $mysqli->update("relation", ["$pers" => "$personne_keep->id"], "id = '$relation_throw->id'");
             }
         }
