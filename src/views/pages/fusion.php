@@ -27,21 +27,23 @@
         return FALSE;
     }
 
-    function dispatch_actes_condition($id)
+    function dispatch_actes($field, $id, $keep_actes)
+    // $field = 'condition' ou 'relation'
+    // $id = id d'une condition ou d'une relation
     {
       $dispatch_actes = array(
         'delete' => [],
         'update' => []
       );
 
-      $result = $mysqli->select("acte_has_condition",
+      $result = $mysqli->select("acte_has_$field",
                                ["acte_id"],
-                                "condition_id = '$id'");
+                                "$field"."_id = '$id'");
 
       if($result && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $acte_id = $row["acte_id"]
-            if(find_acte($acte_id, $keep->actes))
+            if(find_acte($acte_id, $keep_actes))
                 $dispatch_actes['delete'][] = $acte_id;
             else
                 $dispatch_actes['update'][] = $acte_id;
@@ -50,29 +52,40 @@
       return $dispatch_actes;
     }
 
-    function traite_dispatch_actes($operation, $dispatch_actes,
+    function traite_dispatch_actes($field, $operation, $dispatch_actes,
                                    $throw_id, $keep_id = null)
+    // $field = 'condition' ou 'relation'
+    // $operation = 'delete' ou 'update'
     {
       global $mysqli;
 
+      if(count($dispatch_actes[$operation]) == 0)
+        return;
+
       $str = array_to_string_with_separator($dispatch_actes[$operation], ", ");
-      $req = "condition_id = '$throw_id' AND acte_id IN ($str)";
+      $req = "$field"."_id = '$throw_id' AND acte_id IN ($str)";
       if($operation = 'delete')
-        $mysqli->delete("acte_has_condition", $req);
+        $mysqli->delete("acte_has_$field", $req);
       else
-        $mysqli->update("acte_has_condition",
-                       ["condition_id" => "$keep_id"],
+        $mysqli->update("acte_has_$field",
+                       ["$field"."_id" => "$keep_id"],
                        $req);
+    }
+
+    function fusion_condition_ou_relation($which, $keep, $throw)
+    // $which = 'condition' ou 'relation'
+    {
+      global $mysqli;
+
+      $dispatch_actes = dispatch_actes($which, $throw->id, $keep->actes);
+      traite_dispatch_actes($which, 'delete', $dispatch_actes, $throw->id);
+      traite_dispatch_actes($which, 'update', $dispatch_actes, $throw->id, $keep->id);
+      $mysqli->delete($which, "id = '$throw->id'");
     }
 
     function fusion_condition($keep, $throw)
     {
-      global $mysqli;
-
-      $dispatch_actes = dispatch_actes_condition($throw->id);
-      traite_dispatch_actes('delete', $dispatch_actes, $throw->id);
-      traite_dispatch_actes('update', $dispatch_actes, $throw->id, $keep->id);
-      $mysqli->delete("condition", "id = '$throw->id'");
+      fusion_condition_ou_relation('condition', $keep, $throw);
     }
 
     function fusion_conditions($personne_keep, $personne_throw){
@@ -122,6 +135,11 @@
       }
     }
 
+    function fusion_relation($keep, $throw)
+    {
+      fusion_condition_ou_relation('relation', $keep, $throw);
+    }
+
     function fusion_relations($personne_keep, $personne_throw){
         global $mysqli, $log;
 
@@ -133,29 +151,7 @@
                                           $personne_keep,
                                           $is_source);
             if($relation_keep){
-                $acte_id_delete = [];
-                $acte_id_update = [];
-                $result = $mysqli->select("acte_has_relation", ["acte_id"], "relation_id = '$relation_throw->id'");
-                if($result != FALSE && $result->num_rows > 0){
-                    while($row = $result->fetch_assoc()){
-                        if(has_same_acte($same->actes, $row["acte_id"]))
-                            $acte_id_delete[] = $row["acte_id"];
-                        else
-                            $acte_id_update[] = $row["acte_id"];
-                    }
-                }
-
-                if(count($acte_id_delete) > 0){
-                    $str = array_to_string_with_separator($acte_id_delete, ", ");
-                    $mysqli->delete("acte_has_relation", "relation_id = '$relation_throw->id' AND acte_id IN ($str)");
-                }
-
-                if(count($acte_id_update) < 0){
-                    $str = array_to_string_with_separator($acte_id_update, ", ");
-                    $mysqli->update("acte_has_relation", ["relation_id" => "$same->id"], "relation_id = '$relation_throw->id' AND acte_id IN ($str)");
-                }
-
-                $mysqli->delete("relation", "id='$relation_throw->id'");
+              fusion_relation($relation_keep, $relation_throw);
             }else{
                 if($is_source)
                     $pers = "pers_source_id";
