@@ -11,19 +11,6 @@
         return FALSE;
     }
 
-    function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
-        $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
-        foreach($relations as $relation){
-            if($relation->statut_id == $relation_cmp->statut_id){
-                if($is_source && $relation->personne_source->id == $personne_keep->id)
-                    return $relation;
-                else if(!$is_source && $relation->personne_destination->id == $personne_keep->id)
-                    return $relation;
-            }
-        }
-        return FALSE;
-    }
-
     function has_condition($condition, $personne){
         foreach($personne->conditions as $c){
             if($c->text == $condition->text)
@@ -105,12 +92,65 @@
         }
     }
 
+/*
+    function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
+        $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
+        foreach($relations as $relation){
+            if($relation->statut_id == $relation_cmp->statut_id){
+                if($is_source && $relation->personne_source->id == $personne_keep->id)
+                    return $relation;
+                else if(!$is_source && $relation->personne_destination->id == $personne_keep->id)
+                    return $relation;
+            }
+        }
+        return FALSE;
+    }
+*/
+
+//    function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
+
+//             $relation_keep = has_relation($relation_throw, $personne_keep->relations, $relation_throw, $personne_keep, $personne_throw);
+
+
+    function has_relation($relation, $personne, $is_source)
+    {
+//          $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
+      foreach($personne->relations as $r){
+        if($r->statut_id != $relation->statut_id)
+          continue;
+        if($is_source)
+        {
+          if($r->personne_source->id == $personne->id
+             &&
+             $r->personne_destination->id
+             == $relation->personne_destination->id
+            )
+            return $r;
+        }
+        else
+        {
+          if($r->personne_destination->id == $personne->id
+             &&
+             $r->personne_source->id
+             == $relation->personne_source->id
+            )
+            return $r;
+        }
+
+        return FALSE;
+      }
+    }
+
     function fusion_relations($personne_keep, $personne_throw){
         global $mysqli, $log;
 
         $log->d("fusion relations");
         foreach($personne_throw->relations as $relation_throw){
-            $same = has_same_relation($personne_keep->relations, $relation_throw, $personne_keep, $personne_throw);
+            $is_source = ($relation_throw->personne_source->id
+                          == $personne_throw->id)
+            $relation_keep = has_relation($relation_throw,
+                                          $personne_keep,
+                                          $is_source);
             if($same != FALSE){
                 $acte_id_delete = [];
                 $acte_id_update = [];
@@ -136,11 +176,11 @@
 
                 $mysqli->delete("relation", "id='$relation_throw->id'");
             }else{
-                if($relation_throw->personne_source->id == $personne_throw->id)
+                if($is_source)
                     $pers = "pers_source_id";
                 else
                     $pers = "pers_destination_id";
-                    
+
                 $mysqli->update("relation", ["$pers" => "$personne_keep->id"], "id = '$relation_throw->id'");
             }
         }
