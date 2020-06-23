@@ -152,13 +152,16 @@
                                           $is_source);
             if($relation_keep){
               fusion_relation($relation_keep, $relation_throw);
-            }else{
+            else
+            {
                 if($is_source)
                     $pers = "pers_source_id";
                 else
                     $pers = "pers_destination_id";
 
-                $mysqli->update("relation", ["$pers" => "$personne_keep->id"], "id = '$relation_throw->id'");
+                $mysqli->update("relation",
+                               [$pers => "$personne_keep->id"],
+                               "id = '$relation_throw->id'");
             }
         }
     }
