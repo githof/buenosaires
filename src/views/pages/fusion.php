@@ -92,6 +92,11 @@
         }
     }
 
+    function same_half_relation($which_half, $r1, $r2)
+    {
+      return $r1->personne_{$which_half}->id
+          == $r2->personne_{$which_half}->id;
+    }
 /*
     function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
         $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
@@ -122,8 +127,7 @@
         {
           if($r->personne_source->id == $personne->id
              &&
-             $r->personne_destination->id
-             == $relation->personne_destination->id
+             same_half_relation('destination', $r, $relation)
             )
             return $r;
         }
