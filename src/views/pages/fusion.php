@@ -97,47 +97,24 @@
       return $r1->personne_{$which_half}->id
           == $r2->personne_{$which_half}->id;
     }
-/*
-    function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
-        $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
-        foreach($relations as $relation){
-            if($relation->statut_id == $relation_cmp->statut_id){
-                if($is_source && $relation->personne_source->id == $personne_keep->id)
-                    return $relation;
-                else if(!$is_source && $relation->personne_destination->id == $personne_keep->id)
-                    return $relation;
-            }
-        }
-        return FALSE;
-    }
-*/
-
-//    function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
-
-//             $relation_keep = has_relation($relation_throw, $personne_keep->relations, $relation_throw, $personne_keep, $personne_throw);
-
 
     function has_relation($relation, $personne, $is_source)
     {
-//          $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
       foreach($personne->relations as $r){
+
         if($r->statut_id != $relation->statut_id)
           continue;
+
         if($is_source)
         {
           if($r->personne_source->id == $personne->id
-             &&
-             same_half_relation('destination', $r, $relation)
-            )
+             && same_half_relation('destination', $r, $relation))
             return $r;
         }
         else
         {
           if($r->personne_destination->id == $personne->id
-             &&
-             $r->personne_source->id
-             == $relation->personne_source->id
-            )
+             && same_half_relation('source', $r, $relation))
             return $r;
         }
 
