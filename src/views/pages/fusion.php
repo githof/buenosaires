@@ -81,7 +81,7 @@
     function fusion_condition($keep, $throw)
     {
       global $mysqli;
-      
+
       $dispatch_actes = dispatch_actes_condition($throw->id);
       traite_dispatch_actes('delete', $dispatch_actes, $throw->id);
       traite_dispatch_actes('update', $dispatch_actes, $throw->id, $keep->id);
@@ -92,7 +92,8 @@
         global $mysqli, $log;
 
         $log->d("fusion conditions");
-        foreach($personne_throw->conditions as $condition_throw){
+        foreach($personne_throw->conditions as $condition_throw)
+        {
             $condition_keep = has_condition($condition_throw,
                                              $personne_keep)
             if($condition_keep)
