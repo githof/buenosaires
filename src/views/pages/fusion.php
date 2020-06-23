@@ -45,12 +45,13 @@
       $acte_id_delete = [];
       $acte_id_update = [];
       $result = $mysqli->select("acte_has_condition", ["acte_id"], "condition_id = '$condition_throw->id'");
-      if($result != FALSE && $result->num_rows > 0){
+      if($result && $result->num_rows > 0){
           while($row = $result->fetch_assoc()){
-              if(has_same_acte($same->actes, $row["acte_id"]))
-                  $acte_id_delete[] = $row["acte_id"];
+              $acte_id = $row["acte_id"]
+              if(has_same_acte($keep->actes, $acte_id))
+                  $acte_id_delete[] = $acte_id;
               else
-                  $acte_id_update[] = $row["acte_id"];
+                  $acte_id_update[] = $acte_id;
           }
       }
 
