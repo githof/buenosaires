@@ -248,7 +248,7 @@ MAIS le prénom et le nom sont virés même quand la fusion n'est pas faite !!
 Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les relations et les conditions dans ce cas, parce que les appels sont quand même faits
 
  */
-    function fusion($personne_keep, $personne_throw, $noms, $prenoms)
+    function fusion($personne_throw, $personne_keep, $noms, $prenoms)
     // Voir l'ancienne version, bugged_fusion, juste après
     {
       fusion_conditions($personne_throw, $personne_keep);
@@ -498,9 +498,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $log->d("fusion possible");
         if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
             if($ARGS["id"] == $personne_A->id)
-                fusion($personne_A, $personne_B, $noms, $prenoms);
+              fusion($personne_B, $personne_A, $noms, $prenoms);
             else
-                fusion($personne_B, $personne_A, $noms, $prenoms);
+              fusion($personne_A, $personne_B, $noms, $prenoms);
             $mysqli->remove_unused_prenoms_noms();
             $alert->success("Succès de la fusion");
         }else{
