@@ -72,7 +72,7 @@
                        $req);
     }
 
-    function fusion_condition_ou_relation($which, $keep, $throw)
+    function fusion_condition_ou_relation($which, $throw, $keep)
     // $which = 'condition' ou 'relation'
     {
       global $mysqli;
@@ -83,12 +83,12 @@
       $mysqli->delete($which, "id = '$throw->id'");
     }
 
-    function fusion_condition($keep, $throw)
+    function fusion_condition($throw, $keep)
     {
-      fusion_condition_ou_relation('condition', $keep, $throw);
+      fusion_condition_ou_relation('condition', $throw, $keep);
     }
 
-    function fusion_conditions($personne_keep, $personne_throw){
+    function fusion_conditions($personne_throw, $personne_keep){
         global $mysqli, $log;
 
         $log->d("fusion conditions");
@@ -97,7 +97,7 @@
             $condition_keep = has_condition($condition_throw,
                                              $personne_keep)
             if($condition_keep)
-              fusion_condition($condition_keep, $condition_throw);
+              fusion_condition($condition_throw, $condition_keep);
             else
               $mysqli->update("condition",
                              ["personne_id" => "$personne_keep->id"],
@@ -139,12 +139,12 @@
       }
     }
 
-    function fusion_relation($keep, $throw)
+    function fusion_relation($throw, $keep)
     {
-      fusion_condition_ou_relation('relation', $keep, $throw);
+      fusion_condition_ou_relation('relation', $throw, $keep);
     }
 
-    function fusion_relations($personne_keep, $personne_throw){
+    function fusion_relations($personne_throw, $personne_keep){
       global $mysqli, $log;
 
       $log->d("fusion relations");
@@ -155,7 +155,7 @@
                                       $personne_keep,
                                       $is_source);
         if($relation_keep){
-          fusion_relation($relation_keep, $relation_throw);
+          fusion_relation($relation_throw, $relation_keep);
         else
         {
           if($is_source)
@@ -251,10 +251,11 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     function fusion($personne_keep, $personne_throw, $noms, $prenoms)
     // Voir l'ancienne version, bugged_fusion, juste après
     {
-      fusion_conditions($personne_keep, $personne_throw);
-      fusion_relations($personne_keep, $personne_throw);
-      fusion_actes($personne_keep, $personne_throw);
-      renommer_personne($personne_keep, $noms, $prenoms);
+      fusion_conditions($personne_throw, $personne_keep);
+      fusion_relations($personne_throw, $personne_keep);
+      fusion_actes($personne_throw, $personne_keep);
+      fusion_renommer_personne($personne_keep, $noms, $prenoms);
+      fusion_update_contenus($personne_throw->id, $personne_keep->id);
     }
 
     function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
