@@ -11,14 +11,6 @@
         return FALSE;
     }
 
-    function has_condition($condition, $personne){
-        foreach($personne->conditions as $c){
-            if($c->text == $condition->text)
-                return $condition;
-        }
-        return FALSE;
-    }
-
     function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
         $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
         foreach($relations as $relation){
@@ -40,36 +32,49 @@
         return FALSE;
     }
 
+    function has_condition($condition, $personne){
+        foreach($personne->conditions as $c){
+            if($c->text == $condition->text)
+                return $condition;
+        }
+        return FALSE;
+    }
+
+    function delete_condition($condition)
+    {
+      $acte_id_delete = [];
+      $acte_id_update = [];
+      $result = $mysqli->select("acte_has_condition", ["acte_id"], "condition_id = '$condition_throw->id'");
+      if($result != FALSE && $result->num_rows > 0){
+          while($row = $result->fetch_assoc()){
+              if(has_same_acte($same->actes, $row["acte_id"]))
+                  $acte_id_delete[] = $row["acte_id"];
+              else
+                  $acte_id_update[] = $row["acte_id"];
+          }
+      }
+
+      if(count($acte_id_delete) > 0){
+          $str = array_to_string_with_separator($acte_id_delete, ", ");
+          $mysqli->delete("acte_has_condition", "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
+      }
+
+      if(count($acte_id_update) > 0){
+          $str = array_to_string_with_separator($acte_id_update, ", ");
+          $mysqli->update("acte_has_condition", ["condition_id" => "$same->id"], "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
+      }
+
+      $mysqli->delete("condition", "id = '$condition_throw->id'");
+    }
+
     function fusion_conditions($personne_keep, $personne_throw){
         global $mysqli, $log;
 
         $log->d("fusion conditions");
         foreach($personne_throw->conditions as $condition_throw){
-            if(has_condition($condition_throw, $personne_keep)){
-                $acte_id_delete = [];
-                $acte_id_update = [];
-                $result = $mysqli->select("acte_has_condition", ["acte_id"], "condition_id = '$condition_throw->id'");
-                if($result != FALSE && $result->num_rows > 0){
-                    while($row = $result->fetch_assoc()){
-                        if(has_same_acte($same->actes, $row["acte_id"]))
-                            $acte_id_delete[] = $row["acte_id"];
-                        else
-                            $acte_id_update[] = $row["acte_id"];
-                    }
-                }
-
-                if(count($acte_id_delete) > 0){
-                    $str = array_to_string_with_separator($acte_id_delete, ", ");
-                    $mysqli->delete("acte_has_condition", "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
-                }
-
-                if(count($acte_id_update) > 0){
-                    $str = array_to_string_with_separator($acte_id_update, ", ");
-                    $mysqli->update("acte_has_condition", ["condition_id" => "$same->id"], "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
-                }
-
-                $mysqli->delete("condition", "id = '$condition_throw->id'");
-            }else{
+            if(has_condition($condition_throw, $personne_keep))
+              delete_condition($condition_throw);
+            else{
                 $mysqli->update("condition", ["personne_id" => "$personne_keep->id"], "id = '$condition_throw->id'");
             }
         }
