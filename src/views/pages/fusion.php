@@ -112,6 +112,10 @@
     }
 
     function has_relation($relation, $personne, $is_source)
+    /*
+      J'ai l'impression que dans la version précédente, le test était pas correct, on testait qu'une des deux extrémités,
+      du coup il a pu y avoir des faux positifs, qui ont pu entraîner des suppressions ou des updates intempestifs
+    */
     {
       foreach($personne->relations as $r){
 
