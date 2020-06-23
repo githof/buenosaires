@@ -40,20 +40,32 @@
         return FALSE;
     }
 
-    function fusion_condition($keep, $throw)
+    function dispatch_actes_condition($id)
     {
-      $acte_id_delete = [];
-      $acte_id_update = [];
-      $result = $mysqli->select("acte_has_condition", ["acte_id"], "condition_id = '$condition_throw->id'");
+      $dispatch_actes = array(
+        'delete' => [],
+        'update' => []
+      );
+
+      $result = $mysqli->select("acte_has_condition",
+                               ["acte_id"],
+                                "condition_id = '$id'");
+                                
       if($result && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $acte_id = $row["acte_id"]
             if(find_acte($acte_id, $keep->actes))
-                $acte_id_delete[] = $acte_id;
+                $dispatch_actes['delete'][] = $acte_id;
             else
-                $acte_id_update[] = $acte_id;
+                $dispatch_actes['update'][] = $acte_id;
         }
       }
+      return $dispatch_actes;
+    }
+
+    function fusion_condition($keep, $throw)
+    {
+      $dispatch_actes = dispatch_actes_condition($throw->id);
 
       if(count($acte_id_delete) > 0){
           $str = array_to_string_with_separator($acte_id_delete, ", ");
