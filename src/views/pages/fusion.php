@@ -141,29 +141,29 @@
     }
 
     function fusion_relations($personne_keep, $personne_throw){
-        global $mysqli, $log;
+      global $mysqli, $log;
 
-        $log->d("fusion relations");
-        foreach($personne_throw->relations as $relation_throw){
-            $is_source = $relation_throw->check_source_id($personne_throw->id)
+      $log->d("fusion relations");
+      foreach($personne_throw->relations as $relation_throw){
+        $is_source = $relation_throw->check_source_id($personne_throw->id)
 
-            $relation_keep = has_relation($relation_throw,
-                                          $personne_keep,
-                                          $is_source);
-            if($relation_keep){
-              fusion_relation($relation_keep, $relation_throw);
-            else
-            {
-                if($is_source)
-                    $pers = "pers_source_id";
-                else
-                    $pers = "pers_destination_id";
+        $relation_keep = has_relation($relation_throw,
+                                      $personne_keep,
+                                      $is_source);
+        if($relation_keep){
+          fusion_relation($relation_keep, $relation_throw);
+        else
+        {
+          if($is_source)
+              $pers = "pers_source_id";
+          else
+              $pers = "pers_destination_id";
 
-                $mysqli->update("relation",
-                               [$pers => "$personne_keep->id"],
-                               "id = '$relation_throw->id'");
-            }
+          $mysqli->update("relation",
+                         [$pers => "$personne_keep->id"],
+                         "id = '$relation_throw->id'");
         }
+      }
     }
 
     function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
