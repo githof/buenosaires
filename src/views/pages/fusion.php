@@ -24,18 +24,18 @@
         return FALSE;
     }
 
-    function has_same_acte($actes, $id){
-        foreach($actes as $acte){
-            if($acte->id == $id)
-                return TRUE;
-        }
-        return FALSE;
-    }
-
     function has_condition($condition, $personne){
         foreach($personne->conditions as $c){
             if($c->text == $condition->text)
                 return $c;
+        }
+        return FALSE;
+    }
+
+    function find_acte($id, $actes){
+        foreach($actes as $acte){
+            if($acte->id == $id)
+                return TRUE;
         }
         return FALSE;
     }
@@ -48,7 +48,7 @@
       if($result && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $acte_id = $row["acte_id"]
-            if(has_same_acte($keep->actes, $acte_id))
+            if(find_acte($acte_id, $keep->actes))
                 $acte_id_delete[] = $acte_id;
             else
                 $acte_id_update[] = $acte_id;
