@@ -11,9 +11,9 @@
         return FALSE;
     }
 
-    function has_same_condition($conditions, $condition_cmp){
-        foreach($conditions as $condition){
-            if($condition->text == $condition_cmp->text)
+    function has_condition($condition, $personne){
+        foreach($personne->conditions as $c){
+            if($c->text == $condition->text)
                 return $condition;
         }
         return FALSE;
@@ -45,8 +45,7 @@
 
         $log->d("fusion conditions");
         foreach($personne_throw->conditions as $condition_throw){
-            $same = has_same_condition($personne_keep->conditions, $condition_throw);
-            if($same != FALSE){
+            if(has_condition($condition_throw, $personne_keep)){
                 $acte_id_delete = [];
                 $acte_id_update = [];
                 $result = $mysqli->select("acte_has_condition", ["acte_id"], "condition_id = '$condition_throw->id'");
@@ -76,7 +75,8 @@
         }
     }
 
-    function fusion_relations($personne_keep, $personne_throw){
+    // À virer une fois réécrit
+    function fusion_relations_old($personne_keep, $personne_throw){
         global $mysqli, $log;
 
         $log->d("fusion relations");
@@ -182,6 +182,11 @@
         }
     }
 
+    function renommer_personne($personne, $noms, $prenoms)
+    {
+      // TODO
+    }
+
 /*__ FUSION __ */
 /*
 BUG : la fusion ne se fait que sur les actes où la personne est époux/se
@@ -192,6 +197,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     function fusion($personne_keep, $personne_throw, $noms, $prenoms)
     // Voir l'ancienne version, bugged_fusion, juste après
     {
+      fusion_conditions($personne_keep, $personne_throw);
+      fusion_relations($personne_keep, $personne_throw);
+      fusion_actes($personne_keep, $personne_throw);
       renommer_personne($personne_keep, $noms, $prenoms);
     }
 

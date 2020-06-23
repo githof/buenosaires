@@ -49,11 +49,16 @@ Voir DROPBOX/Organisation/CR.txt
 
     + exploration : comment est validé le formulaire preview ?!
     + réécrire proprement la fonction fusion
-      - changer le nom de $personne_keep
-      + mettre à jour tout ce qui concerne $personne_throw
-        - conditions
+      + mettre à jour tout ce qui contient $personne_throw->id
+        - table conditions
+        - table relations
+        - acte
         - voir comment ça se répercute sur le texte de l'acte
-        - relations (idem pour texte de l'acte)
+        + ajouter une sécurité
+          - table avec opération en cours
+          - y mettre l'id throw
+          - le supprimer quand tout est fini
+      - changer le nom de $personne_keep
 
     - écrire quelques actes tests
     - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
