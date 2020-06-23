@@ -127,12 +127,12 @@
 
         $log->d("fusion relations");
         foreach($personne_throw->relations as $relation_throw){
-            $is_source = ($relation_throw->personne_source->id
-                          == $personne_throw->id)
+            $is_source = $relation_throw->check_source_id($personne_throw->id)
+
             $relation_keep = has_relation($relation_throw,
                                           $personne_keep,
                                           $is_source);
-            if($same != FALSE){
+            if($relation_keep){
                 $acte_id_delete = [];
                 $acte_id_update = [];
                 $result = $mysqli->select("acte_has_relation", ["acte_id"], "relation_id = '$relation_throw->id'");
