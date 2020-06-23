@@ -35,12 +35,12 @@
     function has_condition($condition, $personne){
         foreach($personne->conditions as $c){
             if($c->text == $condition->text)
-                return $condition;
+                return $c;
         }
         return FALSE;
     }
 
-    function delete_condition($condition)
+    function fusion_condition($keep, $throw)
     {
       $acte_id_delete = [];
       $acte_id_update = [];
@@ -72,11 +72,14 @@
 
         $log->d("fusion conditions");
         foreach($personne_throw->conditions as $condition_throw){
-            if(has_condition($condition_throw, $personne_keep))
-              delete_condition($condition_throw);
-            else{
-                $mysqli->update("condition", ["personne_id" => "$personne_keep->id"], "id = '$condition_throw->id'");
-            }
+            $condition_keep = has_condition($condition_throw,
+                                             $personne_keep)
+            if($condition_keep)
+              fusion_condition($condition_keep, $condition_throw);
+            else
+              $mysqli->update("condition",
+                             ["personne_id" => "$personne_keep->id"],
+                             "id = '$condition_throw->id'");
         }
     }
 
