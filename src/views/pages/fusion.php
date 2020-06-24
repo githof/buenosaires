@@ -251,6 +251,8 @@ $<?php
     {
       global $mysqli;
 
+      if(count($noms) == 0) return;
+      
       $cond = "personne_id='$throw->id' OR personne_id='$keep->id'";
       $mysqli->delete($field."_personne", $cond);
       $i = 1;
