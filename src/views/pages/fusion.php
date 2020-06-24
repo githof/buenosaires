@@ -246,9 +246,20 @@ $<?php
         }
     }
 
-    function renommer_personne($personne, $noms, $prenoms)
+    function fusion_renommer_personne($field, $noms, $throw, $keep)
+    // $field = 'prenom' ou 'nom'
     {
-      // TODO
+      global $mysqli;
+
+      $cond = "personne_id='$throw->id' OR personne_id='$keep->id'";
+      $mysqli->delete($field."_personne", $cond);
+      $i = 1;
+      foreach($noms as $nom){
+          $mysqli->into_db($nom);
+          $into_db = "into_db_$field";
+          $mysqli->{$into_db}($keep, $nom, $i);
+          $i++;
+      }
     }
 
 /*__ FUSION __ */
@@ -264,7 +275,12 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
       fusion_conditions($personne_throw, $personne_keep);
       fusion_relations($personne_throw, $personne_keep);
       fusion_actes($personne_throw, $personne_keep);
-      fusion_renommer_personne($personne_keep, $noms, $prenoms);
+      foreach(['prenom', 'nom'] as $field)
+      {
+        $liste = {$field}.'s'
+        fusion_renommer_personne($field, $liste,
+                                 $personne_throw, $personne_keep);
+      }
       fusion_update_contenus($personne_throw->id, $personne_keep->id);
     }
 
