@@ -272,9 +272,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     function fusion($personne_throw, $personne_keep, $noms, $prenoms)
     // Voir l'ancienne version, bugged_fusion, juste après
     {
-      fusion_conditions($personne_throw, $personne_keep);
-      fusion_relations($personne_throw, $personne_keep);
-      fusion_actes($personne_throw, $personne_keep);
+      foreach (['conditions', 'relations', 'actes'] as $element) {
+        fusion_{$element}($personne_throw, $personne_keep);
+      }
       foreach(['prenom', 'nom'] as $field)
       {
         $liste = {$field}.'s'
