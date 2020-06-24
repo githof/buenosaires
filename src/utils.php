@@ -125,6 +125,8 @@ function console_log( $data ){
         $prenoms = [];
 
         foreach($prenoms_array as $prenom){
+            if($prenom == '')
+              continue;
             $prenoms[] = new Prenom(NULL, $prenom);
         }
         return $prenoms;
@@ -135,6 +137,8 @@ function console_log( $data ){
         $noms = [];
 
         foreach($noms_array as $nom){
+            if($nom == '')
+              continue;
             $split = explode(")", $nom);
             if(count($split) == 2){
                 $split0 = explode("(", $split[0]);

@@ -256,7 +256,7 @@ $<?php
       $i = 1;
       foreach($noms as $nom){
           $mysqli->into_db($nom);
-          $into_db = "into_db_$field";
+          $into_db = 'into_db_'.$field.'_personne';
           $mysqli->{$into_db}($keep, $nom, $i);
           $i++;
       }
