@@ -1,4 +1,4 @@
-<?php
+$<?php
 
     include_once(ROOT."src/html_entities.php");
 
@@ -168,6 +168,16 @@
                          "id = '$relation_throw->id'");
         }
       }
+    }
+
+    function fusion_actes($throw, $keep)
+    {
+      global $mysqli;
+
+      foreach (['epoux', 'epouse'] as $ep)
+        $mysqli->update("acte",
+                       [$ep => "$keep->id"],
+                        "$ep='$throw->id'");
     }
 
     function fusion_update_contenu_acte($personne_id_old, $personne_id_new){

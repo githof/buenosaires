@@ -52,8 +52,10 @@ Voir DROPBOX/Organisation/CR.txt
       + mettre à jour tout ce qui contient $personne_throw->id
         x table conditions  [1h35]
         x table relations [2h]
+        x planning  [5]
+        x chgt ordre throw keep [20]
         - table actes
-        - update contenu de tous les actes rencontrés
+        - update contenu de tous les actes rencontrés [|20+]
         + ajouter une sécurité
           - table avec opération en cours
           - y mettre l'id throw
