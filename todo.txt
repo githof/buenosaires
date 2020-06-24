@@ -50,17 +50,17 @@ Voir DROPBOX/Organisation/CR.txt
     + exploration : comment est validé le formulaire preview ?!
     + réécrire proprement la fonction fusion
       + mettre à jour tout ce qui contient $personne_throw->id
-        x table conditions  [1h35]
-        x table relations [2h]
-        x planning  [5]
-        x chgt ordre throw keep [20]
-        - table actes
+        x table conditions  [|1h35]
+        x table relations [|2h]
+        x planning  [|5]
+        x chgt ordre throw keep [|20]
+        x table actes [|10]
+        - changer le nom de $personne_keep
         - update contenu de tous les actes rencontrés [|20+]
         + ajouter une sécurité
           - table avec opération en cours
           - y mettre l'id throw
           - le supprimer quand tout est fini
-      - changer le nom de $personne_keep
 
     - écrire quelques actes tests
     - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
