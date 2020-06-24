@@ -246,13 +246,13 @@ $<?php
         }
     }
 
-    function fusion_renommer_personne($field, $noms, $throw, $keep)
+    function fusion_prenoms_noms($field, $noms, $throw, $keep)
     // $field = 'prenom' ou 'nom'
     {
       global $mysqli;
 
       if(count($noms) == 0) return;
-      
+
       $cond = "personne_id='$throw->id' OR personne_id='$keep->id'";
       $mysqli->delete($field."_personne", $cond);
       $i = 1;
@@ -264,6 +264,23 @@ $<?php
       }
     }
 
+function fusion_tables($personne_throw, $personne_keep)
+{
+  foreach (['conditions', 'relations', 'actes'] as $element) {
+    fusion_{$element}($personne_throw, $personne_keep);
+  }
+}
+
+function fusion_renommer_personne($personne_throw, $personne_keep)
+{
+  foreach(['prenom', 'nom'] as $field)
+  {
+    $liste = {$field}.'s'
+    fusion_prenoms_noms($field, $liste,
+                             $personne_throw, $personne_keep);
+  }
+}
+
 /*__ FUSION __ */
 /*
 BUG : la fusion ne se fait que sur les actes où la personne est époux/se
@@ -274,15 +291,8 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     function fusion($personne_throw, $personne_keep, $noms, $prenoms)
     // Voir l'ancienne version, bugged_fusion, juste après
     {
-      foreach (['conditions', 'relations', 'actes'] as $element) {
-        fusion_{$element}($personne_throw, $personne_keep);
-      }
-      foreach(['prenom', 'nom'] as $field)
-      {
-        $liste = {$field}.'s'
-        fusion_renommer_personne($field, $liste,
-                                 $personne_throw, $personne_keep);
-      }
+      fusion_tables($personne_throw, $personne_keep);
+      fusion_renommer_personne($personne_throw, $personne_keep);
       fusion_update_contenus($personne_throw->id, $personne_keep->id);
     }
 
