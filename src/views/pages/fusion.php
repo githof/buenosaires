@@ -78,8 +78,10 @@ $<?php
       global $mysqli;
 
       $dispatch_actes = dispatch_actes($which, $throw->id, $keep->actes);
-      traite_dispatch_actes($which, 'delete', $dispatch_actes, $throw->id);
-      traite_dispatch_actes($which, 'update', $dispatch_actes, $throw->id, $keep->id);
+      traite_dispatch_actes($which, 'delete',
+                            $dispatch_actes, $throw->id);
+      traite_dispatch_actes($which, 'update',
+                            $dispatch_actes, $throw->id, $keep->id);
       $mysqli->delete($which, "id = '$throw->id'");
     }
 
@@ -187,6 +189,14 @@ $<?php
         $mysqli->from_db($personne);
 
         $actes = [];
+
+        /*
+          Dans ce qui suit,
+          Je pense pas qu'il y ait de raison de traiter séparément
+          epoux/se et le reste,
+          et surtout de faire une requête alors qu'on a tout dans
+          les conditions et relations
+        */
 
         $results = $mysqli->select(
             "acte",
@@ -318,6 +328,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         }
 
 	/* là-dedans on ne s'occupe que des actes où la personne est époux/se */
+  /* (juil 2020 : non, on les traite séparément, mais y'a pas trop de raison) */
         fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
 
         $log->d("fusion actes"); // pourquoi ici ??
