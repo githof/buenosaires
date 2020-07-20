@@ -303,21 +303,62 @@ function recense_actes($personne)
   return array_unique($actes);
 }
 
-function change_id_personne_contenu($acte, $personne, $new_id)
+$balises_personnes = ['epoux', 'epouse', 'pere', 'mere',
+  'temoin', 'parrain', 'veuf-de', 'veuf', 'veuve-de', 'veuve'];
+/*
+  Ça ça devrait être défini en global, a minima dans XMLActeReader.php,
+  mais peut-être même dans un truc plus général.
+  Et mis en cohérence avec la dtd et avec ce qui est utilisé dans la saisie
+  en js (pas réussi à retrouver où c'est défini pour le js).
+  Pour l'instant
+  - je laisse ça là parce que j'ai peur de la dépendance
+    mais dès que c'est testé, je le déplace
+    (sinon ce sera super chiant à débusquer si je change un truc dans les
+    defs xml)
+  - je mets toutes les combinaisons pour veuf/ve mais faudra se fixer
+    (pour l'instant les veuf-de etc n'ont pas d'id il me semble)
+*/
+
+function change_id_personne_xml($xml, $old_id, $new_id)
+{
+  global $balises_personnes;
+
+  foreach($xml->children() as $node)
+  {
+    if(in_array($node->getName(), $balises_personnes))
+    {
+      $attr = $node->attributes();
+      if(array_key_exists('id', $attr) && $attr['id'] == $old_id)
+        $attr['id'] = $new_id;
+    }
+    change_id_personne_xml($node, $old_id, $new_id);
+  }
+}
+
+function change_id_personne_contenu($acte, $old_id, $new_id)
 {
   $contenu = get_contenu_acte($acte);
   $xml = new SimpleXMLElement($contenu);
+  $new_contenu = change_id_personne_xml($xml, $old_id, $new_id);
+  $mysqli->update(
+      "acte_contenu",
+      ["contenu" => $new_contenu],
+      "acte_id='$acte'"
+  );
 }
 
 function change_id_personne_contenus($personne, $new_id)
 // nouvelle version de fusion_update_contenu_acte (plus haut)
 /*
-  Peut-être que pour dissoc on a besoin exactement de la même fonction
+  Peut-être que pour dissoc on a besoin exactement de la même fonction,
+  auquel cas il faudrait la mettre qq part genre utils.php:
+    // code...
+    break;
 */
 {
   $actes = recense_actes($personne);
   foreach($actes as $acte)
-    change_id_personne_contenu($acte, $personne, $new_id);
+    change_id_personne_contenu($acte, $personne->id, $new_id);
 }
 
 /*__ FUSION __ */

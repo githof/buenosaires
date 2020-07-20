@@ -71,6 +71,8 @@ Voir DROPBOX/Organisation/CR.txt
           - le supprimer quand tout est fini
 
     - écrire quelques actes tests
+    - liste des balises personnes
+      (de fusion/change_id_personne_xml vers XMLActeReader)
     - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
     - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
 
@@ -110,6 +112,10 @@ Voir DROPBOX/Organisation/CR.txt
       empêche parfois de cliquer sur le bouton la deuxième fois
     - info-bulle : parler ptet de "sortir de la balise" plutôt que
       "remonter" (confusion possible avec monter d'un cran verticalement)
+
++ structure xml
+    - mettre en cohérence dtd, saisie en js, import en php
+    - balise relation à la main
 
 + export
     - gdf
