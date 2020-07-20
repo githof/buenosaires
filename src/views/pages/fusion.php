@@ -291,11 +291,16 @@ function fusion_renommer_personne($personne_throw, $personne_keep)
   }
 }
 
-function recenser_actes($personne)
+function recense_actes($personne)
 {
   $actes = []
-  // TODO
-  return $actes;
+  foreach(['conditions', 'relations'] as $field)
+    $liste = $personne->{$field}
+    foreach($liste as $element)
+      foreach($element->actes as $acte)
+        $actes[] = $acte->id;
+
+  return array_unique($actes);
 }
 
 function change_id_personne_contenu($acte, $personne, $new_id)
@@ -309,7 +314,7 @@ function change_id_personne_contenus($personne, $new_id)
   Peut-être que pour dissoc on a besoin exactement de la même fonction
 */
 {
-  $actes = recenser_actes($personne);
+  $actes = recense_actes($personne);
   foreach($actes as $acte)
     change_id_personne_contenu($acte, $personne, $new_id);
 }
