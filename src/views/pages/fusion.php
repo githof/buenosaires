@@ -291,6 +291,18 @@ function fusion_renommer_personne($personne_throw, $personne_keep)
   }
 }
 
+function recenser_actes($personne)
+{
+  $actes = []
+  // TODO
+  return $actes;
+}
+
+function change_id_personne_contenu($acte, $personne, $new_id)
+{
+
+}
+
 function change_id_personne_contenus($personne, $new_id)
 // nouvelle version de fusion_update_contenu_acte (plus haut)
 /*
@@ -299,7 +311,7 @@ function change_id_personne_contenus($personne, $new_id)
 {
   $actes = recenser_actes($personne);
   foreach($actes as $acte)
-    change_id_personne($personne, $new_id);
+    change_id_personne_contenu($acte, $personne, $new_id);
 }
 
 /*__ FUSION __ */
