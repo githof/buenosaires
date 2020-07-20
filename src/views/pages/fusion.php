@@ -305,7 +305,8 @@ function recense_actes($personne)
 
 function change_id_personne_contenu($acte, $personne, $new_id)
 {
-
+  $contenu = get_contenu_acte($acte);
+  $xml = new SimpleXMLElement($contenu);
 }
 
 function change_id_personne_contenus($personne, $new_id)

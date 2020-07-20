@@ -61,7 +61,8 @@ Voir DROPBOX/Organisation/CR.txt
         x lisibilité  [|5]
         + update contenu de tous les actes rencontrés [|20+]
           x review code fusion_update_contenu_acte  [|20]
-          - recenser actes
+          x découpage [|15]
+          x recenser actes  [|10]
           - fonction pour un acte
           - vérifier que ok pour époux/se
         + ajouter une sécurité

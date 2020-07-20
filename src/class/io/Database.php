@@ -184,7 +184,7 @@
 	    avoir la liste des ids, puis un select par id
 	    C'est juste pour pouvoir utiliser la fonction from_db où a
 	    priori tous les cas sont traités
-	  */ 
+	  */
 	  $results = $this->select("personne", ["id"]);
 	  if($results != FALSE && $results->num_rows){
 	    while($row = $results->fetch_assoc()){
@@ -196,6 +196,16 @@
 	  }
 	  return $personnes;
 	}
+
+  public function get_contenu_acte($acte_id)
+  {
+    $result = $mysqli->select(
+        "acte_contenu",
+        ["contenu"],
+        "acte_id='$acte'"
+    );
+    $contenu = $result->fetch_assoc()["contenu"];
+  }
 
         public function from_db($obj,
 				$update_obj = FALSE,
