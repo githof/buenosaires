@@ -291,6 +291,17 @@ function fusion_renommer_personne($personne_throw, $personne_keep)
   }
 }
 
+function change_id_personne_contenus($personne, $new_id)
+// nouvelle version de fusion_update_contenu_acte (plus haut)
+/*
+  Peut-être que pour dissoc on a besoin exactement de la même fonction
+*/
+{
+  $actes = recenser_actes($personne);
+  foreach($actes as $acte)
+    change_id_personne($personne, $new_id);
+}
+
 /*__ FUSION __ */
 /*
 BUG : la fusion ne se fait que sur les actes où la personne est époux/se
@@ -303,7 +314,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     {
       fusion_tables($personne_throw, $personne_keep);
       fusion_renommer_personne($personne_throw, $personne_keep);
-      fusion_update_contenus($personne_throw->id, $personne_keep->id);
+      change_id_personne_contenus($personne_throw, $personne_keep->id);
     }
 
     function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
