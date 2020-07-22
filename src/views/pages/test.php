@@ -24,7 +24,7 @@ $date = $acte->get_date();
 echo "<p>\n";
 echo "date : $date\n";
 
-global $mysqli;
+$mysqli = new Database();
 $contenu = $mysqli->get_contenu_acte($acte);
 echo "contenu :\n";
 echo "$contenu \n";
