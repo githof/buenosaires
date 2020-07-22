@@ -339,7 +339,8 @@ function change_id_personne_contenu($acte, $old_id, $new_id)
 {
   $contenu = get_contenu_acte($acte);
   $xml = new SimpleXMLElement($contenu);
-  $new_contenu = change_id_personne_xml($xml, $old_id, $new_id);
+  change_id_personne_xml($xml, $old_id, $new_id);
+  $new_contenu = $xml->asXML();
   $mysqli->update(
       "acte_contenu",
       ["contenu" => $new_contenu],
