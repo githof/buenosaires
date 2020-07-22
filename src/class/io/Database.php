@@ -202,7 +202,7 @@
     $result = $this->select(
         "acte_contenu",
         ["contenu"],
-        "acte_id='$acte'"
+        "acte_id='$acte_id'"
     );
     $contenu = $result->fetch_assoc()["contenu"];
   }
