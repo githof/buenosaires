@@ -29,7 +29,7 @@ echo "date : $date\n";
 
 include_once(ROOT."src/class/io/Database.php");
 
-$contenu = get_contenu_acte($acte);
+$contenu = $mysqli->get_contenu_acte($acte);
 echo "contenu :\n";
 echo "$contenu \n";
 $xml = new SimpleXMLElement($contenu);
