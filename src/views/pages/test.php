@@ -4,7 +4,6 @@ echo "<p>";
 echo "hello, world<br>";
 
 include_once(ROOT."src/class/model/Personne.php");
-include_once(ROOT."src/html_entities.php");
 
 $personne = new Personne(1);
 $bob = new Prenom(10000, "Bob", "Bob");
