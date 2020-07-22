@@ -31,6 +31,9 @@ echo "<code>\n[$contenu]\n</code>";
 
 $xml = new SimpleXMLElement($contenu);
 
+$balises_personnes = ['epoux', 'epouse', 'pere', 'mere',
+  'temoin', 'parrain', 'veuf-de', 'veuf', 'veuve-de', 'veuve'];
+
 function change_id_personne_xml($xml, $old_id, $new_id)
 {
   global $balises_personnes;
