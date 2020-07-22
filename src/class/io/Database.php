@@ -199,7 +199,7 @@
 
   public function get_contenu_acte($acte_id)
   {
-    $result = $mysqli->select(
+    $result = $this->select(
         "acte_contenu",
         ["contenu"],
         "acte_id='$acte'"
