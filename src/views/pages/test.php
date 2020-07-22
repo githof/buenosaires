@@ -24,7 +24,7 @@ $date = $acte->get_date();
 echo "<p>\n";
 echo "date : $date\n";
 
-$contenu = $mysqli->get_contenu_acte($acte);
+$contenu = $mysqli->get_contenu_acte(6813);
 echo "contenu :\n";
 echo "$contenu \n";
 $xml = new SimpleXMLElement($contenu);
