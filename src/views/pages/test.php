@@ -3,7 +3,6 @@
 echo "<p>";
 echo "hello, world<br>";
 
-
 $personne = new Personne(1);
 $bob = new Prenom(10000, "Bob", "Bob");
 $toto = new Prenom(10001, "Toto", "Toto");
@@ -25,8 +24,7 @@ $date = $acte->get_date();
 echo "<p>\n";
 echo "date : $date\n";
 
-include_once(ROOT."src/class/io/Database.php");
-
+global $mysqli;
 $contenu = $mysqli->get_contenu_acte($acte);
 echo "contenu :\n";
 echo "$contenu \n";
