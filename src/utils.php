@@ -101,7 +101,7 @@ function console_log( $data ){
 
     function renommer_personne($personne, $noms, $prenoms)
     {
-      $global $mysqli;
+      global $mysqli;
 
       $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
       $i = 1;
