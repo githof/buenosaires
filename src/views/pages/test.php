@@ -26,13 +26,31 @@ echo "date : $date<br>";
 
 $contenu = $acte->get_contenu();
 // $contenu = $mysqli->get_contenu_acte(6813);
-echo "contenu :<br>";
+echo "contenu :<br>\n";
 echo "<code>\n[$contenu]\n</code>";
+
 $xml = new SimpleXMLElement($contenu);
-change_id_personne_xml($xml, $old_id, $new_id);
+
+function change_id_personne_xml($xml, $old_id, $new_id)
+{
+  global $balises_personnes;
+
+  foreach($xml->children() as $node)
+  {
+    if(in_array($node->getName(), $balises_personnes))
+    {
+      $attr = $node->attributes();
+      if(array_key_exists('id', $attr) && $attr['id'] == $old_id)
+        $attr['id'] = $new_id;
+    }
+    change_id_personne_xml($node, $old_id, $new_id);
+  }
+}
+
+change_id_personne_xml($xml, 413, 99001);
 $new_contenu = $xml->asXML();
-echo "new contenu :\n";
-echo "$new_contenu \n";
+echo "new contenu :<br>\n";
+echo "<code>\n[$new_contenu]\n</code>";
 echo "</p>\n"
 
 ?>
