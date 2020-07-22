@@ -197,6 +197,10 @@
 	  return $personnes;
 	}
 
+/*
+Testé sans succès, mais j'ai avant de me casser la tête
+à savoir pourquoi, j'ai fait avec Acte->get_contenu
+*/
   public function get_contenu_acte($acte_id)
   {
     $result = $this->select(

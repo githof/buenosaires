@@ -326,4 +326,20 @@ function console_log( $data ){
         return $filename."_".rand(1, 9999999);
     }
 
+/*
+  Comme array_unique mais en testant seulement le champ id plutôt que l'objet entier
+*/
+function array_unique_by_id($a)
+{
+  $ids = array();
+  $res = array();
+  foreach($a as $x)
+  {
+    if(! array_key_exists('id', $a)) continue;
+    if(in_array($x->id, $ids)) continue;
+    $ids[] = $x->id;
+    $res[] = $x;
+  }
+}
+
 ?>

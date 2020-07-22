@@ -22,11 +22,12 @@ echo "<h2>Acte</h2>";
 $acte = new Acte(6813);
 $date = $acte->get_date();
 echo "<p>\n";
-echo "date : $date\n";
+echo "date : $date<br>";
 
-$contenu = $mysqli->get_contenu_acte(6813);
-echo "contenu :\n";
-echo "$contenu \n";
+$contenu = $acte->get_contenu();
+// $contenu = $mysqli->get_contenu_acte(6813);
+echo "contenu :<br>";
+echo "<code>\n[$contenu]\n</code>";
 $xml = new SimpleXMLElement($contenu);
 change_id_personne_xml($xml, $old_id, $new_id);
 $new_contenu = $xml->asXML();

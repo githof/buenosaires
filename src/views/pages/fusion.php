@@ -293,14 +293,14 @@ function fusion_renommer_personne($personne_throw, $personne_keep)
 
 function recense_actes($personne)
 {
-  $actes_ids = []
+  $actes = []
   foreach(['conditions', 'relations'] as $field)
     $liste = $personne->{$field}
     foreach($liste as $element)
       foreach($element->actes as $acte)
-        $actes_ids[] = $acte->id;
+        $actes[] = $acte;
 
-  return array_unique($actes_ids);
+  return array_unique_by_id($actes);
 }
 
 $balises_personnes = ['epoux', 'epouse', 'pere', 'mere',
@@ -335,16 +335,16 @@ function change_id_personne_xml($xml, $old_id, $new_id)
   }
 }
 
-function change_id_personne_contenu($acte_id, $old_id, $new_id)
+function change_id_personne_contenu($acte, $old_id, $new_id)
 {
-  $contenu = get_contenu_acte($acte_id);
+  $contenu = get_contenu_acte($acte);
   $xml = new SimpleXMLElement($contenu);
   change_id_personne_xml($xml, $old_id, $new_id);
   $new_contenu = $xml->asXML();
   $mysqli->update(
       "acte_contenu",
       ["contenu" => $new_contenu],
-      "acte_id='$acte_id'"
+      "acte_id='$acte->id'"
   );
 }
 
@@ -357,9 +357,9 @@ function change_id_personne_contenus($personne, $new_id)
     break;
 */
 {
-  $actes_ids = recense_actes($personne);
-  foreach($actes_ids as $acte_id)
-    change_id_personne_contenu($acte_id, $personne->id, $new_id);
+  $actes = recense_actes($personne);
+  foreach($actes as $acte)
+    change_id_personne_contenu($acte, $personne->id, $new_id);
 }
 
 /*__ FUSION __ */
