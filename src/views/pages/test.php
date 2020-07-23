@@ -26,7 +26,7 @@ echo "date : $date<br>";
 
 $contenu = $acte->get_contenu();
 // $contenu = $mysqli->get_contenu_acte(6813);
-echo "contenu :<br>\n";
+echo "<h3>contenu</h3>\n";
 echo "<code>\n[$contenu]\n<br>\n</code>";
 
 $xml = new SimpleXMLElement($contenu);
@@ -45,14 +45,10 @@ function change_id_personne_xml($xml, $old_id, $new_id, $pretty)
     echo $pretty.$name."<br>";
     if(in_array($node->getName(), $balises_personnes))
     {
-      $attr = $node->attributes();
-      $id = $attr['id'];
-      echo "id : $id, old_id : $old_id<br>";
-      echo ".{$node['id']}.<br>";
       if(isset($node['id']) && $node['id'] == $old_id)
       {
         echo "$old_id<br>";
-        $attr['id'] = $new_id;
+        $node['id'] = $new_id;
       }
     }
     change_id_personne_xml($node, $old_id, $new_id, "..$pretty");
@@ -60,9 +56,12 @@ function change_id_personne_xml($xml, $old_id, $new_id, $pretty)
 }
 // _________________________________________________________
 
-change_id_personne_xml($xml, 413, 99001, '');
+echo '<h3>Trace</h3>';
+echo "<p>\n";
+change_id_personne_xml($xml, 418, 99418, '');
+echo "</p>\n";
 $new_contenu = $xml->asXML();
-echo "new contenu :<br>\n";
+echo "<h3>new contenu</h3>\n";
 echo "<code>\n[$new_contenu]\n</code>";
 echo "</p>\n"
 
