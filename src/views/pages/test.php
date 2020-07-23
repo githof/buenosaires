@@ -24,10 +24,22 @@ $date = $acte->get_date();
 echo "<p>\n";
 echo "date : $date<br>";
 
+function affiche_xml($xml)
+{
+  echo '<textarea>';
+  echo $xml;
+  echo '</textarea>';
+  echo '<p>';
+  echo '<code>';
+  echo $xml;
+  echo '</code>';
+  echo '</p>';
+}
+
 $contenu = $acte->get_contenu();
 // $contenu = $mysqli->get_contenu_acte(6813);
 echo "<h3>contenu</h3>\n";
-echo "<code>\n[$contenu]\n<br>\n</code>";
+affiche_xml($contenu);
 
 $xml = new SimpleXMLElement($contenu);
 
@@ -59,10 +71,10 @@ function change_id_personne_xml($xml, $old_id, $new_id, $pretty)
 echo '<h3>Trace</h3>';
 echo "<p>\n";
 change_id_personne_xml($xml, 418, 99418, '');
+change_id_personne_xml($xml, 515, 99515, '');
 echo "</p>\n";
 $new_contenu = $xml->asXML();
 echo "<h3>new contenu</h3>\n";
-echo "<code>\n[$new_contenu]\n</code>";
-echo "</p>\n"
+affiche_xml($new_contenu);
 
 ?>

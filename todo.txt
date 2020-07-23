@@ -64,10 +64,10 @@ Voir DROPBOX/Organisation/CR.txt
           x découpage [|15]
           x recenser actes  [|10]
           x fonction pour un acte [|1h]
-          + tester en xml [|1h10+]
+          + tester en xml [|2h45]
             x ressortir test.php  [|10]
             x divers fixes [|1h10]
-            - debuguer la fonction…
+            x debuguer la fonction  [|45]
           - vérifier que ok pour époux/se
         + ajouter une sécurité
           - table avec opération en cours
