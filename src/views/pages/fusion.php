@@ -372,8 +372,11 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     function fusion($personne_throw, $personne_keep, $noms, $prenoms)
     // Voir l'ancienne version, bugged_fusion, juste après
     {
+      global $mysqli;
+      
       fusion_tables($personne_throw, $personne_keep);
       change_id_personne_contenus($personne_throw, $personne_keep->id);
+      $mysqli->delete_personne($personne_throw->id);
       renomme_personne($personne_keep, $noms, $prenoms);
     }
 
