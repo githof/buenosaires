@@ -69,8 +69,14 @@ Voir DROPBOX/Organisation/CR.txt
             x divers fixes [|1h10]
             x debuguer la fonction  [|45]
             x tests à la con affichage xml  [|1h]
+          - je crois pas que j'ai supprimé, vérifier
 
     - tester actes bidons
+      x bricolages/actes-bidons.xml uploadé
+      x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15261&personne-B=15267
+      - recharger deux actes bidons
+      - tester pas à pas la fonction fusion
+      
     - vérifier que ok pour époux/se
     - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
     + tester plein de cas

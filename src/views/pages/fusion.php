@@ -42,7 +42,7 @@ $<?php
 
       if($result && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            $acte_id = $row["acte_id"]
+            $acte_id = $row["acte_id"];
             if(find_acte($acte_id, $keep_actes))
                 $dispatch_actes['delete'][] = $acte_id;
             else
@@ -97,7 +97,7 @@ $<?php
         foreach($personne_throw->conditions as $condition_throw)
         {
             $condition_keep = has_condition($condition_throw,
-                                             $personne_keep)
+                                             $personne_keep);
             if($condition_keep)
               fusion_condition($condition_throw, $condition_keep);
             else
@@ -151,12 +151,12 @@ $<?php
 
       $log->d("fusion relations");
       foreach($personne_throw->relations as $relation_throw){
-        $is_source = $relation_throw->check_source_id($personne_throw->id)
+        $is_source = $relation_throw->check_source_id($personne_throw->id);
 
         $relation_keep = has_relation($relation_throw,
                                       $personne_keep,
                                       $is_source);
-        if($relation_keep){
+        if($relation_keep)
           fusion_relation($relation_throw, $relation_keep);
         else
         {
@@ -277,7 +277,8 @@ $<?php
 function fusion_tables($personne_throw, $personne_keep)
 {
   foreach (['conditions', 'relations', 'actes'] as $element) {
-    fusion_{$element}($personne_throw, $personne_keep);
+    $f = "fusion_$element";
+    $f($personne_throw, $personne_keep);
   }
 }
 
@@ -285,7 +286,7 @@ function fusion_renommer_personne($personne_throw, $personne_keep)
 {
   foreach(['prenom', 'nom'] as $field)
   {
-    $liste = {$field}.'s'
+    $liste = "$field".'s';
     fusion_prenoms_noms($field, $liste,
                              $personne_throw, $personne_keep);
   }
@@ -293,9 +294,9 @@ function fusion_renommer_personne($personne_throw, $personne_keep)
 
 function recense_actes($personne)
 {
-  $actes = []
+  $actes = [];
   foreach(['conditions', 'relations'] as $field)
-    $liste = $personne->{$field}
+    $liste = $personne->{$field};
     foreach($liste as $element)
       foreach($element->actes as $acte)
         $actes[] = $acte;
