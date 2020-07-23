@@ -256,20 +256,20 @@ $<?php
         }
     }
 
-    function fusion_prenoms_noms($field, $noms, $throw, $keep)
+    function change_prenoms_ou_noms($field, $noms, $personne)
     // $field = 'prenom' ou 'nom'
     {
       global $mysqli;
 
       if(count($noms) == 0) return;
 
-      $cond = "personne_id='$throw->id' OR personne_id='$keep->id'";
+      $cond = "personne_id='$personne->id'";
       $mysqli->delete($field."_personne", $cond);
       $i = 1;
       foreach($noms as $nom){
           $mysqli->into_db($nom);
           $into_db = 'into_db_'.$field.'_personne';
-          $mysqli->{$into_db}($keep, $nom, $i);
+          $mysqli->{$into_db}($personne, $nom, $i);
           $i++;
       }
     }
@@ -282,13 +282,12 @@ function fusion_tables($personne_throw, $personne_keep)
   }
 }
 
-function fusion_renommer_personne($personne_throw, $personne_keep)
+function renomme_personne($personne, $noms, $prenoms)
 {
   foreach(['prenom', 'nom'] as $field)
   {
     $liste = "$field".'s';
-    fusion_prenoms_noms($field, $liste,
-                             $personne_throw, $personne_keep);
+    change_prenoms_ou_noms($field, ${$liste}, $personne);
   }
 }
 
@@ -374,8 +373,8 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     // Voir l'ancienne version, bugged_fusion, juste après
     {
       fusion_tables($personne_throw, $personne_keep);
-      fusion_renommer_personne($personne_throw, $personne_keep);
       change_id_personne_contenus($personne_throw, $personne_keep->id);
+      renomme_personne($personne_keep, $noms, $prenoms);
     }
 
     function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
