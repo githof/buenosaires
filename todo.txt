@@ -69,12 +69,14 @@ Voir DROPBOX/Organisation/CR.txt
             x divers fixes [|1h10]
             x debuguer la fonction  [|45]
             x tests à la con affichage xml  [|1h]
-          - je crois pas que j'ai supprimé, vérifier
 
     - tester actes bidons
       x bricolages/actes-bidons.xml uploadé [|10]
       x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15261&personne-B=15267
       x fix syntaxe [|30]
+      x fix renommage + delete personne   [|40]
+      x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15262&personne-B=15268
+      - l'update contenu ne se fait pas
       - recharger deux actes bidons
       - tester pas à pas la fonction fusion
 

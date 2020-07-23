@@ -327,9 +327,11 @@ function change_id_personne_xml($xml, $old_id, $new_id)
   {
     if(in_array($node->getName(), $balises_personnes))
     {
-      $attr = $node->attributes();
-      if(array_key_exists('id', $attr) && $attr['id'] == $old_id)
-        $attr['id'] = $new_id;
+      if(isset($node['id']) && $node['id'] == $old_id)
+      {
+        echo "$old_id<br>";
+        $node['id'] = $new_id;
+      }
     }
     change_id_personne_xml($node, $old_id, $new_id);
   }
@@ -373,7 +375,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     // Voir l'ancienne version, bugged_fusion, juste après
     {
       global $mysqli;
-      
+
       fusion_tables($personne_throw, $personne_keep);
       change_id_personne_contenus($personne_throw, $personne_keep->id);
       $mysqli->delete_personne($personne_throw->id);
