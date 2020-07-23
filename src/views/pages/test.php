@@ -31,26 +31,30 @@ echo "<code>\n[$contenu]\n</code>";
 
 $xml = new SimpleXMLElement($contenu);
 
+// _________________________________________________________
 $balises_personnes = ['epoux', 'epouse', 'pere', 'mere',
   'temoin', 'parrain', 'veuf-de', 'veuf', 'veuve-de', 'veuve'];
 
-function change_id_personne_xml($xml, $old_id, $new_id)
+function change_id_personne_xml($xml, $old_id, $new_id, $pretty)
 {
   global $balises_personnes;
 
   foreach($xml->children() as $node)
   {
+    $name = $node->getName();
+    echo $pretty.$name."<br>";
     if(in_array($node->getName(), $balises_personnes))
     {
       $attr = $node->attributes();
       if(array_key_exists('id', $attr) && $attr['id'] == $old_id)
         $attr['id'] = $new_id;
     }
-    change_id_personne_xml($node, $old_id, $new_id);
+    change_id_personne_xml($node, $old_id, $new_id, "..$pretty");
   }
 }
+// _________________________________________________________
 
-change_id_personne_xml($xml, 413, 99001);
+change_id_personne_xml($xml, 413, 99001, '');
 $new_contenu = $xml->asXML();
 echo "new contenu :<br>\n";
 echo "<code>\n[$new_contenu]\n</code>";

@@ -67,7 +67,7 @@ Voir DROPBOX/Organisation/CR.txt
           + tester en xml [|1h10+]
             x ressortir test.php  [|10]
             x divers fixes [|1h10]
-            - traiter le warning sur getName
+            - debuguer la fonction…
           - vérifier que ok pour époux/se
         + ajouter une sécurité
           - table avec opération en cours
