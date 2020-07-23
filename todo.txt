@@ -64,22 +64,24 @@ Voir DROPBOX/Organisation/CR.txt
           x découpage [|15]
           x recenser actes  [|10]
           x fonction pour un acte [|1h]
-          + tester en xml [|2h45]
+          + tester en xml [|3h45]
             x ressortir test.php  [|10]
             x divers fixes [|1h10]
             x debuguer la fonction  [|45]
-          - vérifier que ok pour époux/se
-        + ajouter une sécurité
-          - table avec opération en cours
-          - y mettre l'id throw
-          - le supprimer quand tout est fini
+            x tests à la con affichage xml  [|1h]
 
-    - écrire quelques actes tests
+    - tester actes bidons
+    - vérifier que ok pour époux/se
+    - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
+    + tester plein de cas
+     (il faudra réinitialiser après)
     - remonter liste des balises personnes
       (de fusion/change_id_personne_xml vers XMLActeReader)
-    - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
-    - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
     - renommer + déplacer les fonctions qui peuvent l'être
+    + ajouter une sécurité
+      - table avec opération en cours
+      - y mettre l'id throw
+      - le supprimer quand tout est fini
 
     NB : pour les tests, utiliser les url get :
     https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
