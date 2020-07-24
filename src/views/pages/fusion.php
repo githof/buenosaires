@@ -299,7 +299,7 @@ function recense_actes($personne)
     foreach($liste as $element)
       foreach($element->actes as $acte)
         $actes[] = $acte;
-        
+
   return array_unique_by_id($actes);
 }
 
@@ -323,26 +323,37 @@ function change_id_personne_xml($xml, $old_id, $new_id)
 {
   global $balises_personnes;
 
+$name = $xml->getName();
+echo "<p>change_id_personne_xml($name, $old_id, $new_id)</p>\n";
   foreach($xml->children() as $node)
   {
     if(in_array($node->getName(), $balises_personnes))
-    {
       if(isset($node['id']) && $node['id'] == $old_id)
       {
-        echo "$old_id<br>";
+        echo "<strong>$new_id</strong>";
         $node['id'] = $new_id;
       }
-    }
     change_id_personne_xml($node, $old_id, $new_id);
   }
 }
 
+function xml_without_header($xmltext)
+{
+  return explode("\n", $xmltext, 2)[1];
+}
+
 function change_id_personne_contenu($acte, $old_id, $new_id)
 {
-  $contenu = get_contenu_acte($acte);
+  global $mysqli;
+
+  echo "<h3>change_id_personne_contenu(acte, $old_id, $new_id)</h3>";
+  $contenu = $acte->get_contenu();
+  echo $contenu;
   $xml = new SimpleXMLElement($contenu);
   change_id_personne_xml($xml, $old_id, $new_id);
-  $new_contenu = $xml->asXML();
+  $new_contenu = xml_without_header($xml->asXML());
+  echo "<h3>$new_contenu</h3>";
+  echo $new_contenu;
   $mysqli->update(
       "acte_contenu",
       ["contenu" => $new_contenu],
@@ -360,8 +371,13 @@ function change_id_personne_contenus($personne, $new_id)
 */
 {
   $actes = recense_actes($personne);
+  var_dump($actes);
   foreach($actes as $acte)
+  {
+    echo "<h3>acte</h3>";
+    var_dump($acte);
     change_id_personne_contenu($acte, $personne->id, $new_id);
+  }
 }
 
 /*__ FUSION __ */
