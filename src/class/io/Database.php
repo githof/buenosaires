@@ -612,74 +612,10 @@ Testé sans succès, mais j'ai avant de me casser la tête
             ");
         }
 
-	/*
-	  ATTENTION, je doute très fort que cette fonction soit
-	  correcte : il me semble qu'elle appelle delete_personne sans
-	  vérifier que les personnes ne sont pas référencées ailleurs
-	 */
-	/*
-        public function delete_acte($acte){
-            $personnes_id = [];
-
-            $this->delete("acte_has_relation", "acte_id='$acte->id'");
-            $this->delete("acte_has_condition", "acte_id='$acte->id'");
-
-            $result = $this->query("
-                SELECT relation.id AS id, COUNT(acte_has_relation.acte_id) AS nb
-                FROM `relation` LEFT JOIN `acte_has_relation`
-                ON `relation`.id = `acte_has_relation`.relation_id
-                GROUP BY relation.id
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    if($row["nb"] > 0)
-                        continue;
-                    $this->delete("relation", "id='{$row["id"]}'");
-                    foreach($acte->relations as $relation){
-                        if($relation->id == $row["id"]){
-                            $personnes_id[] = $relation->personne_source->id;
-                            $personnes_id[] = $relation->personne_destination->id;
-                        }
-                    }
-                }
-            }
-
-            $result = $this->query("
-                SELECT `condition`.id AS id, COUNT(acte_has_condition.acte_id) AS nb
-                FROM `condition` LEFT JOIN `acte_has_condition`
-                ON `condition`.id = `acte_has_condition`.condition_id
-                GROUP BY `condition`.id
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    if($row["nb"] > 0)
-                        continue;
-                    $this->delete("condition", "id='{$row["id"]}'");
-                    foreach($acte->conditions as $condition){
-                        if($condition->id == $row["id"])
-                            $personnes_id[] = $condition->personne->id;
-                    }
-                }
-            }
-
-            if(isset($acte->epoux))
-                $personne[] = $acte->epoux->id;
-            if(isset($acte->epouse))
-                $personnes_id[] = $acte->epouse->id;
-
-            $personnes_id = array_unique($personnes_id);
-
-            $this->delete("acte_contenu", "acte_id='$acte->id'");
-            $this->delete("acte", "id='$acte->id'");
-
-            foreach($personnes_id as $personne_id){
-                $this->delete_personne($personne_id);
-            }
-
-            $this->remove_unused_prenoms_noms();
-        }
-	*/
-
+/*
+  En fait il faudrait mettre ça plutôt dans Personne->remove_from_db
+  comme j'ai mis un Acte->remove_from_db
+*/
         public function delete_personne($personne_id){
             $result = $this->select("condition", ["COUNT(*) AS nb"], "personne_id='$personne_id'");
             if($result != FALSE && $result->num_rows > 0){
