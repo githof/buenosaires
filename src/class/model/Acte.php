@@ -220,6 +220,39 @@
             $this->contenu_into_db();
             $mysqli->end_transaction();
         }
+
+        private function get_what_to_delete();
+        {
+          global $mysqli;
+          $listes = array();
+          $listes['personnes'] = [];
+
+          foreach(['condition', 'relation'] as $field)
+          {
+            $get_liste = "get_$field".'s';
+            $liste = $this->{$get_liste}();
+            $get_personnes = "get_personnes_in_$field".'s';
+            $personnes = $this->{$get_personnes}($liste);
+            array_push($listes['personnes'], $personnes);
+            $listes[$field] = $liste;
+          }
+          return $listes;
+        }
+
+        public function remove_from_db()
+        {
+          global $mysqli;
+
+          $listes = $this->get_what_to_delete();
+
+          $mysqli->start_transaction();
+          $this->delete_conditions($listes['conditions']);
+          $this->delete_relations($listes['relations']);
+          $this->delete_acte();
+          $mysqli->end_transaction();
+
+          $mysqli->purge_personnes($listes['personnes']);
+        }
     }
 
 ?>
