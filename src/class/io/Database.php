@@ -200,6 +200,7 @@
   public function purge_personnes($personnes)
   {
     // TODO (cf Acte->remove_from_db())
+    // en fait delete->personne, ici, fait ça, vérifier
   }
 
 /*

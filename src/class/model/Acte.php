@@ -238,21 +238,36 @@
           return array_unique_by_id($personnes);
         }
 
-        private function delete_conditions()
+        private function delete_conditions_or_relations($field)
+        // 'condition' ou 'relation'
         {
           global $mysqli;
 
+          $cond = "acte_id = $this->id";
+          $mysqli->delete("acte_has_$field", $cond);
 
+          $liste = $field.'s';
+          $in = implode(',', $this->{$liste});
+          $cond = "'id' in ($in)";
+          $mysqli->delete($field, $cond);
+        }
+
+        private function delete_conditions()
+        {
+          delete_conditions_or_relations('condition');
         }
 
         private function delete_relations()
         {
-          // TODO
+          delete_conditions_or_relations('relation');
         }
 
         private function delete_acte()
         {
-          // TODO
+          global $mysqli;
+
+          $mysqli->delete("acte_contenu", "acte_id='$acte->id'");
+          $mysqli->delete("acte", "id='$acte->id'");
         }
 
         public function remove_from_db()
