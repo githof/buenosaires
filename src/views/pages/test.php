@@ -82,4 +82,7 @@ $arr = array($bob, $toto, $bob);
 $unique = array_unique_by_id($arr);
 var_dump($unique);
 
+$acte = new Acte(15000);
+$acte->remove_from_db();
+
 ?>

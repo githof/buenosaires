@@ -224,7 +224,7 @@
         private function personnes()
         {
           global $mysqli;
-          $personnes = []
+          $personnes = [];
 
           foreach($this->conditions as $condition)
             $personnes[] = $condition->personne;
