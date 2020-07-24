@@ -31,6 +31,8 @@ $<?php
     // $field = 'condition' ou 'relation'
     // $id = id d'une condition ou d'une relation
     {
+      global $mysqli;
+
       $dispatch_actes = array(
         'delete' => [],
         'update' => []

@@ -79,8 +79,10 @@ Voir DROPBOX/Organisation/CR.txt
         x fix renommage + delete personne   [|40]
         x fix update contenu  [|1h20]
         + recharger deux actes bidons
-          x debug erreur sur mon fichier xml !! [|1h]
-            -> modifier le système de logs et d'alterte !
+          x debug erreur sur mon fichier xml !! [|1h15]
+            -> modifier le système de logs et d'alerte !
+          x fusion 16 14 (14) ok
+          - fusion 12 8 (12) pas ok, sans message
 
       - supprimer_acte
       + tester plein de cas
@@ -106,6 +108,12 @@ Voir DROPBOX/Organisation/CR.txt
     -> changer Log et Alerte pour qu'ils affichent tout de suite plutôt que d'enregistrer pour plus tard
     - fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
+
++ dates
+    - empêcher les dates fantaisistes, en mettant null ou un truc comme ça
+
++ détails personne
+    - vérifier date fantaisiste pour la période (voir todo dates)
 
 + code
     - optimiser l'export : Database->get_personnes
@@ -143,6 +151,7 @@ Voir DROPBOX/Organisation/CR.txt
     - vérifier ce qui se passe sur les noms (parfois ça doublonne)
     par ex Maria Mercedes Sarratea 152, 683)
     - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment)
+    - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
 
 + recherche
     -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
