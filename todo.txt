@@ -32,6 +32,8 @@ Voir DROPBOX/Organisation/CR.txt
   - attributs
 
 -> edition nom d'une personne
+  (facile maintenant, avec renomme_personne, qui est pour le moment dans fusion mais je vais le déplacer,
+  faut juste ajouter une page minimaliste pour l'appeler)
 
 + sous-réseau
     - par exemple sur les résultats d'une recherche	de personnes
@@ -76,7 +78,9 @@ Voir DROPBOX/Organisation/CR.txt
         x fix syntaxe [|30]
         x fix renommage + delete personne   [|40]
         x fix update contenu  [|1h20]
-        - recharger deux actes bidons
+        + recharger deux actes bidons
+          x debug erreur sur mon fichier xml !! [|1h]
+            -> modifier le système de logs et d'alterte !
 
       - supprimer_acte
       + tester plein de cas
@@ -99,8 +103,8 @@ Voir DROPBOX/Organisation/CR.txt
       et réparer Francisco Belgrano 419 (acte 6813)
 
 + admin
-    -> problème de droits pour le log, y'a plus de log…
-    -> fonction réinitialiser le mot de passe
+    -> changer Log et Alerte pour qu'ils affichent tout de suite plutôt que d'enregistrer pour plus tard
+    - fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
 
 + code

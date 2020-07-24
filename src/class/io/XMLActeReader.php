@@ -26,9 +26,12 @@
             $this->xml = simplexml_load_file($filename);
             if($this->xml === FALSE){
                 $log->e("Erreur lors de la lecture du fichier xml $filename");
-                $alert->error("Erreur lors de la lecture du fichier xml (Voir les logs)");
+                echo $alert->html_error("Erreur lors de la lecture du fichier xml");
                 foreach(libxml_get_errors() as $error)
+                {
                     $log->e($error->message);
+                    echo $alert->html_error($error->message);
+                }
                 return FALSE;
             }
             libxml_clear_errors();
@@ -64,7 +67,6 @@
                 $log->e("L'objet xml est null");
                 return FALSE;
             }
-
             if(isset($this->xml->ACTES, $this->xml->ACTES->ACTE)){
                 $actesXML = $this->xml->ACTES->ACTE;
                 foreach ($actesXML as $xml_acte){
@@ -250,7 +252,7 @@
 	  if(isset($obj, $obj->id) && $obj->is_valid())
 	    $this->update_attribute($xml_element, "id", $obj->id);
 	}
-	
+
         function update_attribute_parents($epouxse, $xml_element){
             foreach($xml_element->children() as $xml_parent){
 	      if($xml_parent->getName() === "pere" && isset($epouxse))
