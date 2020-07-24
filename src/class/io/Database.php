@@ -615,6 +615,8 @@ Testé sans succès, mais j'ai avant de me casser la tête
 /*
   En fait il faudrait mettre ça plutôt dans Personne->remove_from_db
   comme j'ai mis un Acte->remove_from_db
+  SAUF que je m'en sers dans fusion, sans avoir besoin de faire toutes les vérifications
+  Du coup faudrait un paramètre optionnel pour les vérif
 */
         public function delete_personne($personne_id){
             $result = $this->select("condition", ["COUNT(*) AS nb"], "personne_id='$personne_id'");

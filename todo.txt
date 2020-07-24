@@ -85,7 +85,12 @@ Voir DROPBOX/Organisation/CR.txt
             x fusion 16 14 (14)
             x fusion 12 8 (12)
 
-      - supprimer_acte
+      + supprimer_acte
+        x conditions, relations, acte [|2h]
+        - purge_personnes
+        - Personne->remove_from_db()
+          (au lieu de Database->delete_personne())
+          
       - supprimer actes bidons
       - refaire tests actes bidons (deux fusions en cascade pour vérifier)
       + tester plein de vrais cas
