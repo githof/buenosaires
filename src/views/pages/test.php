@@ -77,4 +77,9 @@ $new_contenu = $xml->asXML();
 echo "<h3>new contenu</h3>\n";
 affiche_xml($new_contenu);
 
+echo '<h3>Unique</h3>';
+$arr = array($bob, $toto, $bob);
+$unique = array_unique_by_id($arr);
+var_dump($unique);
+
 ?>

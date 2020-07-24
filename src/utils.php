@@ -327,7 +327,7 @@ function console_log( $data ){
     }
 
 /*
-  Comme array_unique mais en testant seulement le champ id plutôt que l'objet entier
+  Comme array_unique mais en testant seulement l'attribut id des objets contenus dans le tableau
 */
 function array_unique_by_id($a)
 {
@@ -335,11 +335,12 @@ function array_unique_by_id($a)
   $res = array();
   foreach($a as $x)
   {
-    if(! array_key_exists('id', $a)) continue;
+    if(! isset($x->id)) continue;
     if(in_array($x->id, $ids)) continue;
     $ids[] = $x->id;
     $res[] = $x;
   }
+  return $res;
 }
 
 ?>

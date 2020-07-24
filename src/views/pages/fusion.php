@@ -299,7 +299,7 @@ function recense_actes($personne)
     foreach($liste as $element)
       foreach($element->actes as $acte)
         $actes[] = $acte;
-
+        
   return array_unique_by_id($actes);
 }
 
@@ -376,10 +376,10 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
     {
       global $mysqli;
 
-      fusion_tables($personne_throw, $personne_keep);
+//      fusion_tables($personne_throw, $personne_keep);
       change_id_personne_contenus($personne_throw, $personne_keep->id);
-      $mysqli->delete_personne($personne_throw->id);
-      renomme_personne($personne_keep, $noms, $prenoms);
+//      $mysqli->delete_personne($personne_throw->id);
+//      renomme_personne($personne_keep, $noms, $prenoms);
     }
 
     function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){

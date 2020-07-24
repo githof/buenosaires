@@ -77,6 +77,8 @@ Voir DROPBOX/Organisation/CR.txt
       x fix renommage + delete personne   [|40]
       x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15262&personne-B=15268
       - l'update contenu ne se fait pas
+      - https://buenosaires.telecom-paristech.fr/fusion?personne-A=15266&personne-B=15263
+      - test sur 15266 & 15263
       - recharger deux actes bidons
       - tester pas à pas la fonction fusion
 
