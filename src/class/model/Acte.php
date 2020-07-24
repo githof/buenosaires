@@ -221,27 +221,28 @@
             $mysqli->end_transaction();
         }
 
-        private function get_what_to_delete();
+        private function personnes()
         {
           global $mysqli;
-          $listes = array();
-          $listes['personnes'] = [];
+          $personnes = []
 
-          foreach(['condition', 'relation'] as $field)
+          foreach($this->conditions as $condition)
+            $personnes[] = $condition->personne;
+
+          foreach($this->relations as $relation)
           {
-            $get_liste = "get_$field".'s';
-            $liste = $this->{$get_liste}();
-            $get_personnes = "get_personnes_in_$field".'s';
-            $personnes = $this->{$get_personnes}($liste);
-            array_push($listes['personnes'], $personnes);
-            $listes[$field] = $liste;
+            $personnes[] = $condition->personne_source;
+            $personnes[] = $condition->personne_destination;
           }
-          return $listes;
+
+          return array_unique_by_id($personnes);
         }
 
         private function delete_conditions()
         {
-          // TODO
+          global $mysqli;
+
+
         }
 
         private function delete_relations()
@@ -258,15 +259,17 @@
         {
           global $mysqli;
 
-          $listes = $this->get_what_to_delete();
+          $mysqli->from_db($this);
+          // ^ remplit les champs conditions et relations
+          $personnes = $this->personnes();
 
           $mysqli->start_transaction();
-          $this->delete_conditions($listes['conditions']);
-          $this->delete_relations($listes['relations']);
+          $this->delete_conditions();
+          $this->delete_relations();
           $this->delete_acte();
           $mysqli->end_transaction();
 
-          $mysqli->purge_personnes($listes['personnes']);
+          $mysqli->purge_personnes($personnes);
         }
     }
 
