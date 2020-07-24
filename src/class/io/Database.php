@@ -197,12 +197,6 @@
 	  return $personnes;
 	}
 
-  public function purge_personnes($personnes)
-  {
-    // TODO (cf Acte->remove_from_db())
-    // en fait delete->personne, ici, fait ça, vérifier
-  }
-
 /*
 Testé sans succès, mais j'ai avant de me casser la tête
 à savoir pourquoi, j'ai fait avec Acte->get_contenu
@@ -612,41 +606,20 @@ Testé sans succès, mais j'ai avant de me casser la tête
             ");
         }
 
-/*
-  En fait il faudrait mettre ça plutôt dans Personne->remove_from_db
-  comme j'ai mis un Acte->remove_from_db
-  SAUF que je m'en sers dans fusion, sans avoir besoin de faire toutes les vérifications
-  Du coup faudrait un paramètre optionnel pour les vérif
-*/
-        public function delete_personne($personne_id){
-            $result = $this->select("condition", ["COUNT(*) AS nb"], "personne_id='$personne_id'");
-            if($result != FALSE && $result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                if($row["nb"] > 0)
-                    return;
-            }
+        /*
+        Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+        Renvoie la liste des personnes supprimées.
+        */
+        public function purge_personnes($personnes)
+        {
+          $removed = [];
 
-            $result = $this->select("relation", ["COUNT(*) AS nb"], "pers_source_id='$personne_id' OR pers_destination_id='$personne_id'");
-            if($result != FALSE && $result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                if($row["nb"] > 0)
-                    return;
-            }
-
-            $result = $this->select("acte", ["COUNT(*) AS nb"], "epoux='$personne_id' OR epouse='$personne_id'");
-            if($result != FALSE && $result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                if($row["nb"] > 0)
-                    return;
-            }
-
-            $prenoms_id = [];
-            $noms_id = [];
-
-            $this->delete("prenom_personne", "personne_id='$personne_id'");
-            $this->delete("nom_personne", "personne_id='$personne_id'");
-
-            $this->delete("personne", "id='$personne_id'");
+          foreach($personnes as $personne)
+          {
+            if($personne->remove_from_db(FALSE))
+              $removed[] = $personne;
+          }
+          return $removed;
         }
 
         public function remove_unused_prenoms_noms(){
