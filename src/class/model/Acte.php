@@ -239,6 +239,21 @@
           return $listes;
         }
 
+        private function delete_conditions()
+        {
+          // TODO
+        }
+
+        private function delete_relations()
+        {
+          // TODO
+        }
+
+        private function delete_acte()
+        {
+          // TODO
+        }
+
         public function remove_from_db()
         {
           global $mysqli;

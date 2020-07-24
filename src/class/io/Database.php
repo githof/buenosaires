@@ -197,6 +197,11 @@
 	  return $personnes;
 	}
 
+  public function purge_personnes($personnes)
+  {
+    // TODO (cf Acte->remove_from_db())
+  }
+
 /*
 Testé sans succès, mais j'ai avant de me casser la tête
 à savoir pourquoi, j'ai fait avec Acte->get_contenu
