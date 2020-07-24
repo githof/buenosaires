@@ -70,29 +70,26 @@ Voir DROPBOX/Organisation/CR.txt
             x debuguer la fonction  [|45]
             x tests à la con affichage xml  [|1h]
 
-    - tester actes bidons
-      x bricolages/actes-bidons.xml uploadé [|10]
-      x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15261&personne-B=15267
-      x fix syntaxe [|30]
-      x fix renommage + delete personne   [|40]
-      x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15262&personne-B=15268
-      - l'update contenu ne se fait pas
-      - https://buenosaires.telecom-paristech.fr/fusion?personne-A=15266&personne-B=15263
-      - test sur 15266 & 15263
-      - recharger deux actes bidons
-      - tester pas à pas la fonction fusion
+      - tester actes bidons
+        x bricolages/actes-bidons.xml uploadé [|10]
+        x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15261&personne-B=15267
+        x fix syntaxe [|30]
+        x fix renommage + delete personne   [|40]
+        x fix update contenu  [|1h20]
+        - recharger deux actes bidons
 
-    - vérifier que ok pour époux/se
-    - voir comment est gérée (ou pas) la suppression d'actes (pas laisser des scories)
-    + tester plein de cas
-     (il faudra réinitialiser après)
-    - remonter liste des balises personnes
-      (de fusion/change_id_personne_xml vers XMLActeReader)
-    - renommer + déplacer les fonctions qui peuvent l'être
-    + ajouter une sécurité
-      - table avec opération en cours
-      - y mettre l'id throw
-      - le supprimer quand tout est fini
+      - supprimer_acte
+      + tester plein de cas
+       (il faudra réinitialiser après)
+      + nettoyer *mon* code
+        - supprimer les fonctione obsolètes
+        - remonter liste des balises personnes
+          (de fusion/change_id_personne_xml vers XMLActeReader)
+        - renommer + déplacer les fonctions qui peuvent l'être
+      + ajouter une sécurité
+        - table avec opération en cours
+        - y mettre l'id throw
+        - le supprimer quand tout est fini
 
     NB : pour les tests, utiliser les url get :
     https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
