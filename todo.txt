@@ -91,7 +91,7 @@ Voir DROPBOX/Organisation/CR.txt
         x Personne->remove_from_db()  [|1h]
           (au lieu de Database->delete_personne())
 
-      - supprimer actes bidons
+      - supprimer actes bidons  [|10+]
       - refaire tests actes bidons (deux fusions en cascade pour vérifier)
       + tester plein de vrais cas
        (il faudra réinitialiser après)
