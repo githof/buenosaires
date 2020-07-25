@@ -242,12 +242,11 @@
         {
           global $mysqli;
 
-echo "<p>delete_$field()</p>\n";
           $cond = "acte_id = $this->id";
           $mysqli->delete("acte_has_$field", $cond);
 
           $liste = $field.'s';
-          $in = implode(',', $this->{$liste});
+          $in = string_list_of_ids($this->{$liste});
           $cond = "'id' in ($in)";
           $mysqli->delete($field, $cond);
         }

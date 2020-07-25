@@ -343,4 +343,14 @@ function array_unique_by_id($a)
   return $res;
 }
 
+function string_list_of_ids($liste)
+{
+  $ids = [];
+
+  foreach($liste as $x)
+    $ids[] = $x->id;
+
+  return implode(',', $ids);
+}
+
 ?>
