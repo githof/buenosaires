@@ -265,8 +265,8 @@
         {
           global $mysqli;
 
-          $mysqli->delete("acte_contenu", "acte_id='$this->id'");
-          $mysqli->delete("acte", "id='$this->id'");
+          $mysqli->delete("acte_contenu", "acte_id=$this->id");
+          $mysqli->delete("acte", "id=$this->id");
         }
 
         public function remove_from_db()

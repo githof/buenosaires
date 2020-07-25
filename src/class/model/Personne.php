@@ -245,12 +245,12 @@
               $filter = "personne_id = $this->id";
               break;
             case 'relation':
-              $filter = "pers_source_id = '$this->id'"
-                . "OR pers_destination_id = '$this->id'";
+              $filter = "pers_source_id = $this->id"
+                . "OR pers_destination_id = $this->id";
               break;
             case 'acte':
-              $filter = "epoux = '$this->id'"
-                . "OR epouse = '$this->id'";
+              $filter = "epoux = $this->id"
+                . "OR epouse = $this->id";
               break;
           }
           $count = 'COUNT(*) AS nb';
@@ -289,9 +289,9 @@
           foreach(['prenom', 'nom'] as $field)
           {
             $table = $field.'_personne';
-            $mysqli->delete($table, "personne_id='$this->id'");
+            $mysqli->delete($table, "personne_id=$this->id");
           }
-          $mysqli->delete("personne", "id='$this->id'");
+          $mysqli->delete("personne", "id=$this->id");
           $mysqli->end_transaction();
 
           return TRUE;
