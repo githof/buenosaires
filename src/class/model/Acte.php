@@ -231,8 +231,8 @@
 
           foreach($this->relations as $relation)
           {
-            $personnes[] = $condition->personne_source;
-            $personnes[] = $condition->personne_destination;
+            $personnes[] = $relation->personne_source;
+            $personnes[] = $relation->personne_destination;
           }
 
           return array_unique_by_id($personnes);
