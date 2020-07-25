@@ -234,7 +234,6 @@
             $personnes[] = $relation->personne_source;
             $personnes[] = $relation->personne_destination;
           }
-
           return array_unique_by_id($personnes);
         }
 
@@ -243,6 +242,7 @@
         {
           global $mysqli;
 
+echo "<p>delete_$field()</p>\n";
           $cond = "acte_id = $this->id";
           $mysqli->delete("acte_has_$field", $cond);
 
@@ -254,12 +254,12 @@
 
         private function delete_conditions()
         {
-          delete_conditions_or_relations('condition');
+          $this->delete_conditions_or_relations('condition');
         }
 
         private function delete_relations()
         {
-          delete_conditions_or_relations('relation');
+          $this->delete_conditions_or_relations('relation');
         }
 
         private function delete_acte()
@@ -279,8 +279,12 @@
           $personnes = $this->personnes();
 
           $mysqli->start_transaction();
-          $this->delete_conditions();
-          $this->delete_relations();
+          foreach(['conditions', 'relations'] as $liste)
+            if(! empty($this->{$liste}))
+            {
+              $delete_liste = "delete_$liste";
+              $this->{$delete_liste}();
+            }
           $this->delete_acte();
           $mysqli->end_transaction();
 

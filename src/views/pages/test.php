@@ -37,45 +37,6 @@ function affiche_xml($xml)
 }
 
 $contenu = $acte->get_contenu();
-// $contenu = $mysqli->get_contenu_acte(6813);
-echo "<h3>contenu</h3>\n";
-affiche_xml($contenu);
-
-$xml = new SimpleXMLElement($contenu);
-
-// _________________________________________________________
-$balises_personnes = ['epoux', 'epouse', 'pere', 'mere',
-  'temoin', 'parrain', 'veuf-de', 'veuf', 'veuve-de', 'veuve'];
-
-function change_id_personne_xml($xml, $old_id, $new_id, $pretty)
-{
-  global $balises_personnes;
-
-  foreach($xml->children() as $node)
-  {
-    $name = $node->getName();
-    echo $pretty.$name."<br>";
-    if(in_array($node->getName(), $balises_personnes))
-    {
-      if(isset($node['id']) && $node['id'] == $old_id)
-      {
-        echo "$old_id<br>";
-        $node['id'] = $new_id;
-      }
-    }
-    change_id_personne_xml($node, $old_id, $new_id, "..$pretty");
-  }
-}
-// _________________________________________________________
-
-echo '<h3>Trace</h3>';
-echo "<p>\n";
-change_id_personne_xml($xml, 418, 99418, '');
-change_id_personne_xml($xml, 515, 99515, '');
-echo "</p>\n";
-$new_contenu = $xml->asXML();
-echo "<h3>new contenu</h3>\n";
-affiche_xml($new_contenu);
 
 echo '<h3>Unique</h3>';
 $arr = array($bob, $toto, $bob);
@@ -85,5 +46,6 @@ var_dump($unique);
 echo '<h3>remove acte 15000</h3>';
 $acte = new Acte(15000);
 $acte->remove_from_db();
+echo "<p>done?</p>";
 
 ?>
