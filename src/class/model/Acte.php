@@ -242,13 +242,13 @@
         {
           global $mysqli;
 
-          $cond = "acte_id = $this->id";
-          $mysqli->delete("acte_has_$field", $cond);
+          $test = "acte_id = $this->id";
+          $mysqli->delete("acte_has_$field", $test);
 
           $liste = $field.'s';
           $in = string_list_of_ids($this->{$liste});
-          $cond = "'id' in ($in)";
-          $mysqli->delete($field, $cond);
+          $test = "id in ($in)";
+          $mysqli->delete($field, $test);
         }
 
         private function delete_conditions()

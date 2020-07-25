@@ -43,8 +43,8 @@ $arr = array($bob, $toto, $bob);
 $unique = array_unique_by_id($arr);
 var_dump($unique);
 
-echo '<h3>remove acte 15000</h3>';
-$acte = new Acte(15000);
+echo '<h3>remove acte</h3>';
+$acte = new Acte(15002);
 $acte->remove_from_db();
 echo "<p>done?</p>";
 
