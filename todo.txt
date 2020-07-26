@@ -93,9 +93,12 @@ Voir DROPBOX/Organisation/CR.txt
         x tests + debug [|2h]
 
       + refaire tests actes bidons (deux fusions en cascade pour vérifier)
-        F 3 7 (7)
+        x F 3 7 (7)
         + Encore un bug : acte 1 perd relations de 3 (7)
-        - F 4 8 (8)
+        x F 4 8 (8) -> ok
+        - combiner fusion 4 8 avec un suivante
+        - (re)supprimer actes bidons
+
       - remettre la valeur max de la base
       + tester plein de vrais cas
        (il faudra réinitialiser après)
