@@ -45,7 +45,7 @@ $<?php
       if($result && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $acte_id = $row["acte_id"];
-            if($this->find_acte($acte_id, $keep_actes))
+            if(find_acte($acte_id, $keep_actes))
                 $dispatch_actes['delete'][] = $acte_id;
             else
                 $dispatch_actes['update'][] = $acte_id;
@@ -79,12 +79,12 @@ $<?php
     {
       global $mysqli;
 
-      $dispatch_actes = $this->dispatch_actes($which,
+      $dispatch_actes = dispatch_actes($which,
                                               $throw->id,
                                               $keep->actes);
-      $this->traite_dispatch_actes($which, 'delete',
+      traite_dispatch_actes($which, 'delete',
                                    $dispatch_actes, $throw->id);
-      $this->traite_dispatch_actes($which, 'update',
+      traite_dispatch_actes($which, 'update',
                                    $dispatch_actes,
                                    $throw->id, $keep->id);
       $mysqli->delete($which, "id = '$throw->id'");
@@ -92,7 +92,7 @@ $<?php
 
     function fusion_condition($throw, $keep)
     {
-      $this->fusion_condition_ou_relation('condition', $throw, $keep);
+      fusion_condition_ou_relation('condition', $throw, $keep);
     }
 
     function fusion_conditions($personne_throw, $personne_keep){
@@ -101,10 +101,10 @@ $<?php
         $log->d("fusion conditions");
         foreach($personne_throw->conditions as $condition_throw)
         {
-            $condition_keep = $this->has_condition($condition_throw,
+            $condition_keep = has_condition($condition_throw,
                                              $personne_keep);
             if($condition_keep)
-              $this->fusion_condition($condition_throw, $condition_keep);
+              fusion_condition($condition_throw, $condition_keep);
             else
               $mysqli->update("condition",
                              ["personne_id" => "$personne_keep->id"],
@@ -133,13 +133,13 @@ $<?php
         if($is_source)
         {
           if($r->personne_source->id == $personne->id
-             && $this->same_half_relation('destination', $r, $relation))
+             && same_half_relation('destination', $r, $relation))
             return $r;
         }
         else
         {
           if($r->personne_destination->id == $personne->id
-             && $this->same_half_relation('source', $r, $relation))
+             && same_half_relation('source', $r, $relation))
             return $r;
         }
 
@@ -149,7 +149,7 @@ $<?php
 
     function fusion_relation($throw, $keep)
     {
-      $this->fusion_condition_ou_relation('relation', $throw, $keep);
+      fusion_condition_ou_relation('relation', $throw, $keep);
     }
 
     function fusion_relations($personne_throw, $personne_keep){
@@ -159,11 +159,11 @@ $<?php
       foreach($personne_throw->relations as $relation_throw){
         $is_source = $relation_throw->check_source_id($personne_throw->id);
 
-        $relation_keep = $this->has_relation($relation_throw,
+        $relation_keep = has_relation($relation_throw,
                                       $personne_keep,
                                       $is_source);
         if($relation_keep)
-          $this->fusion_relation($relation_throw, $relation_keep);
+          fusion_relation($relation_throw, $relation_keep);
         else
         {
           if($is_source)
@@ -484,6 +484,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
               $input_suite
           </div>
           ";
+        else $div_suite = "";
 
         return "
         <section>
