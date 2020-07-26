@@ -246,14 +246,15 @@
               break;
             case 'relation':
               $filter = "pers_source_id = $this->id"
-                . "OR pers_destination_id = $this->id";
+                . " OR pers_destination_id = $this->id";
               break;
             case 'acte':
               $filter = "epoux = $this->id"
-                . "OR epouse = $this->id";
+                . " OR epouse = $this->id";
               break;
           }
           $count = 'COUNT(*) AS nb';
+          echo "<p>is_in $table $filter</p>";
           $result = $mysqli->select($table, [$count], $filter);
           if($result && $result->num_rows > 0){
               $row = $result->fetch_assoc();
@@ -292,6 +293,7 @@
             $table = $field.'_personne';
             $mysqli->delete($table, "personne_id=$this->id");
           }
+          echo "<p>delete $this->id</p>\n";
           $mysqli->delete("personne", "id=$this->id");
           $mysqli->end_transaction();
 
