@@ -268,6 +268,7 @@
           {
             if($this->is_in($table)) return TRUE;
           }
+          return FALSE;
         }
 
         public function remove_from_db($anyway = FALSE)
