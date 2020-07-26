@@ -92,14 +92,16 @@ Voir DROPBOX/Organisation/CR.txt
           (au lieu de Database->delete_personne())
         x tests + debug [|2h]
 
-      + refaire tests actes bidons (deux fusions en cascade pour vérifier)
+      + refaire tests actes bidons (deux fusions en cascade pour vérifier)  [30]
         x F 3 7 (7)
         + Encore un bug : acte 1 perd relations de 3 (7)
-        x F 4 8 (8) -> ok
-        - combiner fusion 4 8 avec un suivante
-        - (re)supprimer actes bidons
-
-      - remettre la valeur max de la base
+        x F t4 t8 (8) -> ok
+        x F t14 t8 (8) ok
+        x F t8 p10 (10) ok
+        x F e12 m17 (12)
+      x (re)supprimer actes bidons  [4]
+      x remettre la valeur max de la base [7]
+      x sauvegarde xml : ok, diff vide  [10]
       + tester plein de vrais cas
        (il faudra réinitialiser après)
       + nettoyer *mon* code

@@ -1,4 +1,4 @@
-$<?php
+<?php
 
     include_once(ROOT."src/html_entities.php");
 
