@@ -87,16 +87,7 @@ function console_log( $data ){
     }
 
     function array_to_string_with_separator($tab, $separator){
-        $str = "";
-        $i = 0;
-        $length = count($tab);
-        foreach($tab as $entry){
-            $str .= "'$entry'";
-            if($i < $length -1)
-                $str .= "$separator";
-            $i++;
-        }
-        return $str;
+        return implode($separator, $tab);
     }
 
     function renommer_personne($personne, $noms, $prenoms)

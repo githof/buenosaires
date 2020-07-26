@@ -85,14 +85,17 @@ Voir DROPBOX/Organisation/CR.txt
             x fusion 16 14 (14)
             x fusion 12 8 (12)
 
-      + supprimer_acte
+      + supprimer_acte  [|5h]
         x conditions, relations, acte [|2h]
         x purge_personnes
         x Personne->remove_from_db()  [|1h]
           (au lieu de Database->delete_personne())
+        x tests + debug [|2h]
 
-      - supprimer actes bidons  [|10+]
-      - refaire tests actes bidons (deux fusions en cascade pour vérifier)
+      + refaire tests actes bidons (deux fusions en cascade pour vérifier)
+        F 3 7 (7)
+        + Encore un bug : acte 1 perd relations de 3 (7)
+      - remettre la valeur max de la base
       + tester plein de vrais cas
        (il faudra réinitialiser après)
       + nettoyer *mon* code
@@ -111,6 +114,8 @@ Voir DROPBOX/Organisation/CR.txt
     - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base (et en nov 2018 aussi)
     - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
       et réparer Francisco Belgrano 419 (acte 6813)
+
+    - afficher une erreur sur un des deux ids n'existe pas (quand on arrive par url)
 
 + admin
     -> changer Log et Alerte pour qu'ils affichent tout de suite plutôt que d'enregistrer pour plus tard
