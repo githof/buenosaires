@@ -1,6 +1,11 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
+-> échantillon Alexis
+  - export csv par liste d'actes
+  - corpus sur la période sélectionnée
+  - régler à la main les homonymes (virer acte si possible, sinon changer l'id)
+
 - balise mention
   signaler une personne présente (voir pex 5495, Manuel de la Torre)
 
@@ -16,6 +21,7 @@ Voir DROPBOX/Organisation/CR.txt
      - créer des collections (table collections)
 
 -> erreurs (ponctuelles ?)
+  - Francisco Belgrano balisé en prénoms dans 383 et 419
   -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
     (11 déc 2019, le prochain reset base va sans doute régler ça)
   - GREGORIO (de las Heras et de Espinoza)
