@@ -10,6 +10,10 @@ Voir DROPBOX/Organisation/CR.txt
 -> export
    -> relation dans les deux sens
    - virer les accents (idéalement, option pour les garder)
+   + à partir d'un ensemble d'actes / de personnes
+     -> faire la fonctionnalité
+     - formulaire simple pour commencer
+     - créer des collections (table collections)
 
 -> erreurs (ponctuelles ?)
   -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
@@ -35,8 +39,13 @@ Voir DROPBOX/Organisation/CR.txt
   (facile maintenant, avec renomme_personne, qui est pour le moment dans fusion mais je vais le déplacer,
   faut juste ajouter une page minimaliste pour l'appeler)
 
-+ sous-réseau
-    - par exemple sur les résultats d'une recherche	de personnes
++ Collections
+  - table collections
+  - page collections
+  - page collection
+  - création / suppression d'une collection
+  - ajout d'une personne / d'un acte à une collection
+  - suppression d'un élément à une collection
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
@@ -104,22 +113,30 @@ Voir DROPBOX/Organisation/CR.txt
       x sauvegarde xml : ok, diff vide  [10]
       + tester plein de vrais cas
        (il faudra réinitialiser après)
+        + pb sur acte 4730
+          x F Belgrano 404 + 514
+            -> manque condition Don sur acte 4730
+            (mais 404 l'avait déjà sur d'autres)
+          x suppression acte 4730
+            -> epoux non supprimés, reste condition Don
+          x conditions supprimées à la main
+            (pas testé suppression des personnes après)
+          x acte réimporté
+          x Maria Mercedes Sarratea 152, 683 (152)
+            ok (y compris le Don, passé de 683 à 152,
+            mais il n'était pas sur le 152)
+
+      - reset base (voir CR général, 6 déc 2019)
+
       + nettoyer *mon* code
         - supprimer les fonctione obsolètes
         - remonter liste des balises personnes
           (de fusion/change_id_personne_xml vers XMLActeReader)
         - renommer + déplacer les fonctions qui peuvent l'être
-      + ajouter une sécurité
-        - table avec opération en cours
-        - y mettre l'id throw
-        - le supprimer quand tout est fini
 
     NB : pour les tests, utiliser les url get :
     https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
 
-    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base (et en nov 2018 aussi)
-    - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
-      et réparer Francisco Belgrano 419 (acte 6813)
 
     - afficher une erreur sur un des deux ids n'existe pas (quand on arrive par url)
 
@@ -179,24 +196,28 @@ Voir DROPBOX/Organisation/CR.txt
     - dans le résultat : faire apparaître explicitement le nom recherché
 
 + fusion
-    BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)
+    -> pour la sélection des ids, faire en sorte que le formulaire puisse aussi marcher sans ajax
     - montrer le résultat à la fin (plutôt qu'une page vide)
     BUG : le nom s'affiche dans la liste des prénoms
+    [sur quels cas ?]
     - confusion entre recherche et prévisualiser (désactiver le bouton
     tant qu'on n'a pas sélectionné deux)
-    - pour la sélection des ids, faire en sorte que le formulaire qui puisse aussi marcher sans ajax
+    - dispact_actes pas clair pour conditions
+    (voir fusion Belgrano 404 + 514 (404)
+    Don de acte 4730 pas conservé)
 
 + classes
     - supprimer des entrées (relations, conditions, etc.)
     - éditer les champs depuis les pages
+    - BUG : dans Acte->remove_from_db, les conditions ne sont pas supprimées correctement (dans acte_has oui, mais pas dans condition), du coup les personnes peuvent pas être supprimées (cf + haut Frutos, dans le commit courant)
 
 + modifs ponctuelles
     - Cristina
     - fusions Francisco Belgrano
 
 + base
-    -> BUG en-tête <?xml version="1.0"?> en trop sur actes quand
-    modifiés (peut-être par fusion, voir CR.txt 17 oct 2018)
+    -> en-tête <?xml version="1.0"?> en trop sur actes
+    modifiés (réglé pour nouvelle fusion au moment du asXML)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others, cf diff_with_newlines dans
       session.sh)
