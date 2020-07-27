@@ -10,6 +10,10 @@ Voir DROPBOX/Organisation/CR.txt
 -> export
    -> relation dans les deux sens
    - virer les accents (idéalement, option pour les garder)
+   + à partir d'un ensemble d'actes / de personnes
+     -> faire la fonctionnalité
+     - formulaire simple pour commencer
+     - créer des collections (table collections)
 
 -> erreurs (ponctuelles ?)
   -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
@@ -32,22 +36,120 @@ Voir DROPBOX/Organisation/CR.txt
   - attributs
 
 -> edition nom d'une personne
+  (facile maintenant, avec renomme_personne, qui est pour le moment dans fusion mais je vais le déplacer,
+  faut juste ajouter une page minimaliste pour l'appeler)
 
-+ sous-réseau
-    - par exemple sur les résultats d'une recherche	de personnes
++ Collections
+  - table collections
+  - page collections
+  - page collection
+  - création / suppression d'une collection
+  - ajout d'une personne / d'un acte à une collection
+  - suppression d'un élément à une collection
 
 + BUG fusion
     -> voir CR.txt 17 oct 2018 et commentaires dans fusion.php
-    - réécrire proprement la fonction fusion
-    - tester plein de cas (le problème c'est qu'il faudra ptet être sûr de pouvoir dissocier pour tester plein de fusions)
-    - quand ce sera réglé, voir CR.txt 31 oct 2017 pour reset base
-    - sinon faudra au moins remettre les deux relations supprimées le 16 oct 2018 (voir acte)
-      et réparer Francisco Belgrano 419 (acte 6813)
+    x exploration [|45]
+    x découper html_fusion  [1h+|2h45]
+      x code découpé [2h]
+      x renommé html_fusion en html_preview_fusion
+      x debug syntaxe [25]
+      x test : prénoms et noms s'affichent pas (fixed) [20]
+
+      -> séparer html, recherche ajax, et appel à fusion
+
+    + exploration : comment est validé le formulaire preview ?!
+    + réécrire proprement la fonction fusion
+      + mettre à jour tout ce qui contient $personne_throw->id
+        x table conditions  [|1h35]
+        x table relations [|2h]
+        x planning  [|5]
+        x chgt ordre throw keep [|20]
+        x table actes [|10]
+        + changer le nom de $personne_keep  [|45]
+          x explore   [|35]
+          x code  [|10]
+        x lisibilité  [|5]
+        + update contenu de tous les actes rencontrés [|20+]
+          x review code fusion_update_contenu_acte  [|20]
+          x découpage [|15]
+          x recenser actes  [|10]
+          x fonction pour un acte [|1h]
+          + tester en xml [|3h45]
+            x ressortir test.php  [|10]
+            x divers fixes [|1h10]
+            x debuguer la fonction  [|45]
+            x tests à la con affichage xml  [|1h]
+
+      - tester actes bidons
+        x bricolages/actes-bidons.xml uploadé [|10]
+        x https://buenosaires.telecom-paristech.fr/fusion?personne-A=15261&personne-B=15267
+        x fix syntaxe [|30]
+        x fix renommage + delete personne   [|40]
+        x fix update contenu  [|1h20]
+        + recharger deux actes bidons
+          x debug erreur sur mon fichier xml !! [|1h15]
+            -> modifier le système de logs et d'alerte !
+          x divers fixes  [|45]
+            x fusion 16 14 (14)
+            x fusion 12 8 (12)
+
+      + supprimer_acte  [|5h]
+        x conditions, relations, acte [|2h]
+        x purge_personnes
+        x Personne->remove_from_db()  [|1h]
+          (au lieu de Database->delete_personne())
+        x tests + debug [|2h]
+
+      + refaire tests actes bidons (deux fusions en cascade pour vérifier)  [30]
+        x F 3 7 (7)
+        + Encore un bug : acte 1 perd relations de 3 (7)
+        x F t4 t8 (8) -> ok
+        x F t14 t8 (8) ok
+        x F t8 p10 (10) ok
+        x F e12 m17 (12)
+      x (re)supprimer actes bidons  [4]
+      x remettre la valeur max de la base [7]
+      x sauvegarde xml : ok, diff vide  [10]
+      + tester plein de vrais cas
+       (il faudra réinitialiser après)
+        + pb sur acte 4730
+          x F Belgrano 404 + 514
+            -> manque condition Don sur acte 4730
+            (mais 404 l'avait déjà sur d'autres)
+          x suppression acte 4730
+            -> epoux non supprimés, reste condition Don
+          x conditions supprimées à la main
+            (pas testé suppression des personnes après)
+          x acte réimporté
+          x Maria Mercedes Sarratea 152, 683 (152)
+            ok (y compris le Don, passé de 683 à 152,
+            mais il n'était pas sur le 152)
+
+      - reset base (voir CR général, 6 déc 2019)
+
+      + nettoyer *mon* code
+        - supprimer les fonctione obsolètes
+        - remonter liste des balises personnes
+          (de fusion/change_id_personne_xml vers XMLActeReader)
+        - renommer + déplacer les fonctions qui peuvent l'être
+
+    NB : pour les tests, utiliser les url get :
+    https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
+
+
+    - afficher une erreur sur un des deux ids n'existe pas (quand on arrive par url)
 
 + admin
-    -> problème de droits pour le log, y'a plus de log…
-    -> fonction réinitialiser le mot de passe
+    -> changer Log et Alerte pour qu'ils affichent tout de suite plutôt que d'enregistrer pour plus tard
+    - fonction réinitialiser le mot de passe
     -> problème de chmod à la création de compte
+
++ dates
+    - empêcher les dates fantaisistes, en mettant null ou un truc comme ça
+
++ détails personne
+    - vérifier date fantaisiste pour la période (voir todo dates)
 
 + code
     - optimiser l'export : Database->get_personnes
@@ -74,6 +176,10 @@ Voir DROPBOX/Organisation/CR.txt
     - info-bulle : parler ptet de "sortir de la balise" plutôt que
       "remonter" (confusion possible avec monter d'un cran verticalement)
 
++ structure xml
+    - mettre en cohérence dtd, saisie en js, import en php
+    - balise relation à la main
+
 + export
     - gdf
 
@@ -81,6 +187,7 @@ Voir DROPBOX/Organisation/CR.txt
     - vérifier ce qui se passe sur les noms (parfois ça doublonne)
     par ex Maria Mercedes Sarratea 152, 683)
     - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment)
+    - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
 
 + recherche
     -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
@@ -89,23 +196,28 @@ Voir DROPBOX/Organisation/CR.txt
     - dans le résultat : faire apparaître explicitement le nom recherché
 
 + fusion
-    BUG : il dit que la fusion a réussi même si elle n'a pas réussi (pb chmod par ex)
+    -> pour la sélection des ids, faire en sorte que le formulaire puisse aussi marcher sans ajax
     - montrer le résultat à la fin (plutôt qu'une page vide)
     BUG : le nom s'affiche dans la liste des prénoms
+    [sur quels cas ?]
     - confusion entre recherche et prévisualiser (désactiver le bouton
     tant qu'on n'a pas sélectionné deux)
+    - dispact_actes pas clair pour conditions
+    (voir fusion Belgrano 404 + 514 (404)
+    Don de acte 4730 pas conservé)
 
 + classes
     - supprimer des entrées (relations, conditions, etc.)
     - éditer les champs depuis les pages
+    - BUG : dans Acte->remove_from_db, les conditions ne sont pas supprimées correctement (dans acte_has oui, mais pas dans condition), du coup les personnes peuvent pas être supprimées (cf + haut Frutos, dans le commit courant)
 
 + modifs ponctuelles
     - Cristina
     - fusions Francisco Belgrano
 
 + base
-    -> BUG en-tête <?xml version="1.0"?> en trop sur actes quand
-    modifiés (peut-être par fusion, voir CR.txt 17 oct 2018)
+    -> en-tête <?xml version="1.0"?> en trop sur actes
+    modifiés (réglé pour nouvelle fusion au moment du asXML)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others, cf diff_with_newlines dans
       session.sh)

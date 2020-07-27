@@ -11,28 +11,15 @@
         return FALSE;
     }
 
-    function has_same_condition($conditions, $condition_cmp){
-        foreach($conditions as $condition){
-            if($condition->text == $condition_cmp->text)
-                return $condition;
+    function has_condition($condition, $personne){
+        foreach($personne->conditions as $c){
+            if($c->text == $condition->text)
+                return $c;
         }
         return FALSE;
     }
 
-    function has_same_relation($relations, $relation_cmp, $personne_keep, $personne_throw){
-        $is_source = $relation_cmp->personne_source->id == $personne_throw->id;
-        foreach($relations as $relation){
-            if($relation->statut_id == $relation_cmp->statut_id){
-                if($is_source && $relation->personne_source->id == $personne_keep->id)
-                    return $relation;
-                else if(!$is_source && $relation->personne_destination->id == $personne_keep->id)
-                    return $relation;
-            }
-        }
-        return FALSE;
-    }
-
-    function has_same_acte($actes, $id){
+    function find_acte($id, $actes){
         foreach($actes as $acte){
             if($acte->id == $id)
                 return TRUE;
@@ -40,80 +27,165 @@
         return FALSE;
     }
 
-    function fusion_conditions($personne_keep, $personne_throw){
+    function dispatch_actes($field, $id, $keep_actes)
+    // $field = 'condition' ou 'relation'
+    // $id = id d'une condition ou d'une relation
+    {
+      global $mysqli;
+
+      $dispatch_actes = array(
+        'delete' => [],
+        'update' => []
+      );
+
+      $result = $mysqli->select("acte_has_$field",
+                               ["acte_id"],
+                                "$field"."_id = '$id'");
+
+      if($result && $result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $acte_id = $row["acte_id"];
+            if(find_acte($acte_id, $keep_actes))
+                $dispatch_actes['delete'][] = $acte_id;
+            else
+                $dispatch_actes['update'][] = $acte_id;
+        }
+      }
+      return $dispatch_actes;
+    }
+
+    function traite_dispatch_actes($field, $operation, $dispatch_actes,
+                                   $throw_id, $keep_id = null)
+    // $field = 'condition' ou 'relation'
+    // $operation = 'delete' ou 'update'
+    {
+      global $mysqli;
+
+      if(count($dispatch_actes[$operation]) == 0)
+        return;
+
+      $str = implode(', ', $dispatch_actes[$operation]);
+      $req = "$field"."_id = '$throw_id' AND acte_id IN ($str)";
+      if($operation = 'delete')
+        $mysqli->delete("acte_has_$field", $req);
+      else
+        $mysqli->update("acte_has_$field",
+                       ["$field"."_id" => "$keep_id"],
+                       $req);
+    }
+
+    function fusion_condition_ou_relation($which, $throw, $keep)
+    // $which = 'condition' ou 'relation'
+    {
+      global $mysqli;
+
+      $dispatch_actes = dispatch_actes($which,
+                                              $throw->id,
+                                              $keep->actes);
+      traite_dispatch_actes($which, 'delete',
+                                   $dispatch_actes, $throw->id);
+      traite_dispatch_actes($which, 'update',
+                                   $dispatch_actes,
+                                   $throw->id, $keep->id);
+      $mysqli->delete($which, "id = '$throw->id'");
+    }
+
+    function fusion_condition($throw, $keep)
+    {
+      fusion_condition_ou_relation('condition', $throw, $keep);
+    }
+
+    function fusion_conditions($personne_throw, $personne_keep){
         global $mysqli, $log;
 
         $log->d("fusion conditions");
-        foreach($personne_throw->conditions as $condition_throw){
-            $same = has_same_condition($personne_keep->conditions, $condition_throw);
-            if($same != FALSE){
-                $acte_id_delete = [];
-                $acte_id_update = [];
-                $result = $mysqli->select("acte_has_condition", ["acte_id"], "condition_id = '$condition_throw->id'");
-                if($result != FALSE && $result->num_rows > 0){
-                    while($row = $result->fetch_assoc()){
-                        if(has_same_acte($same->actes, $row["acte_id"]))
-                            $acte_id_delete[] = $row["acte_id"];
-                        else
-                            $acte_id_update[] = $row["acte_id"];
-                    }
-                }
-
-                if(count($acte_id_delete) > 0){
-                    $str = array_to_string_with_separator($acte_id_delete, ", ");
-                    $mysqli->delete("acte_has_condition", "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
-                }
-
-                if(count($acte_id_update) > 0){
-                    $str = array_to_string_with_separator($acte_id_update, ", ");
-                    $mysqli->update("acte_has_condition", ["condition_id" => "$same->id"], "condition_id = '$condition_throw->id' AND acte_id IN ($str)");
-                }
-
-                $mysqli->delete("condition", "id = '$condition_throw->id'");
-            }else{
-                $mysqli->update("condition", ["personne_id" => "$personne_keep->id"], "id = '$condition_throw->id'");
-            }
+        foreach($personne_throw->conditions as $condition_throw)
+        {
+            $condition_keep = has_condition($condition_throw,
+                                             $personne_keep);
+            if($condition_keep)
+              fusion_condition($condition_throw, $condition_keep);
+            else
+              $mysqli->update("condition",
+                             ["personne_id" => "$personne_keep->id"],
+                             "id = '$condition_throw->id'");
         }
     }
 
-    function fusion_relations($personne_keep, $personne_throw){
-        global $mysqli, $log;
+    function same_half_relation($which_half, $r1, $r2)
+    {
+      $personne = "personne_$which_half";
+      return $r1->{$personne}->id
+          == $r2->{$personne}->id;
+    }
 
-        $log->d("fusion relations");
-        foreach($personne_throw->relations as $relation_throw){
-            $is_source_throw = $relation_throw->personne_source->id == $personne_throw->id;
-            $same = has_same_relation($personne_keep->relations, $relation_throw, $personne_keep, $personne_throw);
-            if($same != FALSE){
-                $acte_id_delete = [];
-                $acte_id_update = [];
-                $result = $mysqli->select("acte_has_relation", ["acte_id"], "relation_id = '$relation_throw->id'");
-                if($result != FALSE && $result->num_rows > 0){
-                    while($row = $result->fetch_assoc()){
-                        if(has_same_acte($same->actes, $row["acte_id"]))
-                            $acte_id_delete[] = $row["acte_id"];
-                        else
-                            $acte_id_update[] = $row["acte_id"];
-                    }
-                }
+    function has_relation($relation, $personne, $is_source)
+    /*
+      J'ai l'impression que dans la version précédente, le test était pas correct, on testait qu'une des deux extrémités,
+      du coup il a pu y avoir des faux positifs, qui ont pu entraîner des suppressions ou des updates intempestifs
+    */
+    {
+      foreach($personne->relations as $r){
 
-                if(count($acte_id_delete) > 0){
-                    $str = array_to_string_with_separator($acte_id_delete, ", ");
-                    $mysqli->delete("acte_has_relation", "relation_id = '$relation_throw->id' AND acte_id IN ($str)");
-                }
+        if($r->statut_id != $relation->statut_id)
+          continue;
 
-                if(count($acte_id_update) < 0){
-                    $str = array_to_string_with_separator($acte_id_update, ", ");
-                    $mysqli->update("acte_has_relation", ["relation_id" => "$same->id"], "relation_id = '$relation_throw->id' AND acte_id IN ($str)");
-                }
-
-                $mysqli->delete("relation", "id='$relation_throw->id'");
-            }else{
-                $pers = "pers_destination_id";
-                if($is_source_throw)
-                    $pers = "pers_source_id";
-                $mysqli->update("relation", ["$pers" => "$personne_keep->id"], "id = '$relation_throw->id'");
-            }
+        if($is_source)
+        {
+          if($r->personne_source->id == $personne->id
+             && same_half_relation('destination', $r, $relation))
+            return $r;
         }
+        else
+        {
+          if($r->personne_destination->id == $personne->id
+             && same_half_relation('source', $r, $relation))
+            return $r;
+        }
+
+        return FALSE;
+      }
+    }
+
+    function fusion_relation($throw, $keep)
+    {
+      fusion_condition_ou_relation('relation', $throw, $keep);
+    }
+
+    function fusion_relations($personne_throw, $personne_keep){
+      global $mysqli, $log;
+
+      $log->d("fusion relations");
+      foreach($personne_throw->relations as $relation_throw){
+        $is_source = $relation_throw->check_source_id($personne_throw->id);
+
+        $relation_keep = has_relation($relation_throw,
+                                      $personne_keep,
+                                      $is_source);
+        if($relation_keep)
+          fusion_relation($relation_throw, $relation_keep);
+        else
+        {
+          if($is_source)
+              $pers = "pers_source_id";
+          else
+              $pers = "pers_destination_id";
+
+          $mysqli->update("relation",
+                         [$pers => "$personne_keep->id"],
+                         "id = '$relation_throw->id'");
+        }
+      }
+    }
+
+    function fusion_actes($throw, $keep)
+    {
+      global $mysqli;
+
+      foreach (['epoux', 'epouse'] as $ep)
+        $mysqli->update("acte",
+                       [$ep => "$keep->id"],
+                        "$ep='$throw->id'");
     }
 
     function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
@@ -123,6 +195,14 @@
         $mysqli->from_db($personne);
 
         $actes = [];
+
+        /*
+          Dans ce qui suit,
+          Je pense pas qu'il y ait de raison de traiter séparément
+          epoux/se et le reste,
+          et surtout de faire une requête alors qu'on a tout dans
+          les conditions et relations
+        */
 
         $results = $mysqli->select(
             "acte",
@@ -182,6 +262,120 @@
         }
     }
 
+    function change_prenoms_ou_noms($field, $noms, $personne)
+    // $field = 'prenom' ou 'nom'
+    {
+      global $mysqli;
+
+      if(count($noms) == 0) return;
+
+      $cond = "personne_id='$personne->id'";
+      $mysqli->delete($field."_personne", $cond);
+      $i = 1;
+      foreach($noms as $nom){
+          $mysqli->into_db($nom);
+          $into_db = 'into_db_'.$field.'_personne';
+          $mysqli->{$into_db}($personne, $nom, $i);
+          $i++;
+      }
+    }
+
+function fusion_tables($personne_throw, $personne_keep)
+{
+  foreach (['conditions', 'relations', 'actes'] as $element) {
+    $f = "fusion_$element";
+    $f($personne_throw, $personne_keep);
+  }
+}
+
+function renomme_personne($personne, $noms, $prenoms)
+{
+  foreach(['prenom', 'nom'] as $field)
+  {
+    $liste = "$field".'s';
+    change_prenoms_ou_noms($field, ${$liste}, $personne);
+  }
+}
+
+function recense_actes($personne)
+{
+  $actes = [];
+  foreach(['conditions', 'relations'] as $field)
+    $liste = $personne->{$field};
+    foreach($liste as $element)
+      foreach($element->actes as $acte)
+        $actes[] = $acte;
+
+  return array_unique_by_id($actes);
+}
+
+$balises_personnes = ['epoux', 'epouse', 'pere', 'mere',
+  'temoin', 'parrain', 'veuf-de', 'veuf', 'veuve-de', 'veuve'];
+/*
+  Ça ça devrait être défini en global, a minima dans XMLActeReader.php,
+  mais peut-être même dans un truc plus général.
+  Et mis en cohérence avec la dtd et avec ce qui est utilisé dans la saisie
+  en js (pas réussi à retrouver où c'est défini pour le js).
+  Pour l'instant
+  - je laisse ça là parce que j'ai peur de la dépendance
+    mais dès que c'est testé, je le déplace
+    (sinon ce sera super chiant à débusquer si je change un truc dans les
+    defs xml)
+  - je mets toutes les combinaisons pour veuf/ve mais faudra se fixer
+    (pour l'instant les veuf-de etc n'ont pas d'id il me semble)
+*/
+
+function change_id_personne_xml($xml, $old_id, $new_id)
+{
+  global $balises_personnes;
+
+  foreach($xml->children() as $node)
+  {
+    if(in_array($node->getName(), $balises_personnes))
+      if(isset($node['id']) && $node['id'] == $old_id)
+      {
+        $node['id'] = $new_id;
+      }
+    change_id_personne_xml($node, $old_id, $new_id);
+  }
+}
+
+function xml_without_header($xmltext)
+{
+  return explode("\n", $xmltext, 2)[1];
+}
+
+function change_id_personne_contenu($acte, $old_id, $new_id)
+{
+  global $mysqli;
+
+  $contenu = $acte->get_contenu();
+  $xml = new SimpleXMLElement($contenu);
+  change_id_personne_xml($xml, $old_id, $new_id);
+  $new_contenu = xml_without_header($xml->asXML());
+  $mysqli->update(
+      "acte_contenu",
+      ["contenu" => $new_contenu],
+      "acte_id='$acte->id'"
+  );
+}
+
+function change_id_personne_contenus($personne, $new_id)
+// nouvelle version de fusion_update_contenu_acte (plus haut)
+/*
+  Peut-être que pour dissoc on a besoin exactement de la même fonction,
+  auquel cas il faudrait la mettre qq part genre utils.php:
+    // code...
+    break;
+*/
+{
+  $actes = recense_actes($personne);
+  foreach($actes as $acte)
+  {
+    change_id_personne_contenu($acte, $personne->id, $new_id);
+  }
+}
+
 /*__ FUSION __ */
 /*
 BUG : la fusion ne se fait que sur les actes où la personne est époux/se
@@ -189,7 +383,20 @@ MAIS le prénom et le nom sont virés même quand la fusion n'est pas faite !!
 Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les relations et les conditions dans ce cas, parce que les appels sont quand même faits
 
  */
-    function fusion($personne_keep, $personne_throw, $noms, $prenoms){
+    function fusion($personne_throw, $personne_keep, $noms, $prenoms)
+    // Voir l'ancienne version, bugged_fusion, juste après
+    {
+      global $mysqli;
+
+      $mysqli->start_transaction();
+      fusion_tables($personne_throw, $personne_keep);
+      change_id_personne_contenus($personne_throw, $personne_keep->id);
+      $personne_throw->remove_from_db(TRUE);
+      renomme_personne($personne_keep, $noms, $prenoms);
+      $mysqli->end_transaction();
+    }
+
+    function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
         global $mysqli, $log;
 
 	/* Déjà faudrait ptet attendre d'être sûrs que les trucs soient créés
@@ -211,10 +418,11 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         }
 
 	/* là-dedans on ne s'occupe que des actes où la personne est époux/se */
+  /* (juil 2020 : non, on les traite séparément, mais y'a pas trop de raison) */
         fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
 
         $log->d("fusion actes"); // pourquoi ici ??
-	
+
 	/* idem, du coup */
         $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
         $mysqli->update("acte", ["epouse" => "$personne_keep->id"], "epouse='$personne_throw->id'");
@@ -226,6 +434,8 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $mysqli->delete_personne($personne_throw->id);
     }
 
+
+/*__ SELCTION PERSONNES __ */
 
     function html_select_personnes(){
         return "
@@ -245,7 +455,97 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         ";
     }
 
-    function html_fusion_noms($noms){
+/*__ PREVIEW_FUSION __ */
+/*
+  Formulaire pour prévisualiser la fusion
+  (fonction html_preview_fusion tout en bas)
+*/
+
+    function html_fusion_debut(){
+      return '
+      <form method="get" id="fusion-form">
+          <button class="btn btn-primary" id="fusion-submit">Fusionner</button>
+      ';
+    }
+    function html_fusion_fin(){
+      return "
+      </form>
+      ";
+    }
+
+    function html_fusion_section($titre, $classe,
+                                 $flex_orientation,
+                                 $contenu,
+                                 $input_suite = "", $help = ""){
+        if($input_suite != "")
+          $div_suite = "
+          <div>
+              <div class=\"help-block\">$help</div>
+              $input_suite
+          </div>
+          ";
+        else $div_suite = "";
+
+        return "
+        <section>
+            <h4>$titre</h4>
+            <div class=\"fusion-$classe flex-$flex_orientation\">
+                $contenu
+            </div> $div_suite
+        </section>
+        ";
+    }
+
+    function html_fusion_radio_id($AB, $id){
+        return "
+            <div>
+                <input type='radio' name='id' id='radio-pers-$AB' value='$id' checked='checked'>
+                <label for='radio-pers-$AB'>$id</label>
+                <input type='hidden' name='personne-$AB' value='$id'>
+            </div>
+        ";
+        // je comprends pas à quoi sert le hidden ici
+    }
+
+    function html_fusion_section_keep($id_A, $id_B){
+      $radioA = html_fusion_radio_id('A', $id_A);
+      $radioB = html_fusion_radio_id('B', $id_B);
+
+      return html_fusion_section(
+          'ID  <i>(Choisir l\'ID à conserver)</i>',
+          'ids', 'horizontal',
+          "$radioA $radioB");
+    }
+
+    function html_fusion_div_prenoms($prenoms){
+        $html = "";
+        foreach($prenoms as $prenom){
+            $html .=
+                "<div id='prenom-$prenom->id' class='prenom'>"
+                .$prenom->to_string().
+                "</div>";
+        }
+        return $html;
+    }
+
+    function html_fusion_section_prenoms($prenomsA, $prenomsB)
+    {
+      $html_prenomsA = html_fusion_div_prenoms($prenomsA);
+      $html_prenomsB = html_fusion_div_prenoms($prenomsB);
+      $input_prenoms = default_input_prenoms($prenomsA, $prenomsB);
+      $input_suite = "
+              <input type=\"text\" name=\"prenoms\" placeholder=\"Ex: Maria, Josefa\" value=\"$input_prenoms\">
+      ";
+
+      return html_fusion_section(
+          'Prénoms', 'prenoms', 'horizontal',
+          "$html_prenomsA $html_prenomsB",
+          $input_suite,
+          'Les prénoms séparés par une virgule'
+        );
+    }
+
+    function html_fusion_div_noms($noms){
         $html = "";
         foreach($noms as $nom){
             $attr = "";
@@ -260,15 +560,21 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         return $html;
     }
 
-    function html_fusion_prenoms($prenoms){
-        $html = "";
-        foreach($prenoms as $prenom){
-            $html .=
-                "<div id='prenom-$prenom->id' class='prenom'>"
-                .$prenom->to_string().
-                "</div>";
-        }
-        return $html;
+    function html_fusion_section_noms($nomsA, $nomsB)
+    {
+      $html_nomsA = html_fusion_div_noms($nomsA);
+      $html_nomsB = html_fusion_div_noms($nomsB);
+      $input_noms = default_input_noms($nomsA, $nomsB);
+      $input_suite = "
+              <input type=\"text\" name=\"noms\" placeholder=\"Ex: PERI, (de) BELGRANO\" value=\"$input_noms\">
+      ";
+
+      return html_fusion_section(
+          'Noms', 'noms', 'horizontal',
+          "$html_nomsA $html_nomsB",
+          $input_suite,
+          'Les noms séparés par une virgule et leurs attributs entre parenthèses si besoin'
+      );
     }
 
     function html_fusion_conditions($conditions){
@@ -287,77 +593,31 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         return $html;
     }
 
-    function html_fusion_ids($id_A, $id_B){
-        return "
-            <div>
-                <input type='radio' name='id' id='pers-$id_A' value='$id_A' checked>
-                <label for='pers-$id_A'>$id_A</label>
-                <input type='hidden' name='personne-A' value='$id_A'>
-            </div>
-            <div>
-                <input type='radio' name='id' id='pers-$id_B' value='$id_B'>
-                <label for='pers-$id_B'>$id_B</label>
-                <input type='hidden' name='personne-B' value='$id_B'>
-            </div>";
+    // Une fois qu'on a sélectionné qui on fusionne, on arrive ici
+    function html_preview_fusion($pA, $pB)
+    {
+        echo html_fusion_debut();
+
+        echo html_fusion_section_keep($pA->id, $pB->id);
+        echo html_fusion_section_prenoms($pA->prenoms, $pB->prenoms);
+        echo html_fusion_section_noms($pA->noms, $pB->noms);
+
+        $html_conditions = html_fusion_conditions($pA->conditions)
+            . html_fusion_conditions($pB->conditions);
+        echo html_fusion_section(
+          'Conditions', 'conditions', 'vertical',
+          $html_conditions);
+
+        $html_relations = html_fusion_relations($pA->relations)
+              . html_fusion_relations($pB->relations);
+        echo html_fusion_section(
+          'Relations', 'relations', 'vertical',
+          $html_relations);
+
+        echo html_fusion_fin();
     }
 
-    function html_fusion($personne_A, $personne_B){
-        $html_noms = html_fusion_noms($personne_A->noms)
-            . html_fusion_noms($personne_B->noms);
-        $html_prenoms = html_fusion_prenoms($personne_A->prenoms)
-            . html_fusion_prenoms($personne_B->prenoms);
-        $html_conditions = html_fusion_conditions($personne_A->conditions)
-            . html_fusion_conditions($personne_B->conditions);
-        $html_relations = html_fusion_relations($personne_A->relations)
-            . html_fusion_relations($personne_B->relations);
-        $html_ids = html_fusion_ids($personne_A->id, $personne_B->id);
-        $input_prenoms = default_input_prenoms($personne_A->prenoms, $personne_B->prenoms);
-        $input_noms = default_input_noms($personne_A->noms, $personne_B->noms);
-
-        ?>
-        <form method="get" id="fusion-form">
-            <button class="btn btn-primary" id="fusion-submit">Fusionner</button>
-            <section>
-                <h4>ID  <i>(Choisir l'ID à conserver)</i></h4>
-                <div class="fusion-ids flex-horizontal">
-                    <?php echo $html_ids; ?>
-                </div>
-            </section>
-            <section>
-                <h4>Prenoms</h4>
-                <div class="fusion-prenoms flex-horizontal">
-                    <?php echo $html_prenoms; ?>
-                </div>
-                <div>
-                    <div class="help-block">Les prénoms séparés par une virgule</div>
-                    <input type="text" name="prenoms" placeholder="Ex: Maria, Josefa" value="<?php echo $input_prenoms; ?>">
-                </div>
-            </section>
-            <section>
-                <h4>Noms</h4>
-                <div class="fusion-noms flex-horizontal">
-                    <?php echo $html_noms; ?>
-                </div>
-                <div>
-                    <div class="help-block">Les noms séparés par une virgule et leurs attributs en parenthèse si besoin</div>
-                    <input type="text" name="noms" placeholder="Ex: PERI, (de) BELGRANO" value="<?php echo $input_noms; ?>">
-                </div>
-            </section>
-            <section>
-                <h4>Condition</h4>
-                <div class="fusion-conditions flex-vertical">
-                    <?php echo $html_conditions; ?>
-                </div>
-            </section>
-            <section>
-                <h4>Relations</h4>
-                <div class="fusion-relations flex-vertical">
-                    <?php echo $html_relations; ?>
-                </div>
-            </section>
-        </form>
-        <?php
-    }
+/*__ MAIN __ */
 
     if(isset($ARGS["personne-A"],
             $ARGS["personne-B"],
@@ -377,9 +637,9 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $log->d("fusion possible");
         if($ARGS["id"] == $personne_A->id || $ARGS["id"] == $personne_B->id){
             if($ARGS["id"] == $personne_A->id)
-                fusion($personne_A, $personne_B, $noms, $prenoms);
+              fusion($personne_B, $personne_A, $noms, $prenoms);
             else
-                fusion($personne_B, $personne_A, $noms, $prenoms);
+              fusion($personne_A, $personne_B, $noms, $prenoms);
             $mysqli->remove_unused_prenoms_noms();
             $alert->success("Succès de la fusion");
         }else{
@@ -391,7 +651,7 @@ Ce que je ne comprends pas encore c'est pourquoi l'id n'est pas modifié sur les
         $mysqli->from_db($personne_A);
         $mysqli->from_db($personne_B);
 
-        echo html_fusion($personne_A, $personne_B);
+        echo html_preview_fusion($personne_A, $personne_B);
     }else{
         echo html_select_personnes();
     }

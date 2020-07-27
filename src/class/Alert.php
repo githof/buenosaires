@@ -38,6 +38,10 @@
                 </div>";
         }
 
+        /*
+          Attention : cette méthode n'affiche rien,
+          il faut faire un echo du résultat
+         */
         public function html_error($message){
             return $this->html("alert alert-danger", $message);
         }

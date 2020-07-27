@@ -42,7 +42,7 @@
 	  XMLActeReader->read_acte_node
 	  (via l'appel $reader->read_actes)
 	 */
-	
+
         if($filename != NULL){
             chmod($filename, 0776);
             $reader = new XMLActeReader($source_id);

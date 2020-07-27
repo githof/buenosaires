@@ -184,7 +184,7 @@
 	    avoir la liste des ids, puis un select par id
 	    C'est juste pour pouvoir utiliser la fonction from_db où a
 	    priori tous les cas sont traités
-	  */ 
+	  */
 	  $results = $this->select("personne", ["id"]);
 	  if($results != FALSE && $results->num_rows){
 	    while($row = $results->fetch_assoc()){
@@ -196,6 +196,20 @@
 	  }
 	  return $personnes;
 	}
+
+/*
+Testé sans succès, mais j'ai avant de me casser la tête
+à savoir pourquoi, j'ai fait avec Acte->get_contenu
+*/
+  public function get_contenu_acte($acte_id)
+  {
+    $result = $this->select(
+        "acte_contenu",
+        ["contenu"],
+        "acte_id='$acte_id'"
+    );
+    $contenu = $result->fetch_assoc()["contenu"];
+  }
 
         public function from_db($obj,
 				$update_obj = FALSE,
@@ -592,103 +606,20 @@
             ");
         }
 
-	/*
-	  ATTENTION, je doute très fort que cette fonction soit
-	  correcte : il me semble qu'elle appelle delete_personne sans
-	  vérifier que les personnes ne sont pas référencées ailleurs
-	 */
-	/*
-        public function delete_acte($acte){
-            $personnes_id = [];
+        /*
+        Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+        Renvoie la liste des personnes supprimées.
+        */
+        public function purge_personnes($personnes)
+        {
+          $removed = [];
 
-            $this->delete("acte_has_relation", "acte_id='$acte->id'");
-            $this->delete("acte_has_condition", "acte_id='$acte->id'");
-
-            $result = $this->query("
-                SELECT relation.id AS id, COUNT(acte_has_relation.acte_id) AS nb
-                FROM `relation` LEFT JOIN `acte_has_relation`
-                ON `relation`.id = `acte_has_relation`.relation_id
-                GROUP BY relation.id
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    if($row["nb"] > 0)
-                        continue;
-                    $this->delete("relation", "id='{$row["id"]}'");
-                    foreach($acte->relations as $relation){
-                        if($relation->id == $row["id"]){
-                            $personnes_id[] = $relation->personne_source->id;
-                            $personnes_id[] = $relation->personne_destination->id;
-                        }
-                    }
-                }
-            }
-
-            $result = $this->query("
-                SELECT `condition`.id AS id, COUNT(acte_has_condition.acte_id) AS nb
-                FROM `condition` LEFT JOIN `acte_has_condition`
-                ON `condition`.id = `acte_has_condition`.condition_id
-                GROUP BY `condition`.id
-            ");
-            if($result != FALSE && $result->num_rows > 0){
-                while($row = $result->fetch_assoc()){
-                    if($row["nb"] > 0)
-                        continue;
-                    $this->delete("condition", "id='{$row["id"]}'");
-                    foreach($acte->conditions as $condition){
-                        if($condition->id == $row["id"])
-                            $personnes_id[] = $condition->personne->id;
-                    }
-                }
-            }
-
-            if(isset($acte->epoux))
-                $personne[] = $acte->epoux->id;
-            if(isset($acte->epouse))
-                $personnes_id[] = $acte->epouse->id;
-
-            $personnes_id = array_unique($personnes_id);
-
-            $this->delete("acte_contenu", "acte_id='$acte->id'");
-            $this->delete("acte", "id='$acte->id'");
-
-            foreach($personnes_id as $personne_id){
-                $this->delete_personne($personne_id);
-            }
-
-            $this->remove_unused_prenoms_noms();
-        }
-	*/
-
-        public function delete_personne($personne_id){
-            $result = $this->select("condition", ["COUNT(*) AS nb"], "personne_id='$personne_id'");
-            if($result != FALSE && $result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                if($row["nb"] > 0)
-                    return;
-            }
-
-            $result = $this->select("relation", ["COUNT(*) AS nb"], "pers_source_id='$personne_id' OR pers_destination_id='$personne_id'");
-            if($result != FALSE && $result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                if($row["nb"] > 0)
-                    return;
-            }
-
-            $result = $this->select("acte", ["COUNT(*) AS nb"], "epoux='$personne_id' OR epouse='$personne_id'");
-            if($result != FALSE && $result->num_rows > 0){
-                $row = $result->fetch_assoc();
-                if($row["nb"] > 0)
-                    return;
-            }
-
-            $prenoms_id = [];
-            $noms_id = [];
-
-            $this->delete("prenom_personne", "personne_id='$personne_id'");
-            $this->delete("nom_personne", "personne_id='$personne_id'");
-
-            $this->delete("personne", "id='$personne_id'");
+          foreach($personnes as $personne)
+          {
+            if($personne->remove_from_db(FALSE))
+              $removed[] = $personne;
+          }
+          return $removed;
         }
 
         public function remove_unused_prenoms_noms(){

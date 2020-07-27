@@ -87,16 +87,28 @@ function console_log( $data ){
     }
 
     function array_to_string_with_separator($tab, $separator){
-        $str = "";
-        $i = 0;
-        $length = count($tab);
-        foreach($tab as $entry){
-            $str .= "'$entry'";
-            if($i < $length -1)
-                $str .= "$separator";
-            $i++;
-        }
-        return $str;
+        return implode($separator, $tab);
+    }
+
+    function renommer_personne($personne, $noms, $prenoms)
+    {
+      global $mysqli;
+
+      $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
+      $i = 1;
+      foreach($prenoms as $prenom){
+          $mysqli->into_db($prenom);
+          $mysqli->into_db_prenom_personne($personne, $prenom, $i);
+          $i++;
+      }
+
+      $mysqli->delete("nom_personne", "personne_id='$personne->id'");
+      $i = 1;
+      foreach($noms as $nom){
+          $mysqli->into_db($nom);
+          $mysqli->into_db_nom_personne($personne, $nom, $i);
+          $i++;
+      }
     }
 
     function parse_prenoms($prenoms_str){
@@ -104,6 +116,8 @@ function console_log( $data ){
         $prenoms = [];
 
         foreach($prenoms_array as $prenom){
+            if($prenom == '')
+              continue;
             $prenoms[] = new Prenom(NULL, $prenom);
         }
         return $prenoms;
@@ -114,6 +128,8 @@ function console_log( $data ){
         $noms = [];
 
         foreach($noms_array as $nom){
+            if($nom == '')
+              continue;
             $split = explode(")", $nom);
             if(count($split) == 2){
                 $split0 = explode("(", $split[0]);
@@ -261,7 +277,7 @@ function console_log( $data ){
 
             fclose($source);
             fclose($destination);
-            
+
             return $uploadfile;
         }else{
             $alert->error("Le fichier doit être au format XML");
@@ -300,5 +316,32 @@ function console_log( $data ){
         srand(intval(date("YmdHis")));
         return $filename."_".rand(1, 9999999);
     }
+
+/*
+  Comme array_unique mais en testant seulement l'attribut id des objets contenus dans le tableau
+*/
+function array_unique_by_id($a)
+{
+  $ids = array();
+  $res = array();
+  foreach($a as $x)
+  {
+    if(! isset($x->id)) continue;
+    if(in_array($x->id, $ids)) continue;
+    $ids[] = $x->id;
+    $res[] = $x;
+  }
+  return $res;
+}
+
+function string_list_of_ids($liste)
+{
+  $ids = [];
+
+  foreach($liste as $x)
+    $ids[] = $x->id;
+
+  return implode(',', $ids);
+}
 
 ?>
