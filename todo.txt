@@ -2,6 +2,7 @@
 Voir DROPBOX/Organisation/CR.txt
 
 -> échantillon Alexis
+  - voir qq bricoles à corriger dans le xml (Francisco Belgrano p ex.)
   - reset base (voir CR général, 6 déc 2019)
   - export csv par liste d'actes
   - corpus sur la période sélectionnée
@@ -22,11 +23,9 @@ Voir DROPBOX/Organisation/CR.txt
      - créer des collections (table collections)
 
 -> erreurs (ponctuelles ?)
-  - Francisco Belgrano balisé en prénoms dans 383 et 419
   -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
     (11 déc 2019, le prochain reset base va sans doute régler ça)
-  - GREGORIO (de las Heras et de Espinoza)
-  - Jose Manuel de ALTOLAGUIRRE
+  - Martin Jose de ALTOLAGUIRRE
   (JOSE à virer du nom : fusion mal passée ?)
   - acte 4968 : la mère de l'épouse (Juana Belgrano !!) est sortie de la balise et les prénoms de l'épouse  sont incorrectement balisés
   - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
