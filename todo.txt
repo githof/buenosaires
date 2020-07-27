@@ -2,6 +2,7 @@
 Voir DROPBOX/Organisation/CR.txt
 
 -> échantillon Alexis
+  - reset base (voir CR général, 6 déc 2019)
   - export csv par liste d'actes
   - corpus sur la période sélectionnée
   - régler à la main les homonymes (virer acte si possible, sinon changer l'id)
@@ -132,8 +133,6 @@ Voir DROPBOX/Organisation/CR.txt
             ok (y compris le Don, passé de 683 à 152,
             mais il n'était pas sur le 152)
 
-      - reset base (voir CR général, 6 déc 2019)
-
       + nettoyer *mon* code
         - supprimer les fonctione obsolètes
         - remonter liste des balises personnes
@@ -144,7 +143,7 @@ Voir DROPBOX/Organisation/CR.txt
     https://buenosaires.telecom-paristech.fr/fusion?personne-A=383&personne-B=419
 
 
-    - afficher une erreur sur un des deux ids n'existe pas (quand on arrive par url)
+    - afficher une erreur si un des deux ids n'existe pas (quand on arrive par url)
 
 + admin
     -> changer Log et Alerte pour qu'ils affichent tout de suite plutôt que d'enregistrer pour plus tard
