@@ -44,22 +44,10 @@ $unique = array_unique_by_id($arr);
 var_dump($unique);
 
 echo '<h3>remove acte</h3>';
-foreach([0,1,2,3] as $n)
-{
-  $id = "1500$n";
-  $acte = new Acte($id);
-  $acte->remove_from_db();
-}
 
-/*
-echo "<p>remove personnes</p>\n";
-foreach([61,63,65,66,72,74,77] as $n)
-{
-  $id = '152'.$n;
-  $personne = new Personne($id);
-  $personne->remove_from_db(FALSE);
-}
-*/
+$acte = new Acte(4730);
+$acte->remove_from_db();
+
 echo "<p>passed</p>\n";
 
 ?>
