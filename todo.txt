@@ -25,14 +25,13 @@ Voir DROPBOX/Organisation/CR.txt
 -> erreurs (ponctuelles ?)
   -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
     (11 déc 2019, le prochain reset base va sans doute régler ça)
-  - Martin Jose de ALTOLAGUIRRE
-  (JOSE à virer du nom : fusion mal passée ?)
-  - acte 4968 : la mère de l'épouse (Juana Belgrano !!) est sortie de la balise et les prénoms de l'épouse  sont incorrectement balisés
   - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
   - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
-  - acte 5911 : pourquoi le père de l'époux a un id mais n'est pas balisé ??
   - Ventura n'est pas un prénom (Juana, 13181)
-  - FUSION : Maria Mercedes Sarratea 152, 683
+    (pas si évident, y'en a pas mal, voir au cas par cas)
+  - homonymes Alexis (voir fichier homonymes, février)
+  33 noms
+
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
