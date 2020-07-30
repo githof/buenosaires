@@ -220,6 +220,75 @@
             $this->contenu_into_db();
             $mysqli->end_transaction();
         }
+
+        private function personnes()
+        {
+          global $mysqli;
+          $personnes = [];
+
+          foreach($this->conditions as $condition)
+            $personnes[] = $condition->personne;
+
+          foreach($this->relations as $relation)
+          {
+            $personnes[] = $relation->personne_source;
+            $personnes[] = $relation->personne_destination;
+          }
+          return array_unique_by_id($personnes);
+        }
+
+        private function delete_conditions_or_relations($field)
+        // 'condition' ou 'relation'
+        {
+          global $mysqli;
+
+          $test = "acte_id = $this->id";
+          $mysqli->delete("acte_has_$field", $test);
+
+          $liste = $field.'s';
+          $in = string_list_of_ids($this->{$liste});
+          $test = "id in ($in)";
+          $mysqli->delete($field, $test);
+        }
+
+        private function delete_conditions()
+        {
+          $this->delete_conditions_or_relations('condition');
+        }
+
+        private function delete_relations()
+        {
+          $this->delete_conditions_or_relations('relation');
+        }
+
+        private function delete_acte()
+        {
+          global $mysqli;
+
+          $mysqli->delete("acte_contenu", "acte_id=$this->id");
+          $mysqli->delete("acte", "id=$this->id");
+        }
+
+        public function remove_from_db()
+        {
+          global $mysqli;
+
+          $mysqli->from_db($this);
+          // ^ remplit les champs conditions et relations
+          $personnes = $this->personnes();
+
+          $mysqli->start_transaction();
+          foreach(['conditions', 'relations'] as $liste)
+            if(! empty($this->{$liste}))
+            {
+              $delete_liste = "delete_$liste";
+              $this->{$delete_liste}();
+            }
+          $this->delete_acte();
+          $mysqli->end_transaction();
+
+          $mysqli->purge_personnes($personnes);
+        }
     }
 
 ?>

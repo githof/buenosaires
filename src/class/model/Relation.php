@@ -47,6 +47,11 @@
             return "";
         }
 
+        public function check_source_id($id)
+        {
+          return $this->personne_source->id == $id;
+        }
+
 	function get_date(){
 	  global $mysqli;
 

@@ -2,6 +2,7 @@
 xml=LASTDATA/matrimonios.xml
 periode=LASTDATA/periode.xml
 corpus=LASTDATA/corpus.xml
+periode_test=LASTDATA/periode-test.xml
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
 # id_acte,epoux,epouse,periode
@@ -73,6 +74,14 @@ extract_actes ()
 }
 # xml | extract_actes "806 925 927"
 # xml | extract_actes "2434 2435 3756 3757 528 529 530 531 534 538 538 539 540 556 557 558 558 559 566 568 570 571 572 572 573 574 576 577 578 578 579 580 582 594 595 596 597 604 606 642 643 648 649 654 654 655 656 656 657 688 689 766 767 782 783 784 785 788 789 789 790 791 803 804 805 806 807 811 813 911 912 913 913 914 915 915 916 917 919 920 921 922 925 927 929"
+
+acte ()
+{
+  id=$1
+  xml \
+  | grep 'ACTE id="'$id'"'
+}
+#acte 2434
 
 # ids=`cat  actes-belgrano.ids`
 # echo $ids
@@ -204,6 +213,13 @@ get_periode ()
 }
 # get_periode | grep_nom belgrano
 
+get_periode_test ()
+{
+  corpus \
+  | grep_date '\(179[5-9]\|1800\)'
+}
+# get_periode_test
+
 grep_nom ()
 {
   nom="$1"
@@ -241,6 +257,26 @@ epoux_non_balises ()
 }
 # get_periode | grep_nom lezica | epoux_non_balises | annees_triees > actes-lezica-todo.csv
 
+scan_nom ()
+{
+  xml \
+  | grep_nom "$*" \
+  | epoux_non_balises \
+  | less
+}
+# scan_nom caballero
+
+scan_prenom ()
+{
+  prenom="$1"
+  nom="$2"
+  xml \
+  | grep_prenom "$prenom" "$nom" \
+  | epoux_non_balises \
+  | less
+}
+# scan_prenom francisco caballero
+
 update_periode_corpus ()
 {
   get_periode \
@@ -249,6 +285,9 @@ update_periode_corpus ()
   cat $periode \
   | grep "$REGEXP_EPOUX_BALISES" \
   >| $corpus
+
+  get_periode_test \
+  >| $periode_test
 }
 
 update_git ()
@@ -280,13 +319,29 @@ update_git ()
   echo "Attention $PWD"
 }
 
-prenoms_noms ()
-# en chantier, voir avec grep -o
+noms_complets ()
 {
-  sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
+  grep -oE '(<prenom[^>]*>[^<]*<\/prenom>[^<]*)+([^<]*<nom[^>]*>[^<]*<\/nom>)+'
+#  sed -nE 's#(<[pre]*nom[^>]*>[^<]*<\/[pre]*nom>[^<]*)#@@@\1#pg'
 #  | tr '@' '\n' \
 #  | sed 's#<nom[^>]*>\([^<]*\)<\/nom>.*$#\1' \
 }
+# acte 2794 | noms_complets
+
+untag ()
+{
+  sed 's#<[^>]*>##g'
+}
+# acte 10535 | noms_complets | untag
+
+noms_acte ()
+{
+  acte="$1"
+  acte "$acte" \
+  | noms_complets \
+  | untag
+}
+# noms_acte 10535
 
 noms ()
 {

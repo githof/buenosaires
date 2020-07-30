@@ -111,7 +111,7 @@
 	  $est_temoin = [];
 	  $a_parrains = [];
 	  $est_parrain = [];
-	  
+
 	  foreach($this->relations as $relation)
 	  {
             $is_source = ($this->id == $relation->personne_source->id);
@@ -139,7 +139,7 @@
 		$est_parrain[] = $relation;
 	      else
 		$a_parrains[] = $relation;
-	      break;	      
+	      break;
 	    }
 	  }
 
@@ -233,6 +233,69 @@
                 if(!isset($attributesXML["id"]))
                     $this->xml->addAttribute("id", "$this->id");
             }
+        }
+
+        private function is_in($table)
+        // 'condition', 'relation', 'acte'
+        {
+          global $mysqli;
+
+          switch ($table) {
+            case 'condition':
+              $filter = "personne_id = $this->id";
+              break;
+            case 'relation':
+              $filter = "pers_source_id = $this->id"
+                . " OR pers_destination_id = $this->id";
+              break;
+            case 'acte':
+              $filter = "epoux = $this->id"
+                . " OR epouse = $this->id";
+              break;
+          }
+          $count = 'COUNT(*) AS nb';
+          $result = $mysqli->select($table, [$count], $filter);
+          if($result && $result->num_rows > 0){
+              $row = $result->fetch_assoc();
+              return ($row["nb"] > 0);
+          }
+          return FALSE;
+        }
+
+        private function is_in_anything()
+        {
+          foreach(['condition', 'relation', 'acte'] as $table)
+          {
+            if($this->is_in($table)) return TRUE;
+          }
+          return FALSE;
+        }
+
+        public function remove_from_db($anyway = FALSE)
+        {
+          global $mysqli;
+
+          if(! $anyway)
+            if($this->is_in_anything()) return FALSE;
+
+          /*
+          Je vais pas me préoccuper de supprimer les prénoms/noms
+          qui se retrouvent orphelins.
+          Facile à faire mais pas immédiat non plus :)
+          $prenoms_ids = $this->prenoms_ids_from_db();
+          $noms_ids = $this->noms_ids_from_db();
+          */
+
+          $mysqli->start_transaction();
+          foreach(['prenom', 'nom'] as $field)
+          {
+            $table = $field.'_personne';
+            $mysqli->delete($table, "personne_id=$this->id");
+          }
+          $mysqli->delete("personne", "id=$this->id");
+          $mysqli->end_transaction();
+
+          return TRUE;
         }
 
 	/*
