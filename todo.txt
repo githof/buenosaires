@@ -3,29 +3,30 @@ Voir DROPBOX/Organisation/CR.txt
 
 + Séquence :
   (zacarias)
-  - merge xml travail d'hier
-    acte 4770, check id Belgrano 404
-  -> csv des noms de personnes dans le git
-  -> vérifier s'il y a des personnes où le de est intégré au nom
+  - merge xml travail d'hier  [45]
+  -> csv des noms de personnes dans le git  [10]
+  -> vérifier "de"  [10-1h]
+  s'il y a des personnes où le de est intégré au nom
   Belgrano Peri sans le de (alors que c'est bien Domingo)
-  - voir Maria FLorencia Belgrano Perez (Perez Belgrano)
-    (base + xml)
+  - voir Maria FLorencia  [15]
+  Belgrano Perez (Perez Belgrano) (base + xml)
 
   (master)
-  - actes à séparer
-  - update corpus
-  - reset base (cf 6 déc dans CR Dropbox)
-  + export :
+  - actes à séparer [30]
+    (passer par interface pour baliser)
+  - update corpus git [5]
+  - reset base (cf 6 déc dans CR Dropbox) [30]
+  + export :  [30]
     - virer "de"
     - sans accents par défaut
     - relations dans les deux sens par défaut
       (avec id pour pouvoir les dédoublonner facilement)
-  - pour Zacarias, dans un dossier à part :
+  - pour Zacarias, dans un dossier à part : [10]
     - matrimonios.csv : id;texte
     - matrimonios.xml : version en cours
-  - sélection d'actes Belgrano
-  - formulaire ids fusion
-  - recherche : formulaires directs (id, nom/prénom)
+  - sélection d'actes Belgrano  [1h]
+  - formulaire ids fusion [40]
+  - recherche : formulaires directs (id, nom/prénom)  [40]
 
 
 -> échantillon Alexis

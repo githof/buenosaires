@@ -403,6 +403,8 @@ diff_acte ()
   | sed -n 's#^+\(.*\)$#\1#p' \
   | $prettyprint \
   | diff - $v1
+
+  rm -f $all $v1
 }
 # git diff 2a7493b | grep '^[-+]' | diff_acte
 
