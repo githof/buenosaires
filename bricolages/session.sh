@@ -322,7 +322,8 @@ update_git ()
   update_periode_corpus
   cd -
   git ci 'update periode corpus'
-  echo "Attention $PWD"
+  echo 'ATTENTION !!'
+  echo "Tu es dans $PWD"
 }
 
 noms_complets ()
