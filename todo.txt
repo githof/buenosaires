@@ -1,6 +1,29 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
++ Séquence :
+  (zacarias)
+  - merge xml travail d'hier
+  -> csv des noms de personnes dans le git
+  -> vérifier s'il y a des personnes où le de est intégré au nom
+  Belgrano Peri sans le de (alors que c'est bien Domingo)
+  - voir Maria FLorencia Belgrano Perez (Perez Belgrano)
+    (base + xml)
+
+  (master)
+  - actes à séparer
+  - update corpus
+  - reset base (cf 6 déc dans CR Dropbox)
+  + export :
+    - virer "de"
+    - sans accents par défaut
+    - relations dans les deux sens par défaut
+      (avec id pour pouvoir les dédoublonner facilement)
+  - sélection d'actes Belgrano
+  - formulaire ids fusion
+  - recherche : formulaires directs (id, nom/prénom)
+
+
 -> échantillon Alexis
   - voir qq bricoles à corriger dans le xml (Francisco Belgrano p ex.)
   - reset base (voir CR général, 6 déc 2019)
@@ -211,6 +234,8 @@ Voir DROPBOX/Organisation/CR.txt
     -> une fois l'import fait, afficher liste des personnes mentionnées (comme ça on voit si pb)
     et la liste des numéros d'actes (avec les liens of course)
 
+    -> liens colatéraux !! (fratrie, oncles/tantes, cousins germains)
+      - option dans export pour les mettre ou pas
     - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment) [ça il faut voir un cas particulier, parce que c'est casse-gueule]
     - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
 
@@ -245,6 +270,7 @@ Voir DROPBOX/Organisation/CR.txt
     - Cristina
 
 + base
+    -> csv des noms de personnes dans le git
     -> vérifier s'il y a des personnes où le de est intégré au nom
     Belgrano Peri sans le de (alors que c'est bien Domingo)
     - recharger actes balisés en 2016-2017 et perdus au reinit
