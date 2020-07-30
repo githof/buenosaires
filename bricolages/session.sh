@@ -391,7 +391,9 @@ diff_acte ()
 {
   prettyprint='tidy -xml -iq'
   all=`mktemp`
+  echo "all=$all"
   v1=`mktemp`
+  echo "v1=$v1"
   pattern='\(.*\)$#\1'
   cat \
   | grep '^[+-] *<ACTE' \
@@ -399,11 +401,15 @@ diff_acte ()
   | sed -n "s#^-$pattern#p" \
   | $prettyprint \
   > $v1
+#  | tee $v1
+# echo '^ -'
+# echo 'v +'
 
   cat $all \
   | sed -n "s#^+$pattern#p" \
   | $prettyprint \
-  | diff - $v1
+  | sed 's|<ACTE|\# <ACTE|' \
+  | diff $v1 -
 
   rm -f $all $v1
 }

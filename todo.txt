@@ -3,7 +3,7 @@ Voir DROPBOX/Organisation/CR.txt
 
 + Séquence :
   (zacarias)
-  - merge xml travail d'hier  [45]
+  - merge xml travail d'hier (+ diff_acte)  [|1h45]
   -> csv des noms de personnes dans le git  [10]
   -> vérifier "de"  [10-1h]
   s'il y a des personnes où le de est intégré au nom
