@@ -11,10 +11,13 @@ Voir DROPBOX/Organisation/CR.txt
 -> erreurs (ponctuelles ?)
   -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
     (11 déc 2019, le prochain reset base va sans doute régler ça)
+  -> Maria Florencia Belgrano Perez apparaît comme Perez Belgrano (acte 5598)
   - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
   - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
   - Ventura n'est pas un prénom (Juana, 13181)
     (pas si évident, y'en a pas mal, voir au cas par cas)
+  - Nepomucena est un prénom
+  - Maria de Rosario, del Pilar, de Nieves etc., sont des prénoms composés
   - homonymes Alexis (voir fichier homonymes, février)
   33 noms
   - fichier recap nicole
@@ -28,15 +31,21 @@ Voir DROPBOX/Organisation/CR.txt
 
 -> export
    -> relation dans les deux sens
-   - virer les accents (idéalement, option pour les garder)
+   -> virer les accents (idéalement, option pour les garder, déjà en GET pour commencer)
+   -> virer les de
    + à partir d'un ensemble d'actes / de personnes
      -> faire la fonctionnalité
      - formulaire simple pour commencer
      - créer des collections (table collections)
 
 -> recherche
-  - sur plain text (pour baliser), avec liste d'actes comme la table
-  - contenu
+  - plusieurs formulaires
+    -> avec id
+    -> avec nom / prénom à la main
+    - le truc js existant
+    - sur plain text (pour baliser), avec liste d'actes comme la table
+    - contenu
+  -> BUG : recherche personnes, la liste n'est pas réinitialisée pour une deuxième recherche
 
 -> édition xml
   - attributs
@@ -153,6 +162,7 @@ Voir DROPBOX/Organisation/CR.txt
     - empêcher les dates fantaisistes, en mettant null ou un truc comme ça
 
 + détails personne
+    - le bouton gdf ne fait rien on dirait
     - vérifier date fantaisiste pour la période (voir todo dates)
 
 + code
@@ -169,6 +179,12 @@ Voir DROPBOX/Organisation/CR.txt
     - recherche des personnes par le nom pour choisir l'id
 
 + xmlselect
+    -> BUG inversion de portions de texte quand on remonte
+    Maria del Carmen Liniers
+    <prenom>Maria</prenom> del <nom>Carmen>/nom>
+    on remonte Carmen, del passe après Carmen
+    <prenom>Maria</prenom> Carmen del
+    (du coup on a fait la modif en copier xml + import)
     -> comment ça se passe pour les attributs ??
     - pour chaque élément, proposer une liste de couples
       attribut / valeur prédéfinis (dans tag_set.js),
@@ -190,7 +206,12 @@ Voir DROPBOX/Organisation/CR.txt
 + import
     - vérifier ce qui se passe sur les noms (parfois ça doublonne)
     par ex Maria Mercedes Sarratea 152, 683)
-    - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment)
+    - changement de nom : voir comment faire si un import modifie une personne existante
+      - Si un seul acte dans la base pour cette personne, reinit (supprimer puis créer)
+    -> une fois l'import fait, afficher liste des personnes mentionnées (comme ça on voit si pb)
+    et la liste des numéros d'actes (avec les liens of course)
+
+    - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment) [ça il faut voir un cas particulier, parce que c'est casse-gueule]
     - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
 
 + recherche
@@ -199,11 +220,16 @@ Voir DROPBOX/Organisation/CR.txt
     - possibilité de ne mettre que l'année
     - dans le résultat : faire apparaître explicitement le nom recherché
 
++ ajax
+    - qu'est-ce qui se passe avec la recherche de noms ?
+  très très lent, pas utilisable (sur recherche, mais aussi sur fusion / dissoc)
+
 + fusion
-    -> pour la sélection des ids, faire en sorte que le formulaire puisse aussi marcher sans ajax
+    -> pour la sélection des ids, faire en sorte que le formulaire puisse aussi marcher sans ajax (juste id1, id2)
+    -> vérifier que les deux ids existent
+    - possibilité d'arriver avec juste un id pour sélectionner un deuxième (-> bouton depuis détails personne)
     - montrer le résultat à la fin (plutôt qu'une page vide)
-    BUG : le nom s'affiche dans la liste des prénoms
-    [sur quels cas ?]
+    - prévisu : mettre la possibilité d'afficher le contenu brut des actes (en infobulle ou en section à déplier.  Idéalement en ajax, dans tout le site, mais sinon en direct, tfaçon même si y'en a une quinzaine c'est gérable)
     - confusion entre recherche et prévisualiser (désactiver le bouton
     tant qu'on n'a pas sélectionné deux)
     - dispact_actes pas clair pour conditions
@@ -217,11 +243,10 @@ Voir DROPBOX/Organisation/CR.txt
 
 + modifs ponctuelles
     - Cristina
-    - fusions Francisco Belgrano
 
 + base
-    -> en-tête <?xml version="1.0"?> en trop sur actes
-    modifiés (réglé pour nouvelle fusion au moment du asXML)
+    -> vérifier s'il y a des personnes où le de est intégré au nom
+    Belgrano Peri sans le de (alors que c'est bien Domingo)
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others, cf diff_with_newlines dans
       session.sh)
