@@ -312,6 +312,12 @@ update_git ()
 
   cd LASTDATA
   git ci "$msg"
+  if [ $? -ne 0 ]
+  then
+    echo "pb git (conflit ?)"
+    echo "j'arrête ici."
+    exit 1
+  fi
   cd -
   update_periode_corpus
   cd -
