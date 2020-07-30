@@ -387,6 +387,25 @@ non_balises_annee ()
 }
 # non_balises_annee 1795 > NICOLE/actes-1795.txt
 
+diff_acte ()
+{
+  prettyprint='tidy -xml -iq'
+  all=`mktemp`
+  v1=`mktemp`
+  cat > $all
+
+  cat $all \
+  | sed -n 's#^-\(.*\)$#\1#p' \
+  | $prettyprint \
+  > $v1
+
+  cat $all \
+  | sed -n 's#^+\(.*\)$#\1#p' \
+  | $prettyprint \
+  | diff - $v1
+}
+# git diff 2a7493b | grep '^[-+]' | diff_acte
+
 #_______________________________________________________________________
 #___ big bug import 2017 ___
 

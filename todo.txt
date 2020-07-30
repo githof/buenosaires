@@ -4,6 +4,7 @@ Voir DROPBOX/Organisation/CR.txt
 + Séquence :
   (zacarias)
   - merge xml travail d'hier
+    acte 4770, check id Belgrano 404
   -> csv des noms de personnes dans le git
   -> vérifier s'il y a des personnes où le de est intégré au nom
   Belgrano Peri sans le de (alors que c'est bien Domingo)
@@ -19,6 +20,9 @@ Voir DROPBOX/Organisation/CR.txt
     - sans accents par défaut
     - relations dans les deux sens par défaut
       (avec id pour pouvoir les dédoublonner facilement)
+  - pour Zacarias, dans un dossier à part :
+    - matrimonios.csv : id;texte
+    - matrimonios.xml : version en cours
   - sélection d'actes Belgrano
   - formulaire ids fusion
   - recherche : formulaires directs (id, nom/prénom)
