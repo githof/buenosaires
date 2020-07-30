@@ -8,6 +8,18 @@ Voir DROPBOX/Organisation/CR.txt
   - corpus sur la période sélectionnée
   - régler à la main les homonymes (virer acte si possible, sinon changer l'id)
 
+-> erreurs (ponctuelles ?)
+  -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
+    (11 déc 2019, le prochain reset base va sans doute régler ça)
+  - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
+  - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
+  - Ventura n'est pas un prénom (Juana, 13181)
+    (pas si évident, y'en a pas mal, voir au cas par cas)
+  - homonymes Alexis (voir fichier homonymes, février)
+  33 noms
+  - fichier recap nicole
+  https://docs.google.com/spreadsheets/d/1X4CbxBvpc0bhMmBf0WcsCTxL7Tuq8n-g/edit#gid=80170631
+
 - balise mention
   signaler une personne présente (voir pex 5495, Manuel de la Torre)
 
@@ -21,17 +33,6 @@ Voir DROPBOX/Organisation/CR.txt
      -> faire la fonctionnalité
      - formulaire simple pour commencer
      - créer des collections (table collections)
-
--> erreurs (ponctuelles ?)
-  -> pourquoi Basabilvaso apparaît dans l'acte 4789 ??
-    (11 déc 2019, le prochain reset base va sans doute régler ça)
-  - acte 8987 : acte caché, à extraire et créer + baliser 8987 (Gutierrez, Aguero, Dominga Gonzalez)
-  - acte 7040 : acte caché, à extraire, créer et baliser (Belgrano)
-  - Ventura n'est pas un prénom (Juana, 13181)
-    (pas si évident, y'en a pas mal, voir au cas par cas)
-  - homonymes Alexis (voir fichier homonymes, février)
-  33 noms
-
 
 -> recherche
   - sur plain text (pour baliser), avec liste d'actes comme la table
