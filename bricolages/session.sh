@@ -312,11 +312,18 @@ update_git ()
 
   cd LASTDATA
   git ci "$msg"
+  if [ $? -ne 0 ]
+  then
+    echo "pb git (conflit ?)"
+    echo "j'arrête ici."
+    exit 1
+  fi
   cd -
   update_periode_corpus
   cd -
   git ci 'update periode corpus'
-  echo "Attention $PWD"
+  echo 'ATTENTION !!'
+  echo "Tu es dans $PWD"
 }
 
 noms_complets ()
@@ -379,6 +386,34 @@ non_balises_annee ()
   | ids_actes
 }
 # non_balises_annee 1795 > NICOLE/actes-1795.txt
+
+diff_acte ()
+{
+  prettyprint='tidy -xml -iq'
+  all=`mktemp`
+  echo "all=$all"
+  v1=`mktemp`
+  echo "v1=$v1"
+  pattern='\(.*\)$#\1'
+  cat \
+  | grep '^[+-] *<ACTE' \
+  | tee $all \
+  | sed -n "s#^-$pattern#p" \
+  | $prettyprint \
+  > $v1
+#  | tee $v1
+# echo '^ -'
+# echo 'v +'
+
+  cat $all \
+  | sed -n "s#^+$pattern#p" \
+  | $prettyprint \
+  | sed 's|<ACTE|\# <ACTE|' \
+  | diff $v1 -
+
+  rm -f $all $v1
+}
+# git diff 2a7493b | diff_acte
 
 #_______________________________________________________________________
 #___ big bug import 2017 ___
