@@ -26,9 +26,8 @@ check-header-footer
 
 split-body ()
 {
-    cat $xml \
-	| tail -n +2 \
-	| ghead -n -1 \
+  cat $xml \
+  | grep -v '^ *<ACTE ' \
 	| split -a 5 -l $lines - "$xml"
 }
 split-body
@@ -43,4 +42,3 @@ chunks ()
     done
 }
 chunks
-
