@@ -27,7 +27,7 @@ check-header-footer
 split-body ()
 {
   cat $xml \
-  | grep -v '^ *<ACTE ' \
+  | grep '^ *<ACTE ' \
 	| split -a 5 -l $lines - "$xml"
 }
 split-body

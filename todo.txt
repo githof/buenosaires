@@ -69,7 +69,7 @@ Voir DROPBOX/Organisation/CR.txt
       x fix xml [|12]
       - import ok
     - …c timeout, again, ok
-    - …d timeout 4x
+    - …d timeout 4x, again
       faut que je fasse des chunks plus petits :(
   - BUG sql : les drop table sont pas faits dans le bon ordre, du coup certaines sont pas vidées, à cause des dépendances de clefs je pense
   -> csv des noms de personnes dans le git  [10]
