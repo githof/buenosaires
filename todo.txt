@@ -87,8 +87,9 @@ Voir DROPBOX/Organisation/CR.txt
       -> corrigé à la main dans test.php
 
   -> csv des noms de personnes dans le git  [10]
-  + export :  [30]
-    - virer "de"
+  + export :
+    - virer "de" par défaut
+      (c'est un peu chiant parce que c'est dans le to_string)
     - sans accents par défaut
     - relations dans les deux sens par défaut
       (avec id pour pouvoir les dédoublonner facilement)
