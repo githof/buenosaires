@@ -19,6 +19,7 @@ fi
 run ()
 {
     cmd="$1"
-    $cmd -h mysql-projet.enst.fr --user=buenosaires --password=$PASS buenosaires
+    shift
+    $cmd -h mysql-projet.enst.fr --user=buenosaires --password=$PASS $* buenosaires
 }
 run $cmd $*
