@@ -39,7 +39,7 @@ on ()
 
 check_xml ()
 {
-  tidy -xml -iq 2> &1 \
+  tidy -xml -iq 2>&1 \
   | grep Error
 }
 # on xml check_xml
