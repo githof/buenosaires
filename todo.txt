@@ -56,7 +56,7 @@ Voir DROPBOX/Organisation/CR.txt
   x update corpus git [5]
   x date actes cachés (pour periode)  [5|10]
   x balisage dates manquantes [15|10]
-  + reset base (cf 6 déc dans CR Dropbox) [30]
+  x reset base (cf 6 déc dans CR Dropbox) [30|1h20]
     - étape split non documentée le 6 déc :
     cd admin ; xml/split.sh ../bricolages/LASTDATA/matrimonios.xml 2000
     cd ../bricolages/LASTDATA
@@ -64,14 +64,28 @@ Voir DROPBOX/Organisation/CR.txt
     -> ok
     - y'avait <document><ACTES> en double dans le premier chunk et </ACTES> dans le dernier,
     j'ai supprimé à la main
-    - …a ok
-    - …b pb balise date
+    x …a ok
+    x …b pb balise date
       x fix xml [|12]
       - import ok
-    - …c timeout, again, ok
-    - …d timeout 4x, again
+    x …c timeout, again, ok
+    x …d timeout 4x, again
       faut que je fasse des chunks plus petits :(
-  - BUG sql : les drop table sont pas faits dans le bon ordre, du coup certaines sont pas vidées, à cause des dépendances de clefs je pense
+    x 1k/…g ok, …h, …i, …j, …k, …l, …m, …n, …o
+    x les 3 dernier de 1k/…f après 5969
+      (qui n'étaient pas dans 2k/…c)
+    ! en fait en relisant le CR du 6 déc, je vois que même avec les gateway timeout, il fait le taf
+    Du coup j'ai fait mon split 1000 pour rien :/
+
+  + les pb de la table des noms sont encore là
+    - Basavilbaso, 402 (Calderon)
+      -> nouvel id, 15268
+      corrigé à la main dans test.php
+    - Sierra Morales, 1 (le 1er !!)
+      tous les <prenom>Juan</prenom> sans nom le récupèrent, et même un Juan avec un nom
+    - Maria Florencia, nom  pas corrigé
+      -> corrigé à la main dans test.php
+
   -> csv des noms de personnes dans le git  [10]
   + export :  [30]
     - virer "de"
@@ -298,7 +312,13 @@ Voir DROPBOX/Organisation/CR.txt
 + import
     - vérifier ce qui se passe sur les noms (parfois ça doublonne)
     par ex Maria Mercedes Sarratea 152, 683)
-    - changement de nom : voir comment faire si un import modifie une personne existante
+    -> BUG vérifier l'attribution des ids
+      de personnes à partir des noms, y'a des cas foireux, j'ai pas réussi à voir dans le code où ça a lieu :(
+      commit 1208837 sur l'acte 5982,
+      Francisco Antonio Basavilbaso récupère l'id 402 (Antonio Francisco Calderon)
+      D'ailleurs, quand une personne n'a pas de nom, elle récupère un id sur son prénom !!
+    - changement de nom :
+      voir comment faire si un import modifie une personne existante
       - Si un seul acte dans la base pour cette personne, reinit (supprimer puis créer)
     -> une fois l'import fait, afficher liste des personnes mentionnées (comme ça on voit si pb)
     et la liste des numéros d'actes (avec les liens of course)
@@ -342,6 +362,7 @@ Voir DROPBOX/Organisation/CR.txt
     -> csv des noms de personnes dans le git
     -> vérifier s'il y a des personnes où le de est intégré au nom
     Belgrano Peri sans le de (alors que c'est bien Domingo)
+    - BUG sql : les drop table sont pas faits dans le bon ordre, du coup certaines sont pas vidées, à cause des dépendances de clefs je pense
     - recharger actes balisés en 2016-2017 et perdus au reinit
       (voir bricolages/diff-others, cf diff_with_newlines dans
       session.sh)

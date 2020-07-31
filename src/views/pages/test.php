@@ -43,10 +43,23 @@ $arr = array($bob, $toto, $bob);
 $unique = array_unique_by_id($arr);
 var_dump($unique);
 
-echo '<h3>remove acte</h3>';
+echo '<h3>Suppression à la main</h3>';
 
-$acte = new Acte(4730);
+/*
+Calderon + Basav
+$personne = new Personne(402);
+$personne->remove_from_db(TRUE);
+$acte = new Acte(5982);
 $acte->remove_from_db();
+$acte = new Acte(4789);
+$acte->remove_from_db();
+
+Florencia
+$personne = new Personne(533);
+$personne->remove_from_db(TRUE);
+$acte = new Acte(5598);
+$acte->remove_from_db();
+*/
 
 echo "<p>passed</p>\n";
 
