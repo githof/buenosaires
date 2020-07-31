@@ -3,19 +3,25 @@ Voir DROPBOX/Organisation/CR.txt
 
 + Séquence :
   (zacarias)
-  - merge xml travail d'hier (+ diff_acte)  [|1h45]
-  -> csv des noms de personnes dans le git  [10]
+  x merge xml travail d'hier (+ diff_acte)  [|1h45]
   -> vérifier "de"  [10-1h]
   s'il y a des personnes où le de est intégré au nom
   Belgrano Peri sans le de (alors que c'est bien Domingo)
-  - voir Maria FLorencia  [15]
-  Belgrano Perez (Perez Belgrano) (base + xml)
+  [je pense vraiment que c'est les attributs, et pour Belgrano, c'est un que j'ai fusionné, 514 sans doute]
+    -> vérifier après reset
+  - Maria FLorencia (533)
+    5598 oui -> 533
+    13819 non, épouse Juan Juarez -> nouvel id
+    4757 non, mère avec Manuel Gomez -> nouvel id
+    6304 non, mère avec Manuel Lopez -> nouvel id
+    5858 non, témoin avec Pedro Duval -> nouvel id
 
   (master)
   - actes à séparer [30]
     (passer par interface pour baliser)
   - update corpus git [5]
   - reset base (cf 6 déc dans CR Dropbox) [30]
+  -> csv des noms de personnes dans le git  [10]
   + export :  [30]
     - virer "de"
     - sans accents par défaut
