@@ -37,6 +37,13 @@ on ()
 }
 # on xml grep_prenom pastor lezica
 
+check_xml ()
+{
+  tidy -xml -iq 2> &1 \
+  | grep Error
+}
+# on xml check_xml
+
 get_ids ()
 {
     f="$1"

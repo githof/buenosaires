@@ -9,18 +9,63 @@ Voir DROPBOX/Organisation/CR.txt
   Belgrano Peri sans le de (alors que c'est bien Domingo)
   [je pense vraiment que c'est les attributs, et pour Belgrano, c'est un que j'ai fusionné, 514 sans doute]
     -> vérifier après reset
-  - Maria FLorencia (533)
+  x Maria FLorencia (533) [15|10]
     5598 oui -> 533
-    13819 non, épouse Juan Juarez -> nouvel id
-    4757 non, mère avec Manuel Gomez -> nouvel id
-    6304 non, mère avec Manuel Lopez -> nouvel id
-    5858 non, témoin avec Pedro Duval -> nouvel id
+    13819 non, épouse Juan Juarez -> nouvel id 15263
+    4757 non, mère avec Manuel Gomez -> nouvel id 15264
+    6304 non, mère avec Manuel Lopez -> nouvel id 15265
+    5858 non, témoin avec Pedro Duval -> nouvel id 15266
 
   (master)
-  - actes à séparer [30]
-    (passer par interface pour baliser)
-  - update corpus git [5]
-  - reset base (cf 6 déc dans CR Dropbox) [30]
+  x actes à séparer [30|1h]
+    Ceux de Nicole
+    4546 -> 14546
+    4744 -> 14744
+    5536 -> 15536
+    5579 -> 15579
+    5707 -> 15707
+    5715 -> 15715
+    5761 -> 15761
+    5803 -> 15803
+    5835 -> 15835
+    8123 -> 18123
+    9678 -> 19678
+    13773 -> 14773
+    13790 -> 14790
+    13955 -> 14955
+    D'autres :
+    5474 -> 15474
+    5482 -> 15482
+    5488 -> 15488
+    5570 -> 15570
+    5586 -> 15586
+    5593 -> 15593
+    5601 -> 15601
+    5659 -> 15659
+    5673 -> 15673
+    5679 -> 15679
+    5693 -> 15693
+    5819 -> 15819
+    5843 -> 15843
+    5850 -> 15850
+    5881 -> 15881
+    5964 -> 15964
+    4879 -> 14879
+    4979 -> 14941
+
+  x update corpus git [5]
+  x date actes cachés (pour periode)  [5|10]
+  x balisage dates manquantes [15|10]
+  + reset base (cf 6 déc dans CR Dropbox) [30]
+    - étape split non documentée le 6 déc :
+    cd admin ; xml/split.sh ../bricolages/LASTDATA/matrimonios.xml 2000
+    cd ../bricolages/LASTDATA
+    cat matrimonios-aaaa* | diff - matrimonios.xml | less
+    -> ok
+    - y'avait <document><ACTES> en double dans le premier chunk et </ACTES> dans le dernier,
+    j'ai supprimé à la main
+    - …a ok
+    - …b pb balise date
   -> csv des noms de personnes dans le git  [10]
   + export :  [30]
     - virer "de"
@@ -33,6 +78,13 @@ Voir DROPBOX/Organisation/CR.txt
   - sélection d'actes Belgrano  [1h]
   - formulaire ids fusion [40]
   - recherche : formulaires directs (id, nom/prénom)  [40]
+  - baliser les actes cachés
+    (voir détail liste Nicole pour savoir lesquels sont importants)
+  - encore 40 actes cachés numérotés bis, ter etc.,
+    qu'on trouve avec grep
+    "-[0-9][0-9][0-9][0-9]:"
+    (date non balisée)
+
 
 
 -> échantillon Alexis
