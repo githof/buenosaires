@@ -44,6 +44,11 @@ check_xml ()
 }
 # on xml check_xml
 
+xml_content ()
+{
+  sed 's#<[^>]*>##g'
+}
+
 get_ids ()
 {
     f="$1"

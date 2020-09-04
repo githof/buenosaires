@@ -2,100 +2,17 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + Séquence :
-  (zacarias)
-  x merge xml travail d'hier (+ diff_acte)  [|1h45]
   -> vérifier "de"  [10-1h]
   s'il y a des personnes où le de est intégré au nom
   Belgrano Peri sans le de (alors que c'est bien Domingo)
   [je pense vraiment que c'est les attributs, et pour Belgrano, c'est un que j'ai fusionné, 514 sans doute]
     -> vérifier après reset
-  x Maria FLorencia (533) [15|10]
-    5598 oui -> 533
-    13819 non, épouse Juan Juarez -> nouvel id 15263
-    4757 non, mère avec Manuel Gomez -> nouvel id 15264
-    6304 non, mère avec Manuel Lopez -> nouvel id 15265
-    5858 non, témoin avec Pedro Duval -> nouvel id 15266
 
-  (master)
-  x actes à séparer [30|1h]
-    Ceux de Nicole
-    4546 -> 14546
-    4744 -> 14744
-    5536 -> 15536
-    5579 -> 15579
-    5707 -> 15707
-    5715 -> 15715
-    5761 -> 15761
-    5803 -> 15803
-    5835 -> 15835
-    8123 -> 18123
-    9678 -> 19678
-    13773 -> 14773
-    13790 -> 14790
-    13955 -> 14955
-    D'autres :
-    5474 -> 15474
-    5482 -> 15482
-    5488 -> 15488
-    5570 -> 15570
-    5586 -> 15586
-    5593 -> 15593
-    5601 -> 15601
-    5659 -> 15659
-    5673 -> 15673
-    5679 -> 15679
-    5693 -> 15693
-    5819 -> 15819
-    5843 -> 15843
-    5850 -> 15850
-    5881 -> 15881
-    5964 -> 15964
-    4879 -> 14879
-    4979 -> 14941
+  -> BUG attribution des ids à l'import
+  (voir détails plus bas)
 
-  x update corpus git [5]
-  x date actes cachés (pour periode)  [5|10]
-  x balisage dates manquantes [15|10]
-  x reset base (cf 6 déc dans CR Dropbox) [30|1h20]
-    - étape split non documentée le 6 déc :
-    cd admin ; xml/split.sh ../bricolages/LASTDATA/matrimonios.xml 2000
-    cd ../bricolages/LASTDATA
-    cat matrimonios-aaaa* | diff - matrimonios.xml | less
-    -> ok
-    - y'avait <document><ACTES> en double dans le premier chunk et </ACTES> dans le dernier,
-    j'ai supprimé à la main
-    x …a ok
-    x …b pb balise date
-      x fix xml [|12]
-      - import ok
-    x …c timeout, again, ok
-    x …d timeout 4x, again
-      faut que je fasse des chunks plus petits :(
-    x 1k/…g ok, …h, …i, …j, …k, …l, …m, …n, …o
-    x les 3 dernier de 1k/…f après 5969
-      (qui n'étaient pas dans 2k/…c)
-    ! en fait en relisant le CR du 6 déc, je vois que même avec les gateway timeout, il fait le taf
-    Du coup j'ai fait mon split 1000 pour rien :/
+  -> corriger bug awk sur relations-join
 
-  + les pb de la table des noms sont encore là
-    - Basavilbaso, 402 (Calderon)
-      -> nouvel id, 15268
-      corrigé à la main dans test.php
-    - Sierra Morales, 1 (le 1er !!)
-      tous les <prenom>Juan</prenom> sans nom le récupèrent, et même un Juan avec un nom
-    - Maria Florencia, nom  pas corrigé
-      -> corrigé à la main dans test.php
-
-  -> csv des noms de personnes dans le git  [10]
-  + export :
-    - virer "de" par défaut
-      (c'est un peu chiant parce que c'est dans le to_string)
-    - sans accents par défaut
-    - relations dans les deux sens par défaut
-      (avec id pour pouvoir les dédoublonner facilement)
-  - pour Zacarias, dans un dossier à part : [10]
-    - matrimonios.csv : id;texte
-    - matrimonios.xml : version en cours
   - sélection d'actes Belgrano  [1h]
   - formulaire ids fusion [40]
   - recherche : formulaires directs (id, nom/prénom)  [40]
@@ -109,8 +26,6 @@ Voir DROPBOX/Organisation/CR.txt
 
 
 -> échantillon Alexis
-  - voir qq bricoles à corriger dans le xml (Francisco Belgrano p ex.)
-  - reset base (voir CR général, 6 déc 2019)
   - export csv par liste d'actes
   - corpus sur la période sélectionnée
   - régler à la main les homonymes (virer acte si possible, sinon changer l'id)
@@ -136,14 +51,42 @@ Voir DROPBOX/Organisation/CR.txt
 -> bug droits (6 nov 2019)
   depuis changement accès 338ec04 dans config.php, seul un admin peut éditer le xml, je comprends pas pourquoi
 
--> export
-   -> relation dans les deux sens
+  + import
+      - vérifier ce qui se passe sur les noms (parfois ça doublonne)
+      par ex Maria Mercedes Sarratea 152, 683)
+
+      -> BUG attribution des ids de personnes
+        - Sierra Morales, 1 (le 1er !!)
+          tous les <prenom>Juan</prenom> sans nom le récupèrent, et même un Juan avec un nom
+        - voir d'autres exemples, corrigés à la main,
+          dans CR du 31 juillet
+        - commit 1208837 sur l'acte 5982,
+          Francisco Antonio Basavilbaso récupère l'id 402 (Antonio Francisco Calderon)
+          D'ailleurs, quand une personne n'a pas de nom, elle récupère un id sur son prénom !!
+
+      - changement de nom :
+        voir comment faire si un import modifie une personne existante
+        - Si un seul acte dans la base pour cette personne, reinit (supprimer puis créer)
+        
+      -> une fois l'import fait, afficher liste des personnes mentionnées (comme ça on voit si pb)
+      et la liste des numéros d'actes (avec les liens of course)
+
+      - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment) [ça il faut voir un cas particulier, parce que c'est casse-gueule]
+      - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
+
++ export
+   -> relation dans les deux sens par défaut
+      (avec id de la relation pour pouvoir les dédoublonner facilement)
+      et un marqueur de sens pour chaque type de relation
+      (quand j'ai fait ça en awk pour Zacarias, j'ai mis un "-" devant le type)
    -> virer les accents (idéalement, option pour les garder, déjà en GET pour commencer)
-   -> virer les de
+   -> virer les "de" par défaut
+     (c'est un peu chiant parce que c'est dans le to_string)
    + à partir d'un ensemble d'actes / de personnes
      -> faire la fonctionnalité
      - formulaire simple pour commencer
      - créer des collections (table collections)
+   - gdf
 
 -> recherche
   - plusieurs formulaires
@@ -307,27 +250,8 @@ Voir DROPBOX/Organisation/CR.txt
     - mettre en cohérence dtd, saisie en js, import en php
     - balise relation à la main
 
-+ export
-    - gdf
-
-+ import
-    - vérifier ce qui se passe sur les noms (parfois ça doublonne)
-    par ex Maria Mercedes Sarratea 152, 683)
-    -> BUG vérifier l'attribution des ids
-      de personnes à partir des noms, y'a des cas foireux, j'ai pas réussi à voir dans le code où ça a lieu :(
-      commit 1208837 sur l'acte 5982,
-      Francisco Antonio Basavilbaso récupère l'id 402 (Antonio Francisco Calderon)
-      D'ailleurs, quand une personne n'a pas de nom, elle récupère un id sur son prénom !!
-    - changement de nom :
-      voir comment faire si un import modifie une personne existante
-      - Si un seul acte dans la base pour cette personne, reinit (supprimer puis créer)
-    -> une fois l'import fait, afficher liste des personnes mentionnées (comme ça on voit si pb)
-    et la liste des numéros d'actes (avec les liens of course)
-
-    -> liens colatéraux !! (fratrie, oncles/tantes, cousins germains)
-      - option dans export pour les mettre ou pas
-    - supprimer les conditions ou relations si elles n'apparaissent pas dans l'acte (en cas de balisage erroné précédemment) [ça il faut voir un cas particulier, parce que c'est casse-gueule]
-    - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
+-> liens colatéraux !! (fratrie, oncles/tantes, cousins germains)
+  - option dans export pour les mettre ou pas
 
 + recherche
     -> BUG : toutes les personnes ne sortent pas (peut-être les noms trouvent en minuscule ?  Peut-être à la suite d'une dissoc ?).  Francisco Belgrano 383 et 419 (trouvés grâce à la recherche sur la page Dissoc)
@@ -352,7 +276,7 @@ Voir DROPBOX/Organisation/CR.txt
     Don de acte 4730 pas conservé)
 
 + classes
-    - supprimer des entrées (relations, conditions, etc.)
+    - méthodes pour supprimer des entrées (relations, conditions, etc.)
     - éditer les champs depuis les pages
     - BUG : dans Acte->remove_from_db, les conditions ne sont pas supprimées correctement (dans acte_has oui, mais pas dans condition), du coup les personnes peuvent pas être supprimées (cf + haut Frutos, dans le commit courant)
 
@@ -360,7 +284,6 @@ Voir DROPBOX/Organisation/CR.txt
     - Cristina
 
 + base
-    -> csv des noms de personnes dans le git
     -> vérifier s'il y a des personnes où le de est intégré au nom
     Belgrano Peri sans le de (alors que c'est bien Domingo)
     - BUG sql : les drop table sont pas faits dans le bon ordre, du coup certaines sont pas vidées, à cause des dépendances de clefs je pense
