@@ -2,16 +2,13 @@
 Voir DROPBOX/Organisation/CR.txt
 
 + Séquence :
-  -> vérifier "de"  [10-1h]
-  s'il y a des personnes où le de est intégré au nom
-  Belgrano Peri sans le de (alors que c'est bien Domingo)
-  [je pense vraiment que c'est les attributs, et pour Belgrano, c'est un que j'ai fusionné, 514 sans doute]
-    -> vérifier après reset
-
-  -> BUG attribution des ids à l'import
+  -> BUG import attribution des ids
   (voir détails plus bas)
-
   -> corriger bug awk sur relations-join
+  - finaliser code nouvelle fusion
+    (nettoyer, voir plus bas)
+  -> BUG dissoc : état des lieux
+
 
   - sélection d'actes Belgrano  [1h]
   - formulaire ids fusion [40]
@@ -67,7 +64,7 @@ Voir DROPBOX/Organisation/CR.txt
       - changement de nom :
         voir comment faire si un import modifie une personne existante
         - Si un seul acte dans la base pour cette personne, reinit (supprimer puis créer)
-        
+
       -> une fois l'import fait, afficher liste des personnes mentionnées (comme ça on voit si pb)
       et la liste des numéros d'actes (avec les liens of course)
 
@@ -75,6 +72,9 @@ Voir DROPBOX/Organisation/CR.txt
       - quand la date comporte une erreur (29 février par ex), tenter de sauver quelque chose (au moins l'année) plutôt que 00-00-0000
 
 + export
+   -> fonctions d'export
+      séparer de interface, encore et toujours !
+      et caser tous les trucs dont j'ai besoin
    -> relation dans les deux sens par défaut
       (avec id de la relation pour pouvoir les dédoublonner facilement)
       et un marqueur de sens pour chaque type de relation
