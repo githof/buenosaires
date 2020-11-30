@@ -213,6 +213,17 @@ get_periode ()
 }
 # get_periode | grep_nom belgrano
 
+get_periode_60 ()
+{
+  get_decades 175 176 177 178 179 180 181 \
+  | grep -v '5[0-5]</date>' \
+  | grep -v '1[6-9]</date>'
+}
+# [1756-1815] 60 ans, deux génération environ
+# d'un peu avant le mariage de Domingo Belgrano (1758)
+# à un peu après le mariage de son fils Joaquin (1808)
+# (Miguel se remarie en 1820 mais c'est tard déjà)
+
 get_periode_test ()
 {
   corpus \
