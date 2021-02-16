@@ -39,6 +39,10 @@
             $this->is_updated_in_db = FALSE;
         }
 
+        public function add_prenom_str($s){
+          $this->add_prenom(new Prenom(NULL, $s));
+        }
+
         public function add_prenom($prenom){
             foreach($this->prenoms as $_prenom){
                 if((isset($_prenom->id, $prenom->id)
@@ -49,6 +53,10 @@
             $this->prenoms[] = $prenom;
 	    $str = $this->prenoms_str;
 	    $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
+        }
+
+        public function add_nom_str($s, $attributes){
+          $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
         }
 
         public function add_nom($nom){
