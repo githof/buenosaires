@@ -174,41 +174,51 @@
             $acte->set_contenu($xml_str);
         }
 
+        private function set_personne_attributes($p, $p_attr)
+        {
+          if(isset($pers_attr["id"]))
+              $personne->id = $p_attr()["id"];
+
+          if(isset($pers_attr["don"])
+             && $p_attr["don"] == "true")
+              $personne->add_condition("Don", $this->source_id);
+        }
+
+        private read_personne_child_node($personne, $xml_child)
+        {
+          switch($xml_child->getName()){
+              case "prenom":
+                  $personne->add_prenom_str($xml_child->__toString());
+                  break;
+              case "nom":
+                  $this->all_nom_attributes_in_one($xml_child);
+                  $nom_attr = NULL;
+                  if(isset($xml_child->attributes()["attr"]))
+                      $nom_attr = $xml_child->attributes()["attr"];
+                  $personne->add_nom_str($xml_child->__toString(), $nom_attr);
+                  break;
+              case "pere":
+                  $personne->set_pere($this->read_personne_node($xml_child));
+                  break;
+              case "mere":
+                  $personne->set_mere($this->read_personne_node($xml_child));
+                  break;
+              case "condition":
+                  $personne->add_condition($xml_child->__toString(),
+                    $this->source_id);
+                  break;
+          }
+        }
+
         function read_personne_node($xml_personne){
             $personne = new Personne();
             $personne->set_xml($xml_personne);
-            $pers_attr = $xml_personne->attributes();
 
-            if(isset($pers_attr["id"]))
-                $personne->id = $pers_attr()["id"];
+            $this->set_personne_attributes($personne,
+              $xml_personne->attributes());
+            foreach($xml_personne->children() as $xml_child)
+              $this->read_personne_child_node($personne, $xml_child);
 
-            if(isset($pers_attr["don"])
-               && $pers_attr["don"] == "true")
-                $personne->add_condition("Don", $this->source_id);
-
-            foreach($xml_personne->children() as $xml_child){
-                switch($xml_child->getName()){
-                    case "prenom":
-                        $personne->add_prenom_str($xml_child->__toString());
-                        break;
-                    case "nom":
-                        $this->all_nom_attributes_in_one($xml_child);
-                        $nom_attr = NULL;
-                        if(isset($xml_child->attributes()["attr"]))
-                            $nom_attr = $xml_child->attributes()["attr"];
-                        $personne->add_nom_str($xml_child->__toString(), $nom_attr);
-                        break;
-                    case "pere":
-                        $personne->set_pere($this->read_personne_node($xml_child));
-                        break;
-                    case "mere":
-                        $personne->set_mere($this->read_personne_node($xml_child));
-                        break;
-                    case "condition":
-                        $personne->add_condition($xml_child->__toString(), $this->source_id);
-                        break;
-                }
-            }
             return $personne;
         }
 
