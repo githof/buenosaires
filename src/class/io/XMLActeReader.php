@@ -177,13 +177,13 @@
         function read_personne_node($xml_personne){
             $personne = new Personne();
             $personne->set_xml($xml_personne);
-            $xml_personne_attributes = $xml_personne->attributes();
+            $pers_attr = $xml_personne->attributes();
 
-            if(isset($xml_personne_attributes["id"]))
-                $personne->id = $xml_personne_attributes()["id"];
+            if(isset($pers_attr["id"]))
+                $personne->id = $pers_attr()["id"];
 
-            if(isset($xml_personne_attributes["don"])
-               && $xml_personne_attributes["don"] == "true")
+            if(isset($pers_attr["don"])
+               && $pers_attr["don"] == "true")
                 $personne->add_condition("Don", $this->source_id);
 
             foreach($xml_personne->children() as $xml_child){
@@ -193,10 +193,10 @@
                         break;
                     case "nom":
                         $this->all_nom_attributes_in_one($xml_child);
-                        $attr = NULL;
+                        $nom_attr = NULL;
                         if(isset($xml_child->attributes()["attr"]))
-                            $attr = $xml_child->attributes()["attr"];
-                        $personne->add_nom_str($xml_child->__toString(), $attr);
+                            $nom_attr = $xml_child->attributes()["attr"];
+                        $personne->add_nom_str($xml_child->__toString(), $nom_attr);
                         break;
                     case "pere":
                         $personne->set_pere($this->read_personne_node($xml_child));
