@@ -143,24 +143,6 @@ class Database extends mysqli{
         return $result;
     }
 
-    /*  Warning: Declaration of Database::query($requete) should be 
-        compatible with mysqli::query($query, $resultmode = NULL) 
-        mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
-    ***/
-    public function query($requete, $resultmode = MYSQLI_STORE_RESULT){
-        global $log;
-        $log->i(trim($requete));
-        $m = microtime(TRUE);
-        $result = parent::query($requete);
-        $m = microtime(TRUE) - $m;
-        if($result === FALSE){
-            $log->e("SQL error : $this->error");
-            return FALSE;
-        }
-        $log->d("exec time: ".($m*1000)." ms");
-        return $result;
-    }
-
     public function next_id($table){
         global $log, $mysqli;
 
@@ -301,7 +283,7 @@ class Database extends mysqli{
 //                break;  
 //  Fatal error: 'break' not in the 'loop' or 'switch' context  ***
         }
-        
+
         foreach ($values as $k => $v) {
             if(strcmp($v, "NULL") == 0)
             $s .= "$k IS NULL";
