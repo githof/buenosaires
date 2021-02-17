@@ -27,6 +27,9 @@
 
             $s = "SELECT ";
 
+            /*  Warning: count(): Parameter must be an array or an object 
+              that implements Countable 
+            ***/
             for($i = 0; $i < count($columns); $i++){
                 $s .= $columns[$i];
                 if($i < count($columns) -1)
@@ -119,7 +122,11 @@
             return $this->query($s);
         }
 
-        public function query($requete){
+        /*  Warning: Declaration of Database::query($requete) should be 
+          compatible with mysqli::query($query, $resultmode = NULL) 
+          mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
+        ***/
+        public function query($requete, $resultmode = MYSQLI_STORE_RESULT){
             global $log;
 
             $log->i(trim($requete));
@@ -269,7 +276,8 @@ Testé sans succès, mais j'ai avant de me casser la tête
             $values = $obj->get_same_values();
             if($values == NULL){
                 $row = NULL;
-                break;
+//                break;  
+//  Fatal error: 'break' not in the 'loop' or 'switch' context  ***
             }
 
             foreach ($values as $k => $v) {

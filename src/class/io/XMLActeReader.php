@@ -184,7 +184,7 @@
               $personne->add_condition("Don", $this->source_id);
         }
 
-        private read_personne_child_node($personne, $xml_child)
+        private function read_personne_child_node($personne, $xml_child)
         {
           switch($xml_child->getName()){
               case "prenom":
