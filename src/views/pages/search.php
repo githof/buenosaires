@@ -1,51 +1,51 @@
 <?php
 
 
-    function all_acte_id(){
-        global $mysqli;
-        $str = "<option value='0'>Aucun</option>";
+function all_acte_id(){
+    global $mysqli;
+    $str = "<option value='0'>Aucun</option>";
 
-        $result = $mysqli->select("acte", ["id"]);
-        if($result != FALSE && $result->num_rows > 0){
-            while($row = $result->fetch_assoc())
-                $str .= "<option value='{$row["id"]}'>{$row["id"]}</option>";
-        }
-        return $str;
+    $result = $mysqli->select("acte", ["id"]);
+    if($result != FALSE && $result->num_rows > 0){
+        while($row = $result->fetch_assoc())
+            $str .= "<option value='{$row["id"]}'>{$row["id"]}</option>";
     }
+    return $str;
+}
 
-    function all_noms(){
-        global $mysqli;
-        $str = "";
+function all_noms(){
+    global $mysqli;
+    $str = "";
 
-        $result = $mysqli->query("
-            SELECT id, no_accent
-            FROM nom
-            ORDER BY no_accent
-        ");
-        if($result != FALSE && $result->num_rows > 0){
-            while($row = $result->fetch_assoc()){
-                $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
-            }
+    $result = $mysqli->query("
+        SELECT id, no_accent
+        FROM nom
+        ORDER BY no_accent
+    ");
+    if($result != FALSE && $result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
         }
-        return $str;
     }
+    return $str;
+}
 
-    function all_prenoms(){
-        global $mysqli;
-        $str = "";
+function all_prenoms(){
+    global $mysqli;
+    $str = "";
 
-        $result = $mysqli->query("
-            SELECT id, no_accent
-            FROM prenom
-            ORDER BY no_accent
-        ");
-        if($result != FALSE && $result->num_rows > 0){
-            while($row = $result->fetch_assoc()){
-                $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
-            }
+    $result = $mysqli->query("
+        SELECT id, no_accent
+        FROM prenom
+        ORDER BY no_accent
+    ");
+    if($result != FALSE && $result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
         }
-        return $str;
     }
+    return $str;
+}
 
 ?>
 

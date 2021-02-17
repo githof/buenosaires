@@ -26,14 +26,14 @@ echo "date : $date<br>";
 
 function affiche_xml($xml)
 {
-  echo '<textarea>';
-  echo $xml;
-  echo '</textarea>';
-  echo '<p>';
-  echo '<code>';
-  echo $xml;
-  echo '</code>';
-  echo '</p>';
+    echo '<textarea>';
+    echo $xml;
+    echo '</textarea>';
+    echo '<p>';
+    echo '<code>';
+    echo $xml;
+    echo '</code>';
+    echo '</p>';
 }
 
 $contenu = $acte->get_contenu();

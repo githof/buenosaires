@@ -1,56 +1,55 @@
 <?php
 
-    include_once(ROOT."src/class/io/XMLActeReader.php");
-    include_once(ROOT."src/utils.php");
+include_once(ROOT."src/class/io/XMLActeReader.php");
+include_once(ROOT."src/utils.php");
 
-    function all_sources_available(){
-        global $mysqli, $alert;
+function all_sources_available(){
+    global $mysqli, $alert;
 
-        $rep = $mysqli->select("source", ["*"], "");
-        if($rep === FALSE){
-            $alert->error("Impossible de récupérer les sources");
-            return;
-        }
-
-        if($rep->num_rows > 0){
-            while($row = $rep->fetch_assoc()){
-                echo "<option value='{$row["id"]}'>{$row["valeur"]}</option>";
-            }
-        }
+    $rep = $mysqli->select("source", ["*"], "");
+    if($rep === FALSE){
+        $alert->error("Impossible de récupérer les sources");
+        return;
     }
 
-
-    if(isset($_POST["form_type"])){
-        $filename;
-        $only_new;
-        $source_id;
-
-        if($_POST["form_type"] === "file"){
-            $filename = receive_file("import_file");
-            $only_new = isset($_POST["import_file_only_new"]);
-            $source_id = $_POST["import_file_source"];
-        }else if($_POST["form_type"] === "text"){
-            $filename = receive_text($_POST['import_text']);
-	    // le texte est copié dans un fichier temporaire
-            $only_new = isset($_POST["import_text_only_new"]);
-            $source_id = $_POST["import_text_source"];
-        }
-
-	/*
-	  dans les instructions ci-dessous, le traitement des noeuds xml
-	  des actes sera fait dans la fonction
-	  XMLActeReader->read_acte_node
-	  (via l'appel $reader->read_actes)
-	 */
-
-        if($filename != NULL){
-            chmod($filename, 0776);
-            $reader = new XMLActeReader($source_id);
-            $reader->use_xml_file($filename);
-            $reader->read_actes($only_new);
-            unlink($filename);
+    if($rep->num_rows > 0){
+        while($row = $rep->fetch_assoc()){
+            echo "<option value='{$row["id"]}'>{$row["valeur"]}</option>";
         }
     }
+}
+
+if(isset($_POST["form_type"])){
+    $filename;
+    $only_new;
+    $source_id;
+
+    if($_POST["form_type"] === "file"){
+        $filename = receive_file("import_file");
+        $only_new = isset($_POST["import_file_only_new"]);
+        $source_id = $_POST["import_file_source"];
+    }else if($_POST["form_type"] === "text"){
+        $filename = receive_text($_POST['import_text']);
+    // le texte est copié dans un fichier temporaire
+        $only_new = isset($_POST["import_text_only_new"]);
+        $source_id = $_POST["import_text_source"];
+    }
+
+/*
+    dans les instructions ci-dessous, le traitement des noeuds xml
+    des actes sera fait dans la fonction
+    XMLActeReader->read_acte_node
+    (via l'appel $reader->read_actes)
+*/
+
+    if($filename != NULL){
+        chmod($filename, 0776);
+        $reader = new XMLActeReader($source_id);
+        $reader->use_xml_file($filename);
+        $reader->read_actes($only_new);
+        unlink($filename);
+    }
+}
 
 ?>
 
