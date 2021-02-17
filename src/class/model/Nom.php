@@ -9,19 +9,19 @@
 
     class Nom implements DatabaseIO{
 
-        var $id;
+        public $id;
 
-        var $attribut;
-        var $nom;
-        var $no_accent;
+        public $attribut;
+        public $nom;
+        public $no_accent;
 
-        function __construct($id = NULL, $nom = NULL, $no_accent = NULL, $attribut = NULL){
+        public function __construct($id = NULL, $nom = NULL, $no_accent = NULL, $attribut = NULL){
             $this->id = $id;
             $this->attribut = $attribut;
             $this->set_nom($nom, $no_accent);
         }
 
-        function set_nom($default, $no_accent = NULL){
+        public function set_nom($default, $no_accent = NULL){
             if($default == NULL)
                 return;
 
@@ -33,13 +33,13 @@
                 $this->no_accent = $no_accent;
         }
 
-        function to_string($no_accent = FALSE){
+        public function to_string($no_accent = FALSE){
             $attr = "";
             if(isset($this->attribut))
                 $attr = $this->attribut . " ";
-	    $nom = $no_accent ?
-	      $this->nom :
-	      $this->no_accent;
+                $nom = $no_accent ?
+                $this->nom :
+                $this->no_accent;
 
             return $attr . $nom;
         }

@@ -4,8 +4,8 @@
 
     class Account{
 
-        var $is_connected;
-        var $infos;
+        public $is_connected;
+        public $infos;
 
         public function Account(){
             $this->check_connected();
@@ -51,6 +51,8 @@
             $log->i("user " . $this->get_full_name() . " disconnected");
         }
 
+        //  PRIVATE METHODS //
+
         private function get_infos(){
             global $mysqli;
             $id = $_SESSION[SESSION_ID];
@@ -63,6 +65,8 @@
             $this->infos = $res->fetch_assoc();
             return true;
         }
+
+        //  PUBLIC //
 
         public function exist_in_db(){
             global $mysqli;
@@ -103,13 +107,15 @@
             return $res === true;
         }
 
-
+        //  PRIVATE METHODS //
 
         private function get($key){
             if(isset($this->infos[$key]))
                 return $this->infos[$key];
             return null;
         }
+
+        //  PUBLIC   //
 
         public function get_id(){
             return $this->get("id");
@@ -143,6 +149,7 @@
             return $this->get("date_inscr");
         }
 
+        //  PRIVATE METHODS //
 
         private function set($key, $value, $update_db = false){
             global $mysqli;
@@ -156,6 +163,8 @@
 
             return true;
         }
+
+        //  PUBLIC  //
 
         public function set_prenom($value, $update_db = false){
             return $this->set("prenom", $value, $update_db);
