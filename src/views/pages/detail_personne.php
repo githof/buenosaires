@@ -1,26 +1,26 @@
 <?php
 
-    include_once(ROOT."src/class/model/Personne.php");
-    include_once(ROOT."src/html_entities.php");
+include_once(ROOT."src/class/model/Personne.php");
+include_once(ROOT."src/html_entities.php");
 
-    $personne = new Personne($url_parsed["id"]);
-    $result = $mysqli->from_db($personne, TRUE);
-    if($result == NULL){
+$personne = new Personne($url_parsed["id"]);
+$result = $mysqli->from_db($personne, TRUE);
+if($result == NULL){
 ?>
 <div>
     Aucune personne enregistrée avec cet id
 </div>
 <?php
-    }else{
-        $name = "";
-        foreach($personne->prenoms as $prenom)
-            $name .= $prenom->to_string() . " ";
+}else{
+    $name = "";
+    foreach($personne->prenoms as $prenom)
+        $name .= $prenom->to_string() . " ";
 
-        foreach($personne->noms as $nom)
-            $name .= $nom->to_string() . " ";
+    foreach($personne->noms as $nom)
+        $name .= $nom->to_string() . " ";
 
-        $page_title = "$name";
-    if(can_access($access_pages["dissocier"])){?>
+    $page_title = "$name";
+if(can_access($access_pages["dissocier"])){?>
 <div class="detail_options">
     <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
         <button class="btn btn-info btn-sm">Dissocier</button>
@@ -53,5 +53,5 @@
     </div>
 </section>
 <?php
-    }
+}
 ?>

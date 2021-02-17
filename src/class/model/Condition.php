@@ -5,14 +5,14 @@
 
     class Condition implements DatabaseIO{
 
-        var $id;
+        public $id;
 
-        var $text;
-        var $personne;
-        var $source_id;
-        var $actes;
+        public $text;
+        public $personne;
+        public $source_id;
+        public $actes;
 
-        function __construct($id = NULL, $text = NULL, $personne = NULL, $source_id = NULL){
+        public function __construct($id = NULL, $text = NULL, $personne = NULL, $source_id = NULL){
             $this->id = $id;
             $this->set_text($text);
             $this->set_personne($personne);
@@ -20,19 +20,19 @@
             $this->actes = [];
         }
 
-        function set_text($text){
+        public function set_text($text){
             $this->text = $text;
         }
 
-        function set_personne($personne){
+        public function set_personne($personne){
             $this->personne = $personne;
         }
 
-        function set_source_id($source_id){
+        public function set_source_id($source_id){
             $this->source_id = $source_id;
         }
 
-        function get_source_name(){
+        public function get_source_name(){
             global $mysqli;
 
             $result = $mysqli->select(

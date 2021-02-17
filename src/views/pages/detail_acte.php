@@ -1,55 +1,55 @@
 <?php
 
 
-    include_once(ROOT."src/class/model/Acte.php");
-    include_once(ROOT."src/html_entities.php");
-    include_once(ROOT."src/class/io/XMLExport.php");
-    include_once(ROOT."src/utils.php");
-    include_once(ROOT."src/class/io/XMLActeReader.php");
+include_once(ROOT."src/class/model/Acte.php");
+include_once(ROOT."src/html_entities.php");
+include_once(ROOT."src/class/io/XMLExport.php");
+include_once(ROOT."src/utils.php");
+include_once(ROOT."src/class/io/XMLActeReader.php");
 
-    if(can_access($access_pages["acte"]) &&
-        isset($_POST["raw_xml"], $_POST["source_id"])){
-        $only_new = FALSE;
-        $source_id = $_POST["source_id"];
+if(can_access($access_pages["acte"]) &&
+isset($_POST["raw_xml"], $_POST["source_id"])){
+    $only_new = FALSE;
+    $source_id = $_POST["source_id"];
 
-        $reader = new XMLActeReader($source_id);
-        $reader->use_xml_text($_POST["raw_xml"]);
-        $reader->read_actes($only_new);
+    $reader = new XMLActeReader($source_id);
+    $reader->use_xml_text($_POST["raw_xml"]);
+    $reader->read_actes($only_new);
 
-        $alert->info("Acte mis à jour");
-    }
+    $alert->info("Acte mis à jour");
+}
 
-    $page_title = "Acte {$url_parsed["id"]}";
-    $acte = new Acte($url_parsed["id"]);
-    $result = $mysqli->from_db($acte, TRUE);
-    if(!isset($result)){
+$page_title = "Acte {$url_parsed["id"]}";
+$acte = new Acte($url_parsed["id"]);
+$result = $mysqli->from_db($acte, TRUE);
+if(!isset($result)){
 ?>
 <div>
     Aucun acte enregistré avec cet id
 <?php
-    }else{
-        if(isset($ARGS["export"])){
-            if($ARGS["export"] == "xml"){
-                $export = new XMLExport([$acte->id]);
-                $export->export();
-            }else if($ARGS["export"] == "gdf"){
+}else{
+    if(isset($ARGS["export"])){
+        if($ARGS["export"] == "xml"){
+            $export = new XMLExport([$acte->id]);
+            $export->export();
+        }else if($ARGS["export"] == "gdf"){
 
-            }
-        }else{
+        }
+    }else{
 ?>
 <div class="detail_options">
 <?php
-            if(can_access($access_pages["export"])){ ?>
-                <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=xml">XML</a>
-                <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=gdf">GDF</a>
+        if(can_access($access_pages["export"])){ ?>
+            <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=xml">XML</a>
+            <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=gdf">GDF</a>
 <?php       }
-            if(can_access($access_pages["supprimer"])){ ?>
-                <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
-                <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
-                <button class="btn btn-danger btn-sm" id="acte-suppr-3">Parce que vous allez vraiment le faire</button>
-                <button class="btn btn-danger btn-sm" id="acte-suppr-4">Dernière chance ?</button>
-                <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
-<?php       }?>
+        if(can_access($access_pages["supprimer"])){ ?>
+            <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
+            <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
+            <button class="btn btn-danger btn-sm" id="acte-suppr-3">Parce que vous allez vraiment le faire</button>
+            <button class="btn btn-danger btn-sm" id="acte-suppr-4">Dernière chance ?</button>
+            <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
+<?php   }?>
 </div>
 <input id='acte_source_id' type="hidden" value="<?php echo $acte->source_id; ?>">
 <section>
@@ -62,7 +62,7 @@
     <h4>EPOUX</h4>
     <div>
         <?php if(isset($acte->epoux))
-                echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+            echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
         ?>
     </div>
 </section>
@@ -119,6 +119,6 @@
     </div>
 </section>
 <?php
-        }
     }
+}
 ?>

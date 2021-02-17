@@ -1,57 +1,57 @@
 <?php
 
-    $email_error = false;
-    $password_error = false;
-    $prenom_error = false;
-    $nom_error = false;
+$email_error = false;
+$password_error = false;
+$prenom_error = false;
+$nom_error = false;
 
-    function get_post_var($value){
-        if(isset($_POST[$value]))
-            return $_POST[$value];
-        return "";
-    }
+function get_post_var($value){
+    if(isset($_POST[$value]))
+        return $_POST[$value];
+    return "";
+}
 
-    function check_post_values(){
-        global $email_error, $password_error, $prenom_error, $nom_error;
+function check_post_values(){
+    global $email_error, $password_error, $prenom_error, $nom_error;
 
-        $email_error = !isset($_POST['email']) ||
-            !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    $email_error = !isset($_POST['email']) ||
+        !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 
-        $password_error = !isset($_POST['password']) ||
-            strlen($_POST['password']) < 6;
+    $password_error = !isset($_POST['password']) ||
+        strlen($_POST['password']) < 6;
 
-        $prenom_error = !isset($_POST['prenom']) ||
-            strlen($_POST['prenom']) < 1;
+    $prenom_error = !isset($_POST['prenom']) ||
+        strlen($_POST['prenom']) < 1;
 
-        $nom_error = !isset($_POST['nom']) ||
-            strlen($_POST['nom']) < 1;
+    $nom_error = !isset($_POST['nom']) ||
+        strlen($_POST['nom']) < 1;
 
-        return !$email_error && !$password_error && !$prenom_error && !$nom_error;
-    }
+    return !$email_error && !$password_error && !$prenom_error && !$nom_error;
+}
 
-    if($account->is_connected){
+if($account->is_connected){
 ?>
 
 <div>
     Vous êtes déjà connecté avec un compte
 </div>
 <?php
-    }else if(isset($_POST['email']) && check_post_values()){
-        $account->set_email(safe($_POST['email']));
-        $account->set_password(safe(md5($_POST['password'])));
-        $account->set_prenom(safe($_POST['prenom']));
-        $account->set_nom(safe($_POST['nom']));
+}else if(isset($_POST['email']) && check_post_values()){
+    $account->set_email(safe($_POST['email']));
+    $account->set_password(safe(md5($_POST['password'])));
+    $account->set_prenom(safe($_POST['prenom']));
+    $account->set_nom(safe($_POST['nom']));
 
-        $res = $account->add_into_db();
+    $res = $account->add_into_db();
 
-        if($res){
+    if($res){
 ?>
 
 <div>
     Compte crée avec succès !
 </div>
 <?php
-        }else{
+    }else{
 ?>
 
 <div>
@@ -59,7 +59,7 @@
 </div>
 <?php
         }
-    }else{
+}else{
 ?>
 
 <div id="form_new_account">

@@ -1,40 +1,40 @@
 <?php
 
-    function html_item($title, $icon, $url){
-        global $url_parsed;
+function html_item($title, $icon, $url){
+    global $url_parsed;
 
-        $selected = "";
-        $page = (isset($url_parsed['page']))? $url_parsed['page'] : "";
+    $selected = "";
+    $page = (isset($url_parsed['page']))? $url_parsed['page'] : "";
 
-        if($url == "" && $page == "/" || $url == $page)
-            $selected = "selected-page";
-        return "
-            <li data-toggle='tooltip' data-placement='bottom' title='$title' class='$selected'>
-                <a href='./$url'>
-                    <span class='glyphicon glyphicon-$icon' aria-hidden='true'></span>
-                </a>
-            </li>
-        ";
-    }
+    if($url == "" && $page == "/" || $url == $page)
+        $selected = "selected-page";
+    return "
+        <li data-toggle='tooltip' data-placement='bottom' title='$title' class='$selected'>
+            <a href='./$url'>
+                <span class='glyphicon glyphicon-$icon' aria-hidden='true'></span>
+            </a>
+        </li>
+    ";
+}
 
-    $menu_items = [
-        ["Accueil", "home", ""],
-        ["Import", "cloud-upload", "import"],
-        ["Export", "cloud-download", "export"],
-        ["Recherche", "search", "recherche"],
-        ["Fusion", "resize-small", "fusion"],
-        ["Dissocier", "resize-full", "dissocier"],
-        ["Tables", "align-justify", "table"],
-        ["Logs", "wrench", "logs"],
-        //["Groupe", "user", ""]
-        //["Console", "console", ""]
-    ];
+$menu_items = [
+    ["Accueil", "home", ""],
+    ["Import", "cloud-upload", "import"],
+    ["Export", "cloud-download", "export"],
+    ["Recherche", "search", "recherche"],
+    ["Fusion", "resize-small", "fusion"],
+    ["Dissocier", "resize-full", "dissocier"],
+    ["Tables", "align-justify", "table"],
+    ["Logs", "wrench", "logs"],
+    //["Groupe", "user", ""]
+    //["Console", "console", ""]
+];
 
-    $html_menu_items = "";
-    foreach($menu_items as $item){
-        if(can_access($access_pages[$item[2]]))
-            $html_menu_items .= html_item($item[0], $item[1], $item[2]);
-    }
+$html_menu_items = "";
+foreach($menu_items as $item){
+    if(can_access($access_pages[$item[2]]))
+        $html_menu_items .= html_item($item[0], $item[1], $item[2]);
+}
 
 ?>
 
