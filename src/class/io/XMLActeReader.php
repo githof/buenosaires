@@ -57,6 +57,8 @@ class XMLActeReader {
         return TRUE;
     }
 
+    //  docu ***
+    //  Pour actes copiés-collés
     public function read_actes($only_new_acte = FALSE){
         global $log, $alert;
         $actesXML = NULL;

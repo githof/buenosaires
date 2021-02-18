@@ -22,6 +22,9 @@ class Database extends mysqli{
         }
     }
 
+    //  docu ***
+    //  requête select complétée avec les données envoyées via d'autres fichiers
+    //  ==> tracer l'origine de ces données
     public function select($table, $columns, $where = "", $more = "") {    //  d'où viennent ces données ?  ***
         global $log;
 
@@ -46,6 +49,9 @@ class Database extends mysqli{
         return $this->query($s);
     }
 
+    //  docu ***
+    //  requête insert complétée avec les données envoyées via d'autres fichiers
+    //  ==> tracer l'origine de ces données
     public function insert($table, $values, $more = "") {
         global $log;
 
@@ -79,6 +85,9 @@ class Database extends mysqli{
         return $this->query($s);
     }
 
+    //  docu ***
+    //  requête update complétée avec les données envoyées via d'autres fichiers
+    //  ==> tracer l'origine de ces données
     public function update($table, $values, $where, $more = ""){
         global $log;
         $s = "UPDATE `$table` SET ";
@@ -108,6 +117,9 @@ class Database extends mysqli{
         return $this->query($s);
     }
 
+    //  docu ***
+    //  requête delete complétée avec les données envoyées via d'autres fichiers
+    //  ==> tracer l'origine de ces données
     public function delete($table, $where, $more = ""){
         global $log;
 
@@ -618,7 +630,7 @@ class Database extends mysqli{
 
     public function into_db_acte_has_relation($acte, $relation){
         return $this->query("
-        INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
+            INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
         ");
     }
 
