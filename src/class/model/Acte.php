@@ -40,10 +40,23 @@ class Acte implements DatabaseIO{
 
     public function set_epoux($epoux){
         $this->epoux = $epoux;
+        //  docu ***
+        // echo '<pre>';
+        // var_dump($this->epoux);
+        // echo '<pre>';
+        //  /outputs/acte-set_epoux-this-epoux.txt
+        //  manque père mère, des id, relation_by_type
     }
 
     public function set_epouse($epouse){
         $this->epouse = $epouse;
+        //  docu ***
+        // echo '<pre>';
+        // var_dump($this->epouse);
+        // echo '<pre>';
+        //  /outputs/acte-set_epouse-this-epouse.txt
+        //  manque des id, père, mère (ailleurs dans le résultat il y est, avec son id), relation_by_type
+        //  résultat très long, à voir en détail
     }
 
     public function set_date($date){
@@ -54,6 +67,13 @@ class Acte implements DatabaseIO{
 
     public function add_temoin($temoin){
         $this->temoins[] = $temoin;
+        //  docu ***
+        // echo '<pre>';
+        // var_dump($this->temoin[0]);
+        // echo '<br>';
+        // var_dump($this->temoin[1]);
+        // echo '<pre>';
+        //  output : NULL (4 fois)
     }
 
     public function add_parrain($parrain){

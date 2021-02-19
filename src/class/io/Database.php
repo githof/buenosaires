@@ -65,13 +65,13 @@ class Database extends mysqli{
             $keys .= $key;
 
             if(strcmp($value, "now()") == 0)
-            $vals .= $value;
+                $vals .= $value;
             else
-            $vals .= "'" . $value . "'";
+                $vals .= "'" . $value . "'";
 
             if($i < count($values) -1){
-            $keys .= ", ";
-            $vals .= ", ";
+                $keys .= ", ";
+                $vals .= ", ";
             }
 
             $i++;
@@ -81,13 +81,18 @@ class Database extends mysqli{
 
         if(strlen($more) > 0)
             $s .= " " . $more;
+        //  docu ***
+        // echo  $s;
+        //  *** cf outputs/Database-insert.txt 
+        // echo $_SERVER['PHP_SELF'];  //  *** index.php pour chaque méthode
+        // echo $_SERVER["PATH_INFO"];   //  *** n'affiche rien
+        // echo $_SERVER["SCRIPT_NAME"];   //  *** affiche index.php pour chaque méthode
+        //  *** https://stackoverflow.com/questions/41354898/method-and-function
+        echo '<br>'. __METHOD__;
 
         return $this->query($s);
     }
 
-    //  docu ***
-    //  requête update complétée avec les données envoyées via d'autres fichiers
-    //  ==> tracer l'origine de ces données
     public function update($table, $values, $where, $more = ""){
         global $log;
         $s = "UPDATE `$table` SET ";
@@ -140,7 +145,7 @@ class Database extends mysqli{
     //  mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
 
     /*  J'ai mis MYSQLI_USE_RESULT, je sais pas si c'est le cas. A changer quand je saurai ***/
-    public function query($requete, $resultmode = MYSQLI_USE_RESULT) {
+    public function query($requete, $resultmode = MYSQLI_STORE_RESULT) {    //  ***
         global $log;
 
         $log->i(trim($requete));
@@ -165,10 +170,10 @@ class Database extends mysqli{
                 "nom='PERSONNE_ID_MAX'"
             );
             if($result != FALSE && $result->num_rows == 1){
-            $row = $result->fetch_assoc();
-            $value = intval($row["valeur"]) +1;
-            $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-            return $row["valeur"];
+                $row = $result->fetch_assoc();
+                $value = intval($row["valeur"]) +1;
+                $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
+                return $row["valeur"];
             }
             return FALSE;
         }
@@ -209,10 +214,10 @@ class Database extends mysqli{
         $results = $this->select("personne", ["id"]);
         if($results != FALSE && $results->num_rows){
             while($row = $results->fetch_assoc()){
-            $id = $row["id"];
-            $personne = new Personne($id);
-            $this->from_db($personne, $get_relations_conditions);
-            $personnes[$id] = $personne;
+                $id = $row["id"];
+                $personne = new Personne($id);
+                $this->from_db($personne, $get_relations_conditions);
+                $personnes[$id] = $personne;
             }
         }
         return $personnes;
@@ -242,7 +247,6 @@ class Database extends mysqli{
     appelées ici.
     */
         global $log;
-
 
         $log->d("from database: ".get_class($obj)." id=$obj->id");  //  $obj->id : null log.txt ***
 
@@ -580,12 +584,12 @@ class Database extends mysqli{
 
         while($result === FALSE && $max_try > 0){
             if(!isset($obj->id)){
-            $new_id = $this->next_id($obj->get_table_name());
-            if($new_id == 0){
-                $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
-                return FALSE;
-            }
-            $obj->id = $new_id;
+                $new_id = $this->next_id($obj->get_table_name());
+                if($new_id == 0){
+                    $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
+                    return FALSE;
+                }
+                $obj->id = $new_id+1;   //  ***
             }
 
             $values["id"] = $obj->id;
@@ -654,6 +658,8 @@ class Database extends mysqli{
         return $removed;
     }
 
+    //  testé de commenter cette méthode pour vérifier qu'elle ne retire pas des personnes indus 
+    //  ==> non c'est pareil, pas de nom, prénom, 1 seule relation etc  ***
     public function remove_unused_prenoms_noms(){
         $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
         $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");

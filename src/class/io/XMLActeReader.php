@@ -13,6 +13,8 @@ class XMLActeReader {
         $this->source_id = $source_id;
     }
 
+    //  docu ***
+    //  traitement d'un fichier importé
     public function use_xml_file($filename){
         global $log, $alert;
 
@@ -22,13 +24,14 @@ class XMLActeReader {
             return FALSE;
         }
 
+        //  docu ***
+        //  $use_errors utilise fct libxml_use_internal_errors pour stocker erreurs
         $use_errors = libxml_use_internal_errors(TRUE);
         $this->xml = simplexml_load_file($filename);
         if($this->xml === FALSE){
             $log->e("Erreur lors de la lecture du fichier xml $filename");
             echo $alert->html_error("Erreur lors de la lecture du fichier xml");
-            foreach(libxml_get_errors() as $error)
-            {
+            foreach(libxml_get_errors() as $error) {
                 $log->e($error->message);
                 echo $alert->html_error($error->message);
             }
@@ -39,9 +42,13 @@ class XMLActeReader {
         return TRUE;
     }
 
+    //  docu ***
+    //  traitement d'actes copiés-collés
     public function use_xml_text($text){
         global $log, $alert;
 
+        //  docu ***
+        //  depuis utils.php : espaces à la place de /\s/
         $text = pre_process_acte_xml($text);
         $use_errors = libxml_use_internal_errors(TRUE);
         $this->xml = simplexml_load_string($text);
@@ -93,6 +100,8 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
+    //  docu ***
+    //  lit les noeuds du xml ==>  vérifier ce qui est lu et envoyé 
     private function read_acte($xml_acte, $position = NULL, $only_new_acte = FALSE){
         global $log, $alert, $mysqli;
         $acte_id = NULL;
@@ -138,6 +147,8 @@ class XMLActeReader {
         return FALSE;
     }
 
+    //  docu ***
+    //  check si l'acte existe déjà dans la bdd
     private function db_has_acte($acte_id){
         global $mysqli;
 
@@ -149,30 +160,38 @@ class XMLActeReader {
 
     //  PUBLIC  //
 
+    //  docu ***
+    //  stocke les éléments du contenu de l'acte
     public function read_acte_node($acte, $xml_acte){
         foreach($xml_acte->children() as $xml_child){
+            //  docu ***
+            // echo '<pre>';
+            // var_dump($xml_child);
+            // echo '</pre>';
+            //  ==> tous les noms, prénoms et conditions
+            //  outputs/read_acte_node_xml_child.txt
             switch($xml_child->getName()){
                 case "date":
                     $acte->set_date($xml_child->__toString());
-                    break;
+                break;
                 case "epoux":
                     $acte->set_epoux($this->read_personne_node($xml_child));
-                    break;
+                break;
                 case "epouse":
                     $acte->set_epouse($this->read_personne_node($xml_child));
-                    break;
+                break;
                 case "temoins":
                     foreach($xml_child->children() as $xml_temoin){
                         if($xml_temoin->getName() === "temoin")
                             $acte->add_temoin($this->read_personne_node($xml_temoin));
                     }
-                    break;
+                break;
                 case "parrains":
                     foreach($xml_child->children() as $xml_parrain){
                         if($xml_parrain->getName() === "parrain")
                             $acte->add_parrain($this->read_personne_node($xml_parrain));
                     }
-                    break;
+                break;
             }
         }
         $xml_str = $xml_acte->asXML();
@@ -187,7 +206,7 @@ class XMLActeReader {
             $personne->id = $p_attr()["id"];
 
         if(isset($pers_attr["don"])
-            && $p_attr["don"] == "true")
+        && $p_attr["don"] == "true")
             $personne->add_condition("Don", $this->source_id);
     }
 
