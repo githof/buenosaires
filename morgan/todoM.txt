@@ -1,0 +1,14 @@
+
+21/02/21
+
+Erreurs import 
+- Voir erreur "incorrect integer value ''" lignes 24579 et + de log.txt 
++ Retirer '+1' à Database::into_db_insert
+  (avec : requêtes tentent d'enregistrer tous les prénoms et noms avec la même id,
+  sans : les requêtes insert nom et prenom n'ont pas d'id)
+- Requêtes INSERT n'enregistrent aucune donnée dans la table periode (
+    mais le site affiche quand même une période relative à une personne : 
+    63 ans, 3 mois, 4 jours (de 1757-11-04 à 1821-02-08) )
+
+
+

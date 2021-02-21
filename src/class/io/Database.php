@@ -46,6 +46,10 @@ class Database extends mysqli{
 
         $s .= " " . $more;
 
+        //  docu ***
+        echo '<br>'. __METHOD__;
+        echo '<br>'.$s;
+
         return $this->query($s);
     }
 
@@ -82,13 +86,13 @@ class Database extends mysqli{
         if(strlen($more) > 0)
             $s .= " " . $more;
         //  docu ***
-        // echo  $s;
         //  *** cf outputs/Database-insert.txt 
         // echo $_SERVER['PHP_SELF'];  //  *** index.php pour chaque méthode
         // echo $_SERVER["PATH_INFO"];   //  *** n'affiche rien
         // echo $_SERVER["SCRIPT_NAME"];   //  *** affiche index.php pour chaque méthode
         //  *** https://stackoverflow.com/questions/41354898/method-and-function
         echo '<br>'. __METHOD__;
+        echo  $s;
 
         return $this->query($s);
     }
@@ -589,7 +593,6 @@ class Database extends mysqli{
                     $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
                     return FALSE;
                 }
-                $obj->id = $new_id+1;   //  ***
             }
 
             $values["id"] = $obj->id;
