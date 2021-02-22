@@ -2,9 +2,9 @@
 function selection_display()
 {
     this.$element = $('<p>',
-		      {
-			  'class': "xml_text"
-		      });
+                        {
+                        'class': "xml_text"
+                        });
 }
 
 function selectable()

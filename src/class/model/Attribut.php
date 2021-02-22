@@ -4,16 +4,16 @@
 
     class Attribut implements DatabaseIO{
 
-        var $id;
+        public $id;
 
-        var $value;
+        public $value;
 
-        function __construct($id = NULL, $value = NULL){
+        public function __construct($id = NULL, $value = NULL){
             $this->id = $id;
             $this->set_value($value);
         }
 
-        function set_value($value){
+        public function set_value($value){
             $this->value = $value;
         }
 
