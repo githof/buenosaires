@@ -267,9 +267,9 @@ class Database extends mysqli{
             }
         } else {
             if($obj instanceof Personne)
-            $row = $this->from_db_by_same_personne($obj);
+                $row = $this->from_db_by_same_personne($obj);
             else
-            $row = $this->from_db_by_same($obj);
+                $row = $this->from_db_by_same($obj);
         }
 
         if($update_obj)
@@ -483,12 +483,12 @@ class Database extends mysqli{
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
             if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
+                $ids = array_intersect($ids, $ids_tmp);
             else
-            $ids = $ids_tmp;
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
             return FALSE;
@@ -502,19 +502,19 @@ class Database extends mysqli{
             WHERE prenom.no_accent = '$prenom->no_accent'
             ");
             if($result === FALSE || $result->num_rows == 0)
-            return NULL;
+                return NULL;
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
             if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
+                $ids = array_intersect($ids, $ids_tmp);
             else
-            $ids = $ids_tmp;
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
-            return NULL;
+                return NULL;
         }
 
         if(isset($ids)){
@@ -579,7 +579,7 @@ class Database extends mysqli{
     }
 
     //  docu ***
-    //  $obj->id manque
+    //  manque l'id des tables (voir *** dans le while())   ***
     private function into_db_insert($obj, $values){
         global $log;
         $new_id = NULL;
@@ -598,12 +598,18 @@ class Database extends mysqli{
 
             $values["id"] = $obj->id;
             //  test    ***     ID : NULL
-            echo '<br>ID : ';   
-            var_dump($valus["id"]);  
+            echo '<br>$obj->get_table_name : ';   
+            var_dump($obj->get_table_name());  //   nom de la table
+            echo '<br>$values : ';   
+            var_dump($values);  //  tableau des valeurs pour la table, où manque l'id
             //  fin test  ***
             $result = $this->insert($obj->get_table_name(), $values);
             $max_try--;
         }
+        //  test    ***     
+        echo '<br>$result : ';   
+        var_dump($result);  
+        //  fin test  ***
         return $result;
     }
 
@@ -615,7 +621,7 @@ class Database extends mysqli{
             "prenom_id" => $prenom->id,
             "ordre" => $ordre
         ];
-        // $values["personne_id"] manque parfois   ***
+        // $values["personne_id"] manque parfois et pas forcément les bons numéros   ***
         echo '<br> into_db_prenom_personne $values["personne_id"] : ';
         var_dump($values["personne_id"]);
         // //  ***  fin test
@@ -637,7 +643,7 @@ class Database extends mysqli{
             $values["attribut"] = $nom->attribut;
             $attr = ", attribut='$nom->attribut'";
         }
-        // $values["personne_id"] manque parfois   ***
+        // $values["personne_id"] manque parfois et pas forcément les bons numéros   ***
         echo '<br> into_db_nom_personne $values["personne_id"] : ';
         var_dump($values["personne_id"]);
         //  ***  fin test
