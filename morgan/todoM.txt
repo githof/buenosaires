@@ -1,26 +1,17 @@
 
+22/02/21
+
+- Afficher les $values "partout" pour tracer où il en manque
+
+
+
 21/02/21
 
-Erreurs import 
-- Voir erreur "incorrect integer value ''" lignes 24579 et + de log.txt 
-+ Retirer '+1' à Database::into_db_insert
-  (avec : requêtes tentent d'enregistrer tous les prénoms et noms avec la même id,
-  sans : les requêtes insert nom et prenom n'ont pas d'id)
-- Rechercher : Aucune requête INSERT ne tente d'enregistrer une donnée dans 
-  la table periode (
-    mais le site affiche quand même une période relative à une personne : 
-    63 ans, 3 mois, 4 jours (de 1757-11-04 à 1821-02-08) 
-    mais elle n'est pas bonne, il faudrait :
-    62 ans, 9 mois, 5 jours (de 1757-11-04 à 1820-08-09) )
-- commenter database_selectinsert-210221.txt 
-- Rechercher : si bdd vide, aucune donnée insérée 
-  sauf tables acte et acte_contenu ==>
-    mysql> select * from acte;
-    +----+-------+--------+------------+------------+
-    | id | epoux | epouse | date_start | date_end   |
-    +----+-------+--------+------------+------------+
-    |  1 |  NULL |   NULL | 1656-02-04 | 1656-02-04 |
-    +----+-------+--------+------------+------------+
++ Erreurs import 
+  - Voir erreur "incorrect integer value ''" lignes 24579 et + de log.txt 
+  - Retirer '+1' à Database::into_db_insert (que j'avais mis pour tester)
+
+
     
 
   

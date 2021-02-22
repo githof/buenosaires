@@ -54,8 +54,9 @@ class Database extends mysqli{
     }
 
     //  docu ***
-    //  requête insert complétée avec les données envoyées via d'autres fichiers
+    //  requête insert complétée avec les données envoyées via d'autres méthodes
     //  ==> tracer l'origine de ces données
+    //  il manque (au moins) $values ***
     public function insert($table, $values, $more = "") {
         global $log;
 
@@ -87,9 +88,6 @@ class Database extends mysqli{
             $s .= " " . $more;
         //  docu ***
         //  *** cf outputs/Database-insert.txt 
-        // echo $_SERVER['PHP_SELF'];  //  *** index.php pour chaque méthode
-        // echo $_SERVER["PATH_INFO"];   //  *** n'affiche rien
-        // echo $_SERVER["SCRIPT_NAME"];   //  *** affiche index.php pour chaque méthode
         //  *** https://stackoverflow.com/questions/41354898/method-and-function
         echo '<br>'. __METHOD__;
         echo  $s;
@@ -149,7 +147,7 @@ class Database extends mysqli{
     //  mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
 
     /*  J'ai mis MYSQLI_USE_RESULT, je sais pas si c'est le cas. A changer quand je saurai ***/
-    public function query($requete, $resultmode = MYSQLI_STORE_RESULT) {    //  ***
+    public function query($requete, $resultmode = MYSQLI_USE_RESULT) {    //  ***
         global $log;
 
         $log->i(trim($requete));
@@ -580,6 +578,8 @@ class Database extends mysqli{
         );
     }
 
+    //  docu ***
+    //  $obj->id manque
     private function into_db_insert($obj, $values){
         global $log;
         $new_id = NULL;
@@ -590,12 +590,17 @@ class Database extends mysqli{
             if(!isset($obj->id)){
                 $new_id = $this->next_id($obj->get_table_name());
                 if($new_id == 0){
-                    $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
+                    //  *** Remplacer $obj->table_name par $obj->get_table_name ?
+                    $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/  
                     return FALSE;
                 }
             }
 
             $values["id"] = $obj->id;
+            //  test    ***     ID : NULL
+            echo '<br>ID : ';   
+            var_dump($valus["id"]);  
+            //  fin test  ***
             $result = $this->insert($obj->get_table_name(), $values);
             $max_try--;
         }
@@ -610,6 +615,10 @@ class Database extends mysqli{
             "prenom_id" => $prenom->id,
             "ordre" => $ordre
         ];
+        // $values["personne_id"] manque parfois   ***
+        echo '<br> into_db_prenom_personne $values["personne_id"] : ';
+        var_dump($values["personne_id"]);
+        // //  ***  fin test
         return $this->insert(
             "prenom_personne",
             $values,
@@ -628,6 +637,10 @@ class Database extends mysqli{
             $values["attribut"] = $nom->attribut;
             $attr = ", attribut='$nom->attribut'";
         }
+        // $values["personne_id"] manque parfois   ***
+        echo '<br> into_db_nom_personne $values["personne_id"] : ';
+        var_dump($values["personne_id"]);
+        //  ***  fin test
         return $this->insert(
             "nom_personne",
             $values,
@@ -636,12 +649,22 @@ class Database extends mysqli{
     }
 
     public function into_db_acte_has_relation($acte, $relation){
+        //  ***     vide
+        $qr = $this->query("INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')");
+        echo '<br> $qr : ';
+        echo $q;
+        //  ***  fin test
         return $this->query("
             INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
         ");
     }
 
     public function into_db_acte_has_condition($acte, $condition){
+        //  *** vide
+        $qc = $this->query("INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')");
+        echo '<br>$qc : ';
+        echo $qc;
+        //  fin
         return $this->query("
         INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
         ");
