@@ -27,8 +27,7 @@ class XMLActeReader {
         if($this->xml === FALSE){
             $log->e("Erreur lors de la lecture du fichier xml $filename");
             echo $alert->html_error("Erreur lors de la lecture du fichier xml");
-            foreach(libxml_get_errors() as $error)
-            {
+            foreach(libxml_get_errors() as $error) {
                 $log->e($error->message);
                 echo $alert->html_error($error->message);
             }

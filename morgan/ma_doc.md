@@ -64,7 +64,7 @@ Si vous déclarez une propriété en utilisant var au lieu de public, protected,
 **config.php** regroupe des **variables et CONSTANTES**
 **utils.php** regroupe des **fonctions**
 
-Dans les **classes** (sauf Database), un certain nombre de **méthodes** sur la bdd sont **communes** : les **regrouper**.
+Dans les **classes** (sauf Database), un certain nombre de **méthodes** sur la bdd sont **communes** : les **regrouper** ?
 
 
 
@@ -101,13 +101,14 @@ doc : (https://bower.io/)[https://bower.io/]
 "Bower requires node, npm and git." ==> ça fait un peu beaucoup de gestionnaires, **voir si un gestionnaire peut englober la gestion des paquets et dépendances en même temps (style composer pour php)**.
 "...psst! While Bower is maintained, we recommend using (https://yarnpkg.com/)[Yarn] and (https://webpack.js.org/)[Webpack] or (https://parceljs.org/)[Parcel] for front-end projects (https://bower.io/blog/2017/how-to-migrate-away-from-bower/)[read how to migrate!]"
 Impose beaucoup de balises script et link en html
+*Apparemment assez utilisé*
 
     
 *  ? voir si possible de faire genre de helpers ?    
 
 
 
-# EXTRA
+# EXTRA (peut-être rien à voir)
 
 ? Redux ?
 
