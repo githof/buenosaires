@@ -11,11 +11,11 @@ class Personne implements DatabaseIO{
     public $id;
 
     public $prenoms;
-	public $prenoms_str;
+    public $prenoms_str;
     public $noms;
-	public $noms_str;
+    public $noms_str;
     public $relations;
-	public $relations_by_type;
+    public $relations_by_type;
     public $conditions;
 
     public $pere;
