@@ -1,0 +1,39 @@
+Personne::set_pere()->$this->pere : Père de Domingo de Belgrano 
+object(Personne)#20 (12) { 
+  ["id"]=> NULL                         //  pas de personne.id
+  ["prenoms"]=> array(1) { 
+    [0]=> object(Prenom)#25 (3) { 
+      ["id"]=> NULL                     //  pas de prenom.id
+      ["prenom"]=> string(6) "Carlos" 
+      ["no_accent"]=> string(6) "Carlos" 
+    } 
+  } 
+  ["prenoms_str"]=> string(6) "Carlos" 
+  ["noms"]=> array(1) { 
+    [0]=> object(Nom)#24 (4) { 
+      ["id"]=> NULL                     //  pas de nom.id 
+      ["attribut"]=> object(SimpleXMLElement)#28 (1) { 
+        [0]=> string(2) "de" 
+      } 
+      ["nom"]=> string(8) "BELGRANO" 
+      ["no_accent"]=> string(8) "BELGRANO" 
+    } 
+  } 
+  ["noms_str"]=> string(11) "de BELGRANO" 
+  ["relations"]=> array(0) { }          //  pas de relation 
+  ["relations_by_type"]=> array(0) { }  //  pas de ralation_by_type 
+  ["conditions"]=> array(0) { } 
+  ["pere"]=> NULL                       //  normal 
+  ["mere"]=> NULL                       //  normal 
+  ["xml"]=> object(SimpleXMLElement)#19 (3) { 
+    ["@attributes"]=> array(2) { 
+      ["id"]=> string(3) "433"          //  ici personne.id est renseigné 
+      ["don"]=> string(4) "true" 
+    } 
+    ["prenom"]=> string(6) "Carlos" 
+    ["nom"]=> string(8) "Belgrano" 
+  } 
+  ["is_updated_in_db"]=> bool(false) 
+}
+
+Personne::set_pere()->$this->pere : object(Personne)#37 (12) { ["id"]=> NULL ["prenoms"]=> array(2) { [0]=> object(Prenom)#41 (3) { ["id"]=> NULL ["prenom"]=> string(4) "Juan" ["no_accent"]=> string(4) "Juan" } [1]=> object(Prenom)#40 (3) { ["id"]=> NULL ["prenom"]=> string(6) "Manuel" ["no_accent"]=> string(6) "Manuel" } } ["prenoms_str"]=> string(11) "Juan Manuel" ["noms"]=> array(1) { [0]=> object(Nom)#42 (4) { ["id"]=> NULL ["attribut"]=> NULL ["nom"]=> string(9) "GONZÁLEZ" ["no_accent"]=> string(8) "GONZALEZ" } } ["noms_str"]=> string(8) "GONZALEZ" ["relations"]=> array(0) { } ["relations_by_type"]=> array(0) { } ["conditions"]=> array(0) { } ["pere"]=> NULL ["mere"]=> NULL ["xml"]=> object(SimpleXMLElement)#36 (3) { ["@attributes"]=> array(1) { ["id"]=> string(3) "435" } ["prenom"]=> array(2) { [0]=> string(4) "Juan" [1]=> string(6) "Manuel" } ["nom"]=> string(10) "González " } ["is_updated_in_db"]=> bool(false) } 

@@ -1,0 +1,39 @@
+
+HOWTO BASH - LINUX
+
+
+TAIL
+
+Par défaut tail renvoie les 10 dernières lignes :
+tail nom/du/fichier
+
+Pour spécifier combien de lignes :
+tail -n <nb de lignes> nom/du/fichier
+
+Tuto : 
+https://www.linux.com/training-tutorials/14-tail-and-head-commands-linuxunix/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

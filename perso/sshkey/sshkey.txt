@@ -1,0 +1,64 @@
+
+$ ssh -v ba
+OpenSSH_8.2p1 Ubuntu-4ubuntu0.1, OpenSSL 1.1.1i  8 Dec 2020
+debug1: Reading configuration data /home/morgan/.ssh/config
+debug1: /home/morgan/.ssh/config line 6: Applying options for ba
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
+debug1: /etc/ssh/ssh_config line 21: Applying options for *
+debug1: Connecting to buenosaires.lxc.enst.fr [2001:660:330f:2:2ff:aaff:fe0f:424f] port 22.
+debug1: Connection established.
+debug1: identity file /home/morgan/.ssh/id_rsa type 0
+debug1: identity file /home/morgan/.ssh/id_rsa-cert type -1
+debug1: identity file /home/morgan/.ssh/id_dsa type -1
+debug1: identity file /home/morgan/.ssh/id_dsa-cert type -1
+debug1: identity file /home/morgan/.ssh/id_ecdsa type -1
+debug1: identity file /home/morgan/.ssh/id_ecdsa-cert type -1
+debug1: identity file /home/morgan/.ssh/id_ecdsa_sk type -1
+debug1: identity file /home/morgan/.ssh/id_ecdsa_sk-cert type -1
+debug1: identity file /home/morgan/.ssh/id_ed25519 type -1
+debug1: identity file /home/morgan/.ssh/id_ed25519-cert type -1
+debug1: identity file /home/morgan/.ssh/id_ed25519_sk type -1
+debug1: identity file /home/morgan/.ssh/id_ed25519_sk-cert type -1
+debug1: identity file /home/morgan/.ssh/id_xmss type -1
+debug1: identity file /home/morgan/.ssh/id_xmss-cert type -1
+debug1: Local version string SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1
+debug1: Remote protocol version 2.0, remote software version OpenSSH_6.7p1 Debian-5+deb8u8
+debug1: match: OpenSSH_6.7p1 Debian-5+deb8u8 pat OpenSSH* compat 0x04000000
+debug1: Authenticating to buenosaires.lxc.enst.fr:22 as 'mprieur'
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: algorithm: curve25519-sha256@libssh.org
+debug1: kex: host key algorithm: ecdsa-sha2-nistp256
+debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug1: Server host key: ecdsa-sha2-nistp256 SHA256:fkq05jlGldCaTMjfDiLz6fzT9/pRc+GbKlwBkYxCoLw
+debug1: Host 'buenosaires.lxc.enst.fr' is known and matches the ECDSA host key.
+debug1: Found key in /home/morgan/.ssh/known_hosts:4
+debug1: rekey out after 134217728 blocks
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: SSH2_MSG_NEWKEYS received
+debug1: rekey in after 134217728 blocks
+debug1: Will attempt key: /home/morgan/.ssh/id_rsa RSA SHA256:Wh2o7CvmctYp3VQuZC9O4SyiLfpjumbCqMPPmKcpyJc agent
+debug1: Will attempt key: /home/morgan/.ssh/id_dsa 
+debug1: Will attempt key: /home/morgan/.ssh/id_ecdsa 
+debug1: Will attempt key: /home/morgan/.ssh/id_ecdsa_sk 
+debug1: Will attempt key: /home/morgan/.ssh/id_ed25519 
+debug1: Will attempt key: /home/morgan/.ssh/id_ed25519_sk 
+debug1: Will attempt key: /home/morgan/.ssh/id_xmss 
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: Authentications that can continue: publickey,password
+debug1: Next authentication method: publickey
+debug1: Offering public key: /home/morgan/.ssh/id_rsa RSA SHA256:Wh2o7CvmctYp3VQuZC9O4SyiLfpjumbCqMPPmKcpyJc agent
+debug1: Authentications that can continue: publickey,password
+debug1: Trying private key: /home/morgan/.ssh/id_dsa
+debug1: Trying private key: /home/morgan/.ssh/id_ecdsa
+debug1: Trying private key: /home/morgan/.ssh/id_ecdsa_sk
+debug1: Trying private key: /home/morgan/.ssh/id_ed25519
+debug1: Trying private key: /home/morgan/.ssh/id_ed25519_sk
+debug1: Trying private key: /home/morgan/.ssh/id_xmss
+debug1: Next authentication method: password
+mprieur@buenosaires.lxc.enst.fr's password: 
+
