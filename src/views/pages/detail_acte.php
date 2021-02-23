@@ -26,6 +26,7 @@ if(!isset($result)){
 ?>
 <div>
     Aucun acte enregistré avec cet id
+</div>
 <?php
 }else{
     if(isset($ARGS["export"])){
@@ -39,17 +40,17 @@ if(!isset($result)){
 ?>
 <div class="detail_options">
 <?php
-        if(can_access($access_pages["export"])){ ?>
-            <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=xml">XML</a>
-            <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=gdf">GDF</a>
+    if(can_access($access_pages["export"])){ ?>
+        <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=xml">XML</a>
+        <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=gdf">GDF</a>
 <?php       }
-        if(can_access($access_pages["supprimer"])){ ?>
-            <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
-            <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
-            <button class="btn btn-danger btn-sm" id="acte-suppr-3">Parce que vous allez vraiment le faire</button>
-            <button class="btn btn-danger btn-sm" id="acte-suppr-4">Dernière chance ?</button>
-            <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
-<?php   }?>
+    if(can_access($access_pages["supprimer"])){ ?>
+        <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
+        <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
+        <button class="btn btn-danger btn-sm" id="acte-suppr-3">Parce que vous allez vraiment le faire</button>
+        <button class="btn btn-danger btn-sm" id="acte-suppr-4">Dernière chance ?</button>
+        <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php echo $acte->id; ?>">Okay, okay</a>
+<?php }?>
 </div>
 <input id='acte_source_id' type="hidden" value="<?php echo $acte->source_id; ?>">
 <section>
