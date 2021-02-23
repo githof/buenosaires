@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<ACTES>
 <ACTE id="15000"><date>26-2-1715</date>:
 <epoux><prenom>Epoux</prenom><nom>UN</nom></epoux>
 con <epouse><prenom>Epouse</prenom><nom>DEUX</nom></epouse>.
@@ -21,3 +24,5 @@ Ts: <temoins><temoin><prenom>Temoin</prenom> <nom>Treize</nom></temoin>,
  con <epouse><prenom>Epouse</prenom> <nom>DIX</nom> <nom>HUIT</nom></epouse>.
 Ts: <temoins><temoin><prenom>Temoin</prenom> <nom>Dix</nom> <nom>Neuf</nom></temoin>,
 <temoin><prenom>Temoin</prenom> <nom>Vingt</nom>.</temoin></temoins> (f.     128).</ACTE>
+</ACTES>
+</document>
