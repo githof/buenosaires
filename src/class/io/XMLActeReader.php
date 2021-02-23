@@ -75,7 +75,7 @@ class XMLActeReader {
                     break;
                 $i++;
             }
-        }else if($this->xml->getName() == "ACTE"){
+        } else if($this->xml->getName() == "ACTE") {
             if($this->read_acte($this->xml, $i, $only_new_acte))
                 $success_nb++;
         }
