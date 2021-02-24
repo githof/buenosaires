@@ -42,6 +42,14 @@ function html_submit()
   return html_form_group($button);
 }
 
+function html_hidden_type($file_or_text)
+{
+  return '
+    <input type="hidden" name="form_type" value="'
+      . $file_or_text
+      . '" />';
+}
+
 if(isset($_POST["form_type"])){
     $filename;
     $only_new;
@@ -92,15 +100,11 @@ if(isset($_POST["form_type"])){
                 <label for="import_file">Fichier</label>
                 <input type="file" id="import_file" name="import_file">
             </div>
-            <div class="form-group">
-                <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
-                <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
-            </div>
             <?php
               echo html_check_ignore('file');
               echo html_submit();
+              echo html_hidden_type('file');
               ?>
-            <input type="hidden" name="form_type" value="file">
         </form>
     </div>
 </section>
@@ -122,8 +126,8 @@ if(isset($_POST["form_type"])){
             <?php
               echo html_check_ignore('text');
               echo html_submit();
+              echo html_hidden_type('text'),
               ?>
-            <input type="hidden" name="form_type" value="text">
         </form>
     </div>
 </section>
