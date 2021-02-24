@@ -622,10 +622,7 @@ class Database extends mysqli{
             "prenom_id" => $prenom->id,
             "ordre" => $ordre
         ];
-        // $values["personne_id"] manque parfois et pas forcément les bons numéros   ***
-        echo '<br> into_db_prenom_personne $values["personne_id"] : ';
-        var_dump($values["personne_id"]);
-        // //  ***  fin test
+        // test *** // echo '<br> into_db_prenom_personne $values["personne_id"] : ';   // var_dump($values["personne_id"]);
         return $this->insert(
             "prenom_personne",
             $values,
