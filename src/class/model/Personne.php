@@ -11,11 +11,11 @@ class Personne implements DatabaseIO{
     public $id;
 
     public $prenoms;
-	public $prenoms_str;
+    public $prenoms_str;
     public $noms;
-	public $noms_str;
+    public $noms_str;
     public $relations;
-	public $relations_by_type;
+    public $relations_by_type;
     public $conditions;
 
     public $pere;
@@ -51,8 +51,8 @@ class Personne implements DatabaseIO{
                 return;
         }
         $this->prenoms[] = $prenom;
-    $str = $this->prenoms_str;
-    $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
+        $str = $this->prenoms_str;
+        $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
     }
 
     public function add_nom_str($s, $attributes){
@@ -112,65 +112,65 @@ class Personne implements DatabaseIO{
 	// champ relations, sinon va y'avoir des problème de synchro
 	// Pour le moment je vais appeler systématiquement cette
 	// fonction à chaque requête de liste de relations
-	private function dispatch_relations_by_type() {
-	  $mariage = [];
-	  $parents = [];
-	  $enfants = [];
-	  $a_temoins = [];
-	  $est_temoin = [];
-	  $a_parrains = [];
-	  $est_parrain = [];
+    private function dispatch_relations_by_type() {
+        $mariage = [];
+        $parents = [];
+        $enfants = [];
+        $a_temoins = [];
+        $est_temoin = [];
+        $a_parrains = [];
+        $est_parrain = [];
 
-	  foreach($this->relations as $relation) {
-            $is_source = ($this->id == $relation->personne_source->id);
+        foreach($this->relations as $relation) {
+                $is_source = ($this->id == $relation->personne_source->id);
 
-	    switch($relation->statut_id){
-	    case STATUT_EPOUX:
-	    case STATUT_EPOUSE:
-            $mariage[] = $relation;
-            break;
-	    case STATUT_PERE:
-	    case STATUT_MERE:
-	        if($is_source)
-		        $enfants[] = $relation;
-	        else
-		        $parents[] = $relation;
-	        break;
-	    case STATUT_TEMOIN:
-	        if($is_source)
-		        $est_temoin[] = $relation;
-	        else
-		        $a_temoins[] = $relation;
-	        break;
-	    case STATUT_PARRAIN:
-	        if($is_source)
-		        $est_parrain[] = $relation;
-	        else
-		        $a_parrains[] = $relation;
-	        break;
-	    }
-	  }
+            switch($relation->statut_id){
+                case STATUT_EPOUX:
+                case STATUT_EPOUSE:
+                    $mariage[] = $relation;
+                    break;
+                case STATUT_PERE:
+                case STATUT_MERE:
+                    if($is_source)
+                        $enfants[] = $relation;
+                    else
+                        $parents[] = $relation;
+                    break;
+                case STATUT_TEMOIN:
+                    if($is_source)
+                        $est_temoin[] = $relation;
+                    else
+                        $a_temoins[] = $relation;
+                    break;
+                case STATUT_PARRAIN:
+                    if($is_source)
+                        $est_parrain[] = $relation;
+                    else
+                        $a_parrains[] = $relation;
+                    break;
+            }
+        }
 
-	  $match = [
-        'mariage' => $mariage,
-        'parents' => $parents,
-        'enfants' => $enfants,
-        'a_temoins' => $a_temoins,
-        'est_temoin' => $est_temoin,
-        'a_parrains' => $a_parrains,
-        'est_parrain' => $est_parrain
-    ];
+        $match = [
+            'mariage' => $mariage,
+            'parents' => $parents,
+            'enfants' => $enfants,
+            'a_temoins' => $a_temoins,
+            'est_temoin' => $est_temoin,
+            'a_parrains' => $a_parrains,
+            'est_parrain' => $est_parrain
+        ];
         foreach($match as $word => $list) {
             $this->relations_by_type[$word] = $list;
         }
-	}
+    }
 
     //  PUBLIC  //
 
-	public function get_relations_by_type() {
+    public function get_relations_by_type() {
         $this->dispatch_relations_by_type();
         return $this->relations_by_type;
-	}
+    }
 
     // DATABASE IO
 

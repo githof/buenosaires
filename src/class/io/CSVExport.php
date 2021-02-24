@@ -71,7 +71,7 @@ class CSVExport {
 
     //  PRIVATE METHODS //
 
-	private function add_personne_to_line(&$line, $p, $names = FALSE) {
+    private function add_personne_to_line(&$line, $p, $names = FALSE) {
         if($p instanceof Personne) {
             $line[] = $p->id;
             if($names) {
@@ -87,12 +87,12 @@ class CSVExport {
                 $line[] = $p."_noms";
             }
         }
-	}
+    }
 
-	private function add_date(&$line, $relation) {
-	  $date = $relation->get_date();
-	  $line[] = "$date";
-	}
+    private function add_date(&$line, $relation) {
+        $date = $relation->get_date();
+        $line[] = "$date";
+    }
 
     private function export_relation($relation, $names, $dates, $reverse) {
         $line = [];
