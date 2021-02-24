@@ -137,7 +137,7 @@ if(isset($_POST["form_type"])){
               echo html_import_text();
               echo html_check_ignore('text');
               echo html_submit();
-              echo html_hidden_type('text'),
+              echo html_hidden_type('text');
               ?>
         </form>
     </div>
