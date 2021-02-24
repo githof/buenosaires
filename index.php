@@ -121,7 +121,7 @@ if($is_get){
         <script type="text/javascript" src="res/xmlselect/select_and_show.js"></script>
         <script type="text/javascript" src="res/xmlselect/xml_parser.js"></script>
         <script type="text/javascript" src="res/xmlselect/init.js"></script>
-        <title><?php echo $page_title. ' local'; ?></title><!-- *** local *** -->
+        <title><?php echo $page_title; ?></title>
     </head>
     <body>
         <div class="nav-bar">

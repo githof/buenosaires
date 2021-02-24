@@ -1,0 +1,71 @@
+Personne::set_mere()->$this->mere : Mère de Domingo de Belgrano 
+object(Personne)#22 (12) { 
+  ["id"]=> NULL                       //  pas d'id 
+  ["prenoms"]=> array(1) { 
+    [0]=> object(Prenom)#31 (3) { 
+      ["id"]=> NULL                   //  pas d'id 
+      ["prenom"]=> string(6) "María" 
+      ["no_accent"]=> string(5) "Maria" 
+    } 
+  } 
+  ["prenoms_str"]=> string(6) "María" 
+  ["noms"]=> array(1) { 
+    [0]=> object(Nom)#30 (4) { 
+      ["id"]=> NULL                   //  pas d'id 
+      ["attribut"]=> NULL 
+      ["nom"]=> string(4) "PERI" 
+      ["no_accent"]=> string(4) "PERI" 
+    } 
+  } 
+  ["noms_str"]=> string(4) "PERI" 
+  ["relations"]=> array(0) { }            //  pas de relation 
+  ["relations_by_type"]=> array(0) { }    //  pas de relation_by_id 
+  ["conditions"]=> array(0) { } 
+  ["pere"]=> NULL                         //  normal
+  ["mere"]=> NULL                         //  normal
+  ["xml"]=> object(SimpleXMLElement)#23 (3) { 
+    ["@attributes"]=> array(2) { 
+      ["id"]=> string(3) "434" 
+      ["don"]=> string(4) "true" 
+    } 
+    ["prenom"]=> string(6) "María" 
+    ["nom"]=> string(4) "Peri" 
+  } 
+  ["is_updated_in_db"]=> bool(false) 
+}
+
+Personne::set_mere()->$this->mere : Mère de Maria Josefa Gonzalez 
+object(Personne)#38 (12) { 
+  ["id"]=> NULL 
+  ["prenoms"]=> array(1) { 
+    [0]=> object(Prenom)#47 (3) { 
+      ["id"]=> NULL 
+      ["prenom"]=> string(5) "Inés" 
+      ["no_accent"]=> string(4) "Ines" 
+    } 
+  } 
+  ["prenoms_str"]=> string(5) "Inés" 
+  ["noms"]=> array(1) { 
+    [0]=> object(Nom)#46 (4) { 
+      ["id"]=> NULL 
+      ["attribut"]=> NULL 
+      ["nom"]=> string(6) "CASERO" 
+      ["no_accent"]=> string(6) "CASERO" 
+    } 
+  } 
+  ["noms_str"]=> string(6) "CASERO" 
+  ["relations"]=> array(0) { } 
+  ["relations_by_type"]=> array(0) { } 
+  ["conditions"]=> array(0) { } 
+  ["pere"]=> NULL 
+  ["mere"]=> NULL 
+  ["xml"]=> object(SimpleXMLElement)#39 (3) { 
+    ["@attributes"]=> array(2) { 
+      ["id"]=> string(3) "436" 
+      ["don"]=> string(4) "true" 
+    } 
+    ["prenom"]=> string(5) "Inés" 
+    ["nom"]=> string(6) "Casero" 
+  } 
+  ["is_updated_in_db"]=> bool(false) 
+  } 

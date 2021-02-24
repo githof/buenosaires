@@ -1,21 +1,17 @@
 
-22/02/21
-
-- Afficher les $values "partout" pour tracer où il en manque
 
 
++ import fichier xml avec plusieurs actes -> erreurs (serveur):
+x  "Erreur lors de la lecture du fichier xml" 
+x  "Extra content at the end of the document" 
+  -> il manque une balise globale pour encapsuler tous les actes 
+  mais si on met une balise <ACTES>, les actes ne sont pas enregistrés
+x  Balises globales  <document><ACTES> et l'entete xml -> ok 
 
-21/02/21
-
-+ Erreurs import 
++ Erreurs import (local)
   - Voir erreur "incorrect integer value ''" lignes 24579 et + de log.txt 
-  - Retirer '+1' à Database::into_db_insert (que j'avais mis pour tester)
-
+  x Retirer '+1' à Database::into_db_insert (que j'avais mis pour tester)
+  + il manque des prénoms, des noms et la période
+    - Afficher les $values "partout" pour tracer où il en manque
 
     
-
-  
-
-
-
-

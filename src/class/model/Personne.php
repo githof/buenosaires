@@ -11,11 +11,11 @@ class Personne implements DatabaseIO{
     public $id;
 
     public $prenoms;
-	public $prenoms_str;
+    public $prenoms_str;
     public $noms;
-	public $noms_str;
+    public $noms_str;
     public $relations;
-	public $relations_by_type;
+    public $relations_by_type;
     public $conditions;
 
     public $pere;
@@ -39,6 +39,7 @@ class Personne implements DatabaseIO{
         $this->is_updated_in_db = FALSE;
     }
 
+    //  *** test                        ==> ok 
     public function add_prenom_str($s){
         $this->add_prenom(new Prenom(NULL, $s));
         // ok mais $s n'affiche pas les 2 prénoms, seulement le 2è. C'est normal ? ***
@@ -50,7 +51,7 @@ class Personne implements DatabaseIO{
     }
 
     //  add_prenom() peut être privée non ? ***
-    //  test ok  ***
+    //  *** test                        ==> ok
     public function add_prenom($prenom){
         foreach($this->prenoms as $_prenom){
             if((isset($_prenom->id, $prenom->id)
@@ -63,6 +64,7 @@ class Personne implements DatabaseIO{
         $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
     }
 
+    //  *** test                        ==> ok
     public function add_nom_str($s, $attributes){
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
         // ok mais $s n'affiche pas l'attribut.    *** 
@@ -93,6 +95,12 @@ class Personne implements DatabaseIO{
 
     public function add_condition($text, $source_id){
         $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
+        //  *** test                                        problèmes
+        // echo '<br>Personne->add_condition $this->conditions : ';
+        // print_r($this->conditions);     //                  ==> manque id cf buenosaires/morgan/outputs/Personne-add-condition_210223.txt
+        // echo '<br>Personne->add_condition $source_id : ';
+        // var_dump($source_id);       //                      ==> string(1) "1"        idem cf ^ 
+        //  fin test
     }
 
     public function add_relation($personne_source, $personne_destination, $statut_id){
@@ -102,10 +110,10 @@ class Personne implements DatabaseIO{
             $personne_destination,
             $statut_id
         );
-        // ***  problèmes cf Personne-add-relation_210222.txt ***
+        // *** test                                            problèmes
         // echo '<br>$this->relations : ';
         // echo '<pre>';
-        // print_r($this->relations);
+        // print_r($this->relations);     //                  ==> manque id  cf Personne-add-relation_210222.txt
         // echo '</pre>';
         //  *** fin test
     }
@@ -113,11 +121,25 @@ class Personne implements DatabaseIO{
     public function set_pere($pere){
         $this->add_relation($pere, $this, STATUT_PERE);
         $this->pere = $pere;
+        // *** test                     
+        // echo '<br>Personne::set_pere()->$this->relation : ';
+        // var_dump($this->pere);       //  manque ids    cf buenosaires/morgan/outputs/Personne-set_pere-$this-pere_210223.txt
+        // echo '<pre>';
+        // print_r($this->relations);   //  manque ids cf buenosaires/morgan/outputs/Personne-add-relation_210222.txt
+        // echo '</pre>';
+        //  *** fin test
     }
 
     public function set_mere($mere){
         $this->add_relation($mere, $this, STATUT_MERE);
         $this->mere = $mere;
+        // *** test                     
+        // echo '<br>Personne::set_mere()->$this->mere : ';
+        // var_dump($this->mere);       //     manque ids cf buenosaires/morgan/outputs/Personne-set_mere-this-mere_210223.txt
+        // echo '<pre>';
+        // print_r($this->relations);   //  
+        // echo '</pre>';
+        //  *** fin test
     }
 
     public function set_xml($xml){
@@ -134,7 +156,7 @@ class Personne implements DatabaseIO{
 	// champ relations, sinon va y'avoir des problème de synchro
 	// Pour le moment je vais appeler systématiquement cette
 	// fonction à chaque requête de liste de relations
-	private function dispatch_relations_by_type() {
+    private function dispatch_relations_by_type() {
         $mariage = [];
         $parents = [];
         $enfants = [];
@@ -143,8 +165,13 @@ class Personne implements DatabaseIO{
         $a_parrains = [];
         $est_parrain = [];
 
+        //  *** test        //  pas d'affichage
+        echo '<br>$this->relation : ';
+        var_dump($this->relation);
+        //  fin test
+
         foreach($this->relations as $relation) {
-            $is_source = ($this->id == $relation->personne_source->id);
+                $is_source = ($this->id == $relation->personne_source->id);
 
             switch($relation->statut_id){
                 case STATUT_EPOUX:
@@ -185,14 +212,14 @@ class Personne implements DatabaseIO{
         foreach($match as $word => $list) {
             $this->relations_by_type[$word] = $list;
         }
-	}
+    }
 
     //  PUBLIC  //
 
-	public function get_relations_by_type() {
+    public function get_relations_by_type() {
         $this->dispatch_relations_by_type();
         return $this->relations_by_type;
-	}
+    }
 
     // DATABASE IO
 

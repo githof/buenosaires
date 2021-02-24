@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<ACTES>
+<ACTE id="15000"><date>26-2-1715</date>:
+<epoux><prenom>Epoux</prenom><nom>UN</nom></epoux>
+con <epouse><prenom>Epouse</prenom><nom>DEUX</nom></epouse>.
+Ts: <temoins><temoin><prenom>Temoin</prenom><nom>Trois</nom></temoin>,
+<temoin><prenom>Temoin</prenom><nom>Quatre</nom></temoin></temoins>(f.     127).</ACTE>
+
+<ACTE id="15001"><date>27-2-1715</date>:
+<epoux><prenom>Epoux</prenom><nom>CINQ</nom></epoux>
+con <epouse><prenom>Epouse</prenom><nom>SIX</nom></epouse>.
+Ts: <temoins><temoin><prenom>Temoin</prenom><nom>Sept</nom></temoin>,
+<temoin><prenom>Temoin</prenom><nom>Huit</nom></temoin></temoins>(f.     127).</ACTE>
+
+<ACTE id="15002"><date>28-2-1715</date>:
+<epoux><prenom>Epoux</prenom> <nom>NEUF</nom>, hijo de <pere><prenom>Pere</prenom> <prenom>Epoux</prenom> <nom>DIX</nom></pere> y de <mere><prenom>Mere</prenom> <prenom>Epoux</prenom> <nom>Onze</nom></mere></epoux>
+ con <epouse><prenom>Epouse</prenom> <nom>DOUZE</nom>, <condition>esposa generalissima</condition></epouse>.
+Ts: <temoins><temoin><prenom>Temoin</prenom> <nom>Treize</nom></temoin>,
+<temoin><prenom>Temoin</prenom> <nom>Quatorze</nom>, <condition>estimado testigo</condition></temoin></temoins> (f.     128).</ACTE>
+
+<ACTE id="15003"><date>29-2-1715</date>:
+<epoux><prenom>Epoux</prenom> <nom>QUINZE</nom>, hijo de <pere><prenom>Pere</prenom> <prenom>Epoux</prenom> <nom>Seize</nom></pere> y de <mere><prenom>Mere</prenom> <prenom>Epoux</prenom> <nom>Dix</nom> <nom>Sept</nom></mere></epoux>
+ con <epouse><prenom>Epouse</prenom> <nom>DIX</nom> <nom>HUIT</nom></epouse>.
+Ts: <temoins><temoin><prenom>Temoin</prenom> <nom>Dix</nom> <nom>Neuf</nom></temoin>,
+<temoin><prenom>Temoin</prenom> <nom>Vingt</nom>.</temoin></temoins> (f.     128).</ACTE>
+</ACTES>
+</document>

@@ -1,0 +1,3 @@
+XMLActeReader read_personne_child_node case: condition $xml_child->__toString() : string(27) "Secretario de este Gobierno"
+XMLActeReader read_personne_child_node case: condition $xml_child->__toString() : string(18) "Capitanía General"
+XMLActeReader read_personne_child_node case: condition $xml_child->__toString() : string(30) "Capitán de este Real Presidio" 
