@@ -112,7 +112,7 @@ class Personne implements DatabaseIO{
 	// champ relations, sinon va y'avoir des problème de synchro
 	// Pour le moment je vais appeler systématiquement cette
 	// fonction à chaque requête de liste de relations
-	private function dispatch_relations_by_type() {
+    private function dispatch_relations_by_type() {
         $mariage = [];
         $parents = [];
         $enfants = [];
@@ -163,7 +163,7 @@ class Personne implements DatabaseIO{
         foreach($match as $word => $list) {
             $this->relations_by_type[$word] = $list;
         }
-	}
+    }
 
     //  PUBLIC  //
 
