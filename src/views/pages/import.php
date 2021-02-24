@@ -28,6 +28,22 @@ function html_form_group($contents)
   ';
 }
 
+function html_import_file()
+{
+  return html_form_group('
+    <label for="import_file">Fichier</label>
+    <input type="file" id="import_file" name="import_file">
+  ');
+}
+
+function html_import_text()
+{
+  return html_form_group('
+    <textarea class="form-control" rows="6" name="import_text">
+    </textarea>
+  ');
+}
+
 function html_check_ignore($file_or_text)
 {
   $attr = 'import_'.$file_or_text.'_only_new';
@@ -96,11 +112,8 @@ if(isset($_POST["form_type"])){
                     <?php all_sources_available(); ?>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="import_file">Fichier</label>
-                <input type="file" id="import_file" name="import_file">
-            </div>
             <?php
+              echo html_import_file();
               echo html_check_ignore('file');
               echo html_submit();
               echo html_hidden_type('file');
@@ -120,10 +133,8 @@ if(isset($_POST["form_type"])){
                     <?php all_sources_available(); ?>
                 </select>
             </div>
-            <div class="form-group">
-                <textarea class="form-control" rows="6" name="import_text"></textarea>
-            </div>
             <?php
+              echo html_import_text();
               echo html_check_ignore('text');
               echo html_submit();
               echo html_hidden_type('text'),
