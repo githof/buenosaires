@@ -2,10 +2,11 @@
 
 
 + import fichier xml avec plusieurs actes -> erreurs (serveur):
-  "Erreur lors de la lecture du fichier xml" 
-  "Extra content at the end of the document" 
+x  "Erreur lors de la lecture du fichier xml" 
+x  "Extra content at the end of the document" 
   -> il manque une balise globale pour encapsuler tous les actes 
   mais si on met une balise <ACTES>, les actes ne sont pas enregistrés
+x  Balises globales  <document><ACTES> et l'entete xml -> ok 
 
 + Erreurs import (local)
   - Voir erreur "incorrect integer value ''" lignes 24579 et + de log.txt 
