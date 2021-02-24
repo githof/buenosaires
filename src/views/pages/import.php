@@ -19,6 +19,21 @@ function all_sources_available(){
     }
 }
 
+function html_form_froup($contents)
+{
+  return '
+    <div class="form-group">
+      '."$contents".'
+    </div>
+  ';
+}
+
+function html_submit()
+{
+  $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
+  return html_form_group($button);
+}
+
 if(isset($_POST["form_type"])){
     $filename;
     $only_new;
@@ -73,9 +88,7 @@ if(isset($_POST["form_type"])){
                 <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
                 <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
             </div>
-            <div class="form-group">
-                <button class="import-submit btn btn-primary">Envoyer</button>
-            </div>
+            <?php echo html_submit(); ?>
             <input type="hidden" name="form_type" value="file">
         </form>
     </div>
@@ -99,9 +112,9 @@ if(isset($_POST["form_type"])){
                 <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
                 <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
             </div>
-            <div class="form-group">
-                <button class="import-submit btn btn-primary">Envoyer</button>
-            </div>
+            <?php
+              echo html_submit();
+              ?>
             <input type="hidden" name="form_type" value="text">
         </form>
     </div>
