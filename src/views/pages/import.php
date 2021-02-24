@@ -19,13 +19,21 @@ function all_sources_available(){
     }
 }
 
-function html_form_froup($contents)
+function html_form_group($contents)
 {
   return '
     <div class="form-group">
       '."$contents".'
     </div>
   ';
+}
+
+function html_check_ignore($file_or_text)
+{
+  $attr = 'import_'.$file_or_text.'_only_new';
+  $input = '<input type="checkbox" id="'.$attr.'" name="'.$attr.'"/>';
+  $label = '<label for="'.$attr.'">Ignorer les actes déjà balisés</label>';
+  return html_form_group("$input\n  $label");
 }
 
 function html_submit()
@@ -88,7 +96,10 @@ if(isset($_POST["form_type"])){
                 <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
                 <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
             </div>
-            <?php echo html_submit(); ?>
+            <?php
+              echo html_check_ignore('file');
+              echo html_submit();
+              ?>
             <input type="hidden" name="form_type" value="file">
         </form>
     </div>
@@ -108,11 +119,8 @@ if(isset($_POST["form_type"])){
             <div class="form-group">
                 <textarea class="form-control" rows="6" name="import_text"></textarea>
             </div>
-            <div class="form-group">
-                <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
-                <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
-            </div>
             <?php
+              echo html_check_ignore('text');
               echo html_submit();
               ?>
             <input type="hidden" name="form_type" value="text">
