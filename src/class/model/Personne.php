@@ -167,10 +167,10 @@ class Personne implements DatabaseIO{
 
     //  PUBLIC  //
 
-	public function get_relations_by_type() {
+    public function get_relations_by_type() {
         $this->dispatch_relations_by_type();
         return $this->relations_by_type;
-	}
+    }
 
     // DATABASE IO
 
