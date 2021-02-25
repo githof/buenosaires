@@ -1,0 +1,555 @@
+XMLActeReader::read_acte
+
+$acte : 
+Acte Object ( 
+  [id] => SimpleXMLElement Object ( 
+    [0] => 4227 
+  ) 
+  [contenu] => 4253) 4-11-1757: 
+    Dn. Domingo de BELGRANO, 
+    natural de la ciudad de Oneglia, Italia, Estado de Génova, Reino de Cerdeña, 
+    hijo legítimo de 
+    Carlos de Belgrano 
+    y de 
+    Da. María Peri, 
+    con 
+    Da. María Josefa GONZALEZ, 
+    natural de ésta, hija legítima de 
+    Juan Manuel González 
+    y de 
+    Da. Inés Casero. 
+    Ts.: 
+    Dn. José Molina, 
+    Secretario de este Gobierno 
+    y 
+    Capitanía General 
+    y 
+    Capitán de este Real Presidio 
+    y 
+    Da. Gregoria de Salas. 
+    Al margen: "copiada a pedimento de dicho Dn. Domingo Belgrano en 27-11-1765". (f. 86). 
+    [epoux] => Personne Object ( 
+      [id] => 
+      [prenoms] => Array ( 
+        [0] => Prenom Object ( 
+          [id] => 
+          [prenom] => Domingo 
+          [no_accent] => Domingo 
+        ) 
+      ) 
+      [prenoms_str] => Domingo 
+      [noms] => Array ( 
+        [0] => Nom Object ( 
+          [id] => 
+          [attribut] => SimpleXMLElement Object ( 
+            [0] => de 
+          ) 
+          [nom] => BELGRANO 
+          [no_accent] => BELGRANO 
+        ) 
+      ) 
+      [noms_str] => de BELGRANO 
+      [relations] => Array ( 
+        [0] => Relation Object ( 
+          [id] => 
+          [personne_source] => Personne Object ( 
+            [id] => 
+            [prenoms] => Array ( 
+              [0] => Prenom Object ( 
+                [id] => 
+                [prenom] => Carlos 
+                [no_accent] => Carlos 
+              ) 
+            ) 
+            [prenoms_str] => Carlos 
+            [noms] => Array ( 
+              [0] => Nom Object ( 
+                [id] => 
+                [attribut] => SimpleXMLElement Object ( 
+                  [0] => de 
+                ) 
+                [nom] => BELGRANO 
+                [no_accent] => BELGRANO 
+              ) 
+            ) 
+            [noms_str] => de BELGRANO 
+            [relations] => Array ( ) 
+            [relations_by_type] => Array ( ) 
+            [conditions] => Array ( ) 
+            [pere] => 
+            [mere] => 
+            [xml] => SimpleXMLElement Object ( 
+              [@attributes] => Array ( 
+                [id] => 433 
+                [don] => true 
+              ) 
+              [prenom] => Carlos 
+              [nom] => Belgrano 
+            ) 
+            [is_updated_in_db] => 
+          ) 
+          [personne_destination] => Personne Object 
+*RECURSION* 
+          [statut_id] => 3 
+          [actes] => Array ( ) 
+        ) 
+        [1] => Relation Object ( 
+          [id] => 
+          [personne_source] => Personne Object ( 
+            [id] => 
+            [prenoms] => Array ( 
+              [0] => Prenom Object ( 
+                [id] => 
+                [prenom] => María 
+                [no_accent] => Maria 
+              ) 
+            ) 
+            [prenoms_str] => María 
+            [noms] => Array ( 
+              [0] => Nom Object ( 
+                [id] => 
+                [attribut] => 
+                [nom] => PERI 
+                [no_accent] => PERI 
+              ) 
+            ) 
+            [noms_str] => PERI 
+            [relations] => Array ( ) 
+            [relations_by_type] => Array ( ) 
+            [conditions] => Array ( ) 
+            [pere] => 
+            [mere] => 
+            [xml] => SimpleXMLElement Object ( 
+              [@attributes] => Array ( 
+                [id] => 434 
+                [don] => true 
+              ) 
+              [prenom] => María 
+              [nom] => Peri 
+            ) 
+            [is_updated_in_db] => 
+          ) 
+          [personne_destination] => Personne Object 
+*RECURSION* 
+          [statut_id] => 4 
+          [actes] => Array ( ) 
+        ) 
+      ) 
+      [relations_by_type] => Array ( ) 
+      [conditions] => Array ( ) 
+      [pere] => Personne Object ( 
+        [id] => 
+        [prenoms] => Array ( 
+          [0] => Prenom Object ( 
+            [id] => 
+            [prenom] => Carlos 
+            [no_accent] => Carlos 
+          ) 
+        ) 
+        [prenoms_str] => Carlos 
+        [noms] => Array ( 
+          [0] => Nom Object ( 
+            [id] => 
+            [attribut] => SimpleXMLElement Object ( 
+              [0] => de 
+            ) 
+            [nom] => BELGRANO 
+            [no_accent] => BELGRANO 
+          ) 
+        ) 
+        [noms_str] => de BELGRANO 
+        [relations] => Array ( ) 
+        [relations_by_type] => Array ( ) 
+        [conditions] => Array ( ) 
+        [pere] => 
+        [mere] => 
+        [xml] => SimpleXMLElement Object ( 
+          [@attributes] => Array ( 
+            [id] => 433 
+            [don] => true 
+          ) 
+          [prenom] => Carlos 
+          [nom] => Belgrano 
+        ) 
+        [is_updated_in_db] => 
+      ) 
+      [mere] => Personne Object ( 
+        [id] => 
+        [prenoms] => Array ( 
+          [0] => Prenom Object ( 
+            [id] => 
+            [prenom] => María 
+            [no_accent] => Maria 
+          ) 
+        ) 
+        [prenoms_str] => María 
+        [noms] => Array ( 
+          [0] => Nom Object ( 
+            [id] => 
+            [attribut] => 
+            [nom] => PERI 
+            [no_accent] => PERI 
+          ) 
+        ) 
+        [noms_str] => PERI 
+        [relations] => Array ( ) 
+        [relations_by_type] => Array ( ) 
+        [conditions] => Array ( ) 
+        [pere] => 
+        [mere] => 
+        [xml] => SimpleXMLElement Object ( 
+          [@attributes] => Array ( 
+            [id] => 434 
+            [don] => true 
+          ) 
+          [prenom] => María 
+          [nom] => Peri 
+        ) 
+        [is_updated_in_db] => 
+      ) 
+      [xml] => SimpleXMLElement Object ( 
+        [@attributes] => Array ( 
+          [id] => 404 
+          [don] => true 
+        ) 
+        [prenom] => Domingo 
+        [nom] => BELGRANO 
+        [naissance-lieu] => Oneglia, Italia, Estado de Génova, Reino de Cerdeña 
+        [pere] => SimpleXMLElement Object ( 
+          [@attributes] => Array ( 
+            [id] => 433 
+            [don] => true 
+          ) 
+          [prenom] => Carlos 
+          [nom] => Belgrano 
+        ) 
+        [mere] => Da. 
+      ) 
+      [is_updated_in_db] => 
+    ) 
+    [epouse] => Personne Object ( 
+      [id] => 
+      [prenoms] => Array ( 
+        [0] => Prenom Object ( 
+          [id] => 
+          [prenom] => María 
+          [no_accent] => Maria 
+        ) 
+        [1] => Prenom Object ( 
+          [id] => 
+          [prenom] => Josefa 
+          [no_accent] => Josefa 
+        ) 
+      ) 
+      [prenoms_str] => María Josefa 
+      [noms] => Array ( 
+        [0] => Nom Object ( 
+          [id] => 
+          [attribut] => 
+          [nom] => GONZALEZ 
+          [no_accent] => GONZALEZ 
+        ) 
+      ) 
+      [noms_str] => GONZALEZ 
+      [relations] => Array ( 
+        [0] => Relation Object ( 
+          [id] => 
+          [personne_source] => Personne Object ( 
+            [id] => [prenoms] => Array ( 
+              [0] => Prenom Object ( 
+                [id] => 
+                [prenom] => Juan 
+                [no_accent] => Juan 
+              ) 
+              [1] => Prenom Object ( 
+                [id] => 
+                [prenom] => Manuel 
+                [no_accent] => Manuel 
+              ) 
+            ) 
+            [prenoms_str] => Juan Manuel 
+            [noms] => Array ( 
+              [0] => Nom Object ( 
+                [id] => 
+                [attribut] => 
+                [nom] => GONZÁLEZ 
+                [no_accent] => GONZALEZ 
+              ) 
+            ) 
+            [noms_str] => GONZALEZ 
+            [relations] => Array ( ) 
+            [relations_by_type] => Array ( ) 
+            [conditions] => Array ( ) 
+            [pere] => 
+            [mere] => 
+            [xml] => SimpleXMLElement Object ( 
+              [@attributes] => Array ( 
+                [id] => 435 
+              ) 
+              [prenom] => Array ( 
+                [0] => Juan 
+                [1] => Manuel 
+              ) 
+              [nom] => González 
+            ) 
+            [is_updated_in_db] => 
+          ) 
+          [personne_destination] => Personne Object 
+*RECURSION* 
+          [statut_id] => 3 
+          [actes] => Array ( ) 
+        ) 
+        [1] => Relation Object ( 
+          [id] => 
+          [personne_source] => Personne Object ( 
+            [id] => 
+            [prenoms] => Array ( 
+              [0] => Prenom Object ( 
+                [id] => 
+                [prenom] => Inés 
+                [no_accent] => Ines 
+              ) 
+            ) 
+            [prenoms_str] => Inés 
+            [noms] => Array ( 
+              [0] => Nom Object ( 
+                [id] => 
+                [attribut] => 
+                [nom] => CASERO 
+                [no_accent] => CASERO 
+              ) 
+            ) 
+            [noms_str] => CASERO 
+            [relations] => Array ( ) 
+            [relations_by_type] => Array ( ) 
+            [conditions] => Array ( ) 
+            [pere] => 
+            [mere] => 
+            [xml] => SimpleXMLElement Object ( 
+              [@attributes] => Array ( 
+                [id] => 436 
+                [don] => true 
+              ) 
+              [prenom] => Inés 
+              [nom] => Casero 
+            ) 
+            [is_updated_in_db] => 
+          ) 
+          [personne_destination] => Personne Object 
+*RECURSION* 
+          [statut_id] => 4 
+          [actes] => Array ( ) 
+        ) 
+      ) 
+      [relations_by_type] => Array ( ) 
+      [conditions] => Array ( ) 
+      [pere] => Personne Object ( 
+        [id] => 
+        [prenoms] => Array ( 
+          [0] => Prenom Object ( 
+            [id] => 
+            [prenom] => Juan 
+            [no_accent] => Juan 
+          ) 
+          [1] => Prenom Object ( 
+            [id] => 
+            [prenom] => Manuel 
+            [no_accent] => Manuel 
+          ) 
+        ) 
+        [prenoms_str] => Juan Manuel 
+        [noms] => Array ( 
+          [0] => Nom Object ( 
+            [id] => 
+            [attribut] => 
+            [nom] => GONZÁLEZ 
+            [no_accent] => GONZALEZ 
+          ) 
+        ) 
+        [noms_str] => GONZALEZ 
+        [relations] => Array ( ) 
+        [relations_by_type] => Array ( ) 
+        [conditions] => Array ( ) 
+        [pere] => 
+        [mere] => 
+        [xml] => SimpleXMLElement Object ( 
+          [@attributes] => Array ( 
+            [id] => 435 ) 
+            [prenom] => Array ( 
+              [0] => Juan 
+              [1] => Manuel 
+            ) 
+            [nom] => González 
+          ) 
+          [is_updated_in_db] => 
+        ) 
+        [mere] => Personne Object ( 
+          [id] => 
+          [prenoms] => Array ( 
+            [0] => Prenom Object ( 
+              [id] => 
+              [prenom] => Inés 
+              [no_accent] => Ines 
+            ) 
+          ) 
+          [prenoms_str] => Inés 
+          [noms] => Array ( 
+            [0] => Nom Object ( 
+              [id] => 
+              [attribut] => 
+              [nom] => CASERO 
+              [no_accent] => CASERO 
+            ) 
+          ) 
+          [noms_str] => CASERO 
+          [relations] => Array ( ) 
+          [relations_by_type] => Array ( ) 
+          [conditions] => Array ( ) 
+          [pere] => 
+          [mere] => 
+          [xml] => SimpleXMLElement Object ( 
+            [@attributes] => Array ( 
+              [id] => 436 
+              [don] => true 
+            ) 
+            [prenom] => Inés 
+            [nom] => Casero 
+          ) 
+          [is_updated_in_db] => 
+        ) 
+        [xml] => SimpleXMLElement Object ( 
+          [@attributes] => Array ( 
+            [id] => 515 
+            [don] => true 
+          ) 
+          [prenom] => Array ( 
+            [0] => María 
+            [1] => Josefa 
+          ) 
+          [nom] => GONZALEZ 
+          [naissance-lieu] => ésta 
+          [pere] => SimpleXMLElement Object ( 
+            [@attributes] => Array ( 
+              [id] => 435 
+            ) 
+            [prenom] => Array ( 
+              [0] => Juan 
+              [1] => Manuel 
+            ) 
+            [nom] => González 
+          ) 
+          [mere] => Da. 
+        ) 
+        [is_updated_in_db] => 
+      ) 
+      [temoins] => Array ( 
+        [0] => Personne Object ( 
+          [id] => 
+          [prenoms] => Array ( 
+            [0] => Prenom Object ( 
+              [id] => 
+              [prenom] => José 
+              [no_accent] => Jose 
+            ) 
+          ) 
+          [prenoms_str] => José 
+          [noms] => Array ( 
+            [0] => Nom Object ( 
+              [id] => 
+              [attribut] => 
+              [nom] => MOLINA 
+              [no_accent] => MOLINA 
+            ) 
+          ) 
+          [noms_str] => MOLINA 
+          [relations] => Array ( ) 
+          [relations_by_type] => Array ( ) 
+          [conditions] => Array ( 
+            [0] => Condition Object ( 
+              [id] => 
+              [text] => Secretario de este Gobierno 
+              [personne] => Personne Object 
+*RECURSION* 
+          [source_id] => 1 
+          [actes] => Array ( ) 
+        ) 
+        [1] => Condition Object ( 
+          [id] => 
+          [text] => Capitanía General 
+          [personne] => Personne Object 
+*RECURSION* 
+          [source_id] => 1 
+          [actes] => Array ( ) 
+        ) 
+        [2] => Condition Object ( 
+          [id] => 
+          [text] => Capitán de este Real Presidio 
+          [personne] => Personne Object 
+*RECURSION* 
+          [source_id] => 1 
+          [actes] => Array ( ) 
+        ) 
+      ) 
+      [pere] => 
+      [mere] => 
+      [xml] => SimpleXMLElement Object ( 
+        [@attributes] => Array ( 
+          [id] => 437 
+          [don] => true 
+        ) 
+        [prenom] => José 
+        [nom] => Molina 
+        [condition] => Array ( 
+          [0] => Secretario de este Gobierno 
+          [1] => Capitanía General 
+          [2] => Capitán de este Real Presidio 
+        ) 
+      ) 
+      [is_updated_in_db] => 
+    ) 
+    [1] => Personne Object ( 
+      [id] => 
+      [prenoms] => Array ( 
+        [0] => Prenom Object ( 
+          [id] => 
+          [prenom] => Gregoria 
+          [no_accent] => Gregoria 
+        ) 
+      ) 
+      [prenoms_str] => Gregoria 
+      [noms] => Array ( 
+        [0] => Nom Object ( 
+          [id] => 
+          [attribut] => SimpleXMLElement Object ( 
+            [0] => de 
+          ) 
+          [nom] => SALAS 
+          [no_accent] => SALAS 
+        ) 
+      ) 
+      [noms_str] => de SALAS 
+      [relations] => Array ( ) 
+      [relations_by_type] => Array ( ) 
+      [conditions] => Array ( ) 
+      [pere] => 
+      [mere] => 
+      [xml] => SimpleXMLElement Object ( 
+        [@attributes] => Array ( 
+          [id] => 190 
+          [don] => true 
+        ) 
+        [prenom] => Gregoria 
+        [nom] => Salas 
+      ) 
+      [is_updated_in_db] => 
+    ) 
+  ) 
+  [parrains] => Array ( ) 
+  [source_id] => 1 
+  [date_start] => 1757-11-04 
+  [date_end] => 1757-11-04 
+  [relations] => Array ( ) 
+  [conditions] => Array ( ) 
+)
+
+$xml_acte : SimpleXMLElement Object ( [@attributes] => Array ( [id] => 4227 ) [date] => 4-11-1757 [epoux] => Dn. de , natural de la ciudad de , hijo legítimo de y de [epouse] => Da. , natural de , hija legítima de y de [temoins] => SimpleXMLElement Object ( [temoin] => Array ( [0] => Dn. , y y [1] => Da. de ) ) ) 

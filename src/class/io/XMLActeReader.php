@@ -13,6 +13,8 @@ class XMLActeReader {
         $this->source_id = $source_id;
     }
 
+    //  docu ***
+    //  traitement d'un fichier importé
     public function use_xml_file($filename){
         global $log, $alert;
 
@@ -22,6 +24,8 @@ class XMLActeReader {
             return FALSE;
         }
 
+        //  docu ***
+        //  $use_errors utilise fct libxml_use_internal_errors pour stocker erreurs
         $use_errors = libxml_use_internal_errors(TRUE);
         $this->xml = simplexml_load_file($filename);
         if($this->xml === FALSE){
@@ -38,9 +42,13 @@ class XMLActeReader {
         return TRUE;
     }
 
+    //  docu ***
+    //  traitement d'actes copiés-collés
     public function use_xml_text($text){
         global $log, $alert;
 
+        //  docu ***
+        //  depuis utils.php : espaces à la place de /\s/
         $text = pre_process_acte_xml($text);
         $use_errors = libxml_use_internal_errors(TRUE);
         $this->xml = simplexml_load_string($text);
@@ -56,6 +64,8 @@ class XMLActeReader {
         return TRUE;
     }
 
+    //  docu ***
+    //  Utilisé dans import.php
     public function read_actes($only_new_acte = FALSE){
         global $log, $alert;
         $actesXML = NULL;
@@ -90,10 +100,13 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
+    //  docu ***
+    //  lit les noeuds du xml ==>  vérifier ce qui est lu et envoyé 
     private function read_acte($xml_acte, $position = NULL, $only_new_acte = FALSE){
         global $log, $alert, $mysqli;
         $acte_id = NULL;
         $xml_acte_attr = $xml_acte->attributes();
+        //  test    ***//   echo '<br>'.__METHOD__; //  print_r($xml_acte_attr);    //  ==> id de l'acte
 
         if($position != NULL)
             $position = " (en position $position)";
@@ -125,6 +138,7 @@ class XMLActeReader {
         $acte = new Acte($acte_id);
         $acte->source_id = $this->source_id;
         $this->read_acte_node($acte, $xml_acte);
+        //  test    ***     // echo '<br>'.__METHOD__.'<br>';   // print_r($acte);  // print_r($xml_acte);  // ===>    cf morgan/outputs/XMLActeReader:-read_acte-acte-xml_acte-210224.txt
         if($mysqli->into_db($acte)){
             $log->i("Acte$position ajouté avec succès");
             return TRUE;
@@ -135,6 +149,8 @@ class XMLActeReader {
         return FALSE;
     }
 
+    //  docu ***
+    //  check si l'acte existe déjà dans la bdd
     private function db_has_acte($acte_id){
         global $mysqli;
 
@@ -146,30 +162,36 @@ class XMLActeReader {
 
     //  PUBLIC  //
 
+    //  docu ***
+    //  stocke les éléments du contenu de l'acte
     public function read_acte_node($acte, $xml_acte){
         foreach($xml_acte->children() as $xml_child){
+            //  docu ***    ==> refaire pour noter correctement
+            // echo '<pre>';
+            // var_dump($xml_child);
+            // echo '</pre>';
             switch($xml_child->getName()){
                 case "date":
                     $acte->set_date($xml_child->__toString());
-                    break;
+                break;
                 case "epoux":
                     $acte->set_epoux($this->read_personne_node($xml_child));
-                    break;
+                break;
                 case "epouse":
                     $acte->set_epouse($this->read_personne_node($xml_child));
-                    break;
+                break;
                 case "temoins":
                     foreach($xml_child->children() as $xml_temoin){
                         if($xml_temoin->getName() === "temoin")
                             $acte->add_temoin($this->read_personne_node($xml_temoin));
                     }
-                    break;
+                break;
                 case "parrains":
                     foreach($xml_child->children() as $xml_parrain){
                         if($xml_parrain->getName() === "parrain")
                             $acte->add_parrain($this->read_personne_node($xml_parrain));
                     }
-                    break;
+                break;
             }
         }
         $xml_str = $xml_acte->asXML();
@@ -184,11 +206,12 @@ class XMLActeReader {
             $personne->id = $p_attr()["id"];
 
         if(isset($pers_attr["don"])
-            && $p_attr["don"] == "true")
+        && $p_attr["don"] == "true")
             $personne->add_condition("Don", $this->source_id);
     }
 
     private function read_personne_child_node($personne, $xml_child) {
+        //  *** test    //  var_dump($xml_child);   //  ==> ok cf buenosaires/morgan/outputs/XMLActeReader-read_personne_child_node-xml_child-210224.txt
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
@@ -199,6 +222,7 @@ class XMLActeReader {
                 if(isset($xml_child->attributes()["attr"]))
                     $nom_attr = $xml_child->attributes()["attr"];
                 $personne->add_nom_str($xml_child->__toString(), $nom_attr);
+                //  *** test    //  var_dump($nom_attr);    //  ==> ok
                 break;
             case "pere":
                 $personne->set_pere($this->read_personne_node($xml_child));
@@ -208,6 +232,9 @@ class XMLActeReader {
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
+                //  *** test    // var_dump($xml_child->__toString());      //  ==> cf buenosaires/morgan/outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
+                // print_r($this->source_id);      //  ==> aucun retour
+                //  fin test
                 break;
         }
     }
@@ -221,7 +248,9 @@ class XMLActeReader {
         $this->set_personne_attributes($personne,
           $xml_personne->attributes());
         foreach($xml_personne->children() as $xml_child)
+        //  *** test    //      var_dump($xml_child);                   //  attr sur mauvaises personnes cf buenosaires/morgan/outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
             $this->read_personne_child_node($personne, $xml_child);
+        //  *** test    // var_dump($personne);     //  Manque ids buenosaires/morgan/outputs/XMLActeReade-read_personne_node-personne-210223.txt
 
         return $personne;
     }

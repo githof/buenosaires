@@ -22,6 +22,9 @@ class Database extends mysqli{
         }
     }
 
+    //  docu ***
+    //  requête select complétée avec les données envoyées via d'autres fichiers
+    //  ==> tracer l'origine de ces données
     public function select($table, $columns, $where = "", $more = "") {    //  d'où viennent ces données ?  ***
         global $log;
 
@@ -43,9 +46,17 @@ class Database extends mysqli{
 
         $s .= " " . $more;
 
+        //  docu ***
+        echo '<br>'. __METHOD__;
+        echo '<br>'.$s;
+
         return $this->query($s);
     }
 
+    //  docu ***
+    //  requête insert complétée avec les données envoyées via d'autres méthodes
+    //  ==> tracer l'origine de ces données
+    //  il manque (au moins) $values ***
     public function insert($table, $values, $more = "") {
         global $log;
 
@@ -59,13 +70,13 @@ class Database extends mysqli{
             $keys .= $key;
 
             if(strcmp($value, "now()") == 0)
-            $vals .= $value;
+                $vals .= $value;
             else
-            $vals .= "'" . $value . "'";
+                $vals .= "'" . $value . "'";
 
             if($i < count($values) -1){
-            $keys .= ", ";
-            $vals .= ", ";
+                $keys .= ", ";
+                $vals .= ", ";
             }
 
             $i++;
@@ -75,6 +86,11 @@ class Database extends mysqli{
 
         if(strlen($more) > 0)
             $s .= " " . $more;
+        //  docu ***
+        //  *** cf outputs/Database-insert.txt 
+        //  *** https://stackoverflow.com/questions/41354898/method-and-function
+        echo '<br>'. __METHOD__;
+        echo  $s;
 
         return $this->query($s);
     }
@@ -108,6 +124,9 @@ class Database extends mysqli{
         return $this->query($s);
     }
 
+    //  docu ***
+    //  requête delete complétée avec les données envoyées via d'autres fichiers
+    //  ==> tracer l'origine de ces données
     public function delete($table, $where, $more = ""){
         global $log;
 
@@ -128,7 +147,7 @@ class Database extends mysqli{
     //  mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
 
     /*  J'ai mis MYSQLI_USE_RESULT, je sais pas si c'est le cas. A changer quand je saurai ***/
-    public function query($requete, $resultmode = MYSQLI_USE_RESULT) {
+    public function query($requete, $resultmode = MYSQLI_USE_RESULT) {    //  ***
         global $log;
 
         $log->i(trim($requete));
@@ -153,10 +172,10 @@ class Database extends mysqli{
                 "nom='PERSONNE_ID_MAX'"
             );
             if($result != FALSE && $result->num_rows == 1){
-            $row = $result->fetch_assoc();
-            $value = intval($row["valeur"]) +1;
-            $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-            return $row["valeur"];
+                $row = $result->fetch_assoc();
+                $value = intval($row["valeur"]) +1;
+                $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
+                return $row["valeur"];
             }
             return FALSE;
         }
@@ -197,10 +216,10 @@ class Database extends mysqli{
         $results = $this->select("personne", ["id"]);
         if($results != FALSE && $results->num_rows){
             while($row = $results->fetch_assoc()){
-            $id = $row["id"];
-            $personne = new Personne($id);
-            $this->from_db($personne, $get_relations_conditions);
-            $personnes[$id] = $personne;
+                $id = $row["id"];
+                $personne = new Personne($id);
+                $this->from_db($personne, $get_relations_conditions);
+                $personnes[$id] = $personne;
             }
         }
         return $personnes;
@@ -231,7 +250,6 @@ class Database extends mysqli{
     */
         global $log;
 
-
         $log->d("from database: ".get_class($obj)." id=$obj->id");  //  $obj->id : null log.txt ***
 
         $row = NULL;
@@ -249,9 +267,9 @@ class Database extends mysqli{
             }
         } else {
             if($obj instanceof Personne)
-            $row = $this->from_db_by_same_personne($obj);
+                $row = $this->from_db_by_same_personne($obj);
             else
-            $row = $this->from_db_by_same($obj);
+                $row = $this->from_db_by_same($obj);
         }
 
         if($update_obj)
@@ -465,12 +483,12 @@ class Database extends mysqli{
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
             if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
+                $ids = array_intersect($ids, $ids_tmp);
             else
-            $ids = $ids_tmp;
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
             return FALSE;
@@ -484,19 +502,19 @@ class Database extends mysqli{
             WHERE prenom.no_accent = '$prenom->no_accent'
             ");
             if($result === FALSE || $result->num_rows == 0)
-            return NULL;
+                return NULL;
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
             if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
+                $ids = array_intersect($ids, $ids_tmp);
             else
-            $ids = $ids_tmp;
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
-            return NULL;
+                return NULL;
         }
 
         if(isset($ids)){
@@ -560,6 +578,8 @@ class Database extends mysqli{
         );
     }
 
+    //  docu ***
+    //  manque l'id des tables (voir *** dans le while())   ***
     private function into_db_insert($obj, $values){
         global $log;
         $new_id = NULL;
@@ -587,6 +607,10 @@ class Database extends mysqli{
             $result = $this->insert($obj->get_table_name(), $values);
             $max_try--;
         }
+        //  test    ***     
+        echo '<br>$result : ';   
+        var_dump($result);  
+        //  fin test  ***
         return $result;
     }
 
@@ -598,6 +622,7 @@ class Database extends mysqli{
             "prenom_id" => $prenom->id,
             "ordre" => $ordre
         ];
+        // test *** // echo '<br> into_db_prenom_personne $values["personne_id"] : ';   // var_dump($values["personne_id"]);
         return $this->insert(
             "prenom_personne",
             $values,
@@ -616,6 +641,10 @@ class Database extends mysqli{
             $values["attribut"] = $nom->attribut;
             $attr = ", attribut='$nom->attribut'";
         }
+        // $values["personne_id"] manque parfois et pas forcément les bons numéros   ***
+        echo '<br> into_db_nom_personne $values["personne_id"] : ';
+        var_dump($values["personne_id"]);
+        //  ***  fin test
         return $this->insert(
             "nom_personne",
             $values,
@@ -624,12 +653,22 @@ class Database extends mysqli{
     }
 
     public function into_db_acte_has_relation($acte, $relation){
+        //  ***     vide
+        $qr = $this->query("INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')");
+        echo '<br> $qr : ';
+        echo $q;
+        //  ***  fin test
         return $this->query("
-        INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
+            INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
         ");
     }
 
     public function into_db_acte_has_condition($acte, $condition){
+        //  *** vide
+        $qc = $this->query("INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')");
+        echo '<br>$qc : ';
+        echo $qc;
+        //  fin
         return $this->query("
         INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
         ");
@@ -649,6 +688,8 @@ class Database extends mysqli{
         return $removed;
     }
 
+    //  testé de commenter cette méthode pour vérifier qu'elle ne retire pas des personnes indus 
+    //  ==> non c'est pareil, pas de nom, prénom, 1 seule relation etc  ***
     public function remove_unused_prenoms_noms(){
         $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
         $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");

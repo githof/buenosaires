@@ -1,0 +1,447 @@
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Domingo'
+Database::select
+SELECT * FROM `nom` WHERE no_accent='BELGRANO'
+into_db_prenom_personne $values["personne_id"] : string(2) "33"                                                         //  test dans Database.php : prenom_personne.personne_id == 33 au lieu de 404 ***
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('33', '1', '1') ON DUPLICATE KEY UPDATE ordre='1'
+into_db_nom_personne $values["personne_id"] : string(2) "33"                                                            //  idem (puisque prenom_personne.personne_id vient de la bdd) ***
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre, attribut) VALUES ('33', '1', '1', 'de') ON DUPLICATE KEY UPDATE ordre='1', attribut='de'  //  idem 
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Carlos'
+Database::select
+SELECT * FROM `nom` WHERE no_accent='BELGRANO'
+into_db_prenom_personne $values["personne_id"] : string(2) "34"                                                         //  idem prenom_personne.personne_id == 34 au lieu de 433 ***
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('34', '4', '1') ON DUPLICATE KEY UPDATE ordre='1'
+into_db_nom_personne $values["personne_id"] : string(2) "34"                                                            //  idem  ***
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre, attribut) VALUES ('34', '1', '1', 'de') ON DUPLICATE KEY UPDATE ordre='1', attribut='de'  //  nom_id=1 ==> ok (BELGRANO)
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='34' AND pers_destination_id='33' AND statut_id='3'
+
+ID : NULL                                                                                                               //  *Database.php into_db_insert() next_id()   ==> NULL  ***
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('34', '33', '3', '')                //  pas de relation.id  ***
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insertINSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('34', '33', '3', '')  //  pas de relation.id ***
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Maria'
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('María', 'Maria', '')                                              //  pas de prenom.id ***
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('María', 'Maria', '')                                              //  nouvelle tentative (normal : Database::into_db_insert()) ***
+
+Database::select
+SELECT * FROM `nom` WHERE no_accent='PERI'
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'                                                                    //  Au moment du test PERSONNE_ID_MAX est à 973 ***
+ID : NULL                                                                                                               //  *idem ***
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')                                                                                 //  pas de personne.id *** 
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL                                                                                                               //  *idem ***
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')                                                                                 //   pas de personne.id ***
+
+into_db_prenom_personne $values["personne_id"] : NULL                                                                   //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'    //   pas de personne_id ni prenom_id ***
+
+into_db_nom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre) VALUES ('', '5', '1') ON DUPLICATE KEY UPDATE ordre='1'         //  pas de personne_id *** 
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='33' AND statut_id='4'                         //  pas de pers_source_id (normal, il n'y a pas de personne.id) *** 
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '4', '')                  //  pas de pers_source_id, ni de relation.id *** 
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '4', '')                  //  pas de perso_source_id ni de relation_id *** 
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Maria'
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('María', 'Maria', '')                                              //  pas de prenom.id ***
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('María', 'Maria', '')                                              //  2è tentative (Database.php) ***
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Josefa'
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Josefa', 'Josefa', '')                                            //  pas de prenom.id ***
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Josefa', 'Josefa', '')                                            //  2è tentative (Database.php) *** 
+
+Database::select
+SELECT * FROM `nom` WHERE no_accent='GONZALEZ'
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('GONZALEZ', 'GONZALEZ', '')                                              //  pas de nom.id ***
+
+ID : NULL                                                                                                               //  *idem ***
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('GONZALEZ', 'GONZALEZ', '')                                              //  2è tentative (Database.php) ***
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL                                                                                                               //  *idem ***
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL                                                                                                               //  *test dans Database.php ***
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+into_db_prenom_personne $values["personne_id"] : NULL
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+into_db_prenom_personne $values["personne_id"] : NULL                                                                   //  **test dans Database.php *** 
+
+Database::insertINSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '2') ON DUPLICATE KEY UPDATE ordre='2'
+into_db_nom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Juan'
+ID : NULL
+
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Juan', 'Juan', '')
+ID : NULL
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Juan', 'Juan', '')
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Manuel'
+ID : NULL
+
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Manuel', 'Manuel', '')
+ID : NULL
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Manuel', 'Manuel', '')
+
+Database::select
+SELECT * FROM `nom` WHERE no_accent='GONZALEZ'
+ID : NULL
+
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('GONZÁLEZ', 'GONZALEZ', '')
+ID : NULL
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('GONZÁLEZ', 'GONZALEZ', '')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+into_db_prenom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+into_db_prenom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '2') ON DUPLICATE KEY UPDATE ordre='2'
+
+into_db_nom_personne $values["personne_id"] : NULL                                                                         //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='' AND statut_id='3'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '3', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '3', '')
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Ines'
+ID : NULL
+
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Inés', 'Ines', '')
+ID : NULL
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Inés', 'Ines', '')
+
+Database::select
+SELECT * FROM `nom` WHERE no_accent='CASERO'
+ID : NULL
+
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('CASERO', 'CASERO', '')
+ID : NULL
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('CASERO', 'CASERO', '')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+into_db_prenom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+into_db_nom_personne $values["personne_id"] : NULL                                                                         //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='' AND statut_id='4'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '4', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '4', '')
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='33' AND statut_id='2'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '2', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '2', '')
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Jose'
+ID : NULL
+
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('José', 'Jose', '')
+ID : NULL
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('José', 'Jose', '')
+
+Database::select
+SELECT * FROM `nom` WHERE no_accent='MOLINA'
+ID : NULL
+
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('MOLINA', 'MOLINA', '')
+ID : NULL
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('MOLINA', 'MOLINA', '')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+into_db_prenom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+into_db_nom_personne $values["personne_id"] : NULL
+
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='33' AND statut_id='5'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '5', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '5', '')
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='' AND statut_id='5'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '5', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '5', '')
+
+Database::select
+SELECT * FROM `condition` WHERE text='Secretario de este Gobierno' AND personne_id='' AND source_id='1'
+ID : NULL
+
+Database::insert
+INSERT INTO `condition` (text, personne_id, source_id, id) VALUES ('Secretario de este Gobierno', '', '1', '')
+ID : NULL
+Database::insert
+INSERT INTO `condition` (text, personne_id, source_id, id) VALUES ('Secretario de este Gobierno', '', '1', '')
+
+Database::select
+SELECT * FROM `condition` WHERE text='Capitanía General' AND personne_id='' AND source_id='1'
+ID : NULL
+
+Database::insert
+INSERT INTO `condition` (text, personne_id, source_id, id) VALUES ('Capitanía General', '', '1', '')
+ID : NULL
+Database::insert
+INSERT INTO `condition` (text, personne_id, source_id, id) VALUES ('Capitanía General', '', '1', '')
+
+Database::select
+SELECT * FROM `condition` WHERE text='Capitán de este Real Presidio' AND personne_id='' AND source_id='1'
+ID : NULL
+
+Database::insert
+INSERT INTO `condition` (text, personne_id, source_id, id) VALUES ('Capitán de este Real Presidio', '', '1', '')
+ID : NULL
+Database::insert
+INSERT INTO `condition` (text, personne_id, source_id, id) VALUES ('Capitán de este Real Presidio', '', '1', '')
+
+Database::select
+SELECT * FROM `prenom` WHERE no_accent='Gregoria'
+ID : NULL
+
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Gregoria', 'Gregoria', '')
+ID : NULL
+Database::insert
+INSERT INTO `prenom` (prenom, no_accent, id) VALUES ('Gregoria', 'Gregoria', '')
+
+Database::select
+SELECT * FROM `nom` WHERE no_accent='SALAS'
+ID : NULL
+
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('SALAS', 'SALAS', '')
+ID : NULL
+Database::insert
+INSERT INTO `nom` (nom, no_accent, id) VALUES ('SALAS', 'SALAS', '')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+Database::select
+SELECT * FROM `variable` WHERE nom='PERSONNE_ID_MAX'
+ID : NULL
+
+Database::insert
+INSERT INTO `personne` (id) VALUES ('')
+
+into_db_prenom_personne $values["personne_id"] : NULL                                                                      //  **test dans Database.php *** 
+
+Database::insert
+INSERT INTO `prenom_personne` (personne_id, prenom_id, ordre) VALUES ('', '', '1') ON DUPLICATE KEY UPDATE ordre='1'
+
+into_db_nom_personne $values["personne_id"] : NULL
+Database::insert
+INSERT INTO `nom_personne` (personne_id, nom_id, ordre, attribut) VALUES ('', '', '1', 'de') ON DUPLICATE KEY UPDATE ordre='1', attribut='de'
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='33' AND statut_id='5'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '5', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '33', '5', '')
+
+Database::select
+SELECT * FROM `relation` WHERE pers_source_id='' AND pers_destination_id='' AND statut_id='5'
+ID : NULL
+
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '5', '')
+ID : NULL
+Database::insert
+INSERT INTO `relation` (pers_source_id, pers_destination_id, statut_id, id) VALUES ('', '', '5', '')
+
+Database::select
+SELECT * FROM `acte` WHERE id='4227'
+
+Database::insert
+INSERT INTO `acte_contenu` (acte_id, contenu) VALUES (
+  '4227', '\n4253) 4-11-1757: Dn. Domingo de BELGRANO, natural de la ciudad de Oneglia, Italia, Estado de Génova, 
+  Reino de Cerdeña, hijo legítimo de Carlos de Belgrano y de Da. María Peri, con Da. María Josefa GONZALEZ, 
+  natural de ésta, hija legítima de Juan Manuel González y de Da. Inés Casero. Ts.: Dn. José Molina, 
+  Secretario de este Gobierno y Capitanía General y Capitán de este Real Presidio y Da. Gregoria de Salas. 
+  Al margen: \"copiada a pedimento de dicho Dn. Domingo Belgrano en 27-11-1765\". (f. 86).\n'
+) ON DUPLICATE KEY UPDATE contenu=
+  '\n4253) 4-11-1757: Dn. Domingo de BELGRANO, natural de la ciudad de Oneglia, Italia, Estado de Génova, 
+  Reino de Cerdeña, hijo legítimo de Carlos de Belgrano y de Da. María Peri, con Da. María Josefa GONZALEZ, 
+  natural de ésta, hija legítima de Juan Manuel González y de Da. Inés Casero. Ts.: Dn. José Molina, 
+  Secretario de este Gobierno y Capitanía General y Capitán de este Real Presidio y Da. Gregoria de Salas. 
+  Al margen: \"copiada a pedimento de dicho Dn. Domingo Belgrano en 27-11-1765\". (f. 86).\n'

@@ -1,0 +1,21 @@
+$xml_child : object(SimpleXMLElement)#17 (1) { [0]=> string(7) "Julián" }
+$xml_child : object(SimpleXMLElement)#19 (1) { [0]=> string(8) "GREGORIO" }
+$xml_child : object(SimpleXMLElement)#20 (2) { ["@attributes"]=> array(1) { ["attr"]=> string(2) "de" } [0]=> string(8) "ESPINOSA" }
+$xml_child : object(SimpleXMLElement)#21 (1) { [0]=> string(41) "Belvís de la Jara, Arzobispado de Toledo" }
+$xml_child : object(SimpleXMLElement)#23 (1) { [0]=> string(6) "María" }
+$xml_child : object(SimpleXMLElement)#25 (1) { [0]=> string(9) "Florencia" }
+$xml_child : object(SimpleXMLElement)#26 (1) { [0]=> string(8) "BELGRANO" }
+$xml_child : object(SimpleXMLElement)#27 (1) { [0]=> string(5) "PEREZ" }
+$xml_child : object(SimpleXMLElement)#28 (3) { ["@attributes"]=> array(2) { ["don"]=> string(4) "true" ["id"]=> string(3) "404" } ["prenom"]=> string(8) "Domingo " ["nom"]=> array(2) { [0]=> string(8) "Belgrano" [1]=> string(4) "Peri" } }
+$xml_child : object(SimpleXMLElement)#31 (1) { [0]=> string(8) "Domingo " }
+$xml_child : object(SimpleXMLElement)#33 (1) { [0]=> string(8) "Belgrano" }
+$xml_child : object(SimpleXMLElement)#34 (1) { [0]=> string(4) "Peri" }
+$xml_child : object(SimpleXMLElement)#30 (3) { ["@attributes"]=> array(2) { ["don"]=> string(4) "true" ["id"]=> string(3) "515" } ["prenom"]=> array(2) { [0]=> string(7) "María " [1]=> string(6) "Josefa" } ["nom"]=> string(9) "González" }
+$xml_child : object(SimpleXMLElement)#37 (1) { [0]=> string(7) "María " }
+$xml_child : object(SimpleXMLElement)#39 (1) { [0]=> string(6) "Josefa" }
+$xml_child : object(SimpleXMLElement)#40 (1) { [0]=> string(9) "González" }
+$xml_child : object(SimpleXMLElement)#44 (1) { [0]=> string(5) "Diego" }
+$xml_child : object(SimpleXMLElement)#46 (2) { ["@attributes"]=> array(1) { ["attr"]=> string(2) "de" } [0]=> string(7) "Agüero" }
+$xml_child : object(SimpleXMLElement)#49 (1) { [0]=> string(8) "Petrona " }
+$xml_child : object(SimpleXMLElement)#51 (1) { [0]=> string(8) "Gregorio" }
+$xml_child : object(SimpleXMLElement)#52 (2) { ["@attributes"]=> array(1) { ["attr"]=> string(2) "de" } [0]=> string(8) "Espinosa" } 

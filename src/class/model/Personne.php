@@ -42,14 +42,21 @@ class Personne implements DatabaseIO{
     //  *** test                        ==> ok 
     public function add_prenom_str($s){
         $this->add_prenom(new Prenom(NULL, $s));
+        // ok mais $s n'affiche pas les 2 prénoms, seulement le 2è. C'est normal ? ***
+        // echo '<br>$this->prenom_str : ';
+        // var_dump($this->prenoms_str);
+        // echo '<br>$s : ';
+        // var_dump($s);
+        //  *** fin test
     }
 
+    //  add_prenom() peut être privée non ? ***
     //  *** test                        ==> ok
     public function add_prenom($prenom){
         foreach($this->prenoms as $_prenom){
             if((isset($_prenom->id, $prenom->id)
-                    && $_prenom->id == $prenom->id)
-                || $_prenom->no_accent == $prenom->no_accent)
+            && $_prenom->id == $prenom->id)
+            || $_prenom->no_accent == $prenom->no_accent)
                 return;
         }
         $this->prenoms[] = $prenom;
@@ -60,6 +67,14 @@ class Personne implements DatabaseIO{
     //  *** test                        ==> ok
     public function add_nom_str($s, $attributes){
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
+        // ok mais $s n'affiche pas l'attribut.    *** 
+        // echo '<br>$this->nom_str : ';
+        // var_dump($this->noms_str);
+        // echo '<br>$s : ';
+        // var_dump($s);
+        // echo '<br>$attributes : ';
+        // var_dump($attributes);
+        //  *** fin test
     }
 
     public function add_nom($nom){
