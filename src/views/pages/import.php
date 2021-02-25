@@ -19,6 +19,36 @@ function all_sources_available(){
     }
 }
 
+/*
+factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)` 
+(les messages en `h4` peuvent rester comme ça en html direct)
+*/
+function html_form_import($file_or_text) {
+
+    $enctype;
+
+    if($file_or_text === 'file')
+        $enctype = 'enctype="multipart/form-data"';
+    else 
+        $enctype = '';
+
+    return ('
+    <div>
+        <form method="post" '.$enctype.' action="" class="import-form">
+            <?php
+                echo html_import_source();
+                echo html_import_file();
+                echo html_check_ignore('.$file_or_text.');
+                echo html_submit();
+                echo html_hidden_type('.$file_or_text.');
+            ?>
+        </form>
+    </div>
+    ');
+    
+
+}
+
 function html_form_group($contents)
 {
   return '
@@ -116,31 +146,11 @@ if(isset($_POST["form_type"])){
     <h4>
         Avec un fichier
     </h4>
-    <div>
-        <form method="post" enctype="multipart/form-data" action="" class="import-form">
-            <?php 
-                echo html_import_source();
-                echo html_import_file();
-                echo html_check_ignore('file');
-                echo html_submit();
-                echo html_hidden_type('file');
-            ?>
-        </form>
-    </div>
+    <?php echo html_form_import('file'); ?>
 </section>
 <section>
     <h4>
         En le(s) copiant ici
     </h4>
-    <div>
-        <form method="post" action="" class="import-form">
-            <?php
-                echo html_import_source();
-                echo html_import_text();
-                echo html_check_ignore('text');
-                echo html_submit();
-                echo html_hidden_type('text');
-              ?>
-        </form>
-    </div>
+    <?php echo html_form_import('text'); ?>
 </section>
