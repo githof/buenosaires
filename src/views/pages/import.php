@@ -28,42 +28,52 @@ function html_form_group($contents)
   ';
 }
 
+function html_import_source(){
+
+    return html_form_group('
+        <label for="import_file_source">Source du/des actes(s) : </label>
+        <select name="import_file_source" id="import_file_source">
+            <?php all_sources_available(); ?>
+        </select>
+    ')
+}
+
 function html_import_file()
 {
-  return html_form_group('
-    <label for="import_file">Fichier</label>
-    <input type="file" id="import_file" name="import_file">
-  ');
+    return html_form_group('
+        <label for="import_file">Fichier</label>
+        <input type="file" id="import_file" name="import_file">
+    ');
 }
 
 function html_import_text()
 {
-  return html_form_group('
-    <textarea class="form-control" rows="6" name="import_text">
-    </textarea>
-  ');
+    return html_form_group('
+        <textarea class="form-control" rows="6" name="import_text">
+        </textarea>
+    ');
 }
 
 function html_check_ignore($file_or_text)
 {
-  $attr = 'import_'.$file_or_text.'_only_new';
-  $input = '<input type="checkbox" id="'.$attr.'" name="'.$attr.'"/>';
-  $label = '<label for="'.$attr.'">Ignorer les actes déjà balisés</label>';
-  return html_form_group("$input\n  $label");
+    $attr = 'import_'.$file_or_text.'_only_new';
+    $input = '<input type="checkbox" id="'.$attr.'" name="'.$attr.'"/>';
+    $label = '<label for="'.$attr.'">Ignorer les actes déjà balisés</label>';
+    return html_form_group("$input\n  $label");
 }
 
 function html_submit()
 {
-  $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
-  return html_form_group($button);
+    $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
+    return html_form_group($button);
 }
 
 function html_hidden_type($file_or_text)
 {
-  return '
-    <input type="hidden" name="form_type" value="'
-      . $file_or_text
-      . '" />';
+    return '
+        <input type="hidden" name="form_type" value="'
+            . $file_or_text
+        . '" />';
 }
 
 if(isset($_POST["form_type"])){
@@ -73,15 +83,15 @@ if(isset($_POST["form_type"])){
 
     $file_or_text = $_POST["form_type"]; // 'file' or 'text' :)
     if($file_or_text != 'file' && $file_or_text != 'text')
-      $filename = NULL;
+        $filename = NULL;
     else
     {
-      $receive_method = "receive_$file_or_text";
-      $str_import = 'import_'.$file_or_text;
-      $filename = $receive_method($str_import);
-      // NB : pour text, le texte est copié dans un fichier temporaire
-      $only_new = isset($_POST[$str_import.'_only_new']);
-      $source_id = $_POST[$str_import.'_source'];
+        $receive_method = "receive_$file_or_text";
+        $str_import = 'import_'.$file_or_text;
+        $filename = $receive_method($str_import);
+        // NB : pour text, le texte est copié dans un fichier temporaire
+        $only_new = isset($_POST[$str_import.'_only_new']);
+        $source_id = $_POST[$str_import.'_source'];
     }
 
 /*
@@ -108,18 +118,13 @@ if(isset($_POST["form_type"])){
     </h4>
     <div>
         <form method="post" enctype="multipart/form-data" action="" class="import-form">
-            <div class="form-group">
-                <label for="import_file_source">Source du/des actes(s) : </label>
-                <select name="import_file_source" id="import_file_source">
-                    <?php all_sources_available(); ?>
-                </select>
-            </div>
-            <?php
-              echo html_import_file();
-              echo html_check_ignore('file');
-              echo html_submit();
-              echo html_hidden_type('file');
-              ?>
+            <?php 
+                echo html_import_source();
+                echo html_import_file();
+                echo html_check_ignore('file');
+                echo html_submit();
+                echo html_hidden_type('file');
+            ?>
         </form>
     </div>
 </section>
@@ -129,17 +134,12 @@ if(isset($_POST["form_type"])){
     </h4>
     <div>
         <form method="post" action="" class="import-form">
-            <div class="form-group">
-                <label for="import_text_source">Source du/des actes(s) : </label>
-                <select name="import_text_source" id="import_text_source">
-                    <?php all_sources_available(); ?>
-                </select>
-            </div>
             <?php
-              echo html_import_text();
-              echo html_check_ignore('text');
-              echo html_submit();
-              echo html_hidden_type('text');
+                echo html_import_source();
+                echo html_import_text();
+                echo html_check_ignore('text');
+                echo html_submit();
+                echo html_hidden_type('text');
               ?>
         </form>
     </div>
