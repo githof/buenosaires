@@ -79,7 +79,7 @@ function html_import_source($file_or_text) {
 }
 
 /*
-factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)` 
+factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)`
 (les messages en `h4` peuvent rester comme ça en html direct)
 */
 function html_form_import($file_or_text) {
@@ -96,7 +96,7 @@ function html_form_import($file_or_text) {
         $enctype = '';
         $contents .= html_import_text();
     }
-    
+
     $html = '<div>
         <form method="post" '.$enctype.' action="" class="import-form">'.
             $contents.
