@@ -182,10 +182,6 @@ class XMLActeReader {
     private function set_personne_attributes($p, $p_attr) {
         if(isset($pers_attr["id"]))
             $personne->id = $p_attr()["id"];
-            //  *** test                                            ==> NULL
-            // echo '<br>set_personne_attributes : ';
-            // var_dump($personne->id);
-            //  fin test
 
         if(isset($pers_attr["don"])
             && $p_attr["don"] == "true")
@@ -196,10 +192,6 @@ class XMLActeReader {
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
-                //  *** test                                       
-                // echo '<br>read_personne_child_node case: prenom $xml_child->__toString() : ';
-                // var_dump($xml_child->__toString());     //  ==> prénoms ok
-                //  fin test
                 break;
             case "nom":
                 $this->all_nom_attributes_in_one($xml_child);
@@ -207,36 +199,15 @@ class XMLActeReader {
                 if(isset($xml_child->attributes()["attr"]))
                     $nom_attr = $xml_child->attributes()["attr"];
                 $personne->add_nom_str($xml_child->__toString(), $nom_attr);
-                //  *** test                                        ==> NULL
-                // echo '<br>read_personne_child_node case: nom : ';
-                // var_dump($personne->add_nom_str($xml_child->__toString(), $nom_attr));
-                //  fin test
                 break;
             case "pere":
                 $personne->set_pere($this->read_personne_node($xml_child));
-                //  *** test                                        ==> NULL
-                // echo '<br>read_personne_child_node case: pere : ';
-                // var_dump($personne->set_pere($this->read_personne_node($xml_child)));
-                //  fin test
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
-                //  *** test                                        ==> NULL
-                // echo '<br>read_personne_child_node case: mere : ';
-                // var_dump($personne->set_mere($this->read_personne_node($xml_child)));
-                //  fin test
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
-                //  *** test
-                // echo '<br>XMLActeReader read_personne_child_node case: condition $xml_child->__toString() : ';
-                // var_dump($xml_child->__toString());      //  ==> cf buenosaires/morgan/outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
-                // echo '</pre>';
-                // echo '<br>read_personne_child_node case: condition $this->source_id : ';
-                // echo '<pre>';
-                // print_r($this->source_id);      //  ==> aucun retour
-                // echo '</pre>';
-                //  fin test
                 break;
         }
     }
@@ -250,15 +221,7 @@ class XMLActeReader {
         $this->set_personne_attributes($personne,
           $xml_personne->attributes());
         foreach($xml_personne->children() as $xml_child)
-        //  *** test
-        // echo '<br>read_personne_node $xml_child :';
-        // var_dump($xml_child);                   //  attr sur mauvaises personnes cf buenosaires/morgan/outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
-        //  fin test
             $this->read_personne_child_node($personne, $xml_child);
-        //  *** test
-        echo '<br>read_personne_node $personne :';
-        var_dump($personne);                   //  Manque ids buenosaires/morgan/outputs/XMLActeReade-read_personne_node-personne-210223.txt
-        //  fin test
 
         return $personne;
     }

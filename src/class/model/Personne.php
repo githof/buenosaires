@@ -80,12 +80,6 @@ class Personne implements DatabaseIO{
 
     public function add_condition($text, $source_id){
         $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
-        //  *** test                                        problèmes
-        // echo '<br>Personne->add_condition $this->conditions : ';
-        // print_r($this->conditions);     //                  ==> manque id cf buenosaires/morgan/outputs/Personne-add-condition_210223.txt
-        // echo '<br>Personne->add_condition $source_id : ';
-        // var_dump($source_id);       //                      ==> string(1) "1"        idem cf ^ 
-        //  fin test
     }
 
     public function add_relation($personne_source, $personne_destination, $statut_id){
@@ -95,36 +89,16 @@ class Personne implements DatabaseIO{
             $personne_destination,
             $statut_id
         );
-        // *** test                                            problèmes
-        // echo '<br>$this->relations : ';
-        // echo '<pre>';
-        // print_r($this->relations);     //                  ==> manque id  cf Personne-add-relation_210222.txt
-        // echo '</pre>';
-        //  *** fin test
     }
 
     public function set_pere($pere){
         $this->add_relation($pere, $this, STATUT_PERE);
         $this->pere = $pere;
-        // *** test                     
-        // echo '<br>Personne::set_pere()->$this->relation : ';
-        // var_dump($this->pere);       //  manque ids    cf buenosaires/morgan/outputs/Personne-set_pere-$this-pere_210223.txt
-        // echo '<pre>';
-        // print_r($this->relations);   //  manque ids cf buenosaires/morgan/outputs/Personne-add-relation_210222.txt
-        // echo '</pre>';
-        //  *** fin test
     }
 
     public function set_mere($mere){
         $this->add_relation($mere, $this, STATUT_MERE);
         $this->mere = $mere;
-        // *** test                     
-        // echo '<br>Personne::set_mere()->$this->mere : ';
-        // var_dump($this->mere);       //     manque ids cf buenosaires/morgan/outputs/Personne-set_mere-this-mere_210223.txt
-        // echo '<pre>';
-        // print_r($this->relations);   //  
-        // echo '</pre>';
-        //  *** fin test
     }
 
     public function set_xml($xml){
@@ -149,11 +123,6 @@ class Personne implements DatabaseIO{
         $est_temoin = [];
         $a_parrains = [];
         $est_parrain = [];
-
-        //  *** test        //  pas d'affichage
-        echo '<br>$this->relation : ';
-        var_dump($this->relation);
-        //  fin test
 
         foreach($this->relations as $relation) {
                 $is_source = ($this->id == $relation->personne_source->id);
