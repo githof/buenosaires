@@ -85,28 +85,25 @@ factoriser les deux formulaires dans une fonction `html_form_import($file_or_tex
 function html_form_import($file_or_text) {
 
     $enctype;
-    $functs;
+    $contents = html_import_source($file_or_text).
+        html_check_ignore($file_or_text).
+        html_hidden_type($file_or_text);
 
+    if($file_or_text === 'file') {
+        $enctype = 'enctype="multipart/form-data"';
+        $contents .= html_import_file();
+    } else {
+        $enctype = '';
+        $contents .= html_import_text();
+    }
+    
     $html = '<div>
         <form method="post" '.$enctype.' action="" class="import-form">'.
-            $functs.
+            $contents.
             html_submit().
         '</form>
     </div>';
 
-    if($file_or_text === 'file') {
-        $enctype = 'enctype="multipart/form-data"';
-        $functs = html_import_file().
-            html_import_source('file').
-            html_check_ignore('file').
-            html_hidden_type('file');
-    } else {
-        $enctype = '';
-        $functs = html_import_text().
-            html_import_source('text').
-            html_check_ignore('text').
-            html_hidden_type('text');
-    }
     return html_form_group($html);
 }
 
@@ -121,7 +118,7 @@ if(isset($_POST["form_type"])){
     else
     {
         $receive_method = "receive_$file_or_text";
-        $str_import = 'import_'.$file_or_text;
+        $str_import = "import_$file_or_text";
         $filename = $receive_method($str_import);
         // NB : pour text, le texte est copié dans un fichier temporaire
         $only_new = isset($_POST[$str_import.'_only_new']);
