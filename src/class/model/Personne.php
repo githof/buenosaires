@@ -39,10 +39,12 @@ class Personne implements DatabaseIO{
         $this->is_updated_in_db = FALSE;
     }
 
+    //  *** test                        ==> ok 
     public function add_prenom_str($s){
         $this->add_prenom(new Prenom(NULL, $s));
     }
 
+    //  *** test                        ==> ok
     public function add_prenom($prenom){
         foreach($this->prenoms as $_prenom){
             if((isset($_prenom->id, $prenom->id)
@@ -55,6 +57,7 @@ class Personne implements DatabaseIO{
         $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
     }
 
+    //  *** test                        ==> ok
     public function add_nom_str($s, $attributes){
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
     }

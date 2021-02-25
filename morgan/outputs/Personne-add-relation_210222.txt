@@ -1,0 +1,108 @@
+
+(Personne.php add_relation $this->relations[0])
+Array (
+    [0] => Relation Object(
+        [id] =>                                                         //  pas de relation.id     *** 
+        [personne_source] => Personne Object (
+            [id] =>                                                 //  pas de personne_source.id  ***
+            [prenoms] => Array (
+                [0] => Prenom Object(
+                    [id] =>                                 //  pas de prenom.id   ***
+                    [prenom] => Carlos
+                    [no_accent] => Carlos
+                )
+            )
+            [prenoms_str] => Carlos
+            [noms] => Array (
+                [0] => Nom Object (
+                    [id] =>                                 //  pas de nom.id      ***
+                    [attribut] => SimpleXMLElement Object (
+                        [0] => de
+                    )
+                    [nom] => BELGRANO
+                    [no_accent] => BELGRANO
+                )
+            )
+            [noms_str] => de BELGRANO
+            [relations] => Array                                    //  pas de relation    ***
+                (
+                )
+            [relations_by_type] => Array                            //  pas de relation_by_type    ***
+                (
+                )
+
+            [conditions] => Array                                   //  pas de condition   ***
+                (
+                )
+            [pere] => 
+            [mere] => 
+            [xml] => SimpleXMLElement Object (
+                [@attributes] => Array (
+                    [id] => 433                             //  ici personne.id est trouvée et correcte, mais pas enregistrée dans la bdd ***
+                    [don] => true
+                )
+
+                [prenom] => Carlos
+                [nom] => Belgrano
+            )
+
+            [is_updated_in_db] => 
+        )
+        [personne_destination] => Personne Object (
+            [id] =>                                                 idem pas de personne_destination.id ***
+            [prenoms] => Array (
+                [0] => Prenom Object (
+                    [id] =>                                 idem pas de prenom.id   ***
+                    [prenom] => Domingo
+                    [no_accent] => Domingo
+                )
+            )
+            [prenoms_str] => Domingo
+            [noms] => Array (
+                [0] => Nom Object (
+                    [id] =>                                 idem pas de nom.id  ***
+                    [attribut] => SimpleXMLElement Object (
+                            [0] => de
+                        )
+                    [nom] => BELGRANO
+                    [no_accent] => BELGRANO
+                )
+            )
+            [noms_str] => de BELGRANO
+            [relations] => Array
+*RECURSION*
+            [relations_by_type] => Array                            idem pas de relation_by_type ***
+                (
+                )
+            [conditions] => Array                                   idem pas de condition ***
+                (
+                )
+            [pere] => 
+            [mere] => 
+            [xml] => SimpleXMLElement Object (
+                [@attributes] => Array (
+                    [id] => 404         idem Depuis xml personne.id est trouvée et correcte, mais pas enregistrée dans la bdd ***
+                    [don] => true
+                )
+                [prenom] => Domingo
+                [nom] => BELGRANO
+                [naissance-lieu] => Oneglia, Italia, Estado de Génova, Reino de Cerdeña
+                [pere] => SimpleXMLElement Object       idem ici relation est trouvée et correcte, mais pas enregistrée dans la bdd ***
+                (
+                    [@attributes] => Array (
+                            [id] => 433
+                            [don] => true
+                        )
+                    [prenom] => Carlos
+                    [nom] => Belgrano
+                )
+                [mere] => Da.              idem ici condition est trouvée et correcte, mais pas enregistrée dans la bdd ***
+            )
+            [is_updated_in_db] => 
+        )
+        [statut_id] => 3    idem ici et bdd relation.statut est trouvé mais pas enregistré 
+        [actes] => Array    vide ***
+            (
+            )
+    )
+)

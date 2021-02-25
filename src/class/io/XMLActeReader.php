@@ -207,8 +207,7 @@ class XMLActeReader {
                 $personne->set_mere($this->read_personne_node($xml_child));
                 break;
             case "condition":
-                $personne->add_condition($xml_child->__toString(),
-                $this->source_id);
+                $personne->add_condition($xml_child->__toString(), $this->source_id);
                 break;
         }
     }
@@ -222,7 +221,7 @@ class XMLActeReader {
         $this->set_personne_attributes($personne,
           $xml_personne->attributes());
         foreach($xml_personne->children() as $xml_child)
-          $this->read_personne_child_node($personne, $xml_child);
+            $this->read_personne_child_node($personne, $xml_child);
 
         return $personne;
     }
