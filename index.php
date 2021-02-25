@@ -41,7 +41,7 @@ if(isset($_POST["action"])){
     }else if($_POST["action"] == "connexion" && isset($_POST['connect_email'], $_POST['connect_pass']) && !$account->is_connected){
         $account->set_email(safe($_POST['connect_email']));
         $account->set_password(safe(md5($_POST['connect_pass'])));
-        if($account->connect())   
+        if($account->connect())
             $alert->success("Connexion réussie !");
         else
             $alert->warning("Echec de la connexion");
@@ -61,7 +61,7 @@ if(isset($url_parsed["page"])){
             $alert->warning("Accès a un contenu restreint");
         }
     } else {
-        if(can_access($access_pages[$url_parsed["page"]])){   /*  Notice: Undefined index: resultat in /home/morgan/internet/buenosaires/index.php on line 82 *** */
+        if(can_access($access_pages[$url_parsed["page"]])){
             $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
         } else {
