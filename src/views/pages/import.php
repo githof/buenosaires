@@ -28,47 +28,7 @@ function html_form_group($contents)
   ';
 }
 
-/*
-factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)` 
-(les messages en `h4` peuvent rester comme ça en html direct)
-*/
-function html_form_import($file_or_text) {
 
-    $enctype;
-    $functs;
-
-    $html = '<div>
-        <form method="post" '.$enctype.' action="" class="import-form">'.
-            $functs.
-            html_submit().
-        '</form>
-    </div>';
-
-    if($file_or_text === 'file') {
-        $enctype = 'enctype="multipart/form-data"';
-        $functs = html_import_file()
-            .html_import_source('file')
-            .html_check_ignore('file')
-            .html_hidden_type('file');
-    } else {
-        $enctype = '';
-        $functs = html_import_text().
-            html_import_source('text').
-            html_check_ignore('text').
-            html_hidden_type('text');
-    }
-    return html_form_group($html);
-}
-
-function html_import_source($file_or_text) {
-
-    return html_form_group('
-        <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
-        <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
-            all_sources_available()
-        .'</select>
-    ');
-}
 
 function html_import_file()
 {
@@ -106,6 +66,48 @@ function html_hidden_type($file_or_text)
         <input type="hidden" name="form_type" value="'
             . $file_or_text
         . '" />';
+}
+
+function html_import_source($file_or_text) {
+
+    return html_form_group('
+        <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
+        <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
+            all_sources_available()
+        .'</select>
+    ');
+}
+
+/*
+factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)` 
+(les messages en `h4` peuvent rester comme ça en html direct)
+*/
+function html_form_import($file_or_text) {
+
+    $enctype;
+    $functs;
+
+    $html = '<div>
+        <form method="post" '.$enctype.' action="" class="import-form">'.
+            $functs.
+            html_submit().
+        '</form>
+    </div>';
+
+    if($file_or_text === 'file') {
+        $enctype = 'enctype="multipart/form-data"';
+        $functs = html_import_file().
+            html_import_source('file').
+            html_check_ignore('file').
+            html_hidden_type('file');
+    } else {
+        $enctype = '';
+        $functs = html_import_text().
+            html_import_source('text').
+            html_check_ignore('text').
+            html_hidden_type('text');
+    }
+    return html_form_group($html);
 }
 
 if(isset($_POST["form_type"])){
