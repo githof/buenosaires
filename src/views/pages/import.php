@@ -34,19 +34,15 @@ function html_form_import($file_or_text) {
 
     return ('
     <div>
-        <form method="post" '.$enctype.' action="" class="import-form">
-            <?php
-                echo html_import_source();
-                echo html_import_file();
-                echo html_check_ignore('.$file_or_text.');
-                echo html_submit();
-                echo html_hidden_type('.$file_or_text.');
-            ?>
-        </form>
+        <form method="post" '.$enctype.' action="" class="import-form">'.
+            html_import_source().
+            html_import_file().
+            html_check_ignore('.$file_or_text.').
+            html_submit().
+            html_hidden_type('.$file_or_text.')
+        .'</form>
     </div>
     ');
-    
-
 }
 
 function html_form_group($contents)
@@ -62,9 +58,9 @@ function html_import_source(){
 
     return html_form_group('
         <label for="import_file_source">Source du/des actes(s) : </label>
-        <select name="import_file_source" id="import_file_source">
-            <?php all_sources_available(); ?>
-        </select>
+        <select name="import_file_source" id="import_file_source">'.
+            all_sources_available()
+        .'</select>
     ')
 }
 
