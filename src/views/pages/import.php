@@ -71,16 +71,13 @@ if(isset($_POST["form_type"])){
     $only_new;
     $source_id;
 
-    if($_POST["form_type"] === "file"){
-        $filename = receive_file("import_file");
-        $only_new = isset($_POST["import_file_only_new"]);
-        $source_id = $_POST["import_file_source"];
-    }else if($_POST["form_type"] === "text"){
-        $filename = receive_text($_POST['import_text']);
-    // le texte est copié dans un fichier temporaire
-        $only_new = isset($_POST["import_text_only_new"]);
-        $source_id = $_POST["import_text_source"];
-    }
+    $file_or_text = $_POST["form_type"]; // 'file' or 'text' :)
+    $receive_method = "receive_$file_or_text";
+    $str_import = 'import_'.$file_or_text;
+    $filename = $receive_method($str_import);
+    // NB : pour text, le texte est copié dans un fichier temporaire
+    $only_new = isset($_POST[$str_import.'_only_new']);
+    $source_id = $_POST[$str_import.'_source'];
 
 /*
     dans les instructions ci-dessous, le traitement des noeuds xml
