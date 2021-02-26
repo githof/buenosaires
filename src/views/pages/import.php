@@ -3,7 +3,16 @@
 include_once(ROOT."src/class/io/XMLActeReader.php");
 include_once(ROOT."src/utils.php");
 
-function all_sources_available(){
+function html_form_group($contents)
+{
+  return '
+    <div class="form-group">
+      '."$contents".'
+    </div>
+  ';
+}
+
+function html_available_sources(){
     global $mysqli, $alert;
 
     $rep = $mysqli->select("source", ["*"], "");
@@ -19,16 +28,15 @@ function all_sources_available(){
     }
 }
 
-function html_form_group($contents)
-{
-  return '
-    <div class="form-group">
-      '."$contents".'
-    </div>
-  ';
+function html_select_source($file_or_text) {
+
+    return html_form_group('
+        <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
+        <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
+            html_available_sources()
+        .'</select>
+    ');
 }
-
-
 
 function html_import_file()
 {
@@ -54,12 +62,6 @@ function html_check_ignore($file_or_text)
     return html_form_group("$input\n  $label");
 }
 
-function html_submit()
-{
-    $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
-    return html_form_group($button);
-}
-
 function html_hidden_type($file_or_text)
 {
     return '
@@ -68,14 +70,10 @@ function html_hidden_type($file_or_text)
         . '" />';
 }
 
-function html_import_source($file_or_text) {
-
-    return html_form_group('
-        <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
-        <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
-            all_sources_available()
-        .'</select>
-    ');
+function html_submit()
+{
+    $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
+    return html_form_group($button);
 }
 
 /*
@@ -84,8 +82,8 @@ factoriser les deux formulaires dans une fonction `html_form_import($file_or_tex
 */
 function html_form_import($file_or_text) {
 
-    $enctype;
-    $contents = html_import_source($file_or_text).
+    $contents =
+        html_select_source($file_or_text).
         html_check_ignore($file_or_text).
         html_hidden_type($file_or_text);
 
