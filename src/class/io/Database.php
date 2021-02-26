@@ -550,7 +550,7 @@ class Database extends mysqli{
             $values_db = $this->from_db($obj, FALSE, FALSE);
         if(isset($values_db["id"]))
             $obj->id = $values_db["id"];
-        $values_obj = $obj->values_into_db();
+        $values_obj = $obj->values_into_db();                       //  *** ne prend pas l'id (ok)
         $values_updated = $this->updated_values($values_db, $values_obj);
 
         if(isset($values_db, $obj->id))

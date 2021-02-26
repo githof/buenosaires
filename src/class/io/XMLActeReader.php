@@ -190,14 +190,7 @@ class XMLActeReader {
                     }
                 break;
             }
-            //  *** test
-            // echo __METHOD__;
-            // echo '<pre>';
-            // var_dump($acte);
-            // echo '===============<br>';
-            // var_dump($xml_acte);
-            // echo '</pre>';
-            //  fin test
+            //  *** test    // echo __METHOD__; // var_dump($acte); // echo '===============<br>';  // var_dump($xml_acte); //  cf morgan/outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
         }
         $xml_str = $xml_acte->asXML();
         $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
@@ -253,9 +246,8 @@ class XMLActeReader {
         $this->set_personne_attributes($personne,
           $xml_personne->attributes());
         foreach($xml_personne->children() as $xml_child)
-        //  *** test    //      var_dump($xml_child);                   //  attr sur mauvaises personnes cf buenosaires/morgan/outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
             $this->read_personne_child_node($personne, $xml_child);
-        //  *** test    // var_dump($personne);     //  Manque ids buenosaires/morgan/outputs/XMLActeReade-read_personne_node-personne-210223.txt
+        //  *** test    // var_dump($personne);     //  Manque ids morgan/outputs/XMLActeReade-read_personne_node-personne-210223.txt
 
         return $personne;
     }
