@@ -19,20 +19,110 @@ function all_sources_available(){
     }
 }
 
+function html_form_group($contents)
+{
+  return '
+    <div class="form-group">
+      '."$contents".'
+    </div>
+  ';
+}
+
+
+
+function html_import_file()
+{
+    return html_form_group('
+        <label for="import_file">Fichier</label>
+        <input type="file" id="import_file" name="import_file">
+    ');
+}
+
+function html_import_text()
+{
+    return html_form_group('
+        <textarea class="form-control" rows="6" name="import_text">
+        </textarea>
+    ');
+}
+
+function html_check_ignore($file_or_text)
+{
+    $attr = 'import_'.$file_or_text.'_only_new';
+    $input = '<input type="checkbox" id="'.$attr.'" name="'.$attr.'"/>';
+    $label = '<label for="'.$attr.'">Ignorer les actes déjà balisés</label>';
+    return html_form_group("$input\n  $label");
+}
+
+function html_submit()
+{
+    $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
+    return html_form_group($button);
+}
+
+function html_hidden_type($file_or_text)
+{
+    return '
+        <input type="hidden" name="form_type" value="'
+            . $file_or_text
+        . '" />';
+}
+
+function html_import_source($file_or_text) {
+
+    return html_form_group('
+        <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
+        <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
+            all_sources_available()
+        .'</select>
+    ');
+}
+
+/*
+factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)`
+(les messages en `h4` peuvent rester comme ça en html direct)
+*/
+function html_form_import($file_or_text) {
+
+    $enctype;
+    $contents = html_import_source($file_or_text).
+        html_check_ignore($file_or_text).
+        html_hidden_type($file_or_text);
+
+    if($file_or_text === 'file') {
+        $enctype = 'enctype="multipart/form-data"';
+        $contents .= html_import_file();
+    } else {
+        $enctype = '';
+        $contents .= html_import_text();
+    }
+
+    $html = '<div>
+        <form method="post" '.$enctype.' action="" class="import-form">'.
+            $contents.
+            html_submit().
+        '</form>
+    </div>';
+
+    return html_form_group($html);
+}
+
 if(isset($_POST["form_type"])){
     $filename;
     $only_new;
     $source_id;
 
-    if($_POST["form_type"] === "file"){
-        $filename = receive_file("import_file");
-        $only_new = isset($_POST["import_file_only_new"]);
-        $source_id = $_POST["import_file_source"];
-    }else if($_POST["form_type"] === "text"){
-        $filename = receive_text($_POST['import_text']);
-    // le texte est copié dans un fichier temporaire
-        $only_new = isset($_POST["import_text_only_new"]);
-        $source_id = $_POST["import_text_source"];
+    $file_or_text = $_POST["form_type"]; // 'file' or 'text' :)
+    if($file_or_text != 'file' && $file_or_text != 'text')
+        $filename = NULL;
+    else
+    {
+        $receive_method = "receive_$file_or_text";
+        $str_import = "import_$file_or_text";
+        $filename = $receive_method($str_import);
+        // NB : pour text, le texte est copié dans un fichier temporaire
+        $only_new = isset($_POST[$str_import.'_only_new']);
+        $source_id = $_POST[$str_import.'_source'];
     }
 
 /*
@@ -57,52 +147,11 @@ if(isset($_POST["form_type"])){
     <h4>
         Avec un fichier
     </h4>
-    <div>
-        <form method="post" enctype="multipart/form-data" action="" class="import-form">
-            <div class="form-group">
-                <label for="import_file_source">Source du/des actes(s) : </label>
-                <select name="import_file_source" id="import_file_source">
-                    <?php all_sources_available(); ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="import_file">Fichier</label>
-                <input type="file" id="import_file" name="import_file">
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="import_file_only_new" name="import_file_only_new">
-                <label for="import_file_only_new">Ignorer les actes déjà balisés</label>
-            </div>
-            <div class="form-group">
-                <button class="import-submit btn btn-primary">Envoyer</button>
-            </div>
-            <input type="hidden" name="form_type" value="file">
-        </form>
-    </div>
+    <?php echo html_form_import('file'); ?>
 </section>
 <section>
     <h4>
         En le(s) copiant ici
     </h4>
-    <div>
-        <form method="post" action="" class="import-form">
-            <div class="form-group">
-                <label for="import_text_source">Source du/des actes(s) : </label>
-                <select name="import_text_source" id="import_text_source">
-                    <?php all_sources_available(); ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <textarea class="form-control" rows="6" name="import_text"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="import_text_only_new" name="import_text_only_new">
-                <label for="import_text_only_new">Ignorer les actes déjà balisés</label>
-            </div>
-            <div class="form-group">
-                <button class="import-submit btn btn-primary">Envoyer</button>
-            </div>
-            <input type="hidden" name="form_type" value="text">
-        </form>
-    </div>
+    <?php echo html_form_import('text'); ?>
 </section>
