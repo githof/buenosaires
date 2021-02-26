@@ -568,22 +568,15 @@ class Database extends mysqli{
 
         while($result === FALSE && $max_try > 0){
             if(!isset($obj->id)){
-                $new_id = $this->next_id($obj->get_table_name());
-                if($new_id == 0){
-                    /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 553 ***/  
-                    //  *** Remplacé $obj->table_name par $obj->get_table_name
-                    $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->get_table_name");
-                    return FALSE;
-                }
+            $new_id = $this->next_id($obj->get_table_name());
+            if($new_id == 0){
+                $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
+                return FALSE;
+            }
+            $obj->id = $new_id;
             }
 
             $values["id"] = $obj->id;
-            //  test    ***     ID : NULL
-            // echo '<br>$obj->get_table_name : ';   
-            // var_dump($obj->get_table_name());  //   nom de la table
-            // echo '<br>$values : ';   
-            // var_dump($values);  //  tableau des valeurs pour la table, manque l'id
-            //  fin test  ***
             $result = $this->insert($obj->get_table_name(), $values);
             $max_try--;
         }
