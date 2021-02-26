@@ -166,10 +166,7 @@ class XMLActeReader {
     //  stocke les éléments du contenu de l'acte
     public function read_acte_node($acte, $xml_acte){
         foreach($xml_acte->children() as $xml_child){
-            //  docu ***    ==> refaire pour noter correctement
-            // echo '<pre>';
-            // var_dump($xml_child);
-            // echo '</pre>';
+            // ***  test    //  var_dump($xml_child);   //  ==> morgan/outputs/XMLActeReader::read_acte_node-xml_child-210226.txt
             switch($xml_child->getName()){
                 case "date":
                     $acte->set_date($xml_child->__toString());
@@ -193,6 +190,14 @@ class XMLActeReader {
                     }
                 break;
             }
+            //  *** test
+            // echo __METHOD__;
+            // echo '<pre>';
+            // var_dump($acte);
+            // echo '===============<br>';
+            // var_dump($xml_acte);
+            // echo '</pre>';
+            //  fin test
         }
         $xml_str = $xml_acte->asXML();
         $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
