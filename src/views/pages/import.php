@@ -14,7 +14,7 @@ function all_sources_available(){
 
     if($rep->num_rows > 0){
         while($row = $rep->fetch_assoc()){
-            echo "<option value='{$row["id"]}'>{$row["valeur"]}</option>";
+            return "<option value='{$row["id"]}'>{$row["valeur"]}</option>";
         }
     }
 }
