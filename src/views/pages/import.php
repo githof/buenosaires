@@ -2,6 +2,7 @@
 
 include_once(ROOT."src/class/io/XMLActeReader.php");
 include_once(ROOT."src/utils.php");
+include_once(ROOT."src/html_entities.php");
 
 function all_sources_available(){
     global $mysqli, $alert;
@@ -19,14 +20,15 @@ function all_sources_available(){
     }
 }
 
-function html_form_group($contents)
-{
-  return '
-    <div class="form-group">
-      '."$contents".'
-    </div>
-  ';
-}
+//  déplacé dans html_entities.php 
+// function html_form_group($contents)
+// {
+//   return '
+//     <div class="form-group">
+//       '."$contents".'
+//     </div>
+//   ';
+// }
 
 
 
@@ -54,19 +56,23 @@ function html_check_ignore($file_or_text)
     return html_form_group("$input\n  $label");
 }
 
-function html_submit()
-{
-    $button = '<button class="import-submit btn btn-primary">Envoyer</button>';
-    return html_form_group($button);
-}
+//  déplacé dans html_entities.php 
+// function html_submit($class, $value)
+// {
+//     $class;
+//     $value;
+//     $button = '<button class="'.$class.' btn btn-primary">'.$value.'</button>';
+//     return html_form_group($button);
+// }
 
-function html_hidden_type($file_or_text)
-{
-    return '
-        <input type="hidden" name="form_type" value="'
-            . $file_or_text
-        . '" />';
-}
+//  déplacé dans html_entities.php 
+// function html_hidden_type($file_or_text)    //  mettre $values comme nom
+// {
+//     return '
+//         <input type="hidden" name="form_type" value="'
+//             . $file_or_text
+//         . '" />';
+// }
 
 function html_import_source($file_or_text) {
 
@@ -100,7 +106,7 @@ function html_form_import($file_or_text) {
     $html = '<div>
         <form method="post" '.$enctype.' action="" class="import-form">'.
             $contents.
-            html_submit().
+            html_submit('import-submit', 'Envoyer').
         '</form>
     </div>';
 

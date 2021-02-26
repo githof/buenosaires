@@ -1,5 +1,7 @@
 <?php
 
+include_once(ROOT."src/html_entities.php");
+
 function html_item($title, $icon, $url){
     global $url_parsed;
 
@@ -72,17 +74,32 @@ foreach($menu_items as $item){
                 </div>
                 <div class="modal-body">
                     <form name="identification" action="" method="post">
-                        <input type="hidden" name="action" value="connexion">
-                        <div class="form-group">
+                        <!-- <input type="hidden" name="action" value="connexion"> -->
+                        <?php
+                            echo html_hidden_type(
+                                'connexion'
+                            );
+                            echo html_form_group(
+                                '<input class="form-control" type="email" name="connect_email" placeholder="Email">'
+                            );
+                            echo html_form_group(
+                                '<input class="form-control" type="password" name="connect_pass" placeholder="Password" />'
+                            );
+                            echo html_form_group(
+                                '<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                <input type="submit" class="btn btn-primary" value="Se connecter">'
+                            );
+                        ?>
+                        <!-- <div class="form-group">
                             <input class="form-control" type="email" name="connect_email" placeholder="Email" />
-                        </div>
-                        <div class="form-group">
+                        </div> -->
+                        <!-- <div class="form-group">
                             <input class="form-control" type="password" name="connect_pass" placeholder="Password" />
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                             <input type="submit" class="btn btn-primary" value="Se connecter">
-                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>
