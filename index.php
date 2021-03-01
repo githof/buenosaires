@@ -132,7 +132,7 @@ if($is_get){
         <div class="main">
             <h1><?php echo $page_title ?></h1>
             <div class="page">
-            <?php echo $page_output; ?>
+                <?php echo $page_output; ?>
             </div>
         </div>
         <div id="alert-container">

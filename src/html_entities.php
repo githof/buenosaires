@@ -344,6 +344,27 @@ function html_personne_periode($personne_id){
             </div>";
 }
 
+//  sert dans import.php (+ header.php new_account.php search.php)
+function html_form_group($contents) {
+  return '
+    <div class="form-group">
+      '."$contents".'
+    </div>
+  ';
+}
 
+//  sert dans import.php (+ header.php, detail_acte.php, search.php)
+function html_hidden_type($name, $values) {
+    return '
+        <input type="hidden" name="'.$name.'" value="'.$values.'" />';
+}
+
+//  sert dans import.php (+ header.php, dissocier.php, new_account.php, search.php) 
+function html_submit($class, $value) {
+    $class;
+    $value;
+    $button = '<button type="submit" class="'.$class.' btn btn-primary">'.$value.'</button>';
+    return html_form_group($button);
+}
 
 ?>

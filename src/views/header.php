@@ -51,10 +51,12 @@ foreach($menu_items as $item){
 <div class="connected">
     <span><?php echo $account->get_full_name(); ?></span>
     <?php if (can_access($access_pages["administration"])){ ?>
-    <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
+        <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
     <form action="" method="post">
-        <input type="hidden" name="action" value="deconnexion">
+    <?php echo html_hidden_type('action', 'deconnexion'); ?>
+        <!-- <input type="hidden" name="action" value="deconnexion"> -->
+        <!-- ?php echo html_submit('', 'Déconnexion'); ? -->
         <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Deconnexion' class="connexion_btn btn btn-default btn-sm">
             <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
         </button>
@@ -74,18 +76,22 @@ foreach($menu_items as $item){
                 </div>
                 <div class="modal-body">
                     <form name="identification" action="" method="post">
-                        <input type="hidden" name="action" value="connexion">
-                        
-                        <div class="form-group">
-                            <input class="form-control" type="email" name="connect_email" placeholder="Email" />
-                        </div> -->
-                        <div class="form-group">
-                            <input class="form-control" type="password" name="connect_pass" placeholder="Password" />
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                            <input type="submit" class="btn btn-primary" value="Se connecter">
-                        </div>
+                        <!-- <input type="hidden" name="action" value="connexion"> -->
+                        <?php
+                            echo html_hidden_type(
+                                'action', 'connexion'
+                            );
+                            echo html_form_group(
+                                '<input class="form-control" type="email" name="connect_email" placeholder="Email">'
+                            );
+                            echo html_form_group(
+                                '<input class="form-control" type="password" name="connect_pass" placeholder="Password" />'
+                            );
+                            echo html_form_group(
+                                '<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                '.html_submit('', 'Se connecter')
+                            );
+                        ?>
                     </form>
                 </div>
             </div>
