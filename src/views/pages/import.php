@@ -63,23 +63,6 @@ function html_check_ignore($file_or_text)
     return html_form_group("$input\n  $label");
 }
 
-//  déplacé dans html_entities.php 
-// function html_submit($class, $value)
-// {
-//     $class;
-//     $value;
-//     $button = '<button class="'.$class.' btn btn-primary">'.$value.'</button>';
-//     return html_form_group($button);
-// }
-
-//  déplacé dans html_entities.php 
-// function html_hidden_type($file_or_text)    //  mettre $values comme nom
-// {
-//     return '
-//         <input type="hidden" name="form_type" value="'
-//             . $file_or_text
-//         . '" />';
-// }
 function html_hidden_type($file_or_text)
 {
     return '
