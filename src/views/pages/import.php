@@ -2,7 +2,7 @@
 
 include_once(ROOT."src/class/io/XMLActeReader.php");
 include_once(ROOT."src/utils.php");
-include_once(ROOT."src/html_entities.php");
+
 
 function html_form_group($contents)
 {

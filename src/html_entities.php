@@ -1,6 +1,5 @@
 <?php
 
-// echo 'html_entities';
 
 include_once(ROOT."src/class/model/Personne.php");
 include_once(ROOT."src/class/model/Condition.php");
@@ -345,29 +344,6 @@ function html_personne_periode($personne_id){
             </div>";
 }
 
-//  sert dans import.php (+ header.php new_account.php search.php)
-function html_form_group($contents) {
-  return '
-    <div class="form-group">
-      '."$contents".'
-    </div>
-  ';
-}
 
-//  sert dans import.php (+ header.php, detail_acte.php, search.php)
-function html_hidden_type($values) {
-    return '
-        <input type="hidden" name="form_type" value="'
-            . $values
-        . '" />';
-}
-
-//  sert dans import.php (+ header.php, dissocier.php, new_account.php, search.php) 
-function html_submit($class, $value) {
-    $class;
-    $value;
-    $button = '<button class="'.$class.' btn btn-primary">'.$value.'</button>';
-    return html_form_group($button);
-}
 
 ?>
