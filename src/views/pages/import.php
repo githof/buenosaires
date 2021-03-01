@@ -5,14 +5,14 @@ include_once(ROOT."src/utils.php");
 include_once(ROOT."src/html_entities.php");
 
 
-function html_form_group($contents)
-{
-  return '
-    <div class="form-group">
-      '."$contents".'
-    </div>
-  ';
-}
+// function html_form_group($contents)
+// {
+//   return '
+//     <div class="form-group">
+//       '."$contents".'
+//     </div>
+//   ';
+// }
 
 function html_available_sources(){
     global $mysqli, $alert;
@@ -84,7 +84,7 @@ function html_import_source($file_or_text) {
 }
 
 //  déplacé dans html_entities.php 
-// function html_submit($class, $value)
+// function html_submit($name, $value)
 // {
 //     $class;
 //     $value;
@@ -96,12 +96,14 @@ function html_import_source($file_or_text) {
 factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)`
 (les messages en `h4` peuvent rester comme ça en html direct)
 */
-function html_form_import($file_or_text) {
+//  J'ai ajouté $name en paramètre pour le name="" de l'input hidden
+//  pour pouvoir le réutiliser dans d'autres fichiers
+function html_form_import($file_or_text, $name) {
 
     $contents =
         html_select_source($file_or_text).
         html_check_ignore($file_or_text).
-        html_hidden_type($form_type, $file_or_text);
+        html_hidden_type($name, $file_or_text);
 
     if($file_or_text === 'file') {
         $enctype = 'enctype="multipart/form-data"';
@@ -161,11 +163,11 @@ if(isset($_POST["form_type"])){
     <h4>
         Avec un fichier
     </h4>
-    <?php echo html_form_import('file'); ?>
+    <?php echo html_form_import('form_type', 'file'); ?>
 </section>
 <section>
     <h4>
         En le(s) copiant ici
     </h4>
-    <?php echo html_form_import('text'); ?>
+    <?php echo html_form_import('form_type', 'text'); ?>
 </section>

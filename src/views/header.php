@@ -38,6 +38,10 @@ foreach($menu_items as $item){
         $html_menu_items .= html_item($item[0], $item[1], $item[2]);
 }
 
+function html_input($type, $name, $placeholder) {
+    return '<input class="form-control" type="'.$type.'" name="'.$name.'" placeholder="'.$placeholder.'">';
+}
+
 ?>
 
 <p>
@@ -54,9 +58,10 @@ foreach($menu_items as $item){
         <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
     <form action="" method="post">
-    <?php echo html_hidden_type('action', 'deconnexion'); ?>
+    <?php 
+        echo html_hidden_type('action', 'deconnexion'); 
+    ?>
         <!-- <input type="hidden" name="action" value="deconnexion"> -->
-        <!-- ?php echo html_submit('', 'Déconnexion'); ? -->
         <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Deconnexion' class="connexion_btn btn btn-default btn-sm">
             <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
         </button>
@@ -76,19 +81,12 @@ foreach($menu_items as $item){
                 </div>
                 <div class="modal-body">
                     <form name="identification" action="" method="post">
-                        <!-- <input type="hidden" name="action" value="connexion"> -->
                         <?php
-                            echo html_hidden_type(
-                                'action', 'connexion'
-                            );
-                            echo html_form_group(
-                                '<input class="form-control" type="email" name="connect_email" placeholder="Email">'
-                            );
-                            echo html_form_group(
-                                '<input class="form-control" type="password" name="connect_pass" placeholder="Password" />'
-                            );
-                            echo html_form_group(
-                                '<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            echo html_hidden_type('action', 'connexion');
+                            echo html_input('email', 'connect_email', 'Email');
+                            echo html_input('password', 'connect_pass', 'Password');
+                            echo html_form_group('
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                                 '.html_submit('', 'Se connecter')
                             );
                         ?>

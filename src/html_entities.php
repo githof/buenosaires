@@ -344,7 +344,7 @@ function html_personne_periode($personne_id){
             </div>";
 }
 
-//  sert dans import.php (+ header.php new_account.php search.php)
+//  sert dans import.php (+ header.php (new_account.php) search.php)
 function html_form_group($contents) {
   return '
     <div class="form-group">
@@ -354,9 +354,9 @@ function html_form_group($contents) {
 }
 
 //  sert dans import.php (+ header.php, detail_acte.php, search.php)
-function html_hidden_type($name, $values) {
+function html_hidden_type($name, $value) {
     return '
-        <input type="hidden" name="'.$name.'" value="'.$values.'" />';
+        <input type="hidden" name="'.$name.'" value="'.$value.'" />';
 }
 
 //  sert dans import.php (+ header.php, dissocier.php, new_account.php, search.php) 
