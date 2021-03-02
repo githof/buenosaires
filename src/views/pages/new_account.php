@@ -32,10 +32,11 @@ function check_post_values(){
 }
 
 //  inputs ont une classe "has-error" si un champ n'est pas rempli correctement
+/*  Pour que la class "has-error" soit prise en charge par Bootstrap elle doit 
+    être placée sur form-group, pas sur l'input    */
 function html_input_if($label, $type, $name) {
     global $email_error, $password_error, $prenom_error, $nom_error;
 
-    // $form_error = $email_error || $password_error || $prenom_error || $nom_error;
     //  pour inputs
     $type;
     $name;
@@ -48,11 +49,9 @@ function html_input_if($label, $type, $name) {
     */
     $value = $name === 'password' ? '' : 'value="'.get_post_var($name).'"';
 
-    /*
-    Il faut récupérer les variables "true" de check_post_values() pour mettre la class "has-error" à l'input
-    (même si la class n'active pas la règle Bootstrap associée, avant même mes changements. Je n'ai pas trouvé pourquoi)
-    */  
-    //  $form_error renvoie false, pas des noms de variables 
+    //  Il faut récupérer les variables "true" de check_post_values() pour mettre la class "has-error" à l'input
+
+    //  $form_error renvoie false, pas des noms de variables, on ne peut pas l'utiliser dans une condition 
     // ($form_error == $name.'_error') ? $class='form-control has-error' : $class='form-control';
     if($name === 'email') { 
         if($email_error===true) 
@@ -86,10 +85,23 @@ function html_input_if($label, $type, $name) {
     return $html;
 }
 
-function html_form_group_if($label, $type, $name) {
+function html_form_group_input($label, $type, $name) {
     return '<div class="form-group">'.
         html_input_if($label, $type, $name).'
     </div>';
+}
+
+function html_form_new_account($contents) {
+
+    $contents = html_form_group_input('Email', 'email', 'email').
+    html_form_group_input('Password', 'password', 'password').
+    html_form_group_input('Prenom', 'text', 'prenom').
+    html_form_group_input('Nom', 'text', 'nom').
+    html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'));
+
+    return '<form class="form-horizontal" name="new_account" action="./new-account" method="post">'. 
+        $contents.
+    '</form>';
 }
 
 
@@ -122,63 +134,21 @@ if($account->is_connected){
     Erreur lors de la création du compte
 </div>
 <?php
-        }
+    }
 }else{
 ?>
 
 <div id="form_new_account">
-    <form class="form-horizontal" name="new_account" action="./new-account" method="post">
-        <!-- Les classes "has-error" n'activent pas la règle (border-color) de Bootstrap --> 
+    <!-- <form class="form-horizontal" name="new_account" action="./new-account" method="post"> -->
         <?php 
-        // echo html_form_group_if($label, $type, $name);
+            echo html_form_new_account($contents);
+            // echo html_form_group_input('Email', 'email', 'email').
+            // html_form_group_input('Password', 'password', 'password').
+            // html_form_group_input('Prenom', 'text', 'prenom').
+            // html_form_group_input('Nom', 'text', 'nom').
+            // html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'))
         ?>
-        <div class="form-group">
-            <?php 
-            echo 
-                html_input_if('Email', 'email', 'email');
-            ?>
-            <!-- <label class="col-sm-3 control-label" for="email">Email</label>
-            <div class="col-sm-9">
-                <input class="form-control <?php // if($email_error) echo 'has-error' ?>" type="email" name="email" id="email" value="<?php echo get_post_var('email'); ?>" />
-            </div> -->
-        </div>
-        <div class="form-group">
-            <?php 
-            echo 
-                html_input_if('Password', 'password', 'password');
-            ?>
-            <!-- <label class="col-sm-3 control-label" for="password">Mot de passe</label>
-            <div class="col-sm-9">
-                <input class="form-control <?php // if($password_error) echo 'has-error' ?>" type="password" name="password" id="password" />
-            </div> -->
-        </div>
-        <div class="form-group">
-            <?php 
-            echo 
-                html_input_if('Prenom', 'text', 'prenom');
-            ?>
-            <!-- <label class="col-sm-3 control-label" for="prenom">Prenom</label>
-            <div class="col-sm-9">
-                <input class="form-control <?php // if($prenom_error) echo 'has-error' ?>" type="text" name="prenom" id="prenom" value="<?php echo get_post_var('prenom'); ?>" />
-            </div> -->
-        </div>
-        <div class="form-group">
-            <?php 
-            echo 
-                html_input_if('Nom', 'text', 'nom');
-            ?>
-            <!-- <label class="col-sm-3 control-label" for="nom">Nom</label>
-            <div class="col-sm-9">
-                <input class="form-control <?php // if($nom_error) echo 'has-error' ?>" type="text" name="nom" id="nom" value="<?php echo get_post_var('nom'); ?>" />
-            </div> -->
-        </div>
-        <div class="form-group">
-            <?php
-                echo html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer');
-            ?>
-            <!-- <input class="col-sm-offset-5 col-sm-2 btn btn-primary" type="submit" value="Envoyer" /> -->
-        </div>
-    </form>
+    <!-- </form> -->
 </div>
 
 <?php } ?>

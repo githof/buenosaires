@@ -58,9 +58,9 @@ function html_input($type, $name, $placeholder) {
         <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
     <form action="" method="post">
-    <?php 
-        echo html_hidden_type('action', 'deconnexion'); 
-    ?>
+        <?php 
+            echo html_hidden_type('action', 'deconnexion'); 
+        ?>
         <!-- <input type="hidden" name="action" value="deconnexion"> -->
         <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Deconnexion' class="connexion_btn btn btn-default btn-sm">
             <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
