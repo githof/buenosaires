@@ -42,6 +42,7 @@ function html_input_if($label, $type, $name) {
     $name;
     $class;
     $value;
+    $info;
 
     /*  
         La valeur de 'password' n'est pas conservée si le form contient une/des erreurs
@@ -64,6 +65,7 @@ function html_input_if($label, $type, $name) {
             $class = ' has-error';
         else 
             $class = '';
+        $info = '<p>Doit contenir au moins 6 caractères</p>';
     } 
     if($name === 'prenom') { 
         if($prenom_error===true) 
@@ -77,26 +79,29 @@ function html_input_if($label, $type, $name) {
         else 
             $class = '';
     } 
-    $html = '<label class="col-sm-3 control-label" for="'.$name.'">'.$label.'</label>
-        <div class="col-sm-9">
-            <input class="form-control '.$class.'" type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$value.'/>
+    $html = '<div class="form-group '.$class.'">
+            <label class="col-sm-3 control-label" for="'.$name.'">'.$label.'</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$value.'/>'. 
+                $info.
+            '</div>
         </div>';
 
     return $html;
 }
 
-function html_form_group_input($label, $type, $name) {
-    return '<div class="form-group">'.
-        html_input_if($label, $type, $name).'
-    </div>';
-}
+// function html_form_group_input($label, $type, $name) {
+//     return '<div class="form-group">'.
+//         html_input_if($label, $type, $name).'
+//     </div>';
+// }
 
 function html_form_new_account($contents) {
 
-    $contents = html_form_group_input('Email', 'email', 'email').
-    html_form_group_input('Password', 'password', 'password').
-    html_form_group_input('Prenom', 'text', 'prenom').
-    html_form_group_input('Nom', 'text', 'nom').
+    $contents = html_input_if('Email', 'email', 'email').
+    html_input_if('Password', 'password', 'password').
+    html_input_if('Prenom', 'text', 'prenom').
+    html_input_if('Nom', 'text', 'nom').
     html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'));
 
     return '<form class="form-horizontal" name="new_account" action="./new-account" method="post">'. 
