@@ -77,21 +77,22 @@ function html_form_search($acte_or_personne) {
         $date = array(
             array(
                 'label_date'=>'acte_date_start',
-                'name_date'=>'A partir de'
+                'name_date'=>'A partir de : '
             ),
             array(
                 'label_date'=>'acte_date_end',
-                'name_date'=>'Avant'
+                'name_date'=>'Avant : '
             )
         );
         //  params pour html_form_hidden() :
         $name = 'type';
         $value = 'acte';
 
-        $contents = 
-            html_form_date($date[0]['label_date'], $date[0]['name_date']).
-            html_form_date($date[1]['label_date'], $date[1]['name_date']).
-            html_form_personnes('Contenant les personnes avec pour nom de famille', 'acte_noms', 'nom');
+        foreach($date as $d) {
+            $contents .= 
+                html_form_date($d['label_date'], $d['name_date']);
+        }
+        $contents .= html_form_personnes('Contenant les personnes avec pour nom de famille', 'acte_noms', 'nom');
 
     } else {
         $personne = array(
@@ -106,28 +107,23 @@ function html_form_search($acte_or_personne) {
                 'nom_ou_prenom' => 'prenom'
             )
         );
+        //  params pour html_form_hidden() :
         $name = 'type';
         $value = 'personne';
         foreach($personne as $pers){
             $contents .= html_form_personnes($pers['label_personne'], $pers['name_personne'], $pers['nom_ou_prenom']);
         }
-        // $contents = 
-            // html_form_personnes($personne[0]['label_personne'], $personne[0]['name_personne'], $personne[0]['nom_ou_prenom']);
-            // html_form_personnes($personne[1]['label_personne'], $personne[1]['name_personne'], $personne[1]['nom_ou_prenom']);
     }
 
     $contents .= 
         html_submit('', 'Rechercher').
         html_hidden_type($name, $value);
 
-
-    $html = '<div>
+    return '<div>
         <form method="get" action="resultat">'
             .$contents.
         '</form>
     </div>';
-
-    return $html;
 }
 
 
@@ -145,79 +141,26 @@ function html_form_search($acte_or_personne) {
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="actes">
         <section>
-            <!-- <div>
-                <form method="get" action="resultat"> -->
-                    <?php 
-                        echo html_form_search('acte');
-                        // echo html_form_date('acte_date_start', 'A partir de');
-                        // echo html_form_date('acte_date_end', 'Avant');
-                        // echo html_form_personnes('Contenant les personnes avec pour nom de famille', 'acte_noms', 'nom');
-                        // echo html_submit('', 'Rechercher');
-                        // echo html_hidden_type('type', 'acte');
-                    ?>
-                    <!-- <div class="form-group">
-                        <label for="acte_date_start">A partir de</label>
-                        <input type="date" name="acte_date_start" id="acte_date_start"> --> 
-                        <!--    Je n'ai pas mis ce <p>, le type date fournit le format
-                        <p class="help-block">Format: AAAA-MM-JJ</p>
-                    </div> -->
-                    <!-- <div class="form-group">
-                        <label for="acte_date_end">Avant</label>
-                        <input type="date" name="acte_date_end" id="acte_date_end">
-                        <p class="help-block">Format: AAAA-MM-JJ</p>
-                    </div> -->
-                    <!-- <div class="form-group">
-                        <label for="acte_noms">Contenant les personnes avec pour nom de famille</label>
-                        <select multiple="multiple" name="acte_noms[]" id="acte_noms">
-                            <?php // echo all_noms(); ?>
-                        </select>
-                    </div> -->
-                    <!-- <div class="form-group">
-                        <input type="submit" value="Rechercher">
-                    </div> -->
-                    <!-- <input type="hidden" name="type" value="acte"> -->
-                <!-- </form>
-            </div> -->
+            <?php 
+                echo html_form_search('acte');
+                // echo html_form_date('acte_date_start', 'A partir de');
+                // echo html_form_date('acte_date_end', 'Avant');
+                // echo html_form_personnes('Contenant les personnes avec pour nom de famille', 'acte_noms', 'nom');
+                // echo html_submit('', 'Rechercher');
+                // echo html_hidden_type('type', 'acte');
+            ?>
         </section>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="personnes">
         <section>
-            <!-- <div>
-                <form method="get" action="resultat"> -->
-                    <!-- <div class="form-group">                   commenté d'origine 
-                        <label for="personne_date_start">A partir de</label>
-                        <input type="date" name="personne_date_start" id="personne_date_start">
-                    </div>
-                    <div class="form-group">                        commenté d'origine 
-                        <label for="personne_date_end">Avant</label>
-                        <input type="date" name="personne_date_end" id="personne_date_end">
-                    </div> -->
-                    <?php 
-                        echo html_form_search('personne');
-                        // echo html_form_personnes('Avec pour nom(s) de famille', 'personne_noms', 'nom');
-                        // echo html_form_personnes('Avec pour prenom(s)', 'personne_prenoms', 'prenom');
-                        // echo html_submit('', 'Rechercher');
-                        // echo html_hidden_type('type', 'personne');
-                    ?>
-                    <!-- <div class="form-group">
-                        <label for="personne_noms">Avec pour nom(s) de famille</label>
-                        <select multiple="multiple" name="personne_noms[]" id="personne_noms">
-                            <?php // echo all_noms(); ?>
-                        </select>
-                    </div> -->
-                    <!-- <div class="form-group">
-                        <label for="personne_prenoms">Avec pour prenom(s)</label>
-                        <select multiple="multiple" name="personne_prenoms[]" id="personne_prenoms">
-                            <?php // echo all_prenoms(); ?>
-                        </select> -->
-                    </div>
-                    <!-- <div class="form-group">
-                        <input type="submit" value="Rechercher">
-                    </div> -->
-                    <!-- <input type="hidden" name="type" value="personne"> -->
-                <!-- </form>
-            </div> -->
+            <?php 
+                echo html_form_search('personne');
+                // echo html_form_personnes('Avec pour nom(s) de famille', 'personne_noms', 'nom');
+                // echo html_form_personnes('Avec pour prenom(s)', 'personne_prenoms', 'prenom');
+                // echo html_submit('', 'Rechercher');
+                // echo html_hidden_type('type', 'personne');
+            ?>
         </section>
     </div>
 </div>
