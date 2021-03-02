@@ -42,6 +42,22 @@ function html_input($type, $name, $placeholder) {
     return '<input class="form-control" type="'.$type.'" name="'.$name.'" placeholder="'.$placeholder.'">';
 }
 
+function html_form_connexion($contents) {
+    $contents = 
+        html_hidden_type('action', 'connexion').
+        html_input('email', 'connect_email', 'Email'). 
+        html_input('password', 'connect_pass', 'Password'). 
+        html_form_group('
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            '.html_submit('', 'Se connecter')
+        );
+    return '<div class="modal-body">
+        <form name="identification" action="" method="post">'
+            .$contents.
+        '</form>
+    </div>';
+}
+
 ?>
 
 <p>
@@ -82,13 +98,14 @@ function html_input($type, $name, $placeholder) {
                 <div class="modal-body">
                     <form name="identification" action="" method="post">
                         <?php
-                            echo html_hidden_type('action', 'connexion');
-                            echo html_input('email', 'connect_email', 'Email');
-                            echo html_input('password', 'connect_pass', 'Password');
-                            echo html_form_group('
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                                '.html_submit('', 'Se connecter')
-                            );
+                            echo html_form_connexion($contents);
+                            // echo html_hidden_type('action', 'connexion');
+                            // echo html_input('email', 'connect_email', 'Email');
+                            // echo html_input('password', 'connect_pass', 'Password');
+                            // echo html_form_group('
+                            //     <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            //     '.html_submit('', 'Se connecter')
+                            // );
                         ?>
                     </form>
                 </div>
