@@ -43,18 +43,19 @@ function html_input($type, $name, $placeholder) {
 }
 
 function html_form_connexion($contents) {
-    $contents = 
-        html_hidden_type('action', 'connexion').
-        html_input('email', 'connect_email', 'Email'). 
-        html_input('password', 'connect_pass', 'Password'). 
-        html_form_group('
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-            '.html_submit('', 'Se connecter')
-        );
+    $fermer = '<button type="button"'
+      . ' class="btn btn-default" data-dismiss="modal">'
+      . 'Fermer</button>';
+    $se_connecter = html_submit('', 'Se connecter');
+    $buttons = html_form_group($fermer . $se_connecter);
+
     return '<div class="modal-body">
         <form name="identification" action="" method="post">'
-            .$contents.
-        '</form>
+        . html_hidden_type('action', 'connexion')
+        . html_input('email', 'connect_email', 'Email')
+        . html_input('password', 'connect_pass', 'Password')
+        . $buttons
+        . '</form>
     </div>';
 }
 
@@ -74,8 +75,8 @@ function html_form_connexion($contents) {
         <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
     <?php } ?>
     <form action="" method="post">
-        <?php 
-            echo html_hidden_type('action', 'deconnexion'); 
+        <?php
+            echo html_hidden_type('action', 'deconnexion');
         ?>
         <!-- <input type="hidden" name="action" value="deconnexion"> -->
         <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Deconnexion' class="connexion_btn btn btn-default btn-sm">
