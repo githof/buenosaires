@@ -228,10 +228,8 @@ class XMLActeReader {
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
-                //  *** test    210303  //  
-                echo '<br>'.__METHOD__.' ';
-                var_dump($xml_child);
-                //  fin test
+                //  *** test    //  var_dump($xml_child);   //  ==> OK perso/outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
+                //  *** test    //  var_dump($personne);    //  ==> Manque des ids perso/outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
@@ -249,15 +247,11 @@ class XMLActeReader {
         $personne->set_xml($xml_personne);
         //  *** test    //  var_dump($xml_personne);    ok perso/outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
 
-        $this->set_personne_attributes($personne,
-          $xml_personne->attributes());
+        $this->set_personne_attributes($personne, $xml_personne->attributes());
         foreach($xml_personne->children() as $xml_child)
             $this->read_personne_child_node($personne, $xml_child);
         //  *** test    // var_dump($personne);     //  Manque ids outputs/XMLActeReade-read_personne_node-personne-210223.txt
-        //  *** test    // var_dump($xml_child);    //  Manque des ids outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
-        // echo '<br>'.__METHOD__.' ';
-        // var_dump($personne);
-        //  fin test
+        //  *** test    // var_dump($xml_child);    //  Manque des informations outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
         return $personne;
     }
 

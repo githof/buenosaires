@@ -43,11 +43,7 @@ class Personne implements DatabaseIO{
     public function add_prenom_str($s){
         $this->add_prenom(new Prenom(NULL, $s));
         // ok mais $s n'affiche pas les 2 prénoms, seulement le 2è. C'est normal ? ***
-        // echo '<br>$this->prenom_str : ';
         // var_dump($this->prenoms_str);
-        // echo '<br>$s : ';
-        // var_dump($s);
-        //  *** fin test
     }
 
     //  add_prenom() peut être privée non ? ***
@@ -68,13 +64,7 @@ class Personne implements DatabaseIO{
     public function add_nom_str($s, $attributes){
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
         // ok mais $s n'affiche pas l'attribut.    *** 
-        // echo '<br>$this->nom_str : ';
-        // var_dump($this->noms_str);
-        // echo '<br>$s : ';
-        // var_dump($s);
-        // echo '<br>$attributes : ';
-        // var_dump($attributes);
-        //  *** fin test
+        // var_dump($this->noms_str);    // var_dump($s);   // var_dump($attributes);
     }
 
     public function add_nom($nom){
@@ -104,10 +94,8 @@ class Personne implements DatabaseIO{
             $personne_destination,
             $statut_id
         );
-        //  *** test    
-        // echo '<br>'.__METHOd__.' ';
-        // print_r($this->relation);  //  ==> Personne::add_relation NULL (9x)
-        //  fin test
+        //  *** test    // var_dump($personne_source);  var_dump($personne_destination);    var_dump($statut_id);   //  ==> manque des informations perso/outputs/Personne::add_relation-210303.txt
+        //  fin test echo '<br>'.__METHOD__.' ';
     }
 
     //  test manque ids et relations

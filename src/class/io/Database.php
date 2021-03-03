@@ -598,19 +598,17 @@ class Database extends mysqli{
             }
 
             $values["id"] = $obj->id;
-            //  test    ***     ID : NULL
+            //  *** test    210303  //  ==> commentaires en cours perso/outputs/Database::into_db_insert-values-210303.txt 
+            echo '<br>'.__METHOD__.' '; 
+            echo '<br>$values : ';   
+            var_dump($values);  //  tableau des valeurs pour la table, manque l'id
             // echo '<br>$obj->get_table_name : ';   
             // var_dump($obj->get_table_name());  //   nom de la table
-            // echo '<br>$values : ';   
-            // var_dump($values);  //  tableau des valeurs pour la table, manque l'id
             //  fin test  ***
             $result = $this->insert($obj->get_table_name(), $values);
             $max_try--;
         }
-        //  test    ***     
-        // echo '<br>$result : ';   
-        // var_dump($result);  
-        //  fin test  ***
+        //  test    ***     210303  // var_dump($result);  //   ==> $result : bool(false)
         return $result;
     }
 
