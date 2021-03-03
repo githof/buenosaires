@@ -77,58 +77,46 @@ function html_input_if($label, $type, $name) {
 
 function html_form_new_account($contents) {
 
-    return '<form class="form-horizontal" name="new_account"'
-      . ' action="./new-account" method="post">
-      '
-      . html_input_if('Email', 'email', 'email')
-      . html_input_if('Password', 'password', 'password')
-      . html_input_if('Prenom', 'text', 'prenom')
-      . html_input_if('Nom', 'text', 'nom')
-      . html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'))
-      . '
-    </form>';
+    return '<div id="form_new_account">
+        <form class="form-horizontal" name="new_account"'
+        . ' action="./new-account" method="post">
+          '
+          . html_input_if('Email', 'email', 'email')
+          . html_input_if('Password', 'password', 'password')
+          . html_input_if('Prenom', 'text', 'prenom')
+          . html_input_if('Nom', 'text', 'nom')
+          . html_form_group(html_submit('col-sm-offset-5 col-sm-2 ',
+                                        'Envoyer'))
+          . '
+        </form>
+      </div>';
 }
 
+function html_div_message($message)
+{
+  return "<div>$message</div>\n";
+}
 
-if($account->is_connected){
+function create_account()
+{
+  global $account;
+
+  $account->set_email(safe($_POST['email']));
+  $account->set_password(safe(md5($_POST['password'])));
+  $account->set_prenom(safe($_POST['prenom']));
+  $account->set_nom(safe($_POST['nom']));
+
+  return $account->add_into_db();
+}
+
+if($account->is_connected)
+  echo html_div_message('Vous êtes déjà connecté(e) avec un compte');
+else if(isset($_POST['email']) && check_post_values()){
+    if(create_account())
+      echo html_div_message('Compte crée avec succès !');
+    else
+      echo html_div_message('Erreur lors de la création du compte');
+}
+else
+  echo html_form_new_account($contents);
 ?>
-
-<div>
-    Vous êtes déjà connecté avec un compte
-</div>
-<?php
-}else if(isset($_POST['email']) && check_post_values()){
-    $account->set_email(safe($_POST['email']));
-    $account->set_password(safe(md5($_POST['password'])));
-    $account->set_prenom(safe($_POST['prenom']));
-    $account->set_nom(safe($_POST['nom']));
-
-    $res = $account->add_into_db();
-
-    if($res){
-?>
-
-<div>
-    Compte crée avec succès !
-</div>
-<?php
-    }else{
-?>
-
-<div>
-    Erreur lors de la création du compte
-</div>
-<?php
-    }
-}else{
-?>
-
-<div id="form_new_account">
-    <!-- <form class="form-horizontal" name="new_account" action="./new-account" method="post"> -->
-        <?php
-            echo html_form_new_account($contents);
-        ?>
-    <!-- </form> -->
-</div>
-
-<?php } ?>
