@@ -32,81 +32,61 @@ function check_post_values(){
 }
 
 //  inputs ont une classe "has-error" si un champ n'est pas rempli correctement
-/*  Pour que la class "has-error" soit prise en charge par Bootstrap elle doit 
+/*  Pour que la class "has-error" soit prise en charge par Bootstrap elle doit
     être placée sur form-group, pas sur l'input    */
 function html_input_if($label, $type, $name) {
     global $email_error, $password_error, $prenom_error, $nom_error;
 
-    //  pour inputs
-    $type;
-    $name;
-    $class;
-    $value;
-    $info;
-
-    /*  
-        La valeur de 'password' n'est pas conservée si le form contient une/des erreurs
-        Pour les autres champs, afficher de nouveau la valeur saisie
+    /*
+      Il faut récupérer les variables "true" de check_post_values()
+      pour mettre la classe "has-error" à l'input
     */
-    $value = $name === 'password' ? '' : 'value="'.get_post_var($name).'"';
+    $error = "$name".'_error';
+    $class_error = (${$error}) ?
+      ' has-error' : '';
 
-    //  Il faut récupérer les variables "true" de check_post_values() pour mettre la class "has-error" à l'input
+    if($name == 'password')
+    {
+      $info = '<p>Doit contenir au moins 6 caractères</p>';
+      $value = '';
+      /*
+          La valeur de 'password' n'est pas conservée si le form contient une/des erreurs.
+          Pour les autres champs, afficher de nouveau la valeur saisie
+      */
+    }
+    else
+    {
+      $info = '';
+      $value = 'value="' . get_post_var($name). '"';
+    }
 
-    //  $form_error renvoie false, pas des noms de variables, on ne peut pas l'utiliser dans une condition 
-    // ($form_error == $name.'_error') ? $class='form-control has-error' : $class='form-control';
-    if($name === 'email') { 
-        if($email_error===true) 
-            $class = ' has-error';
-        else 
-            $class = '';
-    } 
-    if($name === 'password') { 
-        if($password_error===true) 
-            $class = ' has-error';
-        else 
-            $class = '';
-        $info = '<p>Doit contenir au moins 6 caractères</p>';
-    } 
-    if($name === 'prenom') { 
-        if($prenom_error===true) 
-            $class = ' has-error';
-        else 
-            $class = '';
-    } 
-    if($name === 'nom') { 
-        if($nom_error===true) 
-            $class = ' has-error';
-        else 
-            $class = '';
-    } 
-    $html = '<div class="form-group '.$class.'">
-            <label class="col-sm-3 control-label" for="'.$name.'">'.$label.'</label>
+    $html = '<div class="form-group' . $class_error. '">
+            <label class="col-sm-3 control-label"'
+              . ' for="' $name. '">' . $label . '</label>
             <div class="col-sm-9">
-                <input class="form-control" type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$value.'/>'. 
-                $info.
-            '</div>
+                <input class="form-control"'
+                  .  ' type="' . $type . '" name="' . $name .'"'
+                  .  ' id="' .$name . '" '.$value.'/>'
+                  . $info
+                  . '
+            </div>
         </div>';
 
     return $html;
 }
 
-// function html_form_group_input($label, $type, $name) {
-//     return '<div class="form-group">'.
-//         html_input_if($label, $type, $name).'
-//     </div>';
-// }
-
 function html_form_new_account($contents) {
 
-    $contents = html_input_if('Email', 'email', 'email').
-    html_input_if('Password', 'password', 'password').
-    html_input_if('Prenom', 'text', 'prenom').
-    html_input_if('Nom', 'text', 'nom').
-    html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'));
-
-    return '<form class="form-horizontal" name="new_account" action="./new-account" method="post">'. 
-        $contents.
-    '</form>';
+    return '<form class="form-horizontal" name="new_account"'
+      . ' action="./new-account" method="post">
+      '
+      . html_input_if('Email', 'email', 'email')
+      . html_input_if('Password', 'password', 'password')
+      . html_input_if('Prenom', 'text', 'prenom')
+      . html_input_if('Nom', 'text', 'nom')
+      . html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'))
+      . '
+    </form>';
 }
 
 
@@ -145,13 +125,8 @@ if($account->is_connected){
 
 <div id="form_new_account">
     <!-- <form class="form-horizontal" name="new_account" action="./new-account" method="post"> -->
-        <?php 
+        <?php
             echo html_form_new_account($contents);
-            // echo html_form_group_input('Email', 'email', 'email').
-            // html_form_group_input('Password', 'password', 'password').
-            // html_form_group_input('Prenom', 'text', 'prenom').
-            // html_form_group_input('Nom', 'text', 'nom').
-            // html_form_group(html_submit('col-sm-offset-5 col-sm-2 ', 'Envoyer'))
         ?>
     <!-- </form> -->
 </div>
