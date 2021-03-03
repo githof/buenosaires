@@ -210,7 +210,7 @@ class XMLActeReader {
 
     private function read_personne_child_node($personne, $xml_child) {
         //  *** test    //  var_dump($xml_child);   //  ==> Manque des ids perso/outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
-        //  *** test    //  var_dump($personne);    //  ==> en cours de commentage perso/outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
+        //  *** test    //  var_dump($personne);    //  ==> Manque des ids perso/outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
@@ -228,10 +228,14 @@ class XMLActeReader {
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
+                //  *** test    210303  //  
+                echo '<br>'.__METHOD__.' ';
+                var_dump($xml_child);
+                //  fin test
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
-                //  *** test    // var_dump($xml_child->__toString());      //  ==> cf buenosaires/morgan/outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
+                //  *** test    // var_dump($xml_child->__toString());      //  ==> cf perso/outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
                 // print_r($this->source_id);      //  ==> aucun retour
                 //  fin test
                 break;
