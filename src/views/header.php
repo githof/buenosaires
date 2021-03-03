@@ -78,7 +78,6 @@ function html_form_connexion($contents) {
         <?php
             echo html_hidden_type('action', 'deconnexion');
         ?>
-        <!-- <input type="hidden" name="action" value="deconnexion"> -->
         <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Deconnexion' class="connexion_btn btn btn-default btn-sm">
             <span class='glyphicon glyphicon-log-out' aria-hidden='true'></span>
         </button>
@@ -97,18 +96,9 @@ function html_form_connexion($contents) {
                     <h4 class="modal-title" id="modal-connexion-label">Connexion</h4>
                 </div>
                 <div class="modal-body">
-                    <form name="identification" action="" method="post">
-                        <?php
-                            echo html_form_connexion($contents);
-                            // echo html_hidden_type('action', 'connexion');
-                            // echo html_input('email', 'connect_email', 'Email');
-                            // echo html_input('password', 'connect_pass', 'Password');
-                            // echo html_form_group('
-                            //     <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                            //     '.html_submit('', 'Se connecter')
-                            // );
-                        ?>
-                    </form>
+                <?php
+                    echo html_form_connexion($contents);
+                ?>
                 </div>
             </div>
         </div>
