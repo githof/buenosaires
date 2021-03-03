@@ -209,7 +209,8 @@ class XMLActeReader {
     }
 
     private function read_personne_child_node($personne, $xml_child) {
-        //  *** test    //  var_dump($xml_child);   //  ==> ok cf buenosaires/morgan/outputs/XMLActeReader-read_personne_child_node-xml_child-210224.txt
+        //  *** test    //  var_dump($xml_child);   //  ==> Manque des ids perso/outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
+        //  *** test    //  var_dump($personne);    //  ==> en cours de commentage perso/outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
@@ -242,16 +243,21 @@ class XMLActeReader {
     public function read_personne_node($xml_personne){
         $personne = new Personne();
         $personne->set_xml($xml_personne);
+        //  *** test    //  var_dump($xml_personne);    ok perso/outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
 
         $this->set_personne_attributes($personne,
           $xml_personne->attributes());
         foreach($xml_personne->children() as $xml_child)
             $this->read_personne_child_node($personne, $xml_child);
-        //  *** test    // var_dump($personne);     //  Manque ids morgan/outputs/XMLActeReade-read_personne_node-personne-210223.txt
-
+        //  *** test    // var_dump($personne);     //  Manque ids outputs/XMLActeReade-read_personne_node-personne-210223.txt
+        //  *** test    // var_dump($xml_child);    //  Manque des ids outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
+        // echo '<br>'.__METHOD__.' ';
+        // var_dump($personne);
+        //  fin test
         return $personne;
     }
 
+    //  Acte.php post_into_db
     public function update_xml($acte){
         $xml_acte = $this->xml;
         foreach($xml_acte->children() as $xml_child){

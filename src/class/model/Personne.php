@@ -104,6 +104,10 @@ class Personne implements DatabaseIO{
             $personne_destination,
             $statut_id
         );
+        //  *** test
+        echo '<br>'.__METHOD__.' ';
+        var_dump($this->relation);
+        //  fin test
     }
 
     public function set_pere($pere){

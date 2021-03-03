@@ -47,8 +47,8 @@ class Database extends mysqli{
         $s .= " " . $more;
 
         //  docu ***
-        echo '<br>'. __METHOD__;
-        echo '<br>'.$s;
+        // echo '<br>'. __METHOD__;
+        // echo '<br>'.$s;
 
         return $this->query($s);
     }
@@ -89,8 +89,8 @@ class Database extends mysqli{
         //  docu ***
         //  *** cf outputs/Database-insert.txt 
         //  *** https://stackoverflow.com/questions/41354898/method-and-function
-        echo '<br>'. __METHOD__;
-        echo  $s;
+        // echo '<br>'. __METHOD__;
+        // echo  $s;
 
         return $this->query($s);
     }
@@ -608,8 +608,8 @@ class Database extends mysqli{
             $max_try--;
         }
         //  test    ***     
-        echo '<br>$result : ';   
-        var_dump($result);  
+        // echo '<br>$result : ';   
+        // var_dump($result);  
         //  fin test  ***
         return $result;
     }
@@ -642,8 +642,8 @@ class Database extends mysqli{
             $attr = ", attribut='$nom->attribut'";
         }
         // $values["personne_id"] manque parfois et pas forcément les bons numéros   ***
-        echo '<br> into_db_nom_personne $values["personne_id"] : ';
-        var_dump($values["personne_id"]);
+        // echo '<br> into_db_nom_personne $values["personne_id"] : ';
+        // var_dump($values["personne_id"]);
         //  ***  fin test
         return $this->insert(
             "nom_personne",
@@ -654,9 +654,9 @@ class Database extends mysqli{
 
     public function into_db_acte_has_relation($acte, $relation){
         //  ***     vide
-        $qr = $this->query("INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')");
-        echo '<br> $qr : ';
-        echo $q;
+        // $qr = $this->query("INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')");
+        // echo '<br> $qr : ';
+        // echo $q;
         //  ***  fin test
         return $this->query("
             INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
