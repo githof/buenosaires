@@ -58,20 +58,13 @@ function html_import_text()
 
 function html_check_ignore($file_or_text)
 {
-    $attr = 'import_'.$file_or_text.'_only_new';
-    $input = '<input type="checkbox" id="'.$attr.'" name="'.$attr.'"/>';
-    $label = '<label for="'.$attr.'">Ignorer les actes déjà balisés</label>';
+    $attr = 'import_' . $file_or_text . '_only_new';
+    $input = '<input type="checkbox" '
+      . 'id="' . $attr . '" name="' .$attr. '"/>';
+    $label = '<label for="' . $attr. '">'
+      . 'Ignorer les actes déjà balisés</label>';
     return html_form_group("$input\n  $label");
 }
-
-//  déplacé dans html_entities.php 
-// function html_hidden_type($file_or_text)    //  mettre $values comme nom
-// {
-//     return '
-//         <input type="hidden" name="form_type" value="'
-//             . $file_or_text
-//         . '" />';
-// }
 
 function html_import_source($file_or_text) {
 
@@ -83,41 +76,24 @@ function html_import_source($file_or_text) {
     ');
 }
 
-//  déplacé dans html_entities.php 
-// function html_submit($name, $value)
-// {
-//     $class;
-//     $value;
-//     $button = '<button type="submit" class="'.$class.' btn btn-primary">'.$value.'</button>';
-//     return html_form_group($button);
-// }
-
-/*
-factoriser les deux formulaires dans une fonction `html_form_import($file_or_text)`
-(les messages en `h4` peuvent rester comme ça en html direct)
-*/
-//  J'ai ajouté $name en paramètre pour le name="" de l'input hidden
-//  pour pouvoir le réutiliser dans d'autres fichiers
-function html_form_import($file_or_text, $name) {
-
-    $contents =
-        html_select_source($file_or_text).
-        html_check_ignore($file_or_text).
-        html_hidden_type($name, $file_or_text);
+function html_form_import($file_or_text) {
 
     if($file_or_text === 'file') {
         $enctype = 'enctype="multipart/form-data"';
-        $contents .= html_import_file();
+        $html_import = html_import_file();
     } else {
         $enctype = '';
-        $contents .= html_import_text();
+        $html_import = html_import_text();
     }
 
     $html = '<div>
-        <form method="post" '.$enctype.' action="" class="import-form">'.
-            $contents.
-            html_submit('import-submit', 'Envoyer').
-        '</form>
+        <form method="post" ' . $enctype . ' action="" class="import-form">'
+        . html_select_source($file_or_text)
+        . html_check_ignore($file_or_text)
+        . html_hidden_type('form_type', $file_or_text)
+        . $html_import
+        . html_submit('import-submit', 'Envoyer')
+        . '</form>
     </div>';
 
     return $html;
@@ -163,11 +139,11 @@ if(isset($_POST["form_type"])){
     <h4>
         Avec un fichier
     </h4>
-    <?php echo html_form_import('form_type', 'file'); ?>
+    <?php echo html_form_import('file'); ?>
 </section>
 <section>
     <h4>
         En le(s) copiant ici
     </h4>
-    <?php echo html_form_import('form_type', 'text'); ?>
+    <?php echo html_form_import('text'); ?>
 </section>
