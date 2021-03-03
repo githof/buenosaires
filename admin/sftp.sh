@@ -1,6 +1,7 @@
 #!/bin/sh
 
 rsync -Cavuz \
+      --chmod=g+w \
       --filter=":- .gitignore" \
       --filter='- .git' \
       "$BAHOME" BA:www/
