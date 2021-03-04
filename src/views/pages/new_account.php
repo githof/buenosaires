@@ -39,7 +39,7 @@ function html_input_if($label, $type, $name) {
 
     /*
       Il faut récupérer les variables "true" de check_post_values()
-      pour mettre la classe "has-error" à l'input
+      pour mettre la classe "has-error" à form-group
     */
     $error = "$name".'_error';
     $class_error = (${$error}) ?
@@ -62,7 +62,7 @@ function html_input_if($label, $type, $name) {
 
     $html = '<div class="form-group' . $class_error. '">
             <label class="col-sm-3 control-label"'
-              . ' for="' $name. '">' . $label . '</label>
+              . ' for="' .$name. '">' . $label . '</label>
             <div class="col-sm-9">
                 <input class="form-control"'
                   .  ' type="' . $type . '" name="' . $name .'"'
