@@ -46,14 +46,19 @@ function html_form_connexion($contents) {
     $fermer = '<button type="button"'
       . ' class="btn btn-default" data-dismiss="modal">'
       . 'Fermer</button>';
-    $se_connecter = html_submit('', 'Se connecter');
-    $buttons = html_form_group($fermer . $se_connecter);
+    $se_connecter = '<button type="submit"'
+    . ' class=" btn btn-primary">Se connecter</button>';
+    $buttons = html_form_group($fermer .' '. $se_connecter);
 
     return '<div class="modal-body">
         <form name="identification" action="" method="post">'
         . html_hidden_type('action', 'connexion')
-        . html_input('email', 'connect_email', 'Email')
-        . html_input('password', 'connect_pass', 'Password')
+        . html_form_group( 
+            html_input('email', 'connect_email', 'Email')
+        )
+        . html_form_group( 
+            html_input('password', 'connect_pass', 'Password')
+        ) 
         . $buttons
         . '</form>
     </div>';
