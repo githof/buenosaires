@@ -2,6 +2,7 @@
 
 include_once(ROOT."src/html_entities.php");
 
+//  ITEMS MENU GENERAL //
 function html_item($title, $icon, $url){
     global $url_parsed;
 
@@ -19,48 +20,12 @@ function html_item($title, $icon, $url){
     ";
 }
 
-function site_title() {
-    return '<p>
-        BUENOS AIRES
-    </p>';
-}
-
-function html_menu_general() {
-    global $access_pages;
-
-    $menu_items = [
-        ["Accueil", "home", ""],
-        ["Import", "cloud-upload", "import"],
-        ["Export", "cloud-download", "export"],
-        ["Recherche", "search", "recherche"],
-        ["Fusion", "resize-small", "fusion"],
-        ["Dissocier", "resize-full", "dissocier"],
-        ["Tables", "align-justify", "table"],
-        ["Logs", "wrench", "logs"],
-        //["Groupe", "user", ""]
-        //["Console", "console", ""]
-    ];
-    
-    $html_menu_items = "";
-    foreach($menu_items as $item){
-        if(can_access($access_pages[$item[2]])) 
-            $html_menu_items .= html_item($item[0], $item[1], $item[2]);
-    }
-
-    $contents = site_title()
-                . '<ul>'
-                . $html_menu_items
-                . '</ul>'
-                . html_connected_or_not();
-
-    return $contents;
-}
-
+//  FORMS   //
 function html_input($type, $name, $placeholder) {
     return '<input class="form-control" type="'.$type.'" name="'.$name.'" placeholder="'.$placeholder.'">';
 }
 
-function html_form_connexion($contents) {
+function html_form_connexion() {
     $fermer = '<button type="button"'
       . ' class="btn btn-default" data-dismiss="modal">'
       . 'Fermer</button>';
@@ -82,68 +47,97 @@ function html_form_connexion($contents) {
     </div>';
 }
 
+function html_button($type, $class, $data, $value) {
 
+    return '
+        <button type="' . $type . '" 
+        class="' . $class . '" '
+        . $data . '>'
+        . $value 
+        . '</button>';
+}
 
 function html_form_deconnexion(){
 
-    $button = '<button type="submit" 
-            data-toggle="tooltip" 
+    $class = 'connexion_btn btn btn-default btn-sm';
+    $data ='data-toggle="tooltip" 
             data-placement="bottom" 
-            title="Deconnexion" 
-            class="connexion_btn btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-        </button>';
+            title="Deconnexion"';
+    $value ='<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>';
+
     return '<form action="" method="post">'
-            . html_hidden_type('action', 'deconnexion')
-        . $button
-        . '
-    </form>';
+                . html_hidden_type('action', 'deconnexion')
+                . html_button('submit', $class, $data, $value)
+                . '
+            </form>';
 }
 
+
+function html_modal_connexion() {
+
+    $data = 'data-dismiss="modal" aria-label="Close"';
+    $value = '<span aria-hidden="true">
+                &times;
+            </span>';
+
+    $modal_header = '<div class="modal-header">'
+                        . html_button('button', 'close', $data, $value)
+                        . '<h4 class="modal-title" 
+                        id="modal-connexion-label">
+                            Connexion
+                        </h4>
+                    </div>';
+    $modal_body = '<div class="modal-body">'
+                        . html_form_connexion()
+                        . '
+                    </div>';
+
+    return '
+        <div class="modal fade" id="modal-connexion" tabindex="-1" role="dialog" aria-labellebdy="modal-connexion-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">'
+                    . $modal_header
+                    . $modal_body
+                . '</div>
+            </div>
+        </div>
+        ';
+}
+
+//  DIV "connected" OU "connexion"  //
 function html_connected_or_not() {
     global $access_pages;
     global $account;
 
-    // $contents = '<div class="' . $statut . '">';
-
     //  si connecté
     if ($account->is_connected){ 
-        // $statut = 'connected';
         $contents = '<div class="connected">
                     <span>' . $account->get_full_name() .'</span>';
 
         //  si accès admin 
         if(can_access($access_pages["administration"])) {   
-            $contents .= '<a href="administration">
-                            <button class="connexion_btn btn btn-default btn-sm m-t-3">
-                                Administration
-                            </button>
-                        </a>';
+            $contents .= '<a href="administration">'
+                            . html_button('', 
+                                'connexion_btn btn btn-default btn-sm m-t-3', 
+                                '', 'Administration'
+                            ) 
+                            . 
+                        '</a>';
         } 
+
         $contents .= html_form_deconnexion();
-    } else {    //  si pas connecté 
-        // $statut = 'connexion';
-        $contents .= '<div class="connexion">
-            <a type="button" class="connexion_btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-connexion">Connexion</a>
-                <div class="modal fade" id="modal-connexion" tabindex="-1" role="dialog" aria-labellebdy="modal-connexion-label">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <h4 class="modal-title" id="modal-connexion-label">Connexion</h4>
-                            </div>
-                            <div class="modal-body">'
-                                . html_form_connexion($contents)
-                                . '
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a href="./new-account" class="connexion_btn btn btn-default btn-sm">
-                    Créer un compte
-                </a>';
+    //  si pas connecté 
+    } else { 
+        $contents = '<div class="connexion">'
+                        . html_button(
+                            'button', 
+                            'connexion_btn btn btn-primary btn-sm', 
+                            'data-toggle="modal" data-target="#modal-connexion"', 
+                            'Connexion')
+                        . html_modal_connexion()
+                        . '<a href="./new-account" class="connexion_btn btn btn-default btn-sm">
+                            Créer un compte
+                        </a>';
     }
 
     $contents .= '</div>';
@@ -151,61 +145,41 @@ function html_connected_or_not() {
     return $contents;
 }
 
-echo html_menu_general(); 
+function html_navbar() {
+    global $access_pages;
 
-// echo html_connected_or_not();
+    $site_title = '<p>
+                    BUENOS AIRES
+                </p>';
 
-// if ($account->is_connected){ 
-?>
+    $menu_items = [
+        ["Accueil", "home", ""],
+        ["Import", "cloud-upload", "import"],
+        ["Export", "cloud-download", "export"],
+        ["Recherche", "search", "recherche"],
+        ["Fusion", "resize-small", "fusion"],
+        ["Dissocier", "resize-full", "dissocier"],
+        ["Tables", "align-justify", "table"],
+        ["Logs", "wrench", "logs"],
+        //["Groupe", "user", ""]
+        //["Console", "console", ""]
+    ];
+    $html_menu_items = "";
 
-<!-- <div class="connected">
-    <span><?php // echo $account->get_full_name(); ?></span>
+    foreach($menu_items as $item){
+        if(can_access($access_pages[$item[2]])) 
+            $html_menu_items .= html_item($item[0], $item[1], $item[2]);
+    }
 
-    <?php 
+    $contents = $site_title
+                . '<ul>'
+                . $html_menu_items
+                . '</ul>'
+                . html_connected_or_not();
 
-    //    if (can_access($access_pages["administration"])){ 
-    ?>
-    
-    <a href="administration"><button class="connexion_btn btn btn-default btn-sm m-t-3">Administration</button></a>
-    
-    <?php //    } 
+    return $contents;
+}
 
-    //   echo html_form_deconnexion();
+echo html_navbar(); 
 
-    ?>
-    
-    
 
-</div> -->
-
-<?php 
-//  } 
-
-// else {?>
-
-<!-- <div class="connexion">
-    <a type="button" class="connexion_btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-connexion">Connexion</a>
-    <div class="modal fade" id="modal-connexion" tabindex="-1" role="dialog" aria-labellebdy="modal-connexion-label">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="modal-connexion-label">Connexion</h4>
-                </div>
-                <div class="modal-body">
-    
-                <?php
-                //    echo html_form_connexion($contents);
-                ?>
-    
-                </div>
-            </div>
-        </div>
-    </div>
-    <a href="./new-account" class="connexion_btn btn btn-default btn-sm">Créer un compte</a>
-</div> -->
-
-<?php 
-// } ?>
