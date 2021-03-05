@@ -182,4 +182,4 @@ function html_navbar() {
 
 echo html_navbar(); 
 
-
+?>
