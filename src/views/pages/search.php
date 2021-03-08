@@ -92,7 +92,11 @@ function html_form_search($acte_or_personne) {
             $contents .= 
                 html_form_date($d['label_date'], $d['name_date']);
         }
-        $contents .= html_form_personnes('Contenant les personnes avec pour nom de famille', 'acte_noms', 'nom');
+        $contents .= html_form_personnes(
+            'Contenant les personnes avec pour nom de famille', 
+            'acte_noms', 
+            'nom'
+        );
 
     } else {
         $personne = array(
@@ -126,28 +130,61 @@ function html_form_search($acte_or_personne) {
     </div>';
 }
 
+//  onglets "Actes" et "Personnes"
+function html_liste_li($href, $class, $label) {
+
+    return '<li role="presentation" class="' . $class . '">
+                <a href="recherche#' . $href . '" aria-controls="' . $href . '" role="tab" data-toggle="tab">' . $label . '</a>
+            </li>';
+                
+}
+function html_liste_ul(){
+
+    return '<ul class="nav nav-tabs" role="tablist">'
+                . html_liste_li('actes', 'active', 'Actes')
+                . html_liste_li('personnes', '', 'Personnes')
+            . '</ul>';
+
+}
+
+//  divs "Actes" et "Personnes"
+function html_tabpanel($class, $name, $acte_or_personne) {
+
+    return '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $name . '">
+                <section>'
+                        . html_form_search($acte_or_personne)
+                . '</section>
+            </div>';
+}
+function html_div_tabpanel() {
+
+    return '<div class="tab-content">'
+                . html_tabpanel('active', 'actes', 'acte')
+                . html_tabpanel('', 'personnes', 'personne')
+            . '</div>';
+}
+
+
+//  Affichage :
+echo html_liste_ul();
+echo html_div_tabpanel();
 
 ?>
 
-<ul class="nav nav-tabs" role="tablist">
+<!-- <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active">
         <a href="recherche#actes" aria-controls="actes" role="tab" data-toggle="tab">Actes</a>
     </li>
     <li role="presentation">
         <a href="recherche#personnes" aria-controls="personnes" role="tab" data-toggle="tab">Personnes</a>
     </li>
-</ul>
+</ul> -->
 
-<div class="tab-content">
+<!-- <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="actes">
         <section>
             <?php 
-                echo html_form_search('acte');
-                // echo html_form_date('acte_date_start', 'A partir de');
-                // echo html_form_date('acte_date_end', 'Avant');
-                // echo html_form_personnes('Contenant les personnes avec pour nom de famille', 'acte_noms', 'nom');
-                // echo html_submit('', 'Rechercher');
-                // echo html_hidden_type('type', 'acte');
+            //    echo html_form_search('acte');
             ?>
         </section>
     </div>
@@ -155,12 +192,8 @@ function html_form_search($acte_or_personne) {
     <div role="tabpanel" class="tab-pane" id="personnes">
         <section>
             <?php 
-                echo html_form_search('personne');
-                // echo html_form_personnes('Avec pour nom(s) de famille', 'personne_noms', 'nom');
-                // echo html_form_personnes('Avec pour prenom(s)', 'personne_prenoms', 'prenom');
-                // echo html_submit('', 'Rechercher');
-                // echo html_hidden_type('type', 'personne');
+            //    echo html_form_search('personne');
             ?>
         </section>
     </div>
-</div>
+</div> -->
