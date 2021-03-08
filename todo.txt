@@ -41,6 +41,7 @@ Voir DROPBOX/Organisation/CR.txt
   33 noms
   - fichier recap nicole
   https://docs.google.com/spreadsheets/d/1X4CbxBvpc0bhMmBf0WcsCTxL7Tuq8n-g/edit#gid=80170631
+  - acte 12243, erreur d'OCR dans la date
 
 - balise mention
   signaler une personne présente (voir pex 5495, Manuel de la Torre)
