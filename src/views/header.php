@@ -72,7 +72,6 @@ function html_form_deconnexion(){
             </form>';
 }
 
-
 function html_modal_connexion() {
 
     $data = 'data-dismiss="modal" aria-label="Close"';
@@ -104,7 +103,8 @@ function html_modal_connexion() {
         ';
 }
 
-//  DIV "connected" OU "connexion"  //
+//  DIV "connected" OU "connexion"  
+//  A droite dans la navbar
 function html_connected_or_not() {
     global $access_pages;
     global $account;
@@ -112,7 +112,7 @@ function html_connected_or_not() {
     //  si connecté
     if ($account->is_connected){ 
         $contents = '<div class="connected">
-                    <span>' . $account->get_full_name() .'</span>';
+                    <span>' . $account->get_full_name() .'</span>&nbsp;';
 
         //  si accès admin 
         if(can_access($access_pages["administration"])) {   
@@ -126,6 +126,7 @@ function html_connected_or_not() {
         } 
 
         $contents .= html_form_deconnexion();
+
     //  si pas connecté 
     } else { 
         $contents = '<div class="connexion">'
@@ -145,6 +146,7 @@ function html_connected_or_not() {
     return $contents;
 }
 
+//  toute la navbar
 function html_navbar() {
     global $access_pages;
 
@@ -164,6 +166,7 @@ function html_navbar() {
         //["Groupe", "user", ""]
         //["Console", "console", ""]
     ];
+
     $html_menu_items = "";
 
     foreach($menu_items as $item){
@@ -171,13 +174,12 @@ function html_navbar() {
             $html_menu_items .= html_item($item[0], $item[1], $item[2]);
     }
 
-    $contents = $site_title
-                . '<ul>'
-                . $html_menu_items
-                . '</ul>'
-                . html_connected_or_not();
+    return $site_title
+            . '<ul>'
+            . $html_menu_items
+            . '</ul>'
+            . html_connected_or_not();
 
-    return $contents;
 }
 
 echo html_navbar(); 
