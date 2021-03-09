@@ -101,7 +101,7 @@ class XMLActeReader {
     //  PRIVATE METHODS //
 
     //  docu ***
-    //  lit les noeuds du xml ==>  vérifier ce qui est lu et envoyé 
+    //  lit le xml ==>  vérifier ce qui est lu et envoyé 
     private function read_acte($xml_acte, $position = NULL, $only_new_acte = FALSE){
         global $log, $alert, $mysqli;
         $acte_id = NULL;
@@ -138,7 +138,7 @@ class XMLActeReader {
         $acte = new Acte($acte_id);
         $acte->source_id = $this->source_id;
         $this->read_acte_node($acte, $xml_acte);
-        //  test    ***     // echo '<br>'.__METHOD__.'<br>';   // print_r($acte);  // print_r($xml_acte);  // ===>    cf morgan/outputs/XMLActeReader:-read_acte-acte-xml_acte-210224.txt
+        //  test    ***     // echo '<br>'.__METHOD__.'<br>';   // print_r($acte);  // print_r($xml_acte);  // ===>    cf outputs/XMLActeReader:-read_acte-acte-xml_acte-210224.txt
         if($mysqli->into_db($acte)){
             $log->i("Acte$position ajouté avec succès");
             return TRUE;
@@ -190,7 +190,11 @@ class XMLActeReader {
                     }
                 break;
             }
-            //  *** test    // echo __METHOD__; // var_dump($acte); // echo '===============<br>';  // var_dump($xml_acte); //  cf morgan/outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
+            //  *** test    // var_dump($acte); // echo '===============<br>';  // var_dump($xml_acte); //  cf outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
+            var_dump($acte); // 
+            echo '<BR>==============='.__METHOD__.'<br>';  // 
+            var_dump($xml_acte);
+            //  fin test 
         }
         $xml_str = $xml_acte->asXML();
         $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
@@ -200,7 +204,7 @@ class XMLActeReader {
     //  PRIVATE METHODS //
 
     private function set_personne_attributes($p, $p_attr) {
-        if(isset($pers_attr["id"]))
+        if(isset($pers_attr["id"])) 
             $personne->id = $p_attr()["id"];
 
         if(isset($pers_attr["don"])
@@ -208,12 +212,17 @@ class XMLActeReader {
             $personne->add_condition("Don", $this->source_id);
     }
 
+    //  *** manque des id ==> read_personne_node() manque des id aussi 
     private function read_personne_child_node($personne, $xml_child) {
-        //  *** test    //  var_dump($xml_child);   //  ==> Manque des ids perso/outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
-        //  *** test    //  var_dump($personne);    //  ==> Manque des ids perso/outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
+        //  *** test    //  var_dump($xml_child);   //  ==> Manque des ids cf outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
+        //  *** test    //  var_dump($personne);    //  ==> Manque des ids cf outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
+                //  *** test 
+                // echo '<br>'.__METHOD__.'<br>';
+                // var_dump($...);
+                //  fin test 
                 break;
             case "nom":
                 $this->all_nom_attributes_in_one($xml_child);
@@ -228,12 +237,12 @@ class XMLActeReader {
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
-                //  *** test    //  var_dump($xml_child);   //  ==> OK perso/outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
-                //  *** test    //  var_dump($personne);    //  ==> Manque des ids perso/outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
+                //  *** test    //  var_dump($xml_child);   //  ==> OK cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
+                //  *** test    //  var_dump($personne);    //  ==> Manque des ids , cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
-                //  *** test    // var_dump($xml_child->__toString());      //  ==> cf perso/outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
+                //  *** test    // var_dump($xml_child->__toString());      //  ==> cf outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
                 // print_r($this->source_id);      //  ==> aucun retour
                 //  fin test
                 break;
@@ -242,15 +251,16 @@ class XMLActeReader {
 
     //  PUBLIC  //
 
+    //  apparemment problème ici *** 
     public function read_personne_node($xml_personne){
         $personne = new Personne();
         $personne->set_xml($xml_personne);
-        //  *** test    //  var_dump($xml_personne);    ok perso/outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
-
+        //  *** test    //  var_dump($xml_personne);    ok outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
         $this->set_personne_attributes($personne, $xml_personne->attributes());
+
         foreach($xml_personne->children() as $xml_child)
             $this->read_personne_child_node($personne, $xml_child);
-        //  *** test    // var_dump($personne);     //  Manque ids outputs/XMLActeReade-read_personne_node-personne-210223.txt
+        //  *** test    // var_dump($personne);     //  Manque ids outputs/XMLActeReader-read_personne_node-personne-210223.txt
         //  *** test    // var_dump($xml_child);    //  Manque des informations outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
         return $personne;
     }
