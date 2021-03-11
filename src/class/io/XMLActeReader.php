@@ -101,13 +101,14 @@ class XMLActeReader {
     //  PRIVATE METHODS //
 
     //  docu ***
-    //  lit le xml ==>  vérifier ce qui est lu et envoyé 
+    //  lit le xml ==>  $acte contient tout dans $xml mais pas les id dans personnes *** 
     private function read_acte($xml_acte, $position = NULL, $only_new_acte = FALSE){
         global $log, $alert, $mysqli;
         $acte_id = NULL;
         $xml_acte_attr = $xml_acte->attributes();
         //  test    ***//   echo '<br>'.__METHOD__; //  print_r($xml_acte_attr);    //  ==> id de l'acte
-
+        //  var_dump($xml_acte);    //  ==> premiers niveaux (?) du xml cf outputs/XMLActeReader::read_acte-xml_acte-210310.txt
+        
         if($position != NULL)
             $position = " (en position $position)";
         else
@@ -138,7 +139,8 @@ class XMLActeReader {
         $acte = new Acte($acte_id);
         $acte->source_id = $this->source_id;
         $this->read_acte_node($acte, $xml_acte);
-        //  test    ***     // echo '<br>'.__METHOD__.'<br>';   // print_r($acte);  // print_r($xml_acte);  // ===>    cf outputs/XMLActeReader:-read_acte-acte-xml_acte-210224.txt
+        //  test  *** //  print_r($acte); //  ==>  id sont présentes dans xml mais pas dans personne->id cf outputs/XMLActeReader::read_acte-acte+xml_acte-210310.txt
+        // print_r($xml_acte);  //  ==> seulement le niveau 1 
         if($mysqli->into_db($acte)){
             $log->i("Acte$position ajouté avec succès");
             return TRUE;
@@ -164,9 +166,10 @@ class XMLActeReader {
 
     //  docu ***
     //  stocke les éléments du contenu de l'acte
+    //  test    *** $xml_child a tous les éléments sauf les mères   
     public function read_acte_node($acte, $xml_acte){
         foreach($xml_acte->children() as $xml_child){
-            // ***  test    //  var_dump($xml_child);   //  ==> morgan/outputs/XMLActeReader::read_acte_node-xml_child-210226.txt
+            // ***  test  // var_dump($xml_child);   //  manque mères cf outputs/XMLActeReader::read_acte_node-xml_child-210310.txt
             switch($xml_child->getName()){
                 case "date":
                     $acte->set_date($xml_child->__toString());
@@ -190,11 +193,8 @@ class XMLActeReader {
                     }
                 break;
             }
-            //  *** test    // var_dump($acte); // echo '===============<br>';  // var_dump($xml_acte); //  cf outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
-            var_dump($acte); // 
-            echo '<BR>==============='.__METHOD__.'<br>';  // 
-            var_dump($xml_acte);
-            //  fin test 
+            //  *** test    // var_dump($acte); // echo '===============<br>';  // var_dump($xml_acte); //  Trop d'infos en double  cf outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
+            
         }
         $xml_str = $xml_acte->asXML();
         $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
