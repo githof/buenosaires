@@ -90,6 +90,8 @@ function array_to_string_with_separator($tab, $separator){
     return implode($separator, $tab);
 }
 
+//  $mysqli->into_db_prenom_personne() dans Personne, voir si elle est utilisée. 
+//  Si oui, elle semble faire doublon avec celle de `select auto_increment`     //
 function renommer_personne($personne, $noms, $prenoms) {
     global $mysqli;
 
@@ -110,6 +112,7 @@ function renommer_personne($personne, $noms, $prenoms) {
     }
 }
 
+//  Est-ce qu'il y a moyen de factoriser ces 2 fonctions ?  //
 function parse_prenoms($prenoms_str){
     $prenoms_array = explode(",", $prenoms_str);
     $prenoms = [];

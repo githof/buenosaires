@@ -45,7 +45,7 @@ class Acte implements DatabaseIO{
         // var_dump($this->epoux);
         // echo '<pre>';
         //  /outputs/acte-set_epoux-this-epoux.txt
-        //  manque père mère, des id, relation_by_type
+        //  manque père mère, relation_by_type
     }
 
     public function set_epouse($epouse){
@@ -55,7 +55,7 @@ class Acte implements DatabaseIO{
         // var_dump($this->epouse);
         // echo '<pre>';
         //  /outputs/acte-set_epouse-this-epouse.txt
-        //  manque des id, père, mère (ailleurs dans le résultat il y est, avec son id), relation_by_type
+        //  relation_by_type
         //  résultat très long, à voir en détail
     }
 

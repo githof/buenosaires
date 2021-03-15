@@ -164,11 +164,10 @@
         }
         return FALSE;
       }
-
       //  test    *** //
       //  Problème d'auto_increment pas (toujours) incrémenté //
-      //  j'ai testé depuis le terminal, il fonctionne. //
-      //  Voir si il s'incrément uniquement pour chaque nouvel acte
+      //  j'ai testé depuis le terminal, il fonctionne (pas toujours non plus). //
+      //  Voir si il s'incrément uniquement pour chaque nouvel acte (non) 
       //  et si "à l'intérieur" d'un même acte, il stocke une valeur
       //  sans aller la re-SELECT réellement  //
       $database_name = SQL_DATABASE_NAME;
@@ -241,9 +240,11 @@
         en pratique $obj est toujours rempli par les fonctions
         appelées ici.
       */
+      //  ***
+      //  Vérifier si l'id assignée ici n'est pas réutilisée ($update_obj)
+      //  au lieu d'utiliser l'auto_increment du SELECT (ligne 175)  //
       global $log;
 
-      //  *** piste from database <class> id= <vide> 
       $log->d("from database: ".get_class($obj)." id=$obj->id");
       $row = NULL;
       if(isset($obj->id)){
@@ -265,6 +266,11 @@
           $row = $this->from_db_by_same($obj);
       }
 
+      //  apparemment $update_obj attribue un id à $obj, et cet id est réutilisé, 
+      //  même si la req `select auto_increment (...)` est envoyée à la bdd. 
+      //  Qqs le retour ce serait l'id attribuée ici qui resservirait.  //
+      //  Pas sûr qd même, ojd j'ai reçu des réponses à `SELECT AUTO_INCREMENT...` non incrémentées, via le terminal  //
+      //  voir entre cette méthode, next_id() et l'AI lui-même  *** // 
       if($update_obj)
         $obj->result_from_db($row);
       return $row;
@@ -313,35 +319,41 @@
       return $row;
     }
 
-    private function from_db_personne_noms_prenoms($personne){
-      $result = $this->query("
-        SELECT prenom.id AS p_id, prenom, no_accent
-        FROM prenom_personne INNER JOIN prenom
-        ON prenom_personne.prenom_id = prenom.id
-        WHERE prenom_personne.personne_id = '$personne->id'
-        ORDER BY prenom_personne.ordre"
-      );
-      if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc())
-          $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
-      }
-
-      $result = $this->query("
-        SELECT nom.id as n_id, nom, no_accent, attribut, ordre
-        FROM nom_personne INNER JOIN nom
-        ON nom_personne.nom_id = nom.id
-        WHERE nom_personne.personne_id = '$personne->id'
-        ORDER BY nom_personne.ordre"
-      );
-      if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
-          $personne->add_nom( new Nom($row["n_id"],
-                                      $row["nom"],
-                                      $row["no_accent"],
-                                      $row["attribut"]));
-        }
-      }
-    }
+    //  *** apparemment cette méthode ne sert pas 
+    //  => SELECT nom.id as n_id` n'est pas utilisé dans Database::query
+    //  ni `SELECT prenom.id AS p_id`  
+    //  et test en les commentant ==> pas d'erreur affichée //
+    //  Pourtant elle utilise $personne->add_prenom(new Prenom...) et $personne->add_nom(new Nom...)  *** //
+    //
+    // private function from_db_personne_noms_prenoms($personne){
+    //   $result = $this->query("
+    //     SELECT prenom.id AS p_id, prenom, no_accent
+    //     FROM prenom_personne INNER JOIN prenom
+    //     ON prenom_personne.prenom_id = prenom.id
+    //     WHERE prenom_personne.personne_id = '$personne->id'
+    //     ORDER BY prenom_personne.ordre"
+    //   );
+    //   if($result != FALSE && $result->num_rows > 0){
+    //     while($row = $result->fetch_assoc())
+    //       $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
+    //   }
+    //
+    //   $result = $this->query("
+    //     SELECT nom.id as n_id, nom, no_accent, attribut, ordre
+    //     FROM nom_personne INNER JOIN nom
+    //     ON nom_personne.nom_id = nom.id
+    //     WHERE nom_personne.personne_id = '$personne->id'
+    //     ORDER BY nom_personne.ordre"
+    //   );
+    //   if($result != FALSE && $result->num_rows > 0){
+    //     while($row = $result->fetch_assoc()){
+    //       $personne->add_nom( new Nom($row["n_id"],
+    //                                   $row["nom"],
+    //                                   $row["no_accent"],
+    //                                   $row["attribut"]));
+    //     }
+    //   }
+    // }
 
     private function from_db_personne_conditions($personne){
       $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
@@ -579,6 +591,12 @@
             return FALSE;
           }
           $obj->id = $new_id;
+          //  *** test 
+          // $obj->id = intval($new_id);
+          // $obj->id += 1;
+          // echo '<br>'.__METHOD__.'<br>';
+          // var_dump($obj->id);
+          //  fin test 
         }
 
         $values["id"] = $obj->id;

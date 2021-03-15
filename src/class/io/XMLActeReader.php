@@ -212,17 +212,14 @@ class XMLActeReader {
             $personne->add_condition("Don", $this->source_id);
     }
 
-    //  *** manque des id ==> read_personne_node() manque des id aussi 
+    //  *** manque des id ==> read_personne_node()  
     private function read_personne_child_node($personne, $xml_child) {
-        //  *** test    //  var_dump($xml_child);   //  ==> Manque des ids cf outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
-        //  *** test    //  var_dump($personne);    //  ==> Manque des ids cf outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
+        //  *** test    //  var_dump($xml_child);   //  ==> ok cf outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
+        //  *** test    //  var_dump($personne);    //  ==> ok cf outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
-                //  *** test 
-                // echo '<br>'.__METHOD__.'<br>';
-                // var_dump($...);
-                //  fin test 
+                //  *** test // var_dump($personne);    //  ==> les id prenom, nom, relation ne sont pas enregistrées ici outputs/XMLActeReader::read_personne_child_node-xml_child_getName-prenom-personne-210315.txt
                 break;
             case "nom":
                 $this->all_nom_attributes_in_one($xml_child);
@@ -237,8 +234,11 @@ class XMLActeReader {
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
-                //  *** test    //  var_dump($xml_child);   //  ==> OK cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
-                //  *** test    //  var_dump($personne);    //  ==> Manque des ids , cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
+                //  *** test    //
+                echo '<br>'.__METHOD__.'<BR>';
+                var_dump($this->read_personne_node($xml_child));   //  ==> déjà enregistré : pb d'id pour attr, relations, conditions
+                // cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
+                //  *** test    //  var_dump($personne);    //  ==> OK cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);

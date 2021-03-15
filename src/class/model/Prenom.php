@@ -52,7 +52,7 @@ class Prenom implements DatabaseIO{
     public function result_from_db($row){
         if($row == NULL)
             return;
-        $this->id = $row["id"];
+        $this->id = $row["id"];             //  enregistrement prenom.id    ?   *** //
         $this->set_prenom($row["prenom"], $row["no_accent"]);
     }
 

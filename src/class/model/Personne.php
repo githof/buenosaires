@@ -102,16 +102,16 @@ class Personne implements DatabaseIO{
     public function set_pere($pere){
         $this->add_relation($pere, $this, STATUT_PERE);
         $this->pere = $pere;
-        //  *** test    //  var_dump($this->pere);  //  ==> Pas d'is ni de relations perso/outputs/Personne-set_pere-$this-pere_210223.txt
-        //  *** test    //  var_dump($this);    //  ==> Manque des id perso/outputs/Personne::set_pere-this-210303.txt
+        //  *** test    //  var_dump($this->pere);  //  ==> Pas d'is ni de relations outputs/Personne-set_pere-$this-pere_210223.txt
+        //  *** test    //  var_dump($this);    //  ==> Manque des id outputs/Personne::set_pere-this-210303.txt
         //  fin test
     }
 
-    //  test manque ids et relations
+    //  test manque relations
     public function set_mere($mere){
         $this->add_relation($mere, $this, STATUT_MERE);
         $this->mere = $mere;
-        //  *** test    //  var_dump($this->mere);  //  ==> Pas d'ids ni de relations perso/outputs/Personne-set_mere-this-mere_210223.txt
+        //  *** test    //  var_dump($this->mere);  //  ==> Pas d'ids ni de relations outputs/Personne-set_mere-this-mere_210223.txt
     }
 
     public function set_xml($xml){
