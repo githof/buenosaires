@@ -12,7 +12,7 @@ USE `buenosaires` ;
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`statut`
+-- Table `buenosaires`.`statut`       //  ok 16/03/21 
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`statut` ;
 
@@ -39,7 +39,7 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`source`
+-- Table `buenosaires`.`source`       //  ok 16/03/21 
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`source` ;
 

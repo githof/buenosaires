@@ -4,7 +4,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 --
--- Tables pour les données
+-- Tables pour les données        //  ok 16/03/21 
 --
 -- -----------------------------------------------------
 

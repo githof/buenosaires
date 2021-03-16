@@ -170,16 +170,36 @@
       //  Voir si il s'incrément uniquement pour chaque nouvel acte (non) 
       //  et si "à l'intérieur" d'un même acte, il stocke une valeur
       //  sans aller la re-SELECT réellement  //
+      //  Voir morgan/todoM.txt sur Dropbox   //
       $database_name = SQL_DATABASE_NAME;
-      $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+      //  *** test autre requête pour récupérer la valeur de l'AI 
+      // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+      $s = "SELECT max(id) from `$table`";
+
 
       $result = $this->query($s);
+      gettype($result);
 
+      //  *** problème pour $table=condition //
+      //  Database::query
+      // string(29) "SELECT max(id) from condition"
+      // Notice: Trying to get property 'num_rows' of non-object in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 186  //
       if($result->num_rows != 1)
           return FALSE;
 
       $row = $result->fetch_assoc();
-      return $row["id"];
+      //  *** test
+      echo '<br>$row max(id) : ';
+      var_dump($row);
+      $row = intval($row['max(id)']);
+      // $row = settype($row, 'integer');
+      echo '<br>$row1 : '.var_dump($row);
+      $row += 1;
+      echo '<br>settype $row+1 : ';
+      var_dump($row);
+
+      //  fin test 
+      return $row;
     }
 
     public function start_transaction(){
@@ -319,41 +339,36 @@
       return $row;
     }
 
-    //  *** apparemment cette méthode ne sert pas 
-    //  => SELECT nom.id as n_id` n'est pas utilisé dans Database::query
-    //  ni `SELECT prenom.id AS p_id`  
-    //  et test en les commentant ==> pas d'erreur affichée //
-    //  Pourtant elle utilise $personne->add_prenom(new Prenom...) et $personne->add_nom(new Nom...)  *** //
-    //
-    // private function from_db_personne_noms_prenoms($personne){
-    //   $result = $this->query("
-    //     SELECT prenom.id AS p_id, prenom, no_accent
-    //     FROM prenom_personne INNER JOIN prenom
-    //     ON prenom_personne.prenom_id = prenom.id
-    //     WHERE prenom_personne.personne_id = '$personne->id'
-    //     ORDER BY prenom_personne.ordre"
-    //   );
-    //   if($result != FALSE && $result->num_rows > 0){
-    //     while($row = $result->fetch_assoc())
-    //       $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
-    //   }
-    //
-    //   $result = $this->query("
-    //     SELECT nom.id as n_id, nom, no_accent, attribut, ordre
-    //     FROM nom_personne INNER JOIN nom
-    //     ON nom_personne.nom_id = nom.id
-    //     WHERE nom_personne.personne_id = '$personne->id'
-    //     ORDER BY nom_personne.ordre"
-    //   );
-    //   if($result != FALSE && $result->num_rows > 0){
-    //     while($row = $result->fetch_assoc()){
-    //       $personne->add_nom( new Nom($row["n_id"],
-    //                                   $row["nom"],
-    //                                   $row["no_accent"],
-    //                                   $row["attribut"]));
-    //     }
-    //   }
-    // }
+    
+    private function from_db_personne_noms_prenoms($personne){
+      $result = $this->query("
+        SELECT prenom.id AS p_id, prenom, no_accent
+        FROM prenom_personne INNER JOIN prenom
+        ON prenom_personne.prenom_id = prenom.id
+        WHERE prenom_personne.personne_id = '$personne->id'
+        ORDER BY prenom_personne.ordre"
+      );
+      if($result != FALSE && $result->num_rows > 0){
+        while($row = $result->fetch_assoc())
+          $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
+      }
+    
+      $result = $this->query("
+        SELECT nom.id as n_id, nom, no_accent, attribut, ordre
+        FROM nom_personne INNER JOIN nom
+        ON nom_personne.nom_id = nom.id
+        WHERE nom_personne.personne_id = '$personne->id'
+        ORDER BY nom_personne.ordre"
+      );
+      if($result != FALSE && $result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+          $personne->add_nom( new Nom($row["n_id"],
+                                      $row["nom"],
+                                      $row["no_accent"],
+                                      $row["attribut"]));
+        }
+      }
+    }
 
     private function from_db_personne_conditions($personne){
       $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
