@@ -297,6 +297,7 @@ function html_personne_periode($personne_id){
     //  *** On pourrait pas retirer la partie qui recherche les conditions ? 
     //  Si la personne apparait dans des conditions, c'est qu'elle est dans 
     //  l'acte, donc dans epoux, epouse et/ou relation.    //
+    //  ***  $condition->id sert pour l'id html  //
     $result = $mysqli->query("
         SELECT date_start, date_end
         FROM acte

@@ -291,6 +291,10 @@ class Acte implements DatabaseIO{
     public function remove_from_db() {
         global $mysqli;
 
+        //  *** test    remove_from_db 
+        echo '<br>'.__METHOD__.'<br>';
+        //  fin test 
+
         $mysqli->from_db($this);
         // ^ remplit les champs conditions et relations
         $personnes = $this->personnes();

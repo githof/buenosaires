@@ -9,7 +9,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table `buenosaires`.`utilisateurs`
+-- Table `buenosaires`.`utilisateurs`   ok  16/03/21 
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `buenosaires`.`utilisateurs` ;
 

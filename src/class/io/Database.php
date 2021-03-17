@@ -27,6 +27,9 @@
 
       $s = "SELECT ";
 
+      //  Erreurs sur $columns :
+      //  Warning: count(): Parameter must be an array or an object that implements Countable 
+      //  in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 33 et line 35 //
       for($i = 0; $i < count($columns); $i++){
         $s .= $columns[$i];
         if($i < count($columns) -1)
@@ -39,6 +42,10 @@
         $s .= " WHERE " . $where;
 
       $s .= " " . $more;
+
+      //  *** test 
+      // echo $s; 
+      //  fin test 
 
       return $this->query($s);
     }
@@ -143,13 +150,10 @@
       return $result;
     }
 
-    //  *** A tester (x2) //
+    //  Voir si auto_increment automatique ne serait pas mieux ? // 
     public function next_id($table){
       global $log, $mysqli;
 
-      /** if($table === "personne") => aller chercher une id dans `variable`
-       * sans se soucier si on a déjà une id venant du xml
-       */
       if($table === "personne"){
         $result = $mysqli->select(
           "variable",
@@ -164,42 +168,29 @@
         }
         return FALSE;
       }
-      //  test    *** //
-      //  Problème d'auto_increment pas (toujours) incrémenté //
-      //  j'ai testé depuis le terminal, il fonctionne (pas toujours non plus). //
-      //  Voir si il s'incrément uniquement pour chaque nouvel acte (non) 
-      //  et si "à l'intérieur" d'un même acte, il stocke une valeur
-      //  sans aller la re-SELECT réellement  //
+
+      //  ***  Problème d'auto_increment pas (toujours) incrémenté //
+      //  Utilisé SELECT max(id) à la place de SELECT AUTO_INCREMENT ... FROM information_schema ... //
       //  Voir morgan/todoM.txt sur Dropbox   //
       $database_name = SQL_DATABASE_NAME;
-      //  *** test autre requête pour récupérer la valeur de l'AI 
+
+      //  *** autre requête pour récupérer la valeur de l'AI 
       // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
       $s = "SELECT max(id) from `$table`";
 
-
       $result = $this->query($s);
-      gettype($result);
-
-      //  *** problème pour $table=condition //
-      //  Database::query
-      // string(29) "SELECT max(id) from condition"
-      // Notice: Trying to get property 'num_rows' of non-object in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 186  //
       if($result->num_rows != 1)
           return FALSE;
 
       $row = $result->fetch_assoc();
-      //  *** test
-      echo '<br>$row max(id) : ';
-      var_dump($row);
-      $row = intval($row['max(id)']);
-      // $row = settype($row, 'integer');
-      echo '<br>$row1 : '.var_dump($row);
-      $row += 1;
-      echo '<br>settype $row+1 : ';
-      var_dump($row);
+      
+      //  *** Ajout 1 à la valeur retournée pour simuler l'auto_increment
+      // echo '<br>$row max(id) : ';
+      // var_dump($row);
+      $value = intval($row['max(id)']) +1;
+      // echo '<br>$value+1 : '.var_dump($value);
 
-      //  fin test 
-      return $row;
+      return $value;
     }
 
     public function start_transaction(){
@@ -239,14 +230,16 @@
     Testé sans succès, mais j'ai avant de me casser la tête
     à savoir pourquoi, j'ai fait avec Acte->get_contenu
     */
+    //  *** il manquait return $contenu;  // 
     public function get_contenu_acte($acte_id)
     {
       $result = $this->select(
         "acte_contenu",
-        ["contenu"],
+        ["`contenu`"],
         "acte_id='$acte_id'"
       );
-      $contenu = $result->fetch_assoc()["contenu"];
+      return $result->fetch_assoc()["contenu"];
+      // return $contenu;
     }
 
     public function from_db($obj,
@@ -260,9 +253,6 @@
         en pratique $obj est toujours rempli par les fonctions
         appelées ici.
       */
-      //  ***
-      //  Vérifier si l'id assignée ici n'est pas réutilisée ($update_obj)
-      //  au lieu d'utiliser l'auto_increment du SELECT (ligne 175)  //
       global $log;
 
       $log->d("from database: ".get_class($obj)." id=$obj->id");
@@ -677,6 +667,7 @@
         if($personne->remove_from_db(FALSE))
           $removed[] = $personne;
       }
+      echo '<br>'.__METHOD__.'<br>';
       return $removed;
     }
 

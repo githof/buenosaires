@@ -37,6 +37,8 @@ echo "hello, world<br>";
 // }
 
 // $contenu = $acte->get_contenu();
+// $contenu = $mysqli->get_contenu_acte(4227);
+// echo $contenu;
 
 // echo '<h3>Unique</h3>';
 // $arr = array($bob, $toto, $bob);
@@ -61,17 +63,20 @@ $acte = new Acte(5598);
 $acte->remove_from_db();
 */
 
-$acte = new Acte(15000);
+$acte = new Acte(4789);
 $acte->remove_from_db();
 
-$acte = new Acte(15001);
-$acte->remove_from_db();
+// $acte = new Acte(15000);
+// $acte->remove_from_db();
 
-$acte = new Acte(15002);
-$acte->remove_from_db();
+// $acte = new Acte(15001);
+// $acte->remove_from_db();
 
-$acte = new Acte(15003);
-$acte->remove_from_db();
+// $acte = new Acte(15002);
+// $acte->remove_from_db();
+
+// $acte = new Acte(15003);
+// $acte->remove_from_db();
 
 echo "<p>passed</p>\n";
 

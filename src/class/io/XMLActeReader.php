@@ -204,6 +204,13 @@ class XMLActeReader {
     //  PRIVATE METHODS //
 
     private function set_personne_attributes($p, $p_attr) {
+        //  *** test    condition Don
+        echo '<br>'.__METHOD__;
+        echo '<br>$p : ';
+        var_dump($p);
+        echo '<br>$p_attr : ';
+        var_dump($p_attr);
+        //  fin test    //
         if(isset($pers_attr["id"])) 
             $personne->id = $p_attr()["id"];
 
@@ -235,14 +242,15 @@ class XMLActeReader {
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
                 //  *** test    //
-                echo '<br>'.__METHOD__.'<BR>';
-                var_dump($this->read_personne_node($xml_child));   //  ==> déjà enregistré : pb d'id pour attr, relations, conditions
+                // echo '<br>'.__METHOD__.'<BR>';
+                // var_dump($this->read_personne_node($xml_child));   //  ==> déjà enregistré : pb d'id pour attr, relations, conditions
                 // cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
                 //  *** test    //  var_dump($personne);    //  ==> OK cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
                 //  *** test    // var_dump($xml_child->__toString());      //  ==> cf outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
+                //  Il manque Don ou Da. Ex : <epoux don="true" id="413">
                 // print_r($this->source_id);      //  ==> aucun retour
                 //  fin test
                 break;
