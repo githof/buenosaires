@@ -9,8 +9,9 @@ $memory = [
     "personne" => [],
     "acte" => [],
     "relation" => [],
-    "condition" => [],
-    "periode" => []
+    "condition" => []
+    //,
+    // "periode" => []
 ];
 
 function has_memory($class, $id){
@@ -35,9 +36,6 @@ function has_memory($class, $id){
             case "condition":
                 $obj = new Condition($id);
                 break;
-            case "periode":
-                $obj = new Periode($id);    //  class Periode.php n'existe pas ? ***
-                break;
         }
         $mysqli->from_db($obj, TRUE);
         $memory[$class][$id] = $obj;
@@ -61,9 +59,9 @@ function condition_memory($id){
     return has_memory("condition", $id);
 }
 
-function periode_memory($id){
-    return has_memory("periode", $id);
-}
+// function periode_memory($id){
+//     return has_memory("periode", $id);
+// }
 
 
 function html_acte_small($acte){
@@ -290,11 +288,15 @@ function html_date($date_start, $date_end){
     return "<div class='date'>$str</div>";
 }
 
+//  ***  remettre ça dans Database.php via une classe ? Ou propriété dans Personne ?   //
 function html_personne_periode($personne_id){
     global $mysqli;
     $date_max = null;
     $date_min = null;
 
+    //  *** On pourrait pas retirer la partie qui recherche les conditions ? 
+    //  Si la personne apparait dans des conditions, c'est qu'elle est dans 
+    //  l'acte, donc dans epoux, epouse et/ou relation.    //
     $result = $mysqli->query("
         SELECT date_start, date_end
         FROM acte
