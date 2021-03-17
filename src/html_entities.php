@@ -10,8 +10,7 @@ $memory = [
     "personne" => [],
     "acte" => [],
     "relation" => [],
-    "condition" => [],
-    "periode" => []
+    "condition" => []
 ];
 
 function has_memory($class, $id){
@@ -36,9 +35,6 @@ function has_memory($class, $id){
             case "condition":
                 $obj = new Condition($id);
                 break;
-            case "periode":
-                $obj = new Periode($id);    //  class Periode.php n'existe pas ? ***
-                break;
         }
         $mysqli->from_db($obj, TRUE);
         $memory[$class][$id] = $obj;
@@ -60,10 +56,6 @@ function relation_memory($id){
 
 function condition_memory($id){
     return has_memory("condition", $id);
-}
-
-function periode_memory($id){
-    return has_memory("periode", $id);
 }
 
 
