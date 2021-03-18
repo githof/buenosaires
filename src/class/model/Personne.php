@@ -60,7 +60,7 @@ class Personne implements DatabaseIO{
         $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
     }
 
-    //  *** test                        ==> ok
+    //  *** test                        ==> à refaire pour Don 
     public function add_nom_str($s, $attributes){
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
         // ok mais $s n'affiche pas l'attribut.    *** 
@@ -85,6 +85,9 @@ class Personne implements DatabaseIO{
 
     public function add_condition($text, $source_id){
         $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
+        //  *** test Don // echo '<br>'.__METHOD__; //  echo '<br>$text : ';    //  var_dump($text);    //  echo '<br>$this : ';    //  var_dump($this);    //  echo '<br>$vasource_idlue : ';  //  var_dump($source_id);
+        //  ==>  Seulement les 3 conditions "métiers" du témoin 1 //    cf outputs/condition/Personne::add_condition-text-this-source_id-4227-210318.txt
+        //  fin test 
     }
 
     public function add_relation($personne_source, $personne_destination, $statut_id){
@@ -225,6 +228,7 @@ class Personne implements DatabaseIO{
         return TRUE;
     }
 
+    //  test Don 210318 // 
     public function post_into_db(){
         global $mysqli;
 
@@ -257,6 +261,7 @@ class Personne implements DatabaseIO{
             if(!isset($attributesXML["id"]))
                 $this->xml->addAttribute("id", "$this->id");
         }
+        //  test Don // ok ==> outputs/condition/Personne::post_into_db-attributesXML-4227-210318.txt
     }
 
     //  PRIVATE METHODS //

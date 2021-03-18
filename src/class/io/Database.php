@@ -27,7 +27,7 @@
 
       $s = "SELECT ";
 
-      //  Erreurs sur $columns :
+      //  ***   Erreurs sur $columns :
       //  Warning: count(): Parameter must be an array or an object that implements Countable 
       //  in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 33 et line 35 //
       for($i = 0; $i < count($columns); $i++){
@@ -44,7 +44,7 @@
       $s .= " " . $more;
 
       //  *** test 
-      // echo $s; 
+    //   echo '<br>'.__METHOD__.' '.$s; 
       //  fin test 
 
       return $this->query($s);

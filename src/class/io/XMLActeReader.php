@@ -314,6 +314,7 @@ class XMLActeReader {
     public function update_id_if_obj_ok($obj, $xml_element){
         if(isset($obj, $obj->id) && $obj->is_valid())
             $this->update_attribute($xml_element, "id", $obj->id);
+        
     }
 
     public function update_attribute_parents($epouxse, $xml_element){
@@ -327,10 +328,21 @@ class XMLActeReader {
 
     public function update_attribute($xml_element, $attr, $value){
         $attrs = $xml_element->attributes();
+        //  *** test Don // Don ok ==> cf outputs/condition/XMLActeReader::update_attribute-xml_element-attr-value-4227-210318.txt
         if(isset($attrs[$attr]))
             $attrs[$attr] = $value."";
         else
             $xml_element->addAttribute($attr, $value."");
+
+        //  test Don 
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$xml_element : ';
+        // var_dump($xml_element);
+        // echo '<br>$attr : ';
+        // var_dump($attr);
+        // echo '<br>$value : ';
+        // var_dump($value);
+        //  fin test 
     }
 
     public function all_nom_attributes_in_one($xml_nom){
@@ -357,6 +369,12 @@ class XMLActeReader {
             return;
 
         $xml_nom->addAttribute("attr", trim($new_attr));
+
+        //  test Don 
+        echo '<br>'.__METHOD__;
+        echo '<br>$new_attr : ';
+        var_dump($new_attr);
+        //  fin test 
     }
 }
 ?>
