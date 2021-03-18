@@ -163,7 +163,9 @@ class Database extends mysqli{
 
         $database_name = SQL_DATABASE_NAME;
 
-        $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+        // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+        //  ***  Autre mooyen : récupérer la valeur du dernier enregistrement d'une table :
+        $s = "SELECT max(id) from `$table`";
 
         $result = $this->query($s);
 
@@ -171,7 +173,11 @@ class Database extends mysqli{
             return FALSE;
 
         $row = $result->fetch_assoc();
-        return $row["id"];
+
+        //  *** On ajoute 1 à la valeur récupérée 
+        $value = intval($row['max(id)']) +1;
+
+        return $value;
     }
 
     public function start_transaction(){
