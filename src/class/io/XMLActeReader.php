@@ -179,9 +179,7 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
-    //  à corriger
-    private function set_personne_attributes($p, $p_attr) {
-
+        private function set_personne_attributes($p, $p_attr) {
         if(isset($p_attr["don"])
             && $p_attr["don"] == "true")
             $p->add_condition("Don", $this->source_id);
