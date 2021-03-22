@@ -193,7 +193,7 @@ class XMLActeReader {
                     }
                 break;
             }
-            //  *** test    // var_dump($acte); // echo '===============<br>';  // var_dump($xml_acte); //  Trop d'infos en double  cf outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
+            //  *** test    // var_dump($acte); var_dump($xml_acte); //  des infos en double  cf outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
             
         }
         $xml_str = $xml_acte->asXML();
@@ -203,25 +203,37 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
+    //  les attributes ne sont pas enregistrés (en conditions) 
     private function set_personne_attributes($p, $p_attr) {
-        //  *** test    condition Don
-        echo '<br>'.__METHOD__;
-        echo '<br>$p : ';
-        var_dump($p);
-        echo '<br>$p_attr : ';
-        var_dump($p_attr);
-        //  fin test    //
+        //  test 22/03/21   //  
+        // echo '<br>$p_attr : ';
+        // var_dump($p_attr); //  ==> ok 
         if(isset($pers_attr["id"])) 
-            $personne->id = $p_attr()["id"];
+            $p->id = $p_attr()["id"]; 
 
-        if(isset($pers_attr["don"])
+            //  *** test // var_dump($personne->id);    ==> NULL 
+        
+        if(isset($p_attr["don"])
         && $p_attr["don"] == "true")
-            $personne->add_condition("Don", $this->source_id);
-    }
+            $p->add_condition("Don", $this->source_id);
 
-    //  *** manque des id ==> read_personne_node()  
+        //  *** test    // 
+        echo '<br>'.__METHOD__;
+        // echo '<br>$p : ';
+        // var_dump($p); 
+        // echo '<br>$p_attr : ';
+        // var_dump($p_attr);    //  ==> apparemment ok 
+        //  cf outputs/condition/XMLActeReader::set_personne_attributes-p-p_attr-4227-210318.txt
+        // echo '<br>$pers_attr : ';
+        // var_dump($pers_attr);   //  NULL 
+        echo '<br>$p : ';
+        var_dump($p);   //  ==> ok (corrigé) 
+    }
+    
+    //  *** test Don ok 19/03/21 //   
     private function read_personne_child_node($personne, $xml_child) {
-        //  *** test    //  var_dump($xml_child);   //  ==> ok cf outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
+        //  *** test    //  
+        // echo '<br>$xml_child : '.var_dump($xml_child);   //  ==> ok cf outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
         //  *** test    //  var_dump($personne);    //  ==> ok cf outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
         switch($xml_child->getName()){
             case "prenom":
@@ -234,41 +246,53 @@ class XMLActeReader {
                 if(isset($xml_child->attributes()["attr"]))
                     $nom_attr = $xml_child->attributes()["attr"];
                 $personne->add_nom_str($xml_child->__toString(), $nom_attr);
-                //  *** test    //  var_dump($nom_attr);    //  ==> ok
+                //  *** test    19/03/21     //  var_dump($nom_attr);    //  ==> attributs de noms (de...) 
                 break;
             case "pere":
                 $personne->set_pere($this->read_personne_node($xml_child));
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
-                //  *** test    //
-                // echo '<br>'.__METHOD__.'<BR>';
-                // var_dump($this->read_personne_node($xml_child));   //  ==> déjà enregistré : pb d'id pour attr, relations, conditions
-                // cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
-                //  *** test    //  var_dump($personne);    //  ==> OK cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
+                //  *** test    //  var_dump($this->read_personne_node($xml_child));   //  ==> Don ok en xml    // cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
+                //  *** test    //  var_dump($personne);    //  ==> Don ok cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
-                //  *** test    // var_dump($xml_child->__toString());      //  ==> cf outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
+                //  *** test    // var_dump($xml_child->__toString());  ==> seulement les 3 métiers      //  ==> cf outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
                 //  Il manque Don ou Da. Ex : <epoux don="true" id="413">
-                // print_r($this->source_id);      //  ==> aucun retour
+                //  print_r($this->source_id);      //  ==> aucun retour
                 //  fin test
                 break;
         }
+
+        //  *** test    Don ok    //  
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$personne : ';
+        // var_dump($personne);    
+        //  ok ==> outputs/condition/XMLActeReader::read_personne_child_node-personne-4227-210319.txt
+        //  fin test 
     }
 
     //  PUBLIC  //
 
     //  apparemment problème ici *** 
+    //  test Don 22/03/21 
     public function read_personne_node($xml_personne){
         $personne = new Personne();
         $personne->set_xml($xml_personne);
-        //  *** test    //  var_dump($xml_personne);    ok outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
+        //  *** test    //  var_dump($xml_personne->attributes());    
+        //   outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
+        //  *** test    Don    //  
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$personne : ';
+        // var_dump($personne);
+        // Don pas encore dans $personne 
+        //  fin test
         $this->set_personne_attributes($personne, $xml_personne->attributes());
 
         foreach($xml_personne->children() as $xml_child)
             $this->read_personne_child_node($personne, $xml_child);
-        //  *** test    // var_dump($personne);     //  Manque ids outputs/XMLActeReader-read_personne_node-personne-210223.txt
+        //  *** test Don    // var_dump($personne);     //  Don est dans xml mais pas dans condition outputs/XMLActeReader-read_personne_node-personne-210223.txt
         //  *** test    // var_dump($xml_child);    //  Manque des informations outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
         return $personne;
     }
@@ -334,15 +358,7 @@ class XMLActeReader {
         else
             $xml_element->addAttribute($attr, $value."");
 
-        //  test Don 
-        // echo '<br>'.__METHOD__;
-        // echo '<br>$xml_element : ';
-        // var_dump($xml_element);
-        // echo '<br>$attr : ';
-        // var_dump($attr);
-        // echo '<br>$value : ';
-        // var_dump($value);
-        //  fin test 
+        //  *** test Don // Don ok ==> cf outputs/condition/XMLActeReader::update_attribute-xml_element-attr-value-4227-210318.txt
     }
 
     public function all_nom_attributes_in_one($xml_nom){
