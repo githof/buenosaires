@@ -179,13 +179,12 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
+    //  à corriger
     private function set_personne_attributes($p, $p_attr) {
-        if(isset($pers_attr["id"]))
-            $personne->id = $p_attr()["id"];
 
-        if(isset($pers_attr["don"])
+        if(isset($p_attr["don"])
             && $p_attr["don"] == "true")
-            $personne->add_condition("Don", $this->source_id);
+            $p->add_condition("Don", $this->source_id);
     }
 
     private function read_personne_child_node($personne, $xml_child) {
