@@ -30,6 +30,7 @@ $menu_items = [
     //["Console", "console", ""]
 ];
 
+//  *** can_access() : depuis utils.php 
 $html_menu_items = "";
 foreach($menu_items as $item){
     if(can_access($access_pages[$item[2]]))

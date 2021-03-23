@@ -40,6 +40,7 @@ echo "hello, world<br>";
 // $contenu = $mysqli->get_contenu_acte(4227);
 // echo $contenu;
 
+//  *** array_unique_by_id() : depuis utils.php 
 // echo '<h3>Unique</h3>';
 // $arr = array($bob, $toto, $bob);
 // $unique = array_unique_by_id($arr);

@@ -7,6 +7,7 @@ class Alert {
     public $warning_list;
     public $success_list;
 
+    //  *** changer Alert en __construct 
     public function Alert(){
         $this->error_list = [];
         $this->info_list = [];

@@ -22,6 +22,8 @@
       }
     }
 
+    //  METHODES POUR EFFECTUER LES REQUETES (CRUD) À ENVOYER À LA BDD   //
+
     public function select($table, $columns, $where = "", $more = ""){
       global $log;
 
@@ -42,10 +44,6 @@
         $s .= " WHERE " . $where;
 
       $s .= " " . $more;
-
-      //  *** test 
-    //   echo '<br>'.__METHOD__.' '.$s; 
-      //  fin test 
 
       return $this->query($s);
     }
@@ -126,6 +124,7 @@
       return $this->query($s);
     }
 
+    //  envoie les requêtes (méthodes précédentes) à la bdd //
     //  Warning: Declaration of Database::query($requete) should be compatible with mysqli::query($query, $resultmode = NULL)
     //  Depuis PHP7 il faut préciser quelle utilisation de $resultmode on va faire : MYSQLI_USE_RESULT ou MYSQLI_STORE_RESULT 
     //  Avant $resultmode = MYSQLI_USE_RESULT était appliqué par défaut
@@ -134,8 +133,8 @@
       global $log;
 
       //  *** test
-      echo '<br>'.__METHOD__.'<br>';
-      var_dump($requete);
+      // echo '<br>'.__METHOD__.'<br>';
+      // var_dump($requete);
       //  fin test 
 
       $log->i(trim($requete));
@@ -151,6 +150,7 @@
     }
 
     //  Voir si auto_increment automatique ne serait pas mieux ? // 
+    //  si on doit ajouter un enregistrement : checke la prochaine valeur de l'auto_increment et l'affecte comme id à l'enregistrement 
     public function next_id($table){
       global $log, $mysqli;
 
@@ -193,10 +193,14 @@
       return $value;
     }
 
+    //  docu *** 
+    //  d'après la doc sql "rend les changements permanents" ? 
     public function start_transaction(){
       return $this->query("START TRANSACTION");
     }
 
+    //  docu *** 
+    //  commit (où ?) 
     public function end_transaction(){
       return $this->query("COMMIT");
     }
@@ -226,7 +230,22 @@
       return $personnes;
     }
 
-    /*
+    //  *** à tester avec CSVExport::export_relations 
+    // public function get_relations() {
+    //   $relations = [];
+
+    //   $results = $this->select("relation", ["*"]);
+    //   if($results != FALSE && $results->num_rows) {
+    //     while($row = $results->fetch_assoc()) {
+    //       $relation = new Relation();
+    //       $relation->result_from_db($row);
+    //       $relations[$id] = $relation;
+    //     }
+    //   }
+    //   return $relations;
+    // }
+
+    /*  (fix ok) 
     Testé sans succès, mais j'ai avant de me casser la tête
     à savoir pourquoi, j'ai fait avec Acte->get_contenu
     */
@@ -242,6 +261,8 @@
       // return $contenu;
     }
 
+    //  docu *** 
+    //  tous les cas de SELECT avant d'envoyer la requete INSERT 
     public function from_db($obj,
       $update_obj = FALSE,
       $get_relations_conditions = TRUE){
@@ -276,16 +297,13 @@
           $row = $this->from_db_by_same($obj);
       }
 
-      //  apparemment $update_obj attribue un id à $obj, et cet id est réutilisé, 
-      //  même si la req `select auto_increment (...)` est envoyée à la bdd. 
-      //  Qqs le retour ce serait l'id attribuée ici qui resservirait.  //
-      //  Pas sûr qd même, ojd j'ai reçu des réponses à `SELECT AUTO_INCREMENT...` non incrémentées, via le terminal  //
-      //  voir entre cette méthode, next_id() et l'AI lui-même  *** // 
       if($update_obj)
         $obj->result_from_db($row);
       return $row;
     }
 
+    //  docu *** 
+    //  SELECT by id 
     private function from_db_by_id($obj){
       $row = NULL;
       $result = $this->select(
@@ -298,6 +316,8 @@
       return $row;
     }
 
+    //  docu *** 
+    //  SELECT by value 
     private function from_db_by_same($obj){
       $row = NULL;
       $s = "";
@@ -305,7 +325,6 @@
       $values = $obj->get_same_values();
       if($values == NULL){
         $row = NULL;
-        // break;
       }
 
       foreach ($values as $k => $v) {
@@ -329,7 +348,8 @@
       return $row;
     }
 
-    
+    //  docu *** 
+    //  SELECT personne by nom ou prenom 
     private function from_db_personne_noms_prenoms($personne){
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
@@ -360,6 +380,8 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT personne by condition
     private function from_db_personne_conditions($personne){
       $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
       $condition = NULL;
@@ -377,6 +399,8 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT personne by relation 
     private function from_db_personne_relations($personne){
       $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
       $pers_source = NULL;
@@ -402,6 +426,8 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT acte_has_condition 
     private function from_db_acte_conditions($acte){
       $result = $this->query("
         SELECT *
@@ -424,6 +450,8 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT acte_has_relation 
     private function from_db_acte_relations($acte){
       $result = $this->query("
         SELECT *
@@ -446,6 +474,8 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT conditions par acte 
     public function from_db_condition_list_acte($condition){
       $result = $this->select(
         "acte_has_condition",
@@ -458,6 +488,8 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT relations par acte 
     public function from_db_relation_list_acte($relation){
       $result = $this->select(
         "acte_has_relation",
@@ -470,14 +502,13 @@
       }
     }
 
+    //  docu *** 
+    //  SELECT personne by nom + prenom  
+    //  ==> factoriser avec from_db_personne_noms_prenoms ?   *** 
     private function from_db_by_same_personne($personne){
       $ids = NULL;
       $ids_tmp = NULL;
 
-      //  *** test 
-      // echo '<br>'.__METHOD__.'<br>';
-      // var_dump($personne);
-      //  fin test 
       foreach($personne->noms as $k => $nom){
         $result = $this->query("
           SELECT personne_id
@@ -530,6 +561,8 @@
       return NULL;
     }
 
+    //  docu *** 
+    //  attribuer une id aux objets (depuis le xml, ou depuis la bdd si différents) 
     private function updated_values($values_db, $values_obj){
       $updated = [];
 
@@ -544,6 +577,8 @@
       return $updated;
     }
 
+    //  docu *** 
+    //  stocke toutes les données avec id avant enregistrement 
     public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE){
       $result = FALSE;
       $new_id = NULL;
@@ -570,6 +605,8 @@
       return $obj->id;
     }
 
+    //  docu *** 
+    //  données pour UPDATE 
     private function into_db_update($obj, $values){
       if(count($values) == 0)
         return TRUE;
@@ -581,13 +618,14 @@
       );
     }
 
+    //  docu *** 
+    //  données pour insert  
     private function into_db_insert($obj, $values){
       global $log;
       $new_id = NULL;
       $result = FALSE;
       $max_try = 2;
 
-      //  *** test next_id 
       while($result === FALSE && $max_try > 0){
         if(!isset($obj->id)){
           $new_id = $this->next_id($obj->get_table_name());
@@ -596,12 +634,6 @@
             return FALSE;
           }
           $obj->id = $new_id;
-          //  *** test 
-          // $obj->id = intval($new_id);
-          // $obj->id += 1;
-          // echo '<br>'.__METHOD__.'<br>';
-          // var_dump($obj->id);
-          //  fin test 
         }
 
         $values["id"] = $obj->id;
@@ -611,6 +643,8 @@
       return $result;
     }
 
+    //  docu *** 
+    //  INSERT données pour prenom personne 
     public function into_db_prenom_personne($personne, $prenom, $ordre){
       $values = [
         "personne_id" => $personne->id,
@@ -624,6 +658,8 @@
       );
     }
 
+    //  docu *** 
+    //  INSERT données pour nom personne 
     public function into_db_nom_personne($personne, $nom, $ordre){
       $values = [
         "personne_id" => $personne->id,
@@ -642,12 +678,16 @@
       );
     }
 
+    //  docu *** 
+    //  INSERT données pour acte_has_relation 
     public function into_db_acte_has_relation($acte, $relation){
       return $this->query("
       INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
       ");
     }
 
+    //  docu *** 
+    //  INSERT données pour acte_has_condition
     public function into_db_acte_has_condition($acte, $condition){
       return $this->query("
       INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
@@ -655,7 +695,7 @@
     }
 
     /*
-    Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+    Supprime de la base les personnes de la liste qui n''apparaissent dans aucune table.
     Renvoie la liste des personnes supprimées.
     */
     public function purge_personnes($personnes)
@@ -667,10 +707,13 @@
         if($personne->remove_from_db(FALSE))
           $removed[] = $personne;
       }
-      echo '<br>'.__METHOD__.'<br>';
+
       return $removed;
     }
 
+    //  docu *** 
+    //  supprime les nom ou prénoms sans personne_id 
+    //  ==> l'ajouter à $personne->remove_from_db ou dans Database::purge_personnes ? *** 
     public function remove_unused_prenoms_noms(){
       $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
       $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");

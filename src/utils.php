@@ -1,5 +1,6 @@
 <?php
 
+//  *** pour tests ? 
 function console_log( $data ){
     echo '<script>';
     echo 'console.log('. json_encode( $data ) .')';
@@ -43,10 +44,16 @@ function accent_uppercase($string){
     );
 }
 
+//  *** Voir si possible d'ajouter l'entete xml pour les fichiers ? 
+//  *** (pour éviter les erreurs incompréhensibles)
+//  *** tester si l'entete y est, si non l'ajouter  // 
+//  docu    *** 
+//  *** espaces à la place de /\s/ pour uniformiser tous les actes sur une seule ligne 
 function pre_process_acte_xml($acte_xml){
     return preg_replace('!\s+!', ' ', $acte_xml);
 }
 
+//  ne sert qu'une fois, dans Acte.php 
 function read_date($date){
     $split = explode('-', trim($date));
     if(count($split) == 3){
@@ -73,10 +80,12 @@ function fill_number($str, $length){
     return $str;
 }
 
+//  *** utilisé dans Dissocier.php 
 function startsWith($str, $start) {
     return $start === "" || strrpos($str, $start, -strlen($str)) !== false;
 }
 
+//  *** utilisé dans URLRewriter.php 
 function endsWith($str, $end){
     $length = strlen($end);
     if ($length == 0) {
@@ -86,14 +95,17 @@ function endsWith($str, $end){
     return (substr($str, -$length) === $end);
 }
 
+//  ***  utilisé dans Dissocier.php et dans results.php
 function array_to_string_with_separator($tab, $separator){
     return implode($separator, $tab);
 }
 
-//  $mysqli->into_db_prenom_personne() dans Personne, voir si elle est utilisée. 
-//  Si oui, elle semble faire doublon avec celle de `select auto_increment`     //
+//  ***  N'est pas utilisée pour les imports, voir si elle l'est pour les autres opérations.
+//  ***  Semble faire doublon avec celle de Personne.php mysqli->into_db_prenom_personne(). 
 function renommer_personne($personne, $noms, $prenoms) {
     global $mysqli;
+    //  *** test doublon 
+    // echo '<br>'.__METHOD__;
 
     $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
     $i = 1;
@@ -113,6 +125,7 @@ function renommer_personne($personne, $noms, $prenoms) {
 }
 
 //  Est-ce qu'il y a moyen de factoriser ces 2 fonctions ?  //
+//  ***  utilisé dans dissocier.php et fusion.php
 function parse_prenoms($prenoms_str){
     $prenoms_array = explode(",", $prenoms_str);
     $prenoms = [];
@@ -125,6 +138,7 @@ function parse_prenoms($prenoms_str){
     return $prenoms;
 }
 
+//  ***  utilisé dans dissocier.php et fusion.php
 function parse_noms($noms_str){
     $noms_array = explode(",", $noms_str);
     $noms = [];
@@ -160,6 +174,7 @@ function has_nom($noms, $nom){
     return FALSE;
 }
 
+//  *** utilisé dans dissocier.php et fusion.php 
 function default_input_prenoms($prenoms_A, $prenoms_B = []){
     $str = "";
     $start = TRUE;
@@ -182,6 +197,7 @@ function default_input_prenoms($prenoms_A, $prenoms_B = []){
     return $str;
 }
 
+//  *** utilisé dans dissocier.php et fusion.php 
 function default_input_noms($noms_A, $noms_B = []){
     $str = "";
     $start = TRUE;
@@ -208,10 +224,14 @@ function default_input_noms($noms_A, $noms_B = []){
     return $str;
 }
 
+//  *** utilisé dans index.php header.php detail_acte.php detail_personne.php 
 function can_access($level){
     global $account;
 
-    return $level <= $account->get_rang() && $account->is_connected || $level == 0;
+    //  *** get_rang() : depuis Account.php 
+    return $level <= $account->get_rang() 
+    && $account->is_connected 
+    || $level == 0;
 }
 
 function error_message_receive_file($error_code){
@@ -255,6 +275,7 @@ function error_message_receive_file($error_code){
     ];
 }
 
+//  *** utilisé dans import.php 
 function receive_file($key){
     global $alert, $log;
 
@@ -287,6 +308,7 @@ function receive_file($key){
     }
 }
 
+//  *** utilisé dans import.php 
 function receive_text($text){
     global $alert, $log;
 
@@ -320,8 +342,10 @@ function append_unique_identifier($filename){
 }
 
 /*
-  Comme array_unique mais en testant seulement l'attribut id des objets contenus dans le tableau
+  Comme array_unique mais en testant seulement l''attribut id des objets 
+  contenus dans le tableau
 */
+//  *** utilisé dans Acte.php fusion.php et test.php
 function array_unique_by_id($a) {
     $ids = array();
     $res = array();
@@ -334,6 +358,7 @@ function array_unique_by_id($a) {
     return $res;
 }
 
+//  *** utilisé dans Acte.php 
 function string_list_of_ids($liste) {
     $ids = [];
 
@@ -342,7 +367,6 @@ function string_list_of_ids($liste) {
 
     return implode(',', $ids);
 }
-//  Affichage erreurs fermetures de parenthèses mais semble être un bug 
-//  d'affichage VScode uniquement   ***
+
 
 ?>

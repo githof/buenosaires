@@ -8,8 +8,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table structure for table `attribut`       //  *** pour tester 17/03/21  
---                                            //  apparemment elle ne sert pas, la remettre si je vois qu'elle manque 
+-- Table structure for table `attribut`       
 -- -----------------------------------------------------
 -- From dump 2017, c'était pas dans le git,
 -- je vois pas où c'est utilisé à part dans `tag`,

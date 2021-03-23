@@ -39,15 +39,13 @@ class Personne implements DatabaseIO{
         $this->is_updated_in_db = FALSE;
     }
 
-    //  *** test                        ==> ok 
+    //      SETTERS     //
+
     public function add_prenom_str($s){
         $this->add_prenom(new Prenom(NULL, $s));
-        // ok mais $s n'affiche pas les 2 prénoms, seulement le 2è. C'est normal ? ***
-        // var_dump($this->prenoms_str);
     }
 
-    //  add_prenom() peut être privée non ? ***
-    //  *** test                        ==> ok
+    //  add_prenom() ne pourrait pas privée ? ***
     public function add_prenom($prenom){
         foreach($this->prenoms as $_prenom){
             if((isset($_prenom->id, $prenom->id)
@@ -60,13 +58,11 @@ class Personne implements DatabaseIO{
         $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
     }
 
-    //  *** test                        ==> à refaire pour Don 
     public function add_nom_str($s, $attributes){
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
-        // ok mais $s n'affiche pas l'attribut.    *** 
-        // var_dump($this->noms_str);    // var_dump($s);   // var_dump($attributes);
     }
 
+    //  add_nom() ne pourrait pas privée ? ***
     public function add_nom($nom){
         foreach($this->noms as $_nom){
             if((isset($_nom->id, $nom->id)
@@ -85,9 +81,6 @@ class Personne implements DatabaseIO{
 
     public function add_condition($text, $source_id){
         $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
-        //  *** test Don // echo '<br>'.__METHOD__; //  echo '<br>$text : ';    //  var_dump($text);    //  echo '<br>$this : ';    //  var_dump($this);    //  echo '<br>$vasource_idlue : ';  //  var_dump($source_id);
-        //  ==>  Seulement les 3 conditions "métiers" du témoin 1 //    cf outputs/condition/Personne::add_condition-text-this-source_id-4227-210318.txt
-        //  fin test 
     }
 
     public function add_relation($personne_source, $personne_destination, $statut_id){
@@ -97,30 +90,24 @@ class Personne implements DatabaseIO{
             $personne_destination,
             $statut_id
         );
-        //  *** test    // var_dump($personne_source);  var_dump($personne_destination);    var_dump($statut_id);   //  ==> manque des informations perso/outputs/Personne::add_relation-210303.txt
-        //  fin test echo '<br>'.__METHOD__.' ';
     }
 
-    //  test manque ids et relations
     public function set_pere($pere){
         $this->add_relation($pere, $this, STATUT_PERE);
         $this->pere = $pere;
-        //  *** test    //  var_dump($this->pere);  //  ==> Pas d'is ni de relations outputs/Personne-set_pere-$this-pere_210223.txt
-        //  *** test    //  var_dump($this);    //  ==> Manque des id outputs/Personne::set_pere-this-210303.txt
-        //  fin test
     }
 
-    //  test manque relations
     public function set_mere($mere){
         $this->add_relation($mere, $this, STATUT_MERE);
         $this->mere = $mere;
-        //  *** test    //  var_dump($this->mere);  //  ==> Pas d'ids ni de relations outputs/Personne-set_mere-this-mere_210223.txt
     }
 
     public function set_xml($xml){
         $this->xml = $xml;
     }
 
+    //  docu *** 
+    //  utilisé pour valider les données entrantes (dans toutes les classes) 
     public function is_valid(){
         return count($this->prenoms) > 0 || count($this->noms) > 0;
     }
@@ -228,9 +215,13 @@ class Personne implements DatabaseIO{
         return TRUE;
     }
 
-    //  test Don 210318 // 
+    //  *** Semble être en réflexion de facto : 
+    //  voir renommer_personne() dans utils.php 
     public function post_into_db(){
         global $mysqli;
+
+        //  *** test doublon 
+        // echo '<br>'.__METHOD__;
 
         $this->is_updated_in_db = TRUE;
 
@@ -261,7 +252,6 @@ class Personne implements DatabaseIO{
             if(!isset($attributesXML["id"]))
                 $this->xml->addAttribute("id", "$this->id");
         }
-        //  test Don // ok ==> outputs/condition/Personne::post_into_db-attributesXML-4227-210318.txt
     }
 
     //  PRIVATE METHODS //
@@ -315,6 +305,7 @@ class Personne implements DatabaseIO{
         $prenoms_ids = $this->prenoms_ids_from_db();
         $noms_ids = $this->noms_ids_from_db();
         */
+        //  mysqli->remove_unused_prenoms_noms();   ? *** 
 
         $mysqli->start_transaction();
         foreach(['prenom', 'nom'] as $field) {
@@ -331,6 +322,7 @@ class Personne implements DatabaseIO{
 	  Import from db is in src/io/IO/Database.php from_db()
 	  (which is ugly i know)
 	 */
+    //  *** c'est modifié/supprimé depuis ? Je ne trouve pas 
 
 }
 

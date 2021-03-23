@@ -20,6 +20,8 @@
             $this->actes = [];
         }
 
+        //      SETTERS     //
+
         public function set_text($text){
             $this->text = $text;
         }
@@ -31,6 +33,8 @@
         public function set_source_id($source_id){
             $this->source_id = $source_id;
         }
+
+        //      GETTERS     //
 
         public function get_source_name(){
             global $mysqli;

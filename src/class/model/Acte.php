@@ -34,31 +34,21 @@ class Acte implements DatabaseIO{
         $this->relations = [];
     }
 
+    //  SETTERS //
+
     public function set_contenu($contenu){
         $this->contenu = $contenu;
     }
 
     public function set_epoux($epoux){
         $this->epoux = $epoux;
-        //  docu ***
-        // echo '<pre>';
-        // var_dump($this->epoux);
-        // echo '<pre>';
-        //  /outputs/acte-set_epoux-this-epoux.txt
-        //  manque père mère, relation_by_type
     }
 
     public function set_epouse($epouse){
         $this->epouse = $epouse;
-        //  docu ***
-        // echo '<pre>';
-        // var_dump($this->epouse);
-        // echo '<pre>';
-        //  /outputs/acte-set_epouse-this-epouse.txt
-        //  relation_by_type
-        //  résultat très long, à voir en détail
     }
 
+    //  *** read_date() dans utils.php 
     public function set_date($date){
         $dates = read_date($date);
         $this->date_start = $dates[0];
@@ -67,13 +57,6 @@ class Acte implements DatabaseIO{
 
     public function add_temoin($temoin){
         $this->temoins[] = $temoin;
-        //  docu ***
-        // echo '<pre>';
-        // var_dump($this->temoin[0]);
-        // echo '<br>';
-        // var_dump($this->temoin[1]);
-        // echo '<pre>';
-        //  output : NULL (4 fois)
     }
 
     public function add_parrain($parrain){
@@ -97,6 +80,8 @@ class Acte implements DatabaseIO{
         }
     }
 
+    //  docu ***
+    //  INSERT contenu acte 
     public function contenu_into_db(){
         global $mysqli;
 
@@ -112,6 +97,8 @@ class Acte implements DatabaseIO{
             " ON DUPLICATE KEY UPDATE contenu='$contenu'");
     }
 
+    //  docu ***
+    //  SELECT contenu acte 
     public function get_contenu(){
         global $mysqli;
 
@@ -123,6 +110,8 @@ class Acte implements DatabaseIO{
         return "";
     }
 
+    //  docu ***
+    //  SELECT values -> date_start 
 	public function get_date() {
         global $mysqli;
         $mysqli->from_db($this, TRUE, FALSE);
@@ -139,6 +128,8 @@ class Acte implements DatabaseIO{
         return [];
     }
 
+    //  docu ***
+    //  hydratation instance Acte 
     public function result_from_db($row){
         if($row == NULL)
             return;
@@ -154,6 +145,8 @@ class Acte implements DatabaseIO{
             $this->date_end = $row["date_end"];
     }
 
+    //  docu ***
+    //  stocke les données pour la table acte 
     public function values_into_db(){
         $values = [];
         if(isset($this->epoux, $this->epoux->id) && $this->epoux->is_valid())
@@ -167,6 +160,8 @@ class Acte implements DatabaseIO{
         return $values;
     }
 
+    //  docu ***
+    //  stocke les données pour la table relation 
     public function pre_into_db(){
         global $mysqli, $log, $alert;
 
@@ -217,6 +212,8 @@ class Acte implements DatabaseIO{
         return TRUE;
     }
 
+    //  docu ***
+    //  stocke les autres données pour les autres tables 
     public function post_into_db(){
         global $mysqli;
 
@@ -242,20 +239,24 @@ class Acte implements DatabaseIO{
 
     //  PRIVATE METHODS     //
 
-    private function personnes()     {
+    //  docu ***
+    //  stocke conditions et relations d'une personne  
+    private function personnes() {
         global $mysqli;
         $personnes = [];
 
         foreach($this->conditions as $condition)
-        $personnes[] = $condition->personne;
+            $personnes[] = $condition->personne;
 
         foreach($this->relations as $relation)
         {
-        $personnes[] = $relation->personne_source;
-        $personnes[] = $relation->personne_destination;
+            $personnes[] = $relation->personne_source;
+            $personnes[] = $relation->personne_destination;
         }
+        //  *** array_unique_by_id() : depuis utils.php 
         return array_unique_by_id($personnes);
     }
+
 
     private function delete_conditions_or_relations($field)
     // 'condition' ou 'relation'
@@ -266,6 +267,7 @@ class Acte implements DatabaseIO{
         $mysqli->delete("acte_has_$field", $test);
 
         $liste = $field.'s';
+        //  *** string_list_of_ids() : depuis utils.php 
         $in = string_list_of_ids($this->{$liste});
         $test = "id in ($in)";
         $mysqli->delete($field, $test);
@@ -288,6 +290,8 @@ class Acte implements DatabaseIO{
 
     //  PUBLIC  //
 
+    //  docu *** 
+    //  remove acte from bdd 
     public function remove_from_db() {
         global $mysqli;
 
@@ -308,7 +312,8 @@ class Acte implements DatabaseIO{
         $this->delete_acte();
         $mysqli->end_transaction();
 
-        $mysqli->purge_personnes($personnes);
+        //  *** ajouter remove_unused_prenoms_noms à Database::purge_personnes ou à Personne::remove_from_db ?
+        $mysqli->purge_personnes($personnes);   
     }
 }
 

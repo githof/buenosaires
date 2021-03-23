@@ -18,6 +18,7 @@ function search_actes(){
         $where .= " date_end <= '$date_end'";
     }
 
+    //  *** array_to_string_with_separator : depuis utils.php 
     $select_relation_with_noms = "";
     if(isset($noms_id) && count($noms_id) > 0){
         $noms = array_to_string_with_separator($noms_id, ", ");

@@ -20,6 +20,8 @@ if($result == NULL){
         $name .= $nom->to_string() . " ";
 
     $page_title = "$name";
+
+//  *** can_access() : depuis utils.php 
 if(can_access($access_pages["dissocier"])){?>
 <div class="detail_options">
     <a href="dissocier?personne-A=<?php echo $personne->id; ?>">

@@ -29,6 +29,7 @@ function dissocier_input_conditions_relations(){
 
     foreach($ARGS as $key => $value){
         $source; $new; $item; $split;
+        //  *** startsWith() : depuis utils.php 
         if(startsWith($key, "condition")){
             $split = dissocier_split_input($key);
             $source = $conditions_source;
@@ -198,6 +199,7 @@ $relations_new) {
     foreach($conditions_source as $key => $value)
         $tab[] = $key;
 
+        //  *** array_to_string_with_separator() : depuis utils.php 
     $mysqli->delete(
         "condition",
         "id NOT IN (".array_to_string_with_separator($tab, ", ").")
@@ -367,6 +369,7 @@ function html_dissocier($personne){
     $html_noms = html_dissocier_noms($personne->noms);
     $html_relations = html_dissocier_relations($personne->relations, $personne->id);
     $html_conditions = html_dissocier_conditions($personne->conditions, $personne->id);
+    //  *** default_input_noms() et default_input_prenoms() : depuis utils.php 
     $input_noms = default_input_noms($personne->noms);
     $input_prenoms = default_input_prenoms($personne->prenoms);
 
@@ -431,6 +434,7 @@ function html_dissocier($personne){
 
 
 if(isset($ARGS["id"])){
+    //  ***  parse_prenoms() et parse_noms() : depuis utils.php 
     $prenoms_A = parse_prenoms($ARGS["prenoms-A"]);
     $prenoms_B = parse_prenoms($ARGS["prenoms-B"]);
     $noms_A = parse_noms($ARGS["noms-A"]);

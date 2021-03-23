@@ -120,7 +120,7 @@ function diff_ids_acte($ids1,$ids2){
 function diff_ids_actes($ids_actes1, $ids_actes2){
   // en supposant que les numeros de actes sont identiques
   $tableau = array();
-  // recperation des ids des 2 tableau, fusion et union
+  // recuperation des ids des 2 tableau, fusion et union
   $tableau_ids= array_unique( array_merge(
 					  array_keys($ids_actes1),array_keys($ids_actes2) ));
 			      //inversion k, v
@@ -134,7 +134,7 @@ function diff_ids_actes($ids_actes1, $ids_actes2){
   }
   return $tableau;
 }
-// FONCTIO QUI PREND UN FICHIER XML ET CONSTRUIS LE TABLEAU DE NUMERO ASOCIER A CELUI DES ID
+// FONCTION QUI PREND UN FICHIER XML ET CONSTRUIS LE TABLEAU DE NUMERO ASOCIER A CELUI DES ID
 // EX:print_r(tab_ids_fichier('buenosaires-base.xml'));
 function tab_ids_fichier($fichier){
   if(file_exists($fichier))

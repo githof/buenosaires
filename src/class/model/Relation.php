@@ -20,6 +20,8 @@ class Relation implements DatabaseIO {
         $this->actes = [];
     }
 
+    //      SETTERS     // 
+
     public function set_personne_source($personne_source){
         $this->personne_source = $personne_source;
     }
@@ -31,6 +33,8 @@ class Relation implements DatabaseIO {
     public function set_statut_id($statut_id){
         $this->statut_id = $statut_id;
     }
+
+    //      GETTERS     // 
 
     public function get_statut_name(){
         global $mysqli;
@@ -47,10 +51,14 @@ class Relation implements DatabaseIO {
         return "";
     }
 
+    //  docu *** 
+    //  chekc personne_source_id 
     public function check_source_id($id) {
         return $this->personne_source->id == $id;
     }
 
+    //  docu *** 
+    //  
     public function get_date(){
         global $mysqli;
 

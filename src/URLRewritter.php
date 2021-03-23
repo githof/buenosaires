@@ -62,6 +62,7 @@ if(isset($args)){
     $args_split = explode("&", $args);
     foreach($args_split as $arg){
         $split = explode("=", $arg);
+        //  *** endswith : depuis utils.php 
         if(endsWith($split[0], "[]")){
             $key = substr($split[0],0, strlen($split[0]) -2);
             if(!isset($ARGS[$key]))

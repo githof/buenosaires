@@ -42,13 +42,13 @@ class XMLActeReader {
         return TRUE;
     }
 
-    //  docu ***
-    //  traitement d'actes copiés-collés
+    // docu   
+    // traitement d''actes copiés collés 
     public function use_xml_text($text){
         global $log, $alert;
 
         //  docu ***
-        //  depuis utils.php : espaces à la place de /\s/
+        //  depuis utils.php : espaces à la place de /\s/ pour uniformiser tous les actes sur une seule ligne 
         $text = pre_process_acte_xml($text);
         $use_errors = libxml_use_internal_errors(TRUE);
         $this->xml = simplexml_load_string($text);
@@ -101,13 +101,11 @@ class XMLActeReader {
     //  PRIVATE METHODS //
 
     //  docu ***
-    //  lit le xml ==>  $acte contient tout dans $xml mais pas les id dans personnes *** 
+    //  lit le xml, appelle les méthodes qui stockent les infos et les envoient à Database pour les enregistrer dans la bdd 
     private function read_acte($xml_acte, $position = NULL, $only_new_acte = FALSE){
         global $log, $alert, $mysqli;
         $acte_id = NULL;
         $xml_acte_attr = $xml_acte->attributes();
-        //  test    ***//   echo '<br>'.__METHOD__; //  print_r($xml_acte_attr);    //  ==> id de l'acte
-        //  var_dump($xml_acte);    //  ==> premiers niveaux (?) du xml cf outputs/XMLActeReader::read_acte-xml_acte-210310.txt
         
         if($position != NULL)
             $position = " (en position $position)";
@@ -139,8 +137,7 @@ class XMLActeReader {
         $acte = new Acte($acte_id);
         $acte->source_id = $this->source_id;
         $this->read_acte_node($acte, $xml_acte);
-        //  test  *** //  print_r($acte); //  ==>  id sont présentes dans xml mais pas dans personne->id cf outputs/XMLActeReader::read_acte-acte+xml_acte-210310.txt
-        // print_r($xml_acte);  //  ==> seulement le niveau 1 
+
         if($mysqli->into_db($acte)){
             $log->i("Acte$position ajouté avec succès");
             return TRUE;
@@ -166,10 +163,8 @@ class XMLActeReader {
 
     //  docu ***
     //  stocke les éléments du contenu de l'acte
-    //  test    *** $xml_child a tous les éléments sauf les mères   
     public function read_acte_node($acte, $xml_acte){
         foreach($xml_acte->children() as $xml_child){
-            // ***  test  // var_dump($xml_child);   //  manque mères cf outputs/XMLActeReader::read_acte_node-xml_child-210310.txt
             switch($xml_child->getName()){
                 case "date":
                     $acte->set_date($xml_child->__toString());
@@ -193,8 +188,6 @@ class XMLActeReader {
                     }
                 break;
             }
-            //  *** test    // var_dump($acte); var_dump($xml_acte); //  des infos en double  cf outputs/XMLActeReader::read_acte_node-foreach-acte-xml_acte-210226.txt
-            
         }
         $xml_str = $xml_acte->asXML();
         $xml_str = preg_replace('/(<\\?.*\\?>)/', '', $xml_str);
@@ -203,42 +196,21 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
-    //  les attributes ne sont pas enregistrés (en conditions) 
+    //  docu *** 
+    //  stocke l'attribut Don dans l'objet $personne 
     private function set_personne_attributes($p, $p_attr) {
-        //  test 22/03/21   //  
-        // echo '<br>$p_attr : ';
-        // var_dump($p_attr); //  ==> ok 
-        if(isset($pers_attr["id"])) 
-            $p->id = $p_attr()["id"]; 
-
-            //  *** test // var_dump($personne->id);    ==> NULL 
-        
         if(isset($p_attr["don"])
         && $p_attr["don"] == "true")
             $p->add_condition("Don", $this->source_id);
-
-        //  *** test    // 
-        echo '<br>'.__METHOD__;
-        // echo '<br>$p : ';
-        // var_dump($p); 
-        // echo '<br>$p_attr : ';
-        // var_dump($p_attr);    //  ==> apparemment ok 
-        //  cf outputs/condition/XMLActeReader::set_personne_attributes-p-p_attr-4227-210318.txt
-        // echo '<br>$pers_attr : ';
-        // var_dump($pers_attr);   //  NULL 
-        echo '<br>$p : ';
-        var_dump($p);   //  ==> ok (corrigé) 
     }
     
-    //  *** test Don ok 19/03/21 //   
+    //  docu *** 
+    //  set les données dans les propriétés de $personne  
     private function read_personne_child_node($personne, $xml_child) {
-        //  *** test    //  
-        // echo '<br>$xml_child : '.var_dump($xml_child);   //  ==> ok cf outputs/XmlActeReader-read_personne_child_node-xml_child-210302.txt
-        //  *** test    //  var_dump($personne);    //  ==> ok cf outputs/XMLActeReader::read_personne_child_node-personne-210303.txt
+
         switch($xml_child->getName()){
             case "prenom":
                 $personne->add_prenom_str($xml_child->__toString());
-                //  *** test // var_dump($personne);    //  ==> les id prenom, nom, relation ne sont pas enregistrées ici outputs/XMLActeReader::read_personne_child_node-xml_child_getName-prenom-personne-210315.txt
                 break;
             case "nom":
                 $this->all_nom_attributes_in_one($xml_child);
@@ -246,58 +218,36 @@ class XMLActeReader {
                 if(isset($xml_child->attributes()["attr"]))
                     $nom_attr = $xml_child->attributes()["attr"];
                 $personne->add_nom_str($xml_child->__toString(), $nom_attr);
-                //  *** test    19/03/21     //  var_dump($nom_attr);    //  ==> attributs de noms (de...) 
                 break;
             case "pere":
                 $personne->set_pere($this->read_personne_node($xml_child));
                 break;
             case "mere":
                 $personne->set_mere($this->read_personne_node($xml_child));
-                //  *** test    //  var_dump($this->read_personne_node($xml_child));   //  ==> Don ok en xml    // cf outputs/XMLActeReader::read_personne_child_node-case_mere-xml-210303.txt
-                //  *** test    //  var_dump($personne);    //  ==> Don ok cf outputs/XMLActeReader::read_personne_child_node-case_mere-personne-210303.txt
                 break;
             case "condition":
                 $personne->add_condition($xml_child->__toString(), $this->source_id);
-                //  *** test    // var_dump($xml_child->__toString());  ==> seulement les 3 métiers      //  ==> cf outputs/XMLActeReader-read_personne_child_node-case_condition_210223.txt
-                //  Il manque Don ou Da. Ex : <epoux don="true" id="413">
-                //  print_r($this->source_id);      //  ==> aucun retour
-                //  fin test
                 break;
         }
-
-        //  *** test    Don ok    //  
-        // echo '<br>'.__METHOD__;
-        // echo '<br>$personne : ';
-        // var_dump($personne);    
-        //  ok ==> outputs/condition/XMLActeReader::read_personne_child_node-personne-4227-210319.txt
-        //  fin test 
     }
 
     //  PUBLIC  //
 
-    //  apparemment problème ici *** 
-    //  test Don 22/03/21 
+    //  docu ***
+    //  stocke les données dans le nouvel objet $personne 
     public function read_personne_node($xml_personne){
         $personne = new Personne();
         $personne->set_xml($xml_personne);
-        //  *** test    //  var_dump($xml_personne->attributes());    
-        //   outputs/XMLActeReader::read_personne_node-xml_personne-210302.txt
-        //  *** test    Don    //  
-        // echo '<br>'.__METHOD__;
-        // echo '<br>$personne : ';
-        // var_dump($personne);
-        // Don pas encore dans $personne 
-        //  fin test
+
         $this->set_personne_attributes($personne, $xml_personne->attributes());
 
         foreach($xml_personne->children() as $xml_child)
             $this->read_personne_child_node($personne, $xml_child);
-        //  *** test Don    // var_dump($personne);     //  Don est dans xml mais pas dans condition outputs/XMLActeReader-read_personne_node-personne-210223.txt
-        //  *** test    // var_dump($xml_child);    //  Manque des informations outputs/XMLActeReader-read_personne_node-xml_child-210223.txt
-        return $personne;
+
+            return $personne;
     }
 
-    //  Acte.php post_into_db
+    //  stocke les données dans $xml_acte 
     public function update_xml($acte){
         $xml_acte = $this->xml;
         foreach($xml_acte->children() as $xml_child){
@@ -335,12 +285,16 @@ class XMLActeReader {
         $acte->set_contenu($xml_str);
     }
 
+    //  docu *** 
+    //  stocke l'id dans $obj 
     public function update_id_if_obj_ok($obj, $xml_element){
         if(isset($obj, $obj->id) && $obj->is_valid())
             $this->update_attribute($xml_element, "id", $obj->id);
         
     }
 
+    //  docu ***
+    //  stocke père/mère de epoux/epouse dans objet 
     public function update_attribute_parents($epouxse, $xml_element){
         foreach($xml_element->children() as $xml_parent){
             if($xml_parent->getName() === "pere" && isset($epouxse))
@@ -350,17 +304,20 @@ class XMLActeReader {
         }
     }
 
+    //  docu ***
+    //  pour "Don", stocke "id" et le num de l'id dans variable $attr 
+    //  sinon stocke un id vide 
     public function update_attribute($xml_element, $attr, $value){
         $attrs = $xml_element->attributes();
-        //  *** test Don // Don ok ==> cf outputs/condition/XMLActeReader::update_attribute-xml_element-attr-value-4227-210318.txt
+
         if(isset($attrs[$attr]))
             $attrs[$attr] = $value."";
         else
             $xml_element->addAttribute($attr, $value."");
-
-        //  *** test Don // Don ok ==> cf outputs/condition/XMLActeReader::update_attribute-xml_element-attr-value-4227-210318.txt
     }
 
+    //  docu ***
+    //  stocke les noms et Don ensemble dans $xml_nom 
     public function all_nom_attributes_in_one($xml_nom){
         $new_attr = "";
         $attrs = $xml_nom->attributes();
@@ -385,12 +342,6 @@ class XMLActeReader {
             return;
 
         $xml_nom->addAttribute("attr", trim($new_attr));
-
-        //  test Don 
-        echo '<br>'.__METHOD__;
-        echo '<br>$new_attr : ';
-        var_dump($new_attr);
-        //  fin test 
     }
 }
 ?>

@@ -53,6 +53,8 @@
 
         //  PRIVATE METHODS //
 
+        //  *** changer le nom non ? Les méthodes get_ devraient être publiques en php 
+        //  from_db_utilisateur par ex. (utilisée ligne 15) 
         private function get_infos(){
             global $mysqli;
             $id = $_SESSION[SESSION_ID];

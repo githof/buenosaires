@@ -12,6 +12,7 @@ class Log {
     public $logs;
     public $filename;
 
+    //  *** changer Log en __construct 
     public function Log($filename = LOG_DEFAULT_OUTPUT, $lvl = LOG_DEFAULT_LEVEL){
         $this->filename = $filename;
         $this->level = $lvl;

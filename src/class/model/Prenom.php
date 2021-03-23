@@ -18,6 +18,10 @@ class Prenom implements DatabaseIO{
         $this->set_prenom($prenom, $no_accent);
     }
 
+    //      SETTER     //
+
+    //  docu *** 
+    //  hydratation de Prenom 
     public function set_prenom($default, $no_accent = NULL){
         if($default == NULL)
             return;
@@ -30,6 +34,8 @@ class Prenom implements DatabaseIO{
         $this->no_accent = $no_accent;
     }
 
+    //  docu *** 
+    //  prenom sans accent 
     public function to_string($no_accent = FALSE){
         return $no_accent ?
         $this->no_accent :
@@ -52,7 +58,7 @@ class Prenom implements DatabaseIO{
     public function result_from_db($row){
         if($row == NULL)
             return;
-        $this->id = $row["id"];             //  enregistrement prenom.id    ?   *** //
+        $this->id = $row["id"]; 
         $this->set_prenom($row["prenom"], $row["no_accent"]);
     }
 

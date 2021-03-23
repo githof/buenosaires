@@ -21,6 +21,10 @@
             $this->set_nom($nom, $no_accent);
         }
 
+        //      SETTERS     // 
+
+        //  docu *** 
+        //  hydratation nom 
         public function set_nom($default, $no_accent = NULL){
             if($default == NULL)
                 return;
@@ -33,6 +37,8 @@
                 $this->no_accent = $no_accent;
         }
 
+        //  docu *** 
+        //  nom complet sans accent 
         public function to_string($no_accent = FALSE){
             $attr = "";
             if(isset($this->attribut))
@@ -57,6 +63,7 @@
             return $values;
         }
 
+        //  *** voir comment sont gérés les noms comportant 2 noms et des attributs (ex : FERNANDEZ de la BARCA) 
         public function result_from_db($row){
             if($row == NULL)
                 return;

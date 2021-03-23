@@ -293,6 +293,7 @@ function recense_actes($personne) {
             foreach($element->actes as $acte)
                 $actes[] = $acte;
 
+    //  *** array_unique_by_id() : depuis utils.php 
     return array_unique_by_id($actes);
 }
 
@@ -509,6 +510,7 @@ function html_fusion_div_prenoms($prenoms){
     return $html;
 }
 
+//  *** default_input_prenoms() : depuis utils.php 
 function html_fusion_section_prenoms($prenomsA, $prenomsB) {
     $html_prenomsA = html_fusion_div_prenoms($prenomsA);
     $html_prenomsB = html_fusion_div_prenoms($prenomsB);
@@ -540,6 +542,7 @@ function html_fusion_div_noms($noms){
     return $html;
 }
 
+//  *** default_input_noms() : depuis utils.php 
 function html_fusion_section_noms($nomsA, $nomsB) {
     $html_nomsA = html_fusion_div_noms($nomsA);
     $html_nomsB = html_fusion_div_noms($nomsB);
@@ -608,6 +611,7 @@ if(isset($ARGS["personne-A"],
     $mysqli->from_db($personne_A);
     $mysqli->from_db($personne_B);
 
+    //  ***  parse_prenoms() et parse_noms() : depuis utils.php 
     $noms = parse_noms($ARGS["noms"]);
     $prenoms = parse_prenoms($ARGS["prenoms"]);
 

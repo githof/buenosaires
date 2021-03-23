@@ -288,16 +288,11 @@ function html_date($date_start, $date_end){
     return "<div class='date'>$str</div>";
 }
 
-//  ***  remettre ça dans Database.php via une classe ? Ou propriété dans Personne ?   //
 function html_personne_periode($personne_id){
     global $mysqli;
     $date_max = null;
     $date_min = null;
 
-    //  *** On pourrait pas retirer la partie qui recherche les conditions ? 
-    //  Si la personne apparait dans des conditions, c'est qu'elle est dans 
-    //  l'acte, donc dans epoux, epouse et/ou relation.    //
-    //  ***  $condition->id sert pour l'id html  //
     $result = $mysqli->query("
         SELECT date_start, date_end
         FROM acte

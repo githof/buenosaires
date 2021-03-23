@@ -1,10 +1,8 @@
 <?php
 
 // afficher les erreurs /!\ #devOnly /!\  ***
-// error_reporting(E_ALL);
-// ini_set("display_errors", 1);
-// include("/home/morgan/internet/file_with_errors.php");
-// echo "<br>";
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 // end #devOnly
 
 $exec_time_script = microtime(TRUE);
@@ -50,6 +48,8 @@ if(isset($_POST["action"])){
 
 
 // VIEW SCRIPT
+
+//  *** can_access() : depuis utils.php 
 $view = "";
 $is_get = FALSE;
 if(isset($url_parsed["page"])){
@@ -79,6 +79,7 @@ if($is_get){
     include_once($view);
     echo $alert->html_all();
 } else {
+    
     // HEADER
     include_once(ROOT."src/views/header.php");
     $header_output = ob_get_clean();
@@ -90,7 +91,6 @@ if($is_get){
 
     // ALERTS
     $alerts_output = $alert->html_all();
-
 
     // IF EXPORT
     if(isset($ARGS["export"]))

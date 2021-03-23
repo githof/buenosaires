@@ -7,6 +7,7 @@ include_once(ROOT."src/class/io/XMLExport.php");
 include_once(ROOT."src/utils.php");
 include_once(ROOT."src/class/io/XMLActeReader.php");
 
+//  *** can_access() : depuis utils.php 
 if(can_access($access_pages["acte"]) &&
 isset($_POST["raw_xml"], $_POST["source_id"])){
     $only_new = FALSE;

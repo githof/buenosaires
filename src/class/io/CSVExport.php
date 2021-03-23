@@ -139,6 +139,12 @@ class CSVExport {
         $this->personnes = $mysqli->get_personnes(FALSE);
 
         // faire un Database->get_relations() comme get_personnes
+        //  tester ça avec Database::get_relations() ^ 
+        // $this->relations = $mysqli->get_relations();
+        // $this->export_relation(
+        //     $relation, $names, $dates, FALSE);
+        // $this->export_relation(
+        //     $relation, $names, $dates, TRUE);
         $results = $mysqli->select("relation", ["*"]);
         if($results != FALSE && $results->num_rows){
             while($row = $results->fetch_assoc()){
