@@ -153,10 +153,10 @@ class Database extends mysqli{
                 "nom='PERSONNE_ID_MAX'"
             );
             if($result != FALSE && $result->num_rows == 1){
-            $row = $result->fetch_assoc();
-            $value = intval($row["valeur"]) +1;
-            $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-            return $row["valeur"];
+                $row = $result->fetch_assoc();
+                $value = intval($row["valeur"]) +1;
+                $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
+                return $row["valeur"];
             }
             return FALSE;
         }
@@ -238,7 +238,7 @@ class Database extends mysqli{
         global $log;
 
 
-        $log->d("from database: ".get_class($obj)." id=$obj->id");  //  $obj->id : null log.txt ***
+        $log->d("from database: ".get_class($obj)." id=$obj->id");
 
         $row = NULL;
         if(isset($obj->id)){
