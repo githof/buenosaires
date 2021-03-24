@@ -3,7 +3,10 @@ Voir DROPBOX/Organisation/CR.txt
 
 + Suivi Morgan
   + facto html
-    - reviewer rewrite-search
+    x reviewer rewrite-search
+      x modifs, renommages
+      x test ok (Morgan)
+      x je merge dans morgan-rewrite
     - reviewer rewrite-header
   + auto_increment
   + facto base (à voir)
