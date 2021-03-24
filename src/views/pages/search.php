@@ -49,53 +49,34 @@ function all_prenoms(){
 }
 
 
-function html_form_date($name_date, $label_date){
+function html_input_date($label, $name){
     return html_form_group ('
-        <label for="'.$name_date.'">'.$label_date.'</label>
-        <input type="date" name="'.$name_date.'" id="'.$name_date.'">
+        <label for="'.$name.'">'.$label.'</label>
+        <input type="date" name="'.$name.'" id="'.$name.'">
     ');
 }
 
-function html_select_personnes($label_personne, $name_personne, $nom_ou_prenom) {
-    if($nom_ou_prenom == 'nom') 
-        $nom_ou_prenom = all_noms();
-    else 
-        $nom_ou_prenom = all_prenoms();
+function html_select_personnes($title, $name_select, $nom_ou_prenom) {
+    $html_option_list = ($nom_ou_prenom == 'nom') ?
+        all_noms() : all_prenoms();
 
     return html_form_group('
-        <label for="'.$name_personne.'">'.$label_personne.'</label>
-        <select multiple="multiple" name="'.$name_personne.'[]" id="'.$name_personne.'">'
-            .$nom_ou_prenom.
+        <label for="'.$name_select.'">'.$title.'</label>
+        <select multiple="multiple" name="'.$name_select.'[]" id="'.$name_select.'">'
+            .$html_option_list.
         '</select>
     ');
 }
 
 function html_search_acte()
 {
-    $contents = '';
-
-    $date = array(
-        array(
-            'label_date'=>'acte_date_start',
-            'name_date'=>'A partir de : '
-        ),
-        array(
-            'label_date'=>'acte_date_end',
-            'name_date'=>'Avant : '
-        )
-    );
-
-    foreach($date as $d) {
-        $contents .= 
-            html_form_date($d['label_date'], $d['name_date']);
-    }
-    $contents .= html_select_personnes(
-        'Contenant les personnes avec pour nom de famille', 
-        'acte_noms', 
-        'nom'
-    );
-
-    return $contents;
+    return html_form_date('A partir de : ', 'acte_date_start')
+        . html_form_date('Avant : ', 'acte_date_end')
+        . html_select_personnes(
+            'Contenant les personnes avec pour nom de famille', 
+            'acte_noms', 
+            'nom'
+        );
 }
 
 function html_search_personne()
