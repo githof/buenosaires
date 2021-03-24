@@ -46,8 +46,19 @@ class Database extends mysqli{
         return $this->query($s);
     }
 
+    //  négocier les id pour remplacer l'AI manuel de next_id() 
     public function insert($table, $values, $more = "") {
         global $log;
+
+        //  test next_id 
+        echo '<br>'.__METHOD__.' avant if';
+        echo '<br>$table : ';
+        var_dump($table);
+        echo '<br>$values : ';
+        print_r($values);
+        echo '<br>$more : ';
+        var_dump($more);
+        //  fin test
 
         $s = "INSERT INTO `$table` (";
 
@@ -55,23 +66,47 @@ class Database extends mysqli{
         $vals = "";
         $i = 0;
 
+        //  stocke dans $s les colonnes et les valeurs
+        //  il faut exclure la colonne qui stocke l'id
+        //  pour les tables qui ont l'auto_increment
+        // if(strrpos($values, 'id')) {
+
+        //  insérer un enregistrement sans données (1 seule colonne qui a AI) :
+        //  insert into personne (`id`) values (null);
         foreach($values as $key => $value){
+            
             $keys .= $key;
-
+            
             if(strcmp($value, "now()") == 0)
-            $vals .= $value;
-            else
-            $vals .= "'" . $value . "'";
-
+                $vals .= $value;
+            else {
+                if($key === 'id') { 
+                    // $value = NULL;
+                    $vals .= 'NULL';
+                } else 
+                    $vals .= "'" . $value . "'";
+            }
+            
+            //  test next_id 
+            echo '<br>'.__METHOD__.' après if';
+            echo '<br>$key : ';
+            var_dump($key);
+            //  fin test    
+            
             if($i < count($values) -1){
-            $keys .= ", ";
-            $vals .= ", ";
+                $keys .= ", ";
+                $vals .= ", ";
             }
 
             $i++;
         }
 
         $s .= $keys . ") VALUES (" . $vals . ")";
+
+        //  test next_id 
+        echo '<br>';
+        var_dump($s);
+        //  fin test 
 
         if(strlen($more) > 0)
             $s .= " " . $more;
@@ -134,6 +169,13 @@ class Database extends mysqli{
         $log->i(trim($requete));
         $m = microtime(TRUE);
         $result = parent::query($requete);
+
+        //  test next_id
+        echo '<br>'.__METHOD__;
+        echo '<br>$requete : ';
+        var_dump($requete);
+        //  fin test
+
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
             $log->e("SQL error : $this->error");
@@ -143,6 +185,7 @@ class Database extends mysqli{
         return $result;
     }
 
+    //  méthode à essayer de virer pour reactiver l'auto_increment normal 
     public function next_id($table){
         global $log, $mysqli;
 
