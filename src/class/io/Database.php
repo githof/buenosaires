@@ -153,17 +153,19 @@ class Database extends mysqli{
                 "nom='PERSONNE_ID_MAX'"
             );
             if($result != FALSE && $result->num_rows == 1){
-            $row = $result->fetch_assoc();
-            $value = intval($row["valeur"]) +1;
-            $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-            return $row["valeur"];
+                $row = $result->fetch_assoc();
+                $value = intval($row["valeur"]) +1;
+                $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
+                return $row["valeur"];
             }
             return FALSE;
         }
 
         $database_name = SQL_DATABASE_NAME;
 
-        $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+        // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+        //  ***  Autre mooyen : récupérer la valeur du dernier enregistrement d'une table :
+        $s = "SELECT max(id) from `$table`";
 
         $result = $this->query($s);
 
@@ -171,7 +173,11 @@ class Database extends mysqli{
             return FALSE;
 
         $row = $result->fetch_assoc();
-        return $row["id"];
+
+        //  *** On ajoute 1 à la valeur récupérée 
+        $value = intval($row['max(id)']) +1;
+
+        return $value;
     }
 
     public function start_transaction(){
@@ -232,7 +238,7 @@ class Database extends mysqli{
         global $log;
 
 
-        $log->d("from database: ".get_class($obj)." id=$obj->id");  //  $obj->id : null log.txt ***
+        $log->d("from database: ".get_class($obj)." id=$obj->id");
 
         $row = NULL;
         if(isset($obj->id)){
@@ -280,8 +286,6 @@ class Database extends mysqli{
         $values = $obj->get_same_values();
         if($values == NULL){
             $row = NULL;
-//                break;  
-//  Fatal error: 'break' not in the 'loop' or 'switch' context  ***
         }
 
         foreach ($values as $k => $v) {
