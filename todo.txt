@@ -1,6 +1,13 @@
 
 Voir DROPBOX/Organisation/CR.txt
 
++ Suivi Morgan
+  + facto html
+    - reviewer rewrite-search
+    - reviewer rewrite-header
+  + auto_increment
+  + facto base (à voir)
+
 + Séquence :
   -> BUG import attribution des ids
   (voir détails plus bas)
