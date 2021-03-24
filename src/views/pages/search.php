@@ -14,13 +14,13 @@ function all_acte_id(){
     return $str;
 }
 
-function all_noms(){
+function all_noms($nom_ou_prenom){
     global $mysqli;
     $str = "";
 
     $result = $mysqli->query("
         SELECT id, no_accent
-        FROM nom
+        FROM $nom_ou_prenom
         ORDER BY no_accent
     ");
     if($result != FALSE && $result->num_rows > 0){
@@ -30,24 +30,6 @@ function all_noms(){
     }
     return $str;
 }
-
-function all_prenoms(){
-    global $mysqli;
-    $str = "";
-
-    $result = $mysqli->query("
-        SELECT id, no_accent
-        FROM prenom
-        ORDER BY no_accent
-    ");
-    if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
-            $str .= "<option value='{$row["id"]}'>{$row["no_accent"]}</option>";
-        }
-    }
-    return $str;
-}
-
 
 function html_input_date($label, $name){
     return html_form_group ('
@@ -57,8 +39,7 @@ function html_input_date($label, $name){
 }
 
 function html_select_personnes($title, $name_select, $nom_ou_prenom) {
-    $html_option_list = ($nom_ou_prenom == 'nom') ?
-        all_noms() : all_prenoms();
+    $html_option_list = all_noms($nom_ou_prenom);
 
     return html_form_group('
         <label for="'.$name_select.'">'.$title.'</label>
