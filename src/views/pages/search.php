@@ -119,30 +119,22 @@ function html_form_search($acte_or_personne) {
         }
     }
 
-    $contents .= 
-        html_submit('', 'Rechercher').
-        html_hidden_type($name, $value);
-
-    return '<div>
-        <form method="get" action="resultat">'
-            .$contents.
-        '</form>
-    </div>';
+    return $contents;
 }
 
 //  onglets "Actes" et "Personnes"
-function html_liste_li($href, $class, $label) {
+function html_tab_title($href, $class, $label) {
 
     return '<li role="presentation" class="' . $class . '">
                 <a href="recherche#' . $href . '" aria-controls="' . $href . '" role="tab" data-toggle="tab">' . $label . '</a>
             </li>';
                 
 }
-function html_liste_ul(){
+function html_tab_titles(){
 
     return '<ul class="nav nav-tabs" role="tablist">'
-                . html_liste_li('actes', 'active', 'Actes')
-                . html_liste_li('personnes', '', 'Personnes')
+                . html_tab_title('actes', 'active', 'Actes')
+                . html_tab_title('personnes', '', 'Personnes')
             . '</ul>';
 
 }
@@ -150,13 +142,25 @@ function html_liste_ul(){
 //  divs "Actes" et "Personnes"
 function html_tabpanel($class, $name, $acte_or_personne) {
 
-    return '<div role="tabpanel" class="tab-pane ' . $class . '" id="' . $name . '">
-                <section>'
-                        . html_form_search($acte_or_personne)
-                . '</section>
+    $form_contents = html_form_search($acte_or_personne)
+        . html_submit('', 'Rechercher')
+        . html_hidden_type('type', $acte_or_personne);
+
+    /* Le deuxième div, après la section, ce serait bien qu'on puisse s'en passer (faut voir si y'a pas un truc en js qui le prend en compte)
+    */
+    return '<div role="tabpanel" class="tab-pane '
+        . $class . '" id="' . $name . '">
+                <section>
+                    <div>
+                        <form method="get" action="resultat">
+                          '
+                        . $form_contents . '
+                        </form>
+                    </div>
+                </section>
             </div>';
 }
-function html_div_tabpanel() {
+function html_tab_contents() {
 
     return '<div class="tab-content">'
                 . html_tabpanel('active', 'actes', 'acte')
@@ -166,8 +170,8 @@ function html_div_tabpanel() {
 
 
 //  Affichage :
-echo html_liste_ul();
-echo html_div_tabpanel();
+echo html_tab_titles();
+echo html_tab_contents();
 
 ?>
 
