@@ -51,8 +51,8 @@ function html_select_personnes($title, $name_select, $nom_ou_prenom) {
 
 function html_search_acte()
 {
-    return html_form_date('A partir de : ', 'acte_date_start')
-        . html_form_date('Avant : ', 'acte_date_end')
+    return html_input_date('A partir de : ', 'acte_date_start')
+        . html_input_date('Avant : ', 'acte_date_end')
         . html_select_personnes(
             'Contenant les personnes avec pour nom de famille', 
             'acte_noms', 
