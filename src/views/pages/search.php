@@ -56,8 +56,7 @@ function html_form_date($name_date, $label_date){
     ');
 }
 
-// renommer cette fonction
-function html_form_personnes($label_personne, $name_personne, $nom_ou_prenom) {
+function html_select_personnes($label_personne, $name_personne, $nom_ou_prenom) {
     if($nom_ou_prenom == 'nom') 
         $nom_ou_prenom = all_noms();
     else 
@@ -90,7 +89,7 @@ function html_search_acte()
         $contents .= 
             html_form_date($d['label_date'], $d['name_date']);
     }
-    $contents .= html_form_personnes(
+    $contents .= html_select_personnes(
         'Contenant les personnes avec pour nom de famille', 
         'acte_noms', 
         'nom'
@@ -103,9 +102,9 @@ function html_search_personne()
 {
     $contents = '';
 
-    $contents .= html_form_personnes('Avec pour nom(s) de famille',
+    $contents .= html_select_personnes('Avec pour nom(s) de famille',
         'personne_noms', 'nom');
-    $contents .= html_form_personnes('Avec pour prénom(s)',
+    $contents .= html_select_personnes('Avec pour prénom(s)',
         'personne_prenoms', 'prenom');
 
     return $contents;
@@ -113,9 +112,12 @@ function html_search_personne()
 
 function html_form_search($acte_or_personne) {
     $search = "html_search_$acte_or_personne";
-    $contents = $search();
 
-    return $contents;
+    return '<form method="get" action="resultat"> '
+        . $search()
+        . html_submit('', 'Rechercher')
+        . html_hidden_type('type', $acte_or_personne)
+        . '</form>';
 }
 
 //  onglets "Actes" et "Personnes"
@@ -137,21 +139,13 @@ function html_tab_titles(){
 
 //  divs "Actes" et "Personnes"
 function html_tabpanel($class, $name, $acte_or_personne) {
-
-    $form_contents = html_form_search($acte_or_personne)
-        . html_submit('', 'Rechercher')
-        . html_hidden_type('type', $acte_or_personne);
-
     /* Le deuxième div, après la section, ce serait bien qu'on puisse s'en passer (faut voir si y'a pas un truc en js qui le prend en compte)
     */
     return '<div role="tabpanel" class="tab-pane '
         . $class . '" id="' . $name . '">
                 <section>
                     <div>
-                        <form method="get" action="resultat">
-                          '
-                        . $form_contents . '
-                        </form>
+                        ' . html_form_search($acte_or_personne) . '
                     </div>
                 </section>
             </div>';
