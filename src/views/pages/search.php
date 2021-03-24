@@ -56,6 +56,7 @@ function html_form_date($name_date, $label_date){
     ');
 }
 
+// renommer cette fonction
 function html_form_personnes($label_personne, $name_personne, $nom_ou_prenom) {
     if($nom_ou_prenom == 'nom') 
         $nom_ou_prenom = all_noms();
@@ -70,54 +71,49 @@ function html_form_personnes($label_personne, $name_personne, $nom_ou_prenom) {
     ');
 }
 
-function html_form_search($acte_or_personne) {
-    $contents;
+function html_search_acte()
+{
+    $contents = '';
 
-    if($acte_or_personne == 'acte') {
-        $date = array(
-            array(
-                'label_date'=>'acte_date_start',
-                'name_date'=>'A partir de : '
-            ),
-            array(
-                'label_date'=>'acte_date_end',
-                'name_date'=>'Avant : '
-            )
-        );
-        //  params pour html_form_hidden() :
-        $name = 'type';
-        $value = 'acte';
+    $date = array(
+        array(
+            'label_date'=>'acte_date_start',
+            'name_date'=>'A partir de : '
+        ),
+        array(
+            'label_date'=>'acte_date_end',
+            'name_date'=>'Avant : '
+        )
+    );
 
-        foreach($date as $d) {
-            $contents .= 
-                html_form_date($d['label_date'], $d['name_date']);
-        }
-        $contents .= html_form_personnes(
-            'Contenant les personnes avec pour nom de famille', 
-            'acte_noms', 
-            'nom'
-        );
-
-    } else {
-        $personne = array(
-            array(
-                'label_personne' => 'Avec pour nom(s) de famille',
-                'name_personne' => 'personne_noms',
-                'nom_ou_prenom' => 'nom'
-            ),
-            array(
-                'label_personne' => 'Avec pour prenom(s)',
-                'name_personne' => 'personne_prenoms',
-                'nom_ou_prenom' => 'prenom'
-            )
-        );
-        //  params pour html_form_hidden() :
-        $name = 'type';
-        $value = 'personne';
-        foreach($personne as $pers){
-            $contents .= html_form_personnes($pers['label_personne'], $pers['name_personne'], $pers['nom_ou_prenom']);
-        }
+    foreach($date as $d) {
+        $contents .= 
+            html_form_date($d['label_date'], $d['name_date']);
     }
+    $contents .= html_form_personnes(
+        'Contenant les personnes avec pour nom de famille', 
+        'acte_noms', 
+        'nom'
+    );
+
+    return $contents;
+}
+
+function html_search_personne()
+{
+    $contents = '';
+
+    $contents .= html_form_personnes('Avec pour nom(s) de famille',
+        'personne_noms', 'nom');
+    $contents .= html_form_personnes('Avec pour prénom(s)',
+        'personne_prenoms', 'prenom');
+
+    return $contents;
+}
+
+function html_form_search($acte_or_personne) {
+    $search = "html_search_$acte_or_personne";
+    $contents = $search();
 
     return $contents;
 }
