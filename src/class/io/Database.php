@@ -286,8 +286,6 @@ class Database extends mysqli{
         $values = $obj->get_same_values();
         if($values == NULL){
             $row = NULL;
-//                break;  
-//  Fatal error: 'break' not in the 'loop' or 'switch' context  ***
         }
 
         foreach ($values as $k => $v) {
