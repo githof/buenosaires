@@ -212,6 +212,14 @@ class Personne implements DatabaseIO{
     public function post_into_db(){
         global $mysqli;
 
+        echo '<br>'.__METHOD__;
+        echo '<br>post_into_db : insert_id : ';
+        var_dump($mysqli->insert_id);
+        //  *** test next_id 
+        if(!isset($this->id) || ($this->id == 0)) {
+            $this->id = $mysqli->insert_id;
+        }
+
         $this->is_updated_in_db = TRUE;
 
         $mysqli->start_transaction();

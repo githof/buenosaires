@@ -52,7 +52,9 @@ class Log {
         if(isset($account, $account->is_connected) && $account->is_connected)
             $email = " ".$account->infos["email"]." >";
 
-        $m = date("Y-m-d  H:i:s") . " [" . $lvl_message . "]" . $email ." ". $message . "\n";
+        //  *** $email inutile pour chercher à débugger la suppression de Database::next_id
+        // $m = date("Y-m-d  H:i:s") . " [" . $lvl_message . "]" . $email ." ". $message . "\n";
+        $m = date("Y-m-d  H:i:s") . " [" . $lvl_message . "]" . $message . "\n";
         $this->logs[] = $m;
     }
 

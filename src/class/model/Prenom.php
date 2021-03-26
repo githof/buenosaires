@@ -67,7 +67,17 @@ class Prenom implements DatabaseIO{
         return TRUE;
     }
 
-    public function post_into_db(){}
+    public function post_into_db(){
+        global $mysqli;
+
+            echo '<br>'.__METHOD__;
+            echo '<br>post_into_db : insert_id : ';
+            var_dump($mysqli->insert_id);
+            //  *** test next_id 
+            if(!isset($this->id) || ($this->id == 0)) {
+                $this->id = $mysqli->insert_id;
+            }
+    }
 }
 
 ?>
