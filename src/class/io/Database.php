@@ -150,12 +150,6 @@ class Database extends mysqli{
         $m = microtime(TRUE);
         $result = parent::query($requete);
 
-        //  test next_id
-        echo '<br>'.__METHOD__;
-        echo '<br>$requete : ';
-        var_dump($requete);
-        //  fin test
-
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
             $log->e("SQL error : $this->error");
