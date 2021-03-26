@@ -22,7 +22,7 @@ class Database extends mysqli{
         }
     }
 
-    public function select($table, $columns, $where = "", $more = "") {    //  d'où viennent ces données ?  ***
+    public function select($table, $columns, $where = "", $more = "") { 
         global $log;
 
         $s = "SELECT ";
@@ -55,17 +55,30 @@ class Database extends mysqli{
         $vals = "";
         $i = 0;
 
+        //  stocke dans $s les colonnes et les valeurs
+        //  il faut exclure la colonne qui stocke l'id
+        //  pour les tables qui ont l'auto_increment
+
+        //  insérer un enregistrement sans données (1 seule colonne qui a AI) :
+        //  insert into personne (`id`) values (null);
         foreach($values as $key => $value){
+        
             $keys .= $key;
-
+            
+            //  pour utilisateur
             if(strcmp($value, "now()") == 0)
-            $vals .= $value;
-            else
-            $vals .= "'" . $value . "'";
-
+                $vals .= $value;
+            //  id=NULL pour auto_increment (pas pour acte) 
+            else {
+                if(($key === 'id') && ($table != 'acte')) { 
+                    $vals .= 'NULL';
+                } else 
+                    $vals .= "'" . $value . "'";
+            }
+            
             if($i < count($values) -1){
-            $keys .= ", ";
-            $vals .= ", ";
+                $keys .= ", ";
+                $vals .= ", ";
             }
 
             $i++;
@@ -81,6 +94,7 @@ class Database extends mysqli{
 
     public function update($table, $values, $where, $more = ""){
         global $log;
+        
         $s = "UPDATE `$table` SET ";
 
         $i = 0;
@@ -109,7 +123,8 @@ class Database extends mysqli{
     }
 
     public function delete($table, $where, $more = ""){
-        global $log;
+        global $log, $obj;
+        $id = $this->insert_id;
 
         $s = "DELETE FROM `$table`";
 
@@ -134,51 +149,54 @@ class Database extends mysqli{
         $log->i(trim($requete));
         $m = microtime(TRUE);
         $result = parent::query($requete);
+
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
             $log->e("SQL error : $this->error");
             return FALSE;
         }
         $log->d("exec time: ".($m*1000)." ms");
+
         return $result;
     }
 
-    public function next_id($table){
-        global $log, $mysqli;
+    //  méthode à virer pour reactiver l'auto_increment normal 
+    // public function next_id($table){
+    //     global $log, $mysqli;
 
-        if($table === "personne"){
-            $result = $mysqli->select(
-                "variable",
-                ["*"],
-                "nom='PERSONNE_ID_MAX'"
-            );
-            if($result != FALSE && $result->num_rows == 1){
-                $row = $result->fetch_assoc();
-                $value = intval($row["valeur"]) +1;
-                $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-                return $row["valeur"];
-            }
-            return FALSE;
-        }
+    //     // if($table === "personne"){
+    //     //     $result = $mysqli->select(
+    //     //         "variable",
+    //     //         ["*"],
+    //     //         "nom='PERSONNE_ID_MAX'"
+    //     //     );
+    //     //     if($result != FALSE && $result->num_rows == 1){
+    //     //         $row = $result->fetch_assoc();
+    //     //         $value = intval($row["valeur"]) +1;
+    //     //         $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
+    //     //         return $row["valeur"];
+    //     //     }
+    //     //     return FALSE;
+    //     // }
 
-        $database_name = SQL_DATABASE_NAME;
+    //     $database_name = SQL_DATABASE_NAME;
 
-        // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
-        //  ***  Autre mooyen : récupérer la valeur du dernier enregistrement d'une table :
-        $s = "SELECT max(id) from `$table`";
+    //     // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
+    //     //  ***  Autre mooyen : récupérer la valeur du dernier enregistrement d'une table :
+    //     $s = "SELECT max(id) from `$table`";
 
-        $result = $this->query($s);
+    //     $result = $this->query($s);
 
-        if($result->num_rows != 1)
-            return FALSE;
+    //     if($result->num_rows != 1)
+    //         return FALSE;
 
-        $row = $result->fetch_assoc();
+    //     $row = $result->fetch_assoc();
 
-        //  *** On ajoute 1 à la valeur récupérée 
-        $value = intval($row['max(id)']) +1;
+    //     //  *** On ajoute 1 à la valeur récupérée 
+    //     $value = intval($row['max(id)']) +1;
 
-        return $value;
-    }
+    //     return $value;
+    // }
 
     public function start_transaction(){
         return $this->query("START TRANSACTION");
@@ -203,10 +221,10 @@ class Database extends mysqli{
         $results = $this->select("personne", ["id"]);
         if($results != FALSE && $results->num_rows){
             while($row = $results->fetch_assoc()){
-            $id = $row["id"];
-            $personne = new Personne($id);
-            $this->from_db($personne, $get_relations_conditions);
-            $personnes[$id] = $personne;
+                $id = $row["id"];
+                $personne = new Personne($id);
+                $this->from_db($personne, $get_relations_conditions);
+                $personnes[$id] = $personne;
             }
         }
         return $personnes;
@@ -244,7 +262,7 @@ class Database extends mysqli{
         if(isset($obj->id)){
             $row = $this->from_db_by_id($obj);
             if($obj instanceof Personne){
-            $this->from_db_personne_noms_prenoms($obj);
+                $this->from_db_personne_noms_prenoms($obj);
             if($get_relations_conditions){
                 $this->from_db_personne_relations($obj);
                 $this->from_db_personne_conditions($obj);
@@ -527,15 +545,17 @@ class Database extends mysqli{
 
     public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
         $result = FALSE;
-        $new_id = NULL;
+        // $new_id = NULL;  //  <== vient de next_id() // 
 
         if(!$force_insert && !$obj->pre_into_db())
             return;
 
-        if(!$skip_check_same)
+        if(!$skip_check_same) {
             $values_db = $this->from_db($obj, FALSE, FALSE);
-        if(isset($values_db["id"]))
+        }
+        if(isset($values_db["id"])) {
             $obj->id = $values_db["id"];
+        }
         $values_obj = $obj->values_into_db();
         $values_updated = $this->updated_values($values_db, $values_obj);
 
@@ -565,20 +585,22 @@ class Database extends mysqli{
     }
 
     private function into_db_insert($obj, $values){
+        
         global $log;
-        $new_id = NULL;
+        // $new_id = NULL;  //  <== pour next_id() // 
         $result = FALSE;
         $max_try = 2;
 
         while($result === FALSE && $max_try > 0){
-            if(!isset($obj->id)){
-            $new_id = $this->next_id($obj->get_table_name());
-            if($new_id == 0){
-                $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
-                return FALSE;
-            }
-            $obj->id = $new_id;
-            }
+            //  retirer ça, c'est pour utiliser next_id() 
+            // if(!isset($obj->id)){
+            //     $new_id = $this->next_id($obj->get_table_name());
+            //     if($new_id == 0){
+            //         $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
+            //         return FALSE;
+            //     }
+            //     $obj->id = $new_id;
+            // }
 
             $values["id"] = $obj->id;
             $result = $this->insert($obj->get_table_name(), $values);
@@ -590,6 +612,7 @@ class Database extends mysqli{
     //  PUBLIC  //
 
     public function into_db_prenom_personne($personne, $prenom, $ordre){
+
         $values = [
             "personne_id" => $personne->id,
             "prenom_id" => $prenom->id,
