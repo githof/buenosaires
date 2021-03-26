@@ -76,6 +76,7 @@ class XMLActeReader {
                 $i++;
             }
         } else if($this->xml->getName() == "ACTE") {
+
             if($this->read_acte($this->xml, $i, $only_new_acte))
                 $success_nb++;
         }
@@ -147,6 +148,7 @@ class XMLActeReader {
     //  PUBLIC  //
 
     public function read_acte_node($acte, $xml_acte){
+        
         foreach($xml_acte->children() as $xml_child){
             switch($xml_child->getName()){
                 case "date":
@@ -213,7 +215,7 @@ class XMLActeReader {
     //  PUBLIC  //
 
     public function read_personne_node($xml_personne){
-        $personne = new Personne();
+        $personne = new Personne(); 
         $personne->set_xml($xml_personne);
 
         $this->set_personne_attributes($personne,
