@@ -70,10 +70,7 @@ class Prenom implements DatabaseIO{
     public function post_into_db(){
         global $mysqli;
 
-            echo '<br>'.__METHOD__;
-            echo '<br>post_into_db : insert_id : ';
-            var_dump($mysqli->insert_id);
-            //  *** test next_id 
+            //  *** Récupérer la dernier id inséré 
             if(!isset($this->id) || ($this->id == 0)) {
                 $this->id = $mysqli->insert_id;
             }
