@@ -286,9 +286,11 @@ Voir DROPBOX/Organisation/CR.txt
     Don de acte 4730 pas conservé)
 
 + classes
-    - méthodes pour supprimer des entrées (relations, conditions, etc.)
+    - méthodes pour supprimer des entrées (relations, conditions, etc.) // fait en partie, voir s'il y a encore besoin de qqch
     - éditer les champs depuis les pages
     - BUG : dans Acte->remove_from_db, les conditions ne sont pas supprimées correctement (dans acte_has oui, mais pas dans condition), du coup les personnes peuvent pas être supprimées (cf + haut Frutos, dans le commit courant)
+    C'est ptet corrigé (tests par Morgan), vérifier
+    - après Personne->remove_from_db, purger les noms et prénoms non utilisés
 
 + modifs ponctuelles
     - Cristina
