@@ -299,6 +299,7 @@ class Personne implements DatabaseIO{
         $prenoms_ids = $this->prenoms_ids_from_db();
         $noms_ids = $this->noms_ids_from_db();
         */
+        //  *** Database::remove_unused_prenoms_noms() appelée dans Acte::remove_from_db() 
 
         $mysqli->start_transaction();
         foreach(['prenom', 'nom'] as $field) {

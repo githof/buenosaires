@@ -277,14 +277,16 @@ class Acte implements DatabaseIO{
 
         $mysqli->start_transaction();
         foreach(['conditions', 'relations'] as $liste)
-        if(! empty($this->{$liste})) {
-            $delete_liste = "delete_$liste";
-            $this->{$delete_liste}();
-        }
+            if(! empty($this->{$liste})) {
+                $delete_liste = "delete_$liste";
+                $this->{$delete_liste}();
+            }
         $this->delete_acte();
         $mysqli->end_transaction();
 
         $mysqli->purge_personnes($personnes);
+        //  *** Supprime les noms prénoms orpehlins (Database.php) : 
+        $mysqli->remove_unused_prenoms_noms(); 
     }
 }
 

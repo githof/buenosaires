@@ -669,6 +669,7 @@ class Database extends mysqli{
         return $removed;
     }
 
+    //  *** Appelée dans Acte::remove_from_db() 
     public function remove_unused_prenoms_noms(){
         $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
         $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");
