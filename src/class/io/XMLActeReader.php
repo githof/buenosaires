@@ -182,6 +182,9 @@ class XMLActeReader {
     //  PRIVATE METHODS //
 
         private function set_personne_attributes($p, $p_attr) {
+        if(isset($p_attr["id"]))
+            $personne->id = $p_attr()["id"];
+
         if(isset($p_attr["don"])
             && $p_attr["don"] == "true")
             $p->add_condition("Don", $this->source_id);
