@@ -68,9 +68,13 @@ class Database extends mysqli{
             //  pour utilisateur
             if(strcmp($value, "now()") == 0)
                 $vals .= $value;
-            //  id=NULL pour auto_increment (pas pour acte) 
+            //  pour personne : si $key === id => $value = $ersonne->id 
+            elseif(($table === 'personne') && ($key === 'id' && $value != 'null')) {
+                $vals .= $value;
+            }
+            //  id=NULL pour auto_increment (sauf pour Acte et les Personne qui ont un id sur le xml) 
             else {
-                if(($key === 'id') && ($table != 'acte')) { 
+                if(($key === 'id') && ($table != 'acte')) {
                     $vals .= 'NULL';
                 } else 
                     $vals .= "'" . $value . "'";
@@ -149,6 +153,10 @@ class Database extends mysqli{
         $log->i(trim($requete));
         $m = microtime(TRUE);
         $result = parent::query($requete);
+        // //  *** test isset id 
+        // echo '<br>'.__METHOD__;
+        // var_dump($requete);
+        // //  fin test 
 
         $m = microtime(TRUE) - $m;
         if($result === FALSE){

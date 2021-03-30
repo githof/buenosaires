@@ -117,7 +117,7 @@ class XMLActeReader {
         }
 
         if($only_new_acte && $this->db_has_acte($acte_id)){
-            $message = "L'acte$position est déjà dans la base de donnée. L'option seulement nouveau acte activée. L'acte n'est pas importé";
+            $message = "L'acte$position est déjà dans la base de donnée. L'option seulement nouvel acte activée. L'acte n'est pas importé";
             $log->i($message);
             $alert->warning($message);
             return FALSE;
