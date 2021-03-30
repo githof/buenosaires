@@ -68,11 +68,12 @@ class Database extends mysqli{
             //  pour utilisateur
             if(strcmp($value, "now()") == 0)
                 $vals .= $value;
-            //  id=NULL pour auto_increment (pas pour acte) 
-            else {
-                if(($key === 'id') && ($table != 'acte')) { 
-                    $vals .= 'NULL';
-                } else 
+            //  *** pour toutes les autres tables : 
+            //  si l'id n'est pas défini, on insère "NULL" pour lui attribuer un id avec l'auto_increment 
+            elseif($key === 'id' && empty($value)) {
+                $vals .= 'NULL';
+            } else {
+            //  *** sinon  on l'insère (l'id) dans la bdd 
                     $vals .= "'" . $value . "'";
             }
             
