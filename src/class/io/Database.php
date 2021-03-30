@@ -68,15 +68,12 @@ class Database extends mysqli{
             //  pour utilisateur
             if(strcmp($value, "now()") == 0)
                 $vals .= $value;
-            //  pour personne : si $key === id => $value = $ersonne->id 
-            elseif(($table === 'personne') && ($key === 'id' && $value != 'null')) {
-                $vals .= $value;
-            }
-            //  id=NULL pour auto_increment (sauf pour Acte et les Personne qui ont un id sur le xml) 
-            else {
-                if(($key === 'id') && ($table != 'acte')) {
-                    $vals .= 'NULL';
-                } else 
+            //  *** pour toutes les autres tables : 
+            //  si l'id n'est pas défini, on insère "NULL" pour lui attribuer un id avec l'auto_increment 
+            elseif($key === 'id' && empty($value)) {
+                $vals .= 'NULL';
+            } else {
+            //  *** sinon  on l'insère (l'id) dans la bdd 
                     $vals .= "'" . $value . "'";
             }
             
@@ -153,10 +150,6 @@ class Database extends mysqli{
         $log->i(trim($requete));
         $m = microtime(TRUE);
         $result = parent::query($requete);
-        // //  *** test isset id 
-        // echo '<br>'.__METHOD__;
-        // var_dump($requete);
-        // //  fin test 
 
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
