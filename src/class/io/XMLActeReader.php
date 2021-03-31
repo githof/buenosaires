@@ -181,7 +181,7 @@ class XMLActeReader {
 
     //  PRIVATE METHODS //
 
-        private function set_personne_attributes($p, $p_attr) {
+    private function set_personne_attributes($p, $p_attr) {
         if(isset($p_attr["id"]))
             $p->id = $p_attr["id"];
 
@@ -217,7 +217,12 @@ class XMLActeReader {
 
     //  PUBLIC  //
 
+    //  ***  Pour les gens qui n'ont pas de nom, et pas de balise <nom></nom> :
+    //  si il y a pas de variable pour la valeur de nom, il la crée et l'initialise à NULL 
     public function read_personne_node($xml_personne){
+        if(!isset($xml_personne->nom))
+            $xml_personne->nom = NULL;
+
         $personne = new Personne(); 
         $personne->set_xml($xml_personne);
 
