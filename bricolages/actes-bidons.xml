@@ -2,7 +2,7 @@
 <document>
 <ACTES>
 <ACTE id="15000"><date>26-2-1715</date>:
-<epoux id="15794"><prenom>Epoux</prenom> <nom>UN</nom></epoux>
+<epoux><prenom>Epoux</prenom> <nom>UN</nom></epoux>
 con <epouse id="15777"><prenom>Epouse</prenom> <nom>DEUX</nom></epouse>.
 Ts: <temoins><temoin id="15778"><prenom>Temoin</prenom> <nom>Trois</nom></temoin>,
 <temoin id="15779"><prenom>Temoin</prenom> <nom>Quatre</nom></temoin></temoins>(f.     127).</ACTE>
