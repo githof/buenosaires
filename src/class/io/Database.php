@@ -151,6 +151,12 @@ class Database extends mysqli{
         $m = microtime(TRUE);
         $result = parent::query($requete);
 
+        //  *** test sans-nom 
+        echo '<br>'.__METHOD__;
+        echo '<br>$requete : ';
+        var_dump($requete);
+        //  fin test 
+
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
             $log->e("SQL error : $this->error");
@@ -256,13 +262,13 @@ class Database extends mysqli{
     */
         global $log;
 
-
         $log->d("from database: ".get_class($obj)." id=$obj->id");
 
         $row = NULL;
         if(isset($obj->id)){
             $row = $this->from_db_by_id($obj);
             if($obj instanceof Personne){
+                //  *** attribue un prénom + nom à une personne mais pas un id, on le connait déjà 
                 $this->from_db_personne_noms_prenoms($obj);
             if($get_relations_conditions){
                 $this->from_db_personne_relations($obj);
@@ -274,9 +280,10 @@ class Database extends mysqli{
             }
         } else {
             if($obj instanceof Personne)
-            $row = $this->from_db_by_same_personne($obj);
+            //  *** condition "même personne" 
+                $row = $this->from_db_by_same_personne($obj);
             else
-            $row = $this->from_db_by_same($obj);
+                $row = $this->from_db_by_same($obj);
         }
 
         if($update_obj)
@@ -298,37 +305,74 @@ class Database extends mysqli{
         return $row;
     }
 
+    //  *** check si les contenus des tables sont les mêmes que dans l'acte en cours d'import si on n'a pas d'id  
     private function from_db_by_same($obj){
+        //  *** test sans-nom 
+        echo '<br>'.__METHOD__;
+        echo '<br>$obj entrée : ';
+        var_dump($obj);
+        //  fin test 
         $row = NULL;
         $s = "";
         $i = 0;
+        //  stocke les valeurs de l'obj dans $values 
+        //  (class/models/obj) 
         $values = $obj->get_same_values();
+        //  *** test sans-nom 
+        echo '<br>'.__METHOD__;
+        echo '<br>$values : ';
+        var_dump($values);
+        //  fin test 
+        //  *** si ya pas de valeurs, on retourne NULL 
         if($values == NULL){
             $row = NULL;
         }
 
+        //  on Stock les éléments de la requête dans $s 
+        //  *** Si ya des valeurs :
+        //  si $v == 'NULL' --> '$k IS NULL'
+        //  sinon $k = $v dans $s 
         foreach ($values as $k => $v) {
             if(strcmp($v, "NULL") == 0)
-            $s .= "$k IS NULL";
+                $s .= "$k IS NULL";
             else
-            $s .= $k . "='" . $v . "'";
+                $s .= $k . "='" . $v . "'";
 
             if($i < count($values) -1)
-            $s .= " AND ";
+                $s .= " AND ";
             $i++;
         }
 
+        //  *** test sans-nom 
+        echo '<br>'.__METHOD__;
+        echo '<br>$obj->get_table_name() : ';
+        var_dump($obj->get_table_name());
+        //  fin test 
+
+        //  *** requête 
         $result = $this->select(
             $obj->get_table_name(),
             ["*"],
             $s
         );
-        if($result->num_rows == 1)
+        //  *** si on récupère 1 ligne de la bdd : 
+        //  on la stocke dans $row 
+        //  Mais si on récupère plus qu'1 ligne... ? // 
+        if($result->num_rows == 1) {
             $row = $result->fetch_assoc();
+            //  *** test sans-nom 
+            echo '<br>'.__METHOD__;
+            echo '<br>$row : ';
+            var_dump($row);
+            //  fin test 
+        }
+        //  *** et on la retourne 
         return $row;
     }
 
+    //  *** attribue un prénom + nom à une personne, mais on connait déjà son id  
     private function from_db_personne_noms_prenoms($personne) {
+        //  *** attribue un prénom à une personne 
         $result = $this->query("
             SELECT prenom.id AS p_id, prenom, no_accent
             FROM prenom_personne INNER JOIN prenom
@@ -341,6 +385,7 @@ class Database extends mysqli{
                 $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
         }
 
+        //  *** attribue un nom à une personne 
         $result = $this->query("
             SELECT nom.id as n_id, nom, no_accent, attribut, ordre
             FROM nom_personne INNER JOIN nom
@@ -472,6 +517,7 @@ class Database extends mysqli{
 
     //  PRIVATE METHODS   //
 
+    //  ***  condition "même personne" 
     private function from_db_by_same_personne($personne){
         $ids = NULL;
         $ids_tmp = NULL;
@@ -488,15 +534,31 @@ class Database extends mysqli{
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];   
 
-            if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
-            else
-            $ids = $ids_tmp;
+            //  *** test sans-nom 
+            echo '<br>'.__METHOD__;
+            echo '<br>$ids_tmp : ';
+            var_dump($ids_tmp);
+            //  fin test 
+
+            if(isset($ids)) {
+                $ids = array_intersect($ids, $ids_tmp);
+                //  *** test sans-nom 
+                echo '<br>noms array_intersect($ids, $ids_tmp) : ';
+                var_dump($ids);
+                //  fin test 
+            }
+            else {
+                $ids = $ids_tmp;
+                //  *** test sans-nom 
+                echo '<br>noms $ids = $ids_tmp : ';
+                var_dump($ids);
+                //  fin test 
+            }
 
             if(count($ids) == 0)
-            return FALSE;
+                return FALSE;
         }
 
         foreach($personne->prenoms as $k => $prenom){
@@ -511,19 +573,53 @@ class Database extends mysqli{
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
-            if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
-            else
-            $ids = $ids_tmp;
+            //  *** test sans-nom 
+            echo '<br>'.__METHOD__;
+            echo '<br>$ids_tmp : ';
+            var_dump($ids_tmp);
+            //  fin test 
+
+            if(isset($ids)) {
+                $ids = array_intersect($ids, $ids_tmp);
+                //  *** test sans-nom 
+                echo '<br>prenoms array_intersect($ids, $ids_tmp) : ';
+                var_dump($ids);
+                //  fin test 
+            }
+            else {
+                $ids = $ids_tmp;
+                //  *** test sans-nom 
+                echo '<br>prenoms $ids = $ids_tmp : ';
+                var_dump($ids);
+                //  fin test 
+            }
 
             if(count($ids) == 0)
-            return NULL;
+                return NULL;
         }
 
-        if(isset($ids)){
+        //  *** test sans-nom 
+        echo '<br>'.__METHOD__;
+        echo '<br>$ids all : ';
+        var_dump($ids);
+        //  fin test 
+
+        if(isset($ids) && ($ids === 1)){
+            //  ***  si on n'a qu'une personne avec prenom + nom identiques
+            //  on supprime son id de la liste pour créer un ouvel id //    c'est idiot ! 
+            //  *** test sans-nom 
+            echo '<br>'.__METHOD__;
+            echo '<br>array_shift($ids) : ';
+            //  fin test 
+            //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
+            //  il faut vérifier d'autres choses que juste prenom + nom 
+            var_dump(array_shift($ids));
+            //  fin test 
             return ["id" => array_shift($ids)];
+        } else {
+            //  
         }
         return NULL;
     }
@@ -551,6 +647,7 @@ class Database extends mysqli{
         if(!$force_insert && !$obj->pre_into_db())
             return;
 
+        //  *** $values_db = $row;  
         if(!$skip_check_same) {
             $values_db = $this->from_db($obj, FALSE, FALSE);
         }
@@ -640,7 +737,7 @@ class Database extends mysqli{
         return $this->insert(
             "nom_personne",
             $values,
-            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"
+            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"   //  *** ==> je comprends pas '$ordre'$attr, ou pourquoi $attr ? 
         );
     }
 

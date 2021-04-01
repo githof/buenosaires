@@ -90,25 +90,27 @@ function array_to_string_with_separator($tab, $separator){
     return implode($separator, $tab);
 }
 
-function renommer_personne($personne, $noms, $prenoms) {
-    global $mysqli;
+//  *** attribue un id déjà existant à une nouvelle personne enregistrée ? 
+//  utilisée nulle part 
+// function renommer_personne($personne, $noms, $prenoms) {
+//     global $mysqli;
 
-    $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
-    $i = 1;
-    foreach($prenoms as $prenom){
-        $mysqli->into_db($prenom);
-        $mysqli->into_db_prenom_personne($personne, $prenom, $i);
-        $i++;
-    }
+//     $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
+//     $i = 1;
+//     foreach($prenoms as $prenom){
+//         $mysqli->into_db($prenom);
+//         $mysqli->into_db_prenom_personne($personne, $prenom, $i);
+//         $i++;
+//     }
 
-    $mysqli->delete("nom_personne", "personne_id='$personne->id'");
-    $i = 1;
-    foreach($noms as $nom){
-        $mysqli->into_db($nom);
-        $mysqli->into_db_nom_personne($personne, $nom, $i);
-        $i++;
-    }
-}
+//     $mysqli->delete("nom_personne", "personne_id='$personne->id'");
+//     $i = 1;
+//     foreach($noms as $nom){
+//         $mysqli->into_db($nom);
+//         $mysqli->into_db_nom_personne($personne, $nom, $i);
+//         $i++;
+//     }
+// }
 
 function parse_prenoms($prenoms_str){
     $prenoms_array = explode(",", $prenoms_str);
@@ -317,7 +319,7 @@ function append_unique_identifier($filename){
 }
 
 /*
-  Comme array_unique mais en testant seulement l'attribut id des objets contenus dans le tableau
+  Comme array_unique mais en testant seulement l''attribut id des objets contenus dans le tableau
 */
 function array_unique_by_id($a) {
     $ids = array();
@@ -339,7 +341,5 @@ function string_list_of_ids($liste) {
 
     return implode(',', $ids);
 }
-//  Affichage erreurs fermetures de parenthèses mais semble être un bug 
-//  d'affichage VScode uniquement   ***
 
 ?>
