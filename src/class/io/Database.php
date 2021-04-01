@@ -606,7 +606,7 @@ class Database extends mysqli{
         var_dump($ids);
         //  fin test 
 
-        if(isset($ids) && ($ids === 1)){
+        if(isset($ids)){
             //  ***  si on n'a qu'une personne avec prenom + nom identiques
             //  on supprime son id de la liste pour créer un ouvel id //    c'est idiot ! 
             //  *** test sans-nom 
@@ -618,8 +618,6 @@ class Database extends mysqli{
             var_dump(array_shift($ids));
             //  fin test 
             return ["id" => array_shift($ids)];
-        } else {
-            //  
         }
         return NULL;
     }
