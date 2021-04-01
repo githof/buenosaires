@@ -222,6 +222,8 @@ class XMLActeReader {
     public function read_personne_node($xml_personne){
         if(!isset($xml_personne->nom))
             $xml_personne->nom = NULL;
+        if(!isset($xml_personne->prenom))
+            $xml_personne->prenom = NULL;
 
         $personne = new Personne(); 
         $personne->set_xml($xml_personne);
