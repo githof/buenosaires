@@ -27,14 +27,15 @@ class Database extends mysqli{
 
         $s = "SELECT ";
 
-            /*  Warning: count(): Parameter must be an array or an object 
-                that implements Countable 
-            ***/
-            for($i = 0; $i < count($columns); $i++){
-                $s .= $columns[$i];
-                if($i < count($columns) -1)
-                    $s .= ", ";
-            }
+        /*  Warning: count(): Parameter must be an array or an object 
+            that implements Countable 
+            $columns est un string 
+        ***/
+        for($i = 0; $i < count($columns); $i++){
+            $s .= $columns[$i];
+            if($i < count($columns) -1)
+                $s .= ", ";
+        }
 
         $s .= " FROM `$table`";
 
@@ -73,7 +74,7 @@ class Database extends mysqli{
             elseif($key === 'id' && empty($value)) {
                 $vals .= 'NULL';
             } else {
-            //  *** sinon  on l'insère (l'id) dans la bdd 
+            //  *** sinon  on insère l'id dans la bdd 
                     $vals .= "'" . $value . "'";
             }
             
@@ -150,12 +151,6 @@ class Database extends mysqli{
         $log->i(trim($requete));
         $m = microtime(TRUE);
         $result = parent::query($requete);
-
-        //  *** test sans-nom 
-        echo '<br>'.__METHOD__;
-        echo '<br>$requete : ';
-        var_dump($requete);
-        //  fin test 
 
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
@@ -268,21 +263,28 @@ class Database extends mysqli{
         if(isset($obj->id)){
             $row = $this->from_db_by_id($obj);
             if($obj instanceof Personne){
-                //  *** attribue un prénom + nom à une personne mais pas un id, on le connait déjà 
+                //  *** recherche prénom + nom d'une personne avec son id (pour affichage detail_personne) 
                 $this->from_db_personne_noms_prenoms($obj);
-            if($get_relations_conditions){
-                $this->from_db_personne_relations($obj);
-                $this->from_db_personne_conditions($obj);
-            }
+                if($get_relations_conditions){
+                    $this->from_db_personne_relations($obj);
+                    $this->from_db_personne_conditions($obj);
+                }
             } else if ($obj instanceof Acte && $get_relations_conditions){
             $this->from_db_acte_conditions($obj);
             $this->from_db_acte_relations($obj);
             }
         } else {
-            if($obj instanceof Personne)
-            //  *** condition "même personne" 
-                $row = $this->from_db_by_same_personne($obj);
-            else
+            //  *** test enregistrer nouvelle personne à chaque fois 
+            if($obj instanceof Personne) {
+                //  et envoyer une alerte si prénoms+noms identiques existe déjà  
+                //  *** J'ai modifié from_db_by_same_personne pour créer nouvelle personne 
+                $rows = $this->from_db_by_same_personne($obj);
+                if(isset($rows) && $rows != NULL) {
+                    foreach($rows as $id) {
+                        $log->d("from database: ".get_class($obj)." id=$id existe déjà");
+                    }
+                }
+            } else 
                 $row = $this->from_db_by_same($obj);
         }
 
@@ -307,31 +309,22 @@ class Database extends mysqli{
 
     //  *** check si les contenus des tables sont les mêmes que dans l'acte en cours d'import si on n'a pas d'id  
     private function from_db_by_same($obj){
-        //  *** test sans-nom 
-        echo '<br>'.__METHOD__;
-        echo '<br>$obj entrée : ';
-        var_dump($obj);
-        //  fin test 
         $row = NULL;
         $s = "";
         $i = 0;
         //  stocke les valeurs de l'obj dans $values 
-        //  (class/models/obj) 
+        //  (class/model/obj) 
         $values = $obj->get_same_values();
-        //  *** test sans-nom 
-        echo '<br>'.__METHOD__;
-        echo '<br>$values : ';
-        var_dump($values);
-        //  fin test 
-        //  *** si ya pas de valeurs, on retourne NULL 
+
+        //  *** si pas de valeurs, on retourne NULL 
         if($values == NULL){
             $row = NULL;
         }
 
         //  on Stock les éléments de la requête dans $s 
         //  *** Si ya des valeurs :
-        //  si $v == 'NULL' --> '$k IS NULL'
-        //  sinon $k = $v dans $s 
+        //          si $v == 'NULL' --> '$k IS NULL'
+        //          sinon $k = $v dans $s 
         foreach ($values as $k => $v) {
             if(strcmp($v, "NULL") == 0)
                 $s .= "$k IS NULL";
@@ -343,12 +336,6 @@ class Database extends mysqli{
             $i++;
         }
 
-        //  *** test sans-nom 
-        echo '<br>'.__METHOD__;
-        echo '<br>$obj->get_table_name() : ';
-        var_dump($obj->get_table_name());
-        //  fin test 
-
         //  *** requête 
         $result = $this->select(
             $obj->get_table_name(),
@@ -357,14 +344,8 @@ class Database extends mysqli{
         );
         //  *** si on récupère 1 ligne de la bdd : 
         //  on la stocke dans $row 
-        //  Mais si on récupère plus qu'1 ligne... ? // 
         if($result->num_rows == 1) {
             $row = $result->fetch_assoc();
-            //  *** test sans-nom 
-            echo '<br>'.__METHOD__;
-            echo '<br>$row : ';
-            var_dump($row);
-            //  fin test 
         }
         //  *** et on la retourne 
         return $row;
@@ -421,7 +402,10 @@ class Database extends mysqli{
     }
 
     private function from_db_personne_relations($personne) {
-        $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
+        $result = $this->select("relation", 
+                                ["*"], 
+                                "pers_source_id='$personne->id' 
+                                OR pers_destination_id='$personne->id'");
         $pers_source = NULL;
         $pers_destination = NULL;
         if($result != FALSE && $result->num_rows > 0){
@@ -518,16 +502,23 @@ class Database extends mysqli{
     //  PRIVATE METHODS   //
 
     //  ***  condition "même personne" 
+    //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
+    //  pour alerte dans from_db()
+    //  mais crée une nouvelle personne 
+    /*  ***  Il faudra qu'elle 
+            - appelle une fonction qui vérifie toutes les relations
+            - si c'est la même personne --> appelle la fonction fusion() quand elle sera débuggée 
+    */
     private function from_db_by_same_personne($personne){
         $ids = NULL;
         $ids_tmp = NULL;
 
         foreach($personne->noms as $k => $nom){
             $result = $this->query("
-            SELECT personne_id
-            FROM nom_personne INNER JOIN nom
-            ON nom_personne.nom_id = nom.id
-            WHERE nom.no_accent = '$nom->no_accent'
+                SELECT personne_id
+                FROM nom_personne INNER JOIN nom
+                ON nom_personne.nom_id = nom.id
+                WHERE nom.no_accent = '$nom->no_accent'
             ");
             if($result === FALSE || $result->num_rows == 0)
                 return FALSE;
@@ -536,26 +527,12 @@ class Database extends mysqli{
             while($row = $result->fetch_assoc())
                 $ids_tmp[] = $row["personne_id"];   
 
-            //  *** test sans-nom 
-            echo '<br>'.__METHOD__;
-            echo '<br>$ids_tmp : ';
-            var_dump($ids_tmp);
-            //  fin test 
-
-            if(isset($ids)) {
+            //  ==> pourquoi cette condition ? $ids est toujours NULL, 
+            //  il n'a pas bougé depuis son init à NULL 
+            if(isset($ids)) 
                 $ids = array_intersect($ids, $ids_tmp);
-                //  *** test sans-nom 
-                echo '<br>noms array_intersect($ids, $ids_tmp) : ';
-                var_dump($ids);
-                //  fin test 
-            }
-            else {
+            else 
                 $ids = $ids_tmp;
-                //  *** test sans-nom 
-                echo '<br>noms $ids = $ids_tmp : ';
-                var_dump($ids);
-                //  fin test 
-            }
 
             if(count($ids) == 0)
                 return FALSE;
@@ -563,10 +540,10 @@ class Database extends mysqli{
 
         foreach($personne->prenoms as $k => $prenom){
             $result = $this->query("
-            SELECT personne_id
-            FROM prenom_personne INNER JOIN prenom
-            ON prenom_personne.prenom_id = prenom.id
-            WHERE prenom.no_accent = '$prenom->no_accent'
+                SELECT personne_id
+                FROM prenom_personne INNER JOIN prenom
+                ON prenom_personne.prenom_id = prenom.id
+                WHERE prenom.no_accent = '$prenom->no_accent'
             ");
             if($result === FALSE || $result->num_rows == 0)
             return NULL;
@@ -575,51 +552,34 @@ class Database extends mysqli{
             while($row = $result->fetch_assoc())
                 $ids_tmp[] = $row["personne_id"];
 
-            //  *** test sans-nom 
-            echo '<br>'.__METHOD__;
-            echo '<br>$ids_tmp : ';
-            var_dump($ids_tmp);
-            //  fin test 
-
-            if(isset($ids)) {
+            //  *** $ids = $ids_tmp du foreach $personne->noms 
+            if(isset($ids)) 
                 $ids = array_intersect($ids, $ids_tmp);
-                //  *** test sans-nom 
-                echo '<br>prenoms array_intersect($ids, $ids_tmp) : ';
-                var_dump($ids);
-                //  fin test 
-            }
-            else {
+            else 
                 $ids = $ids_tmp;
-                //  *** test sans-nom 
-                echo '<br>prenoms $ids = $ids_tmp : ';
-                var_dump($ids);
-                //  fin test 
-            }
 
             if(count($ids) == 0)
                 return NULL;
-        }
+        } 
 
-        //  *** test sans-nom 
-        echo '<br>'.__METHOD__;
-        echo '<br>$ids all : ';
-        var_dump($ids);
-        //  fin test 
+        // if(isset($ids)){
+        //     //  *** test sans-nom 
+        //     echo '<br>'.__METHOD__;
+        //     echo '<br>array_shift($ids) : ';
+        //     //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
+        //     //  il faut vérifier d'autres choses que juste prenom + nom 
+        //     //  ou créer une nouvelle personne
+        //     // var_dump(array_shift($ids));
+        //     //  fin test 
+        //     return ["id" => array_shift($ids)];     //  ==> remplacer array_shift ? 
+        //     //  pour relancer la même recherche sur les femmes des $ids dans l'array 
+        //     //  beaucoup de requêtes !!! 
+        // }
 
-        if(isset($ids)){
-            //  ***  si on n'a qu'une personne avec prenom + nom identiques
-            //  on supprime son id de la liste pour créer un ouvel id //    c'est idiot ! 
-            //  *** test sans-nom 
-            echo '<br>'.__METHOD__;
-            echo '<br>array_shift($ids) : ';
-            //  fin test 
-            //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
-            //  il faut vérifier d'autres choses que juste prenom + nom 
-            var_dump(array_shift($ids));
-            //  fin test 
-            return ["id" => array_shift($ids)];
-        }
-        return NULL;
+        //  *** test sans-noms 
+        // return NULL;
+        //  retourner les ids des identiques pour l'alerte 
+        return $ids;
     }
 
     private function updated_values($values_db, $values_obj){
@@ -644,6 +604,14 @@ class Database extends mysqli{
 
         if(!$force_insert && !$obj->pre_into_db())
             return;
+
+        //  *** test sans-nom
+        //  pour Personne : ne pas tester si déjà présent dans la bdd
+        // if($obj instanceof Personne) {
+        //     $skip_check_same = TRUE;
+        // }
+        //  *** passer quand même par from_db_by_same_personne
+        //  mais la modifier pour créer alerte et nouvelle personne 
 
         //  *** $values_db = $row;  
         if(!$skip_check_same) {
