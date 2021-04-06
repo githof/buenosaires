@@ -562,22 +562,20 @@ class Database extends mysqli{
                 return NULL;
         } 
 
+        //  *** test sans-nom 
         // if(isset($ids)){
-        //     //  *** test sans-nom 
-        //     echo '<br>'.__METHOD__;
-        //     echo '<br>array_shift($ids) : ';
         //     //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
         //     //  il faut vérifier d'autres choses que juste prenom + nom 
         //     //  ou créer une nouvelle personne
-        //     // var_dump(array_shift($ids));
-        //     //  fin test 
+
         //     return ["id" => array_shift($ids)];     //  ==> remplacer array_shift ? 
-        //     //  pour relancer la même recherche sur les femmes des $ids dans l'array 
-        //     //  beaucoup de requêtes !!! 
+        
+        //     //  Pas encore trouvé comment se fait exactement la chronologie des requêtes
         // }
 
         //  *** test sans-noms 
         // return NULL;
+
         //  retourner les ids des identiques pour l'alerte 
         return $ids;
     }
