@@ -37,9 +37,7 @@ if(isset($ARGS["export"])){
                 // $export->export_all();
                 $export = 'XMLExport';
                 
-                $export::entete();
-                $export::EXPORT_ALL();
-                $export::footer();
+                $export::export_all();
 
             }
             break;

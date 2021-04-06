@@ -34,24 +34,25 @@ class XMLExport {
         $this->footer();
     }
 
-    //  *** test export
+    //  *** test static (br rewrite-export) 
     //  public function export_all(){
-    public static function EXPORT_ALL(){
+    public static function export_all(){
         global $mysqli;
 
-        // XMLExport::entete();
-        // $this->entete();
+        //  *** test static 
+        self::entete();
+        //  $this->entete();
 
         $results = $mysqli->select("acte_contenu", ["contenu"]);
         if($results != FALSE && $results->num_rows > 0){
             while($row = $results->fetch_assoc()){
-                XMLExport::export_line($row["contenu"]);
+                self::export_line($row["contenu"]);
                 // $this->export_line($row["contenu"]);
             }
         }
 
         // $this->footer();
-        // XMLExport::footer();
+        self::footer();
     }
 
     //  PRIVATE METHODS //
@@ -61,9 +62,9 @@ class XMLExport {
         header('Content-type: text/xml');
         header('Content-Disposition: attachment; filename="export.xml"');
         
-        XMLExport::export_line('<?xml version="1.0" encoding="UTF-8"?>');
-        XMLExport::export_line('<document>');
-        XMLExport::export_line('<ACTES>');
+        self::export_line('<?xml version="1.0" encoding="UTF-8"?>');
+        self::export_line('<document>');
+        self::export_line('<ACTES>');
 
         /*
         $this->export_line('<?xml version="1.0" encoding="UTF-8"?>');
@@ -74,8 +75,8 @@ class XMLExport {
 
     // private function footer(){
     public static function footer(){
-        XMLExport::export_line('</ACTES>');
-        XMLExport::export_line('</document>');
+        self::export_line('</ACTES>');
+        self::export_line('</document>');
     }
 }
 
