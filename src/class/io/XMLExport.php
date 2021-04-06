@@ -12,7 +12,8 @@ class XMLExport {
 
     //  PRIVATE METHODS //
 
-    private function export_line($line){
+    // private function export_line($line){
+    public static function export_line($line){
         echo html_entity_decode($line, ENT_NOQUOTES, 'UTF-8') . PHP_EOL;
     }
 
@@ -33,35 +34,48 @@ class XMLExport {
         $this->footer();
     }
 
-    public function export_all(){
+    //  *** test export
+    //  public function export_all(){
+    public static function EXPORT_ALL(){
         global $mysqli;
 
-        $this->entete();
+        // XMLExport::entete();
+        // $this->entete();
 
         $results = $mysqli->select("acte_contenu", ["contenu"]);
         if($results != FALSE && $results->num_rows > 0){
             while($row = $results->fetch_assoc()){
-                $this->export_line($row["contenu"]);
+                XMLExport::export_line($row["contenu"]);
+                // $this->export_line($row["contenu"]);
             }
         }
 
-        $this->footer();
+        // $this->footer();
+        // XMLExport::footer();
     }
 
     //  PRIVATE METHODS //
 
-    private function entete(){
+    // private function entete(){
+    public static function entete(){
         header('Content-type: text/xml');
         header('Content-Disposition: attachment; filename="export.xml"');
         
+        XMLExport::export_line('<?xml version="1.0" encoding="UTF-8"?>');
+        XMLExport::export_line('<document>');
+        XMLExport::export_line('<ACTES>');
+
+        /*
         $this->export_line('<?xml version="1.0" encoding="UTF-8"?>');
         $this->export_line('<document>');
         $this->export_line('<ACTES>');
+        */
     }
 
-    private function footer(){
-        $this->export_line('</ACTES>');
-        $this->export_line('</document>');
+    // private function footer(){
+    public static function footer(){
+        XMLExport::export_line('</ACTES>');
+        XMLExport::export_line('</document>');
     }
 }
 

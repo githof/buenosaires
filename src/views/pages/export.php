@@ -28,12 +28,19 @@ if(isset($ARGS["export"])){
     switch($ARGS["what"]){
         case "all_actes":
             if($ARGS["export"] == "xml"){
-                $export = new XMLExport();
+                //  ***  test export static 
+                // $export = new XMLExport();
             /* on a vraiment besoin de ces new ?
                 Les fonctions pourraient être statiques, c'est
                 juste un espace de nom dont on a besoin
             */
-                $export->export_all();
+                // $export->export_all();
+                $export = 'XMLExport';
+                
+                $export::entete();
+                $export::EXPORT_ALL();
+                $export::footer();
+
             }
             break;
         case "all_personnes":
@@ -60,30 +67,3 @@ if(isset($ARGS["export"])){
 ?>
 
 
-<!-- <section>
-    <h4>Tous les actes</h4>
-    <div>
-        <a class="btn btn-info btn-sm bold" href="export?export=xml&what=all_actes">
-            XML
-        </a>
-    </div>
-</section>
-<section>
-    <h4>Toutes les personnes</h4>
-    <div>
-        <a class="btn btn-info btn-sm bold" href="export?export=csv&what=all_personnes">
-            CSV
-        </a>
-    </div>
-</section>
-<section>
-    <h4>Toutes les relations</h4>
-    <div>
-        <a class="btn btn-info btn-sm bold" href="export?export=csv&what=all_relations">
-            CSV
-        </a>
-    </div>
-</section> -->
-<?php
-//  }
-?>
