@@ -51,6 +51,9 @@ Voir DROPBOX/Organisation/CR.txt
   33 noms
   - fichier recap nicole
   https://docs.google.com/spreadsheets/d/1X4CbxBvpc0bhMmBf0WcsCTxL7Tuq8n-g/edit#gid=80170631
+  - acte 4968 : balise <naissance-lieu> au lieu de <nom> pour l'époux
+  - voir https://trello.com/c/CcVrIene/40-erreurs-de-contenu-balis%C3%A9-sur-serveur
+  - voir surtout Dropbox/morgan/listes-erreurs.txt
 
 - balise mention
   signaler une personne présente (voir pex 5495, Manuel de la Torre)
