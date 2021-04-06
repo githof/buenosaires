@@ -3,6 +3,20 @@
 include_once(ROOT."src/class/io/XMLExport.php");
 include_once(ROOT."src/class/io/CSVExport.php");
 
+
+function html_section($title, $href, $label) {
+    return '
+        <section>
+            <h4>'. $title .'</h4>
+            <div>
+                <a class="btn btn-info btn-sm bold" href="'. $href .'">'
+                    . $label .
+                '</a>
+            </div>
+        </section>
+    ';
+}
+
 /*
   TODO :
   passer en POST pour pouvoir ajouter des options en checkbox
@@ -36,8 +50,17 @@ if(isset($ARGS["export"])){
             break;
     }
 }else{
+
+    //  *** appel fonctions
+    echo html_section('Tous les actes', 'export?export=xml&what=all_actes', 'XML');
+    echo html_section('Toutes les personnes', 'export?export=csv&what=all_personnes', 'CSV');
+    echo html_section('Toutes les relations', 'export?export=csv&what=all_relations', 'CSV');
+
+}
 ?>
-<section>
+
+
+<!-- <section>
     <h4>Tous les actes</h4>
     <div>
         <a class="btn btn-info btn-sm bold" href="export?export=xml&what=all_actes">
@@ -60,7 +83,7 @@ if(isset($ARGS["export"])){
             CSV
         </a>
     </div>
-</section>
+</section> -->
 <?php
-}
+//  }
 ?>
