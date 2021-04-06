@@ -1,7 +1,5 @@
 <?php
 
-//  XMLExport et CSVExport ne pourraient pas hériter d'une même classe ?    ***
-
 class XMLExport {
 
     public $actes_id;

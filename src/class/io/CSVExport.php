@@ -2,6 +2,7 @@
 
 include_once(ROOT."src/class/model/Acte.php");
 
+//  *** Dans Prenom et Nom aussi ? cf comm plus bas // 
 function array_to_string($array, $separator){
     $str = "";
     $i = 0;
@@ -24,19 +25,23 @@ class CSVExport {
 
     }
 
+    //  PRIVATE METHODS //
+
     private function export_line($line) {
         $first = TRUE;
 
         foreach($line as $field) {
             if($first)
-            $first = FALSE;
+                $first = FALSE;
             else
-            echo $this->CSV_SEPARATOR;
+                echo $this->CSV_SEPARATOR;
 
             echo $field;
         }
         echo PHP_EOL;
     }
+
+    //  PUBLIC //
 
     public function export_personnes(){
         global $mysqli;

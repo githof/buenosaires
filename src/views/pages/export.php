@@ -17,6 +17,11 @@ function html_section($title, $href, $label) {
     ';
 }
 
+
+function appel_export($class, $method) {
+    return $class::$method();
+}
+
 /*
   TODO :
   passer en POST pour pouvoir ajouter des options en checkbox
@@ -34,15 +39,14 @@ if(isset($ARGS["export"])){
                 Les fonctions pourraient être statiques, c'est
                 juste un espace de nom dont on a besoin
             */
-                // $export->export_all();
-                $export = 'XMLExport';
-                
-                $export::export_all();
+                // XMLExport::export_all();
 
+                echo appel_export('XMLExport', 'export_all');
             }
             break;
         case "all_personnes":
             if($ARGS["export"] == "csv"){
+                //  *** mettre les méthodes de CSVExport en static 
                 $export = new CSVExport();
                 $export->export_personnes();
             }
