@@ -68,11 +68,12 @@ class Database extends mysqli{
             //  pour utilisateur
             if(strcmp($value, "now()") == 0)
                 $vals .= $value;
-            //  id=NULL pour auto_increment (pas pour acte) 
-            else {
-                if(($key === 'id') && ($table != 'acte')) { 
-                    $vals .= 'NULL';
-                } else 
+            //  *** pour toutes les autres tables : 
+            //  si l'id n'est pas défini, on insère "NULL" pour lui attribuer un id avec l'auto_increment 
+            elseif($key === 'id' && empty($value)) {
+                $vals .= 'NULL';
+            } else {
+            //  *** sinon  on l'insère (l'id) dans la bdd 
                     $vals .= "'" . $value . "'";
             }
             
@@ -669,6 +670,7 @@ class Database extends mysqli{
         return $removed;
     }
 
+    //  *** Appelée dans Acte::remove_from_db() 
     public function remove_unused_prenoms_noms(){
         $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
         $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");
