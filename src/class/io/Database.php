@@ -152,6 +152,12 @@ class Database extends mysqli{
         $m = microtime(TRUE);
         $result = parent::query($requete);
 
+        //  *** test delete enlevé 
+        echo '<br>'.__METHOD__;
+        echo '<br>$requete : ';
+        var_dump($requete);
+        //  fin test 
+
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
             $log->e("SQL error : $this->error");
@@ -701,7 +707,7 @@ class Database extends mysqli{
         return $this->insert(
             "nom_personne",
             $values,
-            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"   //  *** ==> je comprends pas '$ordre'$attr, ou pourquoi $attr ? 
+            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"    
         );
     }
 
