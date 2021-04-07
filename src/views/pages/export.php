@@ -18,8 +18,8 @@ function html_section($title, $href, $label) {
 }
 
 
-function appel_export($class, $method) {
-    return $class::$method();
+function appel_export($class, $method, $params) {
+    return $class::$method($params);
 }
 
 /*
@@ -41,20 +41,26 @@ if(isset($ARGS["export"])){
             */
                 // XMLExport::export_all();
 
-                echo appel_export('XMLExport', 'export_all');
+                echo appel_export('XMLExport', 'export_all', '');
             }
             break;
         case "all_personnes":
             if($ARGS["export"] == "csv"){
-                //  *** mettre les méthodes de CSVExport en static 
-                $export = new CSVExport();
-                $export->export_personnes();
+                //  *** test export 
+                // $export = new CSVExport();
+                // $export->export_personnes();
+                // CSVExport::export_personnes();
+
+                echo appel_export('CSVExport', 'export_personnes', '');
             }
             break;
         case "all_relations":
             if($ARGS["export"] == "csv"){
-                $export = new CSVExport();
-                $export->export_relations(TRUE, TRUE);
+                // $export = new CSVExport();
+                // $export->export_relations(TRUE, TRUE);
+                // CSVExport::export_relations(TRUE, TRUE);
+
+                echo appel_export('CSVExport', 'export_relations', 'FALSE, FALSE');
             }
             break;
     }
