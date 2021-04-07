@@ -9,6 +9,7 @@
 
 $exec_time_script = microtime(TRUE);
 
+//  *** à mettre dans html_entities ou URLRewriter ou config 
 define("ROOT", __DIR__ . "/");
 
 session_start();
@@ -50,6 +51,7 @@ if(isset($_POST["action"])){
 
 
 // VIEW SCRIPT
+//  *** à factoriser et mettre dans html_entities ou URLRewriter
 $view = "";
 $is_get = FALSE;
 if(isset($url_parsed["page"])){
