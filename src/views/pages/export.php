@@ -10,6 +10,7 @@ include_once(ROOT."src/class/io/CSVExport.php");
     ou sans la date)
     Voir comment c'est fait dans import avec import_file_only_new par ex.
 */
+//  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
 
 function html_section($title, $href, $label) {
     return '
@@ -24,8 +25,8 @@ function html_section($title, $href, $label) {
     ';
 }
 
-function appel_export_statique($class, $method, $names, $dates) {
-    return $class::$method($names, $dates);
+function appel_export_statique($class, $method, $start, $end, $names, $dates) {
+    return $class::$method($start, $end, $names, $dates);
 }
 
 
@@ -48,7 +49,7 @@ function page_export() {
                 break;
             case "all_relations":
                 if($ARGS["export"] == "csv"){
-                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);
+                    echo appel_export_statique('CSVExport', 'export_relations', 1, 50, TRUE, TRUE);
                 }
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
@@ -74,5 +75,8 @@ echo page_export();
 
 
 ?>
+
+
+
 
 

@@ -116,43 +116,45 @@ class CSVExport {
 
     //  *** test export
     // private function export_relation($relation, $names, $dates, $reverse) {
-        private static function export_relation($relation, $names, $dates, $reverse) {
+        private static function export_relation($relation, $start, $end, $names, $dates, $reverse) {
         $line = [];
         $line[] = $reverse ? -$relation->id : $relation->id;  //  *** le signe "-" est normal ? -$relation->id 
 
-        if($reverse){
-            // $this->add_personne_to_line($line,
-            self::add_personne_to_line($line,
-                $relation->personne_destination,
-                $names);
-            // $this->add_personne_to_line($line,
-            self::add_personne_to_line($line,
-                $relation->personne_source,
-                $names);
-        } else {
-            // $this->add_personne_to_line($line,
-            self::add_personne_to_line($line,
-                $relation->personne_source,
-                $names);
-            // $this->add_personne_to_line($line,
-            self::add_personne_to_line($line,
-                $relation->personne_destination,
-                $names);
-        }
-        $line[] = $relation->get_statut_name();
-        if($dates)
-            // $this->add_date($line, $relation);
-            self::add_date($line, $relation);
+        if((isset($relation->id)) && ($relation->id >= $start) && ($relation->id <= $end)) {
+            if($reverse){
+                // $this->add_personne_to_line($line,
+                self::add_personne_to_line($line,
+                    $relation->personne_destination,
+                    $names);
+                // $this->add_personne_to_line($line,
+                self::add_personne_to_line($line,
+                    $relation->personne_source,
+                    $names);
+            } else {
+                // $this->add_personne_to_line($line,
+                self::add_personne_to_line($line,
+                    $relation->personne_source,
+                    $names);
+                // $this->add_personne_to_line($line,
+                self::add_personne_to_line($line,
+                    $relation->personne_destination,
+                    $names);
+            }
+            $line[] = $relation->get_statut_name();
+            if($dates)
+                // $this->add_date($line, $relation);
+                self::add_date($line, $relation);
 
-        // $this->export_line($line);
-        self::export_line($line);
+            // $this->export_line($line);
+            self::export_line($line);
+        }
     }
 
     //  PUBLIC  //
 
     //  *** test expor
     // public function export_relations($names = FALSE, $dates = FALSE) {
-    public static function export_relations($names = FALSE, $dates = FALSE) {
+    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE) {
         global $mysqli;
 
         // $this->entete();
@@ -184,12 +186,16 @@ class CSVExport {
                 // $this->export_relation(
                 self::export_relation(
                         $relation, 
+                        $start, 
+                        $end, 
                         $names, 
                         $dates, 
                         FALSE);
                 // $this->export_relation(
                 self::export_relation(
                         $relation, 
+                        $start, 
+                        $end, 
                         $names, 
                         $dates, 
                         TRUE);
