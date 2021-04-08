@@ -11,7 +11,7 @@ class XMLExport {
     //  PRIVATE METHODS //
 
     // private function export_line($line){
-    public static function export_line($line){
+    private static function export_line($line){
         echo html_entity_decode($line, ENT_NOQUOTES, 'UTF-8') . PHP_EOL;
     }
 
@@ -20,7 +20,7 @@ class XMLExport {
     public function export(){
         global $mysqli;
 
-        $this->entete();
+        $this->XMLentete();
 
         foreach($this->actes_id as $acte_id){
             $results = $mysqli->select("acte_contenu", ["contenu"], "acte_id = '$acte_id'");
@@ -38,7 +38,7 @@ class XMLExport {
         global $mysqli;
 
         //  *** test static 
-        self::entete();
+        self::XMLentete();
         //  $this->entete();
 
         $results = $mysqli->select("acte_contenu", ["contenu"]);
@@ -56,7 +56,7 @@ class XMLExport {
     //  PRIVATE METHODS //
 
     // private function entete(){
-    public static function entete(){
+    private static function XMLentete(){
         header('Content-type: text/xml');
         header('Content-Disposition: attachment; filename="export.xml"');
         

@@ -116,11 +116,11 @@ class CSVExport {
 
     //  *** test export
     // private function export_relation($relation, $names, $dates, $reverse) {
-        private static function export_relation($relation, $start, $end, $names, $dates, $reverse) {
+        private static function export_relation($relation, $names, $dates, $reverse) {       // $start, $end,
         $line = [];
         $line[] = $reverse ? -$relation->id : $relation->id;  //  *** le signe "-" est normal ? -$relation->id 
 
-        if((isset($relation->id)) && ($relation->id >= $start) && ($relation->id <= $end)) {
+        // if((isset($relation->id)) && ($relation->id >= $start) && ($relation->id <= $end)) {
             if($reverse){
                 // $this->add_personne_to_line($line,
                 self::add_personne_to_line($line,
@@ -147,14 +147,14 @@ class CSVExport {
 
             // $this->export_line($line);
             self::export_line($line);
-        }
+        // }
     }
 
     //  PUBLIC  //
 
     //  *** test expor
     // public function export_relations($names = FALSE, $dates = FALSE) {
-    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE) {
+    public static function export_relations($names = FALSE, $dates = FALSE) {   //  $start, $end, 
         global $mysqli;
 
         // $this->entete();
@@ -186,19 +186,15 @@ class CSVExport {
                 // $this->export_relation(
                 self::export_relation(
                         $relation, 
-                        $start, 
-                        $end, 
                         $names, 
                         $dates, 
-                        FALSE);
+                        FALSE);     //  $start, $end, 
                 // $this->export_relation(
                 self::export_relation(
                         $relation, 
-                        $start, 
-                        $end, 
                         $names, 
                         $dates, 
-                        TRUE);
+                        TRUE);      //  $start, $end, 
             }
         }
     }

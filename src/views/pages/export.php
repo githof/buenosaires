@@ -12,6 +12,7 @@ include_once(ROOT."src/class/io/CSVExport.php");
 */
 //  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
 
+//  form-balise-a 
 function html_section($title, $href, $label) {
     return '
         <section>
@@ -25,12 +26,15 @@ function html_section($title, $href, $label) {
     ';
 }
 
-function appel_export_statique($class, $method, $start, $end, $names, $dates) {
-    return $class::$method($start, $end, $names, $dates);
+function html_export_lien($href, $label) {
+    return '<div>
+                <a class="btn btn-info btn-sm bold" href="'. $href .'">'
+                    . $label .
+                '</a>
+            </div>';
 }
 
-
-function page_export() {
+function page_export_lien() {
     global $ARGS;
 
     //  Voir comment factoriser ce morceau avant d'ajouter des options 
@@ -38,19 +42,19 @@ function page_export() {
 
         switch($ARGS["what"]){
             case "all_actes":
-                if($ARGS["export"] == "xml"){
+                // if($ARGS["export"] == "xml"){
                     echo appel_export_statique('XMLExport', 'export_all', '', '');
-                }
+                // }
                 break;
             case "all_personnes":
-                if($ARGS["export"] == "csv"){
+                // if($ARGS["export"] == "csv"){
                     echo appel_export_statique('CSVExport', 'export_personnes', '', '');
-                }
+                // }
                 break;
             case "all_relations":
-                if($ARGS["export"] == "csv"){
-                    echo appel_export_statique('CSVExport', 'export_relations', 1, 50, TRUE, TRUE);
-                }
+                // if($ARGS["export"] == "csv"){
+                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);    //   1, 50,
+                // }
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case.
@@ -69,8 +73,86 @@ function page_export() {
 
     }
 }
+//  fin form-balise-a 
 
+
+//  *** form GET 
+function html_option($data_export, $choice) {
+    return '<option value="' . $data_export . '">' . $choice . '</option>';
+}
+
+function html_select_export($label) {
+    return '<label for="data_export">' . $label . '</label>
+            <select class="form-control" name="data_export" id="data_export">'
+                . html_option('all_actes', 'Actes') 
+                . html_option('all_personnes', 'Personnes')
+                . html_option('all_relations', 'Relations') . 
+            '</select>';
+}
+
+
+function html_form_wrap($action, $method) { 
+    return '<form  action="' . $action . '" method="' . $method . '">'
+            . html_form_group(html_select_export(''))   //  Données à exporter 
+            . html_form_group(html_submit('', 'Exporter')) . 
+            '</form>';
+}
+
+function html_section_titre() {     //  $title  
+    return '
+        <section>
+            <h4>'. 'Données à exporter' . '</h4>'    
+            . html_form_wrap('export', 'POST') . 
+        '</section>
+    ';      //  $title
+}
+
+
+function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, 
+    return $class::$method($names, $dates);     //  $start, $end, 
+}
+
+
+function page_export() {
+    if(isset($_POST["data_export"])){
+
+        switch($_POST["data_export"]){
+            case "all_actes":
+                // if($ARGS["export"] == "xml"){
+                    // XMLExport::export_all(); 
+                    echo appel_export_statique('XMLExport', 'export_all', '', '');
+                // }
+                break;
+            case "all_personnes":
+                // if($ARGS["export"] == "csv"){
+                    echo appel_export_statique('CSVExport', 'export_personnes', '', '');
+                // }
+                break;
+            case "all_relations":
+                // if($ARGS["export"] == "csv"){
+                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);    //   1, 50,
+                // }
+                // break;
+            /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
+                pour renvoyer (ici) vers 404 en default case.
+            */
+            // default:
+            //  *** voir si on met ça ou autre chose
+                // $view = ROOT."src/views/pages/404.php";
+                // $page_title = "Page introuvable";
+        }
+
+    }
+    // else{
+
+        echo html_section_titre('');
+    // }
+}
+
+
+// echo page_export_lien(); 
 echo page_export(); 
+
 
 
 

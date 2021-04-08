@@ -358,7 +358,7 @@ function html_hidden_type($name, $value) {
 */
 function html_submit($class, $message) {
     $button = '<button type="submit"'
-      . ' class="' . $class . '"'
+      . ' class="' . $class 
       . ' btn btn-primary">' . $message . '</button>';
     return html_form_group($button);
 }
