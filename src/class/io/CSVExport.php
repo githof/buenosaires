@@ -107,7 +107,7 @@ class CSVExport {
         }
     }
 
-    //  *** test expor
+    //  *** test export
     // private function add_date(&$line, $relation) {
     private static function add_date(&$line, $relation) {
         $date = $relation->get_date();

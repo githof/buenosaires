@@ -151,6 +151,12 @@ class Database extends mysqli{
         $m = microtime(TRUE);
         $result = parent::query($requete);
 
+        //  *** test export 
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$requete : ';
+        // var_dump($requete);
+        //  fin test 
+
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
             $log->e("SQL error : $this->error");
@@ -256,7 +262,6 @@ class Database extends mysqli{
     */
         global $log;
 
-
         $log->d("from database: ".get_class($obj)." id=$obj->id");
 
         $row = NULL;
@@ -264,19 +269,19 @@ class Database extends mysqli{
             $row = $this->from_db_by_id($obj);
             if($obj instanceof Personne){
                 $this->from_db_personne_noms_prenoms($obj);
-            if($get_relations_conditions){
-                $this->from_db_personne_relations($obj);
-                $this->from_db_personne_conditions($obj);
-            }
+                if($get_relations_conditions){
+                    $this->from_db_personne_relations($obj);
+                    $this->from_db_personne_conditions($obj);
+                }
             } else if ($obj instanceof Acte && $get_relations_conditions){
-            $this->from_db_acte_conditions($obj);
-            $this->from_db_acte_relations($obj);
+                $this->from_db_acte_conditions($obj);
+                $this->from_db_acte_relations($obj);
             }
         } else {
             if($obj instanceof Personne)
-            $row = $this->from_db_by_same_personne($obj);
+                $row = $this->from_db_by_same_personne($obj);
             else
-            $row = $this->from_db_by_same($obj);
+                $row = $this->from_db_by_same($obj);
         }
 
         if($update_obj)

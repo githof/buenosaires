@@ -3,6 +3,13 @@
 include_once(ROOT."src/class/io/XMLExport.php");
 include_once(ROOT."src/class/io/CSVExport.php");
 
+/*
+    TODO :
+    passer en POST pour pouvoir ajouter des options en checkbox
+    (par ex. pour l'export des relations : avec ou sans les noms, avec
+    ou sans la date)
+    Voir comment c'est fait dans import avec import_file_only_new par ex.
+*/
 
 function html_section($title, $href, $label) {
     return '
@@ -17,29 +24,31 @@ function html_section($title, $href, $label) {
     ';
 }
 
-function appel_export($class, $method, $names, $dates) {
+function appel_export_statique($class, $method, $names, $dates) {
     return $class::$method($names, $dates);
 }
+
 
 function page_export() {
     global $ARGS;
 
+    //  Voir comment factoriser ce morceau avant d'ajouter des options 
     if(isset($ARGS["export"])){
 
         switch($ARGS["what"]){
             case "all_actes":
                 if($ARGS["export"] == "xml"){
-                    echo appel_export('XMLExport', 'export_all', '', '');
+                    echo appel_export_statique('XMLExport', 'export_all', '', '');
                 }
                 break;
             case "all_personnes":
                 if($ARGS["export"] == "csv"){
-                    echo appel_export('CSVExport', 'export_personnes', '', '');
+                    echo appel_export_statique('CSVExport', 'export_personnes', '', '');
                 }
                 break;
             case "all_relations":
                 if($ARGS["export"] == "csv"){
-                    echo appel_export('CSVExport', 'export_relations', TRUE, TRUE);
+                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);
                 }
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
@@ -61,6 +70,8 @@ function page_export() {
 }
 
 echo page_export(); 
+
+
 
 ?>
 
