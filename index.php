@@ -51,7 +51,7 @@ if(isset($_POST["action"])){
 
 
 // VIEW SCRIPT
-//  *** à factoriser et mettre dans html_entities ou URLRewriter
+//  *** à factoriser 
 $view = "";
 $is_get = FALSE;
 if(isset($url_parsed["page"])){
@@ -75,7 +75,6 @@ if(isset($url_parsed["page"])){
     $view = ROOT."src/views/pages/404.php";
     $page_title = "Page introuvable";
 }
-
 
 if($is_get){
     include_once($view);

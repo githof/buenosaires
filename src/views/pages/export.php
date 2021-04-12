@@ -10,7 +10,8 @@ include_once(ROOT."src/class/io/CSVExport.php");
     ou sans la date)
     Voir comment c'est fait dans import avec import_file_only_new par ex.
 */
-//  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) (on verra comment on gère ça mais oui)
+//  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
+//  on verra comment on gère ça mais oui 
 
 //  balise-a    //  
 function html_section_titre($title, $href, $label) {
@@ -73,7 +74,7 @@ function page_export_lien() {
 
 //  fonction d'appel aux méthodes d'export  //  
 function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, //   $actes_id,
-    return $class::$method($names, $dates);     //  $start, $end, // $actes_id, $
+    return $class::$method($names, $dates);     //  $start, $end, // $actes_id 
 }
 
 
@@ -112,20 +113,13 @@ function page_export() {
 
         switch($_REQUEST["data_export"]){
             case "all_actes":
-                // if($ARGS["export"] == "xml"){
-                    // XMLExport::export_all(); 
                     echo appel_export_statique('XMLExport', 'export_all', '', '');  //  export, '4968',
-                // }
                 break;
             case "all_personnes":
-                // if($ARGS["export"] == "csv"){
                     echo appel_export_statique('CSVExport', 'export_personnes', '', '');
-                // }
                 break;
             case "all_relations":
-                // if($ARGS["export"] == "csv"){
-                    echo appel_export_statique('CSVExport', 'export_relations', FALSE, TRUE);    //   1, 50,
-                // }
+                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);    //   1, 50,
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case.
