@@ -10,9 +10,9 @@ include_once(ROOT."src/class/io/CSVExport.php");
     ou sans la date)
     Voir comment c'est fait dans import avec import_file_only_new par ex.
 */
-//  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
+//  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) (on verra comment on gère ça mais oui)
 
-//  form-balise-a 
+//  balise-a    //  
 function html_section_titre($title, $href, $label) {
     return '
         <section>
@@ -36,7 +36,6 @@ function html_export_lien($href, $label) {
 
 function page_export_lien() {
     global $ARGS;
-    //  Voir comment factoriser ce morceau avant d'ajouter des options 
     if(isset($ARGS["export"])){
 
         switch($ARGS["what"]){
@@ -69,10 +68,16 @@ function page_export_lien() {
         echo html_section_titre('Toutes les relations', 'export?export=csv&what=all_relations', 'CSV');
     }
 }
-//  fin form-balise-a 
+//  fin balise-a  //    
 
 
-//  *** form GET 
+//  fonction d'appel aux méthodes d'export  //  
+function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, //   $actes_id,
+    return $class::$method($names, $dates);     //  $start, $end, // $actes_id, $
+}
+
+
+//  form    //  
 function html_option($data_export, $choice) {
     return '<option value="' . $data_export . '">' . $choice . '</option>';
 }
@@ -85,7 +90,6 @@ function html_select_export($label) {
                 . html_option('all_relations', 'Relations') . 
             '</select>';
 }
-
 
 function html_form_wrap($action, $method) { 
     return '<form  action="' . $action . '" method="' . $method . '">'
@@ -102,14 +106,6 @@ function html_section() {
         '</section>
     ';   
 }
-//  test qui marche pas : ?export=xml&what=all_actes (exporte mais ne suit pas l'uri, 
-//  alors qu'avec <a> il suit l'uri d'abord, exporte ensuite et raffiche le html en dernier)
-
-
-function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, //   $actes_id,
-    return $class::$method($names, $dates);     //  $start, $end, // $actes_id, $
-}
-
 
 function page_export() {
     if(isset($_REQUEST["data_export"])){
@@ -128,7 +124,7 @@ function page_export() {
                 break;
             case "all_relations":
                 // if($ARGS["export"] == "csv"){
-                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);    //   1, 50,
+                    echo appel_export_statique('CSVExport', 'export_relations', FALSE, TRUE);    //   1, 50,
                 // }
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
@@ -139,14 +135,11 @@ function page_export() {
                 // $view = ROOT."src/views/pages/404.php";
                 // $page_title = "Page introuvable";
         }
-
     }
-    // else{
-
+    else{
         echo html_section();
-    // }
+    }
 }
-
 
 // echo page_export_lien(); 
 echo page_export(); 

@@ -133,11 +133,6 @@ if($is_get){
             <h1><?php echo $page_title ?></h1>
             <div class="page">
                 <?php 
-                    //  *** test export xml 
-                    echo '<br>'.__METHOD__;
-                    echo '<br>$_REQUEST : ';
-                    var_dump($_REQUEST);
-                    //  fin test 
                     echo $page_output; ?>
             </div>
         </div>

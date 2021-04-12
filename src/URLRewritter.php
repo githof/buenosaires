@@ -37,12 +37,6 @@ $urls = [
         =>  ["accueil", "Buenos Aires"]
 ];
 
-//  *** test export xml 
-if(($urls === 'export') && (isset($_REQUEST["data_export"]))) {
-
-}
-
-
 $uri = rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/');
 $uri = '/' . trim(str_replace($uri, '', $_SERVER['REQUEST_URI']), '/');
 $uri = urldecode($uri);
@@ -59,7 +53,7 @@ foreach($urls as $url => $infos){
         $url_parsed = $params;
         $url_parsed["include"] = $infos[0];
         $url_parsed["title"] = $infos[1];
-        break;
+        break;  //  *** pourquoi break ? 
     }
 }
 
