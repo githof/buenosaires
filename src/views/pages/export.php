@@ -13,7 +13,7 @@ include_once(ROOT."src/class/io/CSVExport.php");
 //  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
 
 //  form-balise-a 
-function html_section($title, $href, $label) {
+function html_section_titre($title, $href, $label) {
     return '
         <section>
             <h4>'. $title .'</h4>
@@ -36,7 +36,6 @@ function html_export_lien($href, $label) {
 
 function page_export_lien() {
     global $ARGS;
-
     //  Voir comment factoriser ce morceau avant d'ajouter des options 
     if(isset($ARGS["export"])){
 
@@ -64,13 +63,10 @@ function page_export_lien() {
                 // $view = ROOT."src/views/pages/404.php";
                 // $page_title = "Page introuvable";
         }
-
     }else{
-
-        echo html_section('Tous les actes', 'export?export=xml&what=all_actes', 'XML');
-        echo html_section('Toutes les personnes', 'export?export=csv&what=all_personnes', 'CSV');
-        echo html_section('Toutes les relations', 'export?export=csv&what=all_relations', 'CSV');
-
+        echo html_section_titre('Tous les actes', 'export?export=xml&what=all_actes', 'XML');
+        echo html_section_titre('Toutes les personnes', 'export?export=csv&what=all_personnes', 'CSV');
+        echo html_section_titre('Toutes les relations', 'export?export=csv&what=all_relations', 'CSV');
     }
 }
 //  fin form-balise-a 
@@ -93,34 +89,36 @@ function html_select_export($label) {
 
 function html_form_wrap($action, $method) { 
     return '<form  action="' . $action . '" method="' . $method . '">'
-            . html_form_group(html_select_export(''))   //  Données à exporter 
+            . html_form_group(html_select_export(''))   
             . html_form_group(html_submit('', 'Exporter')) . 
             '</form>';
 }
 
-function html_section_titre() {     //  $title  
+function html_section() {   
     return '
         <section>
             <h4>'. 'Données à exporter' . '</h4>'    
-            . html_form_wrap('export', 'POST') . 
+            . html_form_wrap('export?export=xml&what=all_actes', 'POST') .    
         '</section>
-    ';      //  $title
+    ';   
 }
+//  test qui marche pas : ?export=xml&what=all_actes (exporte mais ne suit pas l'uri, 
+//  alors qu'avec <a> il suit l'uri d'abord, exporte ensuite et raffiche le html en dernier)
 
 
-function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, 
-    return $class::$method($names, $dates);     //  $start, $end, 
+function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, //   $actes_id,
+    return $class::$method($names, $dates);     //  $start, $end, // $actes_id, $
 }
 
 
 function page_export() {
-    if(isset($_POST["data_export"])){
+    if(isset($_REQUEST["data_export"])){
 
-        switch($_POST["data_export"]){
+        switch($_REQUEST["data_export"]){
             case "all_actes":
                 // if($ARGS["export"] == "xml"){
                     // XMLExport::export_all(); 
-                    echo appel_export_statique('XMLExport', 'export_all', '', '');
+                    echo appel_export_statique('XMLExport', 'export_all', '', '');  //  export, '4968',
                 // }
                 break;
             case "all_personnes":
@@ -145,7 +143,7 @@ function page_export() {
     }
     // else{
 
-        echo html_section_titre('');
+        echo html_section();
     // }
 }
 

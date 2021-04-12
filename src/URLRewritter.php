@@ -37,6 +37,11 @@ $urls = [
         =>  ["accueil", "Buenos Aires"]
 ];
 
+//  *** test export xml 
+if(($urls === 'export') && (isset($_REQUEST["data_export"]))) {
+
+}
+
 
 $uri = rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/');
 $uri = '/' . trim(str_replace($uri, '', $_SERVER['REQUEST_URI']), '/');

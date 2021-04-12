@@ -1,8 +1,8 @@
 <?php
 
 // afficher les erreurs /!\ #devOnly /!\  ***
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+// error_reporting(E_ALL);
+// ini_set("display_errors", 1);
 // include("/home/morgan/internet/file_with_errors.php");
 // echo "<br>";
 // end #devOnly
@@ -93,8 +93,6 @@ if($is_get){
     // ALERTS
     $alerts_output = $alert->html_all();
 
-
-    // IF EXPORT
     if(isset($ARGS["export"]))
         echo $page_output;
     else {
@@ -134,7 +132,13 @@ if($is_get){
         <div class="main">
             <h1><?php echo $page_title ?></h1>
             <div class="page">
-                <?php echo $page_output; ?>
+                <?php 
+                    //  *** test export xml 
+                    echo '<br>'.__METHOD__;
+                    echo '<br>$_REQUEST : ';
+                    var_dump($_REQUEST);
+                    //  fin test 
+                    echo $page_output; ?>
             </div>
         </div>
         <div id="alert-container">
