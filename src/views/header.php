@@ -42,7 +42,7 @@ function html_input($type, $name, $placeholder) {
     return '<input class="form-control" type="'.$type.'" name="'.$name.'" placeholder="'.$placeholder.'">';
 }
 
-function html_form_connexion($contents) {
+function html_form_connexion() {    //  $contents  (inutile)
     $fermer = '<button type="button"'
       . ' class="btn btn-default" data-dismiss="modal">'
       . 'Fermer</button>';
@@ -102,7 +102,7 @@ function html_form_connexion($contents) {
                 </div>
                 <div class="modal-body">
                 <?php
-                    echo html_form_connexion($contents);
+                    echo html_form_connexion(); //  $contents (inutile)
                 ?>
                 </div>
             </div>

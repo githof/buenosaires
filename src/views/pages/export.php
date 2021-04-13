@@ -146,11 +146,11 @@ function html_form_group_export($contents) {
 function html_export_relations() {
     $contents = '<div class="row">';
     $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates') . '<br>'
-                                                    . html_radio_export('dates', FALSE, 'Sans les dates'))
-                . html_form_group_export(html_radio_export('dates', TRUE, 'Avec les noms') . '<br>'
-                                                    . html_radio_export('dates', FALSE, 'Sans les noms'))
-                . html_form_group_export(html_radio_export('dates', TRUE, 'Dans les 2 sens') . '<br>'
-                                                    . html_radio_export('dates', FALSE, 'Sens normal')) ;
+                                                    . html_radio_export('dates', FALSE, 'Sans les dates')) ;
+                // . html_form_group_export(html_radio_export('dates', TRUE, 'Avec les noms') . '<br>'
+                //                                     . html_radio_export('dates', FALSE, 'Sans les noms'))
+                // . html_form_group_export(html_radio_export('dates', TRUE, 'Dans les 2 sens') . '<br>'
+                //                                     . html_radio_export('dates', FALSE, 'Sens normal')) ;
     $contents .= '</div>';
 
     return $contents;

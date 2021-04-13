@@ -337,13 +337,18 @@ function html_personne_periode($personne_id){
 }
 
 //  sert dans import.php (+ header.php (new_account.php) search.php)
-function html_form_group($contents) {
-  return '
-    <div class="row">
-        <div class="form-group col-md-1">
+/*  Sans Bootstrap si y a des problèmes :
+  <div class="form-group ">
         ' . "$contents" . '
         </div>
-    </div>
+*/
+function html_form_group($contents) {
+  return '
+        <div class="row">
+            <div class="form-group col-md-12">
+                ' . "$contents" . '
+            </div>
+        </div>
   ';
 }
 
