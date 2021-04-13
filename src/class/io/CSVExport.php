@@ -99,7 +99,7 @@ class CSVExport {
         $line[] = "$date";
     }
 
-    private static function export_relation($relation, $names, $dates, $reverse) {       // $start, $end,
+    private static function export_relation($relation, $start, $end, $names, $dates, $reverse) {       // 
         $line = [];
         $line[] = $reverse ? -$relation->id : $relation->id;  
 
@@ -130,7 +130,7 @@ class CSVExport {
 
     //  PUBLIC  //
 
-    public static function export_relations($names = FALSE, $dates = FALSE) {   //  $start, $end, 
+    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE) {   //  
         global $mysqli;
 
         self::entete();
@@ -158,14 +158,18 @@ class CSVExport {
                 //  *** par défaut relations dans les 2 sens 
                 self::export_relation(
                         $relation, 
+                        $start, 
+                        $end,
                         $names, 
                         $dates, 
-                        FALSE);     //  $start, $end, 
+                        FALSE);     //   !reverse 
                 self::export_relation(
                         $relation, 
+                        $start, 
+                        $end, 
                         $names, 
                         $dates, 
-                        TRUE);      //  $start, $end, 
+                        TRUE);      //  reverse 
             }
         }
     }

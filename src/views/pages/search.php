@@ -82,19 +82,21 @@ function html_form_search($acte_or_personne) {
         . '</form>';
 }
 
-//  onglets "Actes" et "Personnes"
-function html_tab_title($href, $class, $label) {
+//  *** déplacé dans html_entities pour search et export // 
+// //  onglets "Actes" et "Personnes"
+// function html_tab_title($href, $class, $label) {
 
-    return '<li role="presentation" class="' . $class . '">
-                <a href="recherche#' . $href . '" aria-controls="' . $href . '" role="tab" data-toggle="tab">' . $label . '</a>
-            </li>';
+//     return '<li role="presentation" class="' . $class . '">
+//                 <a href="' . $href . '" aria-controls="' . $href . '" role="tab" data-toggle="tab">' . $label . '</a>
+//             </li>';
                 
-}
+// }
+
 function html_tab_titles(){
 
     return '<ul class="nav nav-tabs" role="tablist">'
-                . html_tab_title('actes', 'active', 'Actes')
-                . html_tab_title('personnes', '', 'Personnes')
+                . html_tab_title('recherche#actes', 'active', 'Actes')
+                . html_tab_title('recherche#personnes', '', 'Personnes')
             . '</ul>';
 
 }
@@ -102,6 +104,7 @@ function html_tab_titles(){
 //  divs "Actes" et "Personnes"
 function html_tabpanel($class, $name, $acte_or_personne) {
     /* Le deuxième div, après la section, ce serait bien qu'on puisse s'en passer (faut voir si y'a pas un truc en js qui le prend en compte)
+        ==> Il suffit de le retirer, c'est du Bootstrap ; mais ça rapproche les inputs du coin haut-gauche du from-group, c'est moins beau ;) 
     */
     return '<div role="tabpanel" class="tab-pane '
         . $class . '" id="' . $name . '">
@@ -112,6 +115,7 @@ function html_tabpanel($class, $name, $acte_or_personne) {
                 </section>
             </div>';
 }
+
 function html_tab_contents() {
 
     return '<div class="tab-content">'

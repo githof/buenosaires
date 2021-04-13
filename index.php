@@ -63,7 +63,7 @@ if(isset($url_parsed["page"])){
             $alert->warning("Accès a un contenu restreint");
         }
     } else {
-        if(can_access($access_pages[$url_parsed["page"]])){
+        if(can_access($access_pages[$url_parsed["page"]])){     //  *** undefined index resultat line 66 // 
             $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
         } else {
@@ -92,8 +92,13 @@ if($is_get){
     // ALERTS
     $alerts_output = $alert->html_all();
 
-    if(isset($ARGS["export"]))
+    if(isset($ARGS["export"])){
+        //  test form radio html 
+        // echo '<br>$ARGS : ';
+        // var_dump($ARGS);
+        // //  fin test 
         echo $page_output;
+    }
     else {
 ?>
 
@@ -132,7 +137,14 @@ if($is_get){
             <h1><?php echo $page_title ?></h1>
             <div class="page">
                 <?php 
-                    echo $page_output; ?>
+                    echo $page_output; 
+                    //  test form radio html 
+                    // echo '<br>$ARGS : ';
+                    // var_dump($ARGS);
+                    // echo '<br>$_REQUEST : ';
+                    // var_dump($_REQUEST);
+                    //  fin test 
+                ?>
             </div>
         </div>
         <div id="alert-container">

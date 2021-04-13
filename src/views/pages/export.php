@@ -2,6 +2,8 @@
 
 include_once(ROOT."src/class/io/XMLExport.php");
 include_once(ROOT."src/class/io/CSVExport.php");
+//  *** Pour fonctions d'affichage :
+include_once(ROOT."src/html_entities.php");
 
 /*
     TODO :
@@ -73,16 +75,15 @@ function page_export_lien() {
 
 
 //  fonction d'appel aux méthodes d'export  //  
-function appel_export_statique($class, $method, $names, $dates) {   //   $start, $end, //   $actes_id,
-    return $class::$method($names, $dates);     //  $start, $end, // $actes_id 
+function appel_export_statique($class, $method, $start, $end, $names, $dates) {   //    $actes_id,
+    return $class::$method($start, $end, $names, $dates);      // $actes_id 
 }
 
 
-//  form    //  
+//  form sans options    //  
 function html_option($data_export, $choice) {
     return '<option value="' . $data_export . '">' . $choice . '</option>';
 }
-
 function html_select_export($label) {
     return '<label for="data_export">' . $label . '</label>
             <select class="form-control" name="data_export" id="data_export">'
@@ -91,27 +92,136 @@ function html_select_export($label) {
                 . html_option('all_relations', 'Relations') . 
             '</select>';
 }
+//  fin form sans options    //  
 
-function html_form_wrap($action, $method) { 
-    return '<form  action="' . $action . '" method="' . $method . '">'
-            . html_form_group(html_select_export(''))   
-            . html_form_group(html_submit('', 'Exporter')) . 
+
+//  *** onglets des tabs // 
+function html_tab_titles(){
+
+    return '<ul class="nav nav-tabs" role="tablist">'
+                . html_tab_title('export#actes', '', 'Actes')
+                . html_tab_title('export#personnes', '', 'Personnes')
+                . html_tab_title('export#relations', 'active', 'Relations')
+            . '</ul>';
+
+}
+
+//  OPTIONS  // 
+/*  *** Mettre chaque form (actes / personnes / relations) sur un tab différent sans <select>
+        Mettre des <radio> pour chaque option sur le tab du form. 
+*/
+function html_radio_export($option, $dates, $label) {
+// function html_radio_export('dates', 'dates', TRUE, 'Avec les dates') {
+    return '
+        <label for="' . $option . '">' . $label . '</label>
+        <input type="radio" id="' . $option . '" name="' . $option . '" value="' . $dates . '">';
+    // return '
+    //     <label for="dates">Avec dates</label>
+    //     <input type="radio" id="dates" name="dates" value="TRUE">';
+}
+
+
+function html_export_actes() {
+    $contents = '';
+    $contents .= html_radio_export('', '', '', 'Tous les actes');
+
+    return $contents;
+}
+
+function html_export_personnes() {
+    $contents = '';
+    $contents .= html_radio_export('', '', '', 'Toutes les personnes');
+
+    return $contents;
+}
+
+function html_form_group_export($contents) {
+    return '
+      <div class="form-group col-md-4">
+        ' . "$contents" . '
+      </div>
+    ';
+  }
+
+function html_export_relations() {
+    $contents = '<div class="row">';
+    $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates') . '<br>'
+                                                    . html_radio_export('dates', FALSE, 'Sans les dates'))
+                . html_form_group_export(html_radio_export('dates', TRUE, 'Avec les noms') . '<br>'
+                                                    . html_radio_export('dates', FALSE, 'Sans les noms'))
+                . html_form_group_export(html_radio_export('dates', TRUE, 'Dans les 2 sens') . '<br>'
+                                                    . html_radio_export('dates', FALSE, 'Sens normal')) ;
+    $contents .= '</div>';
+
+    return $contents;
+}
+
+function html_form_export($objet, $data_export) { 
+    $export = "html_export_$objet.'s'";
+
+    //  export (marche pas avec $ARGS cf Dropbox/buenosaires/todoM.txt)    //  &what=all_relations (pas besoin)
+    return '<form action="export?export=xml" method="POST">'  
+            // . $export()
+            // . html_export_actes()
+            // . html_export_personnes()
+            . html_export_relations()  
+            // . html_form_group(html_select_export(''))   
+            // . html_form_group(html_radio_export('dates', TRUE, 'Avec dates'))     //  d'abord pour relations avec/sans dates 
+
+            . html_submit('', 'Exporter') 
+
+            . html_hidden_type('data_export', $data_export) . 
             '</form>';
 }
 
-function html_section() {   
-    return '
-        <section>
-            <h4>'. 'Données à exporter' . '</h4>'    
-            . html_form_wrap('export?export=xml&what=all_actes', 'POST') .    
-        '</section>
-    ';   
+//  *** test remplacé par html_form_export() // 
+// function html_form_wrap($action, $method) { 
+//     return '<form  action="' . $action . '" method="' . $method . '">'
+//             . html_form_group(html_select_export(''))   
+//             . html_form_group(html_submit('', 'Exporter')) . 
+//             '</form>';
+// }
+//  *** test : remplacé par html_tab_contents() // 
+// function html_section($action, $method) {   
+//     return '
+//         <section>
+//             <h4>'. 'Données à exporter' . '</h4>'    
+//             . html_form_wrap($action, $method) .    
+//         '</section>
+//     ';   
+// }
+
+
+//  *** tabs Actes / Personnes / Relations 
+
+//  *** $objet à la place de $acte_or_personne // 
+function html_tabpanel($class, $name, $objet, $data_export) {
+    return '<div role="tabpanel" class="tab-pane '
+        . $class . '" id="' . $name . '">
+                <section>
+                    <div>
+                        ' . html_form_export($objet, $data_export) . '
+                    </div>
+                </section>
+            </div>';
+}
+
+//  *** test remplace html_section // 
+function html_tab_contents() {
+
+    return '<div class="tab-content">'
+                . html_tabpanel('', 'actes', 'acte', '')
+                . html_tabpanel('', 'personnes', 'personne', '')
+                . html_tabpanel('active', 'all_relations', 'relation', 'all_relations')
+            . '</div>';
 }
 
 function page_export() {
-    if(isset($_REQUEST["data_export"])){
+    // if(isset($_REQUEST["data_export"])){
+    if(isset($_POST["data_export"])){
 
-        switch($_REQUEST["data_export"]){
+        // switch($_REQUEST["data_export"]){
+        switch($_POST["data_export"]){
             case "all_actes":
                     echo appel_export_statique('XMLExport', 'export_all', '', '');  //  export, '4968',
                 break;
@@ -119,7 +229,13 @@ function page_export() {
                     echo appel_export_statique('CSVExport', 'export_personnes', '', '');
                 break;
             case "all_relations":
-                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);    //   1, 50,
+                //  *** envoyer la valeur de $start et de $end 
+                    echo appel_export_statique('CSVExport', 'export_relations', '', '', TRUE, $_POST["dates"]);    //   1, 50,
+                    // echo '<br>'.__METHOD__;
+                    // echo '<br>request : ';
+                    // var_dump($_REQUEST);
+                    // echo '<br>post : ';
+                    // var_dump($_POST);
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case.
@@ -129,11 +245,24 @@ function page_export() {
                 // $view = ROOT."src/views/pages/404.php";
                 // $page_title = "Page introuvable";
         }
-    }
-    else{
-        echo html_section();
+    } else {
+        //  *** test : remplacé par html_tab_titles et html_tab_contents :
+        // echo html_section();
+        echo html_tab_titles();
+        echo html_tab_contents();
+
+        // echo '<br>'.__METHOD__;
+        // echo '<br>request : ';
+        // var_dump($_REQUEST);
+        // echo '<br>post : ';
+        // var_dump($_POST);
     }
 }
+
+
+
+
+
 
 // echo page_export_lien(); 
 echo page_export(); 
@@ -144,6 +273,24 @@ echo page_export();
 ?>
 
 
+<!-- <form action="" method="POST">
+    <div class="form-group">
+        <label for="all_relations">Avec dates</label>
+        <input type="radio" id="dates" name="dates" value="TRUE">
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Exporter</button>
+    </div>
+    <div class="form-group">
+        <input type="hidden" name="data_export" value="all_relations" />
+    </div>
+</form> -->
+
+<?php 
+
+// var_dump($_POST);
+
+?>
 
 
 

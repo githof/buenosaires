@@ -339,8 +339,10 @@ function html_personne_periode($personne_id){
 //  sert dans import.php (+ header.php (new_account.php) search.php)
 function html_form_group($contents) {
   return '
-    <div class="form-group">
-      ' . "$contents" . '
+    <div class="row">
+        <div class="form-group col-md-1">
+        ' . "$contents" . '
+        </div>
     </div>
   ';
 }
@@ -362,5 +364,16 @@ function html_submit($class, $message) {
       . ' btn btn-primary">' . $message . '</button>';
     return html_form_group($button);
 }
+
+//  *** Tabs pour search.php et export.php // 
+//  onglets "Actes" et "Personnes"
+function html_tab_title($href, $class, $label) {
+
+    return '<li role="presentation" class="' . $class . '">
+                <a href="' . $href . '" aria-controls="' . $href . '" role="tab" data-toggle="tab">' . $label . '</a>
+            </li>';
+                
+}
+
 
 ?>

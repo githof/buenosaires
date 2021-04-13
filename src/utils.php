@@ -317,7 +317,7 @@ function append_unique_identifier($filename){
 }
 
 /*
-  Comme array_unique mais en testant seulement l'attribut id des objets contenus dans le tableau
+  Comme array_unique mais en testant seulement l'attribut id des objets contenus dans le tableau '
 */
 function array_unique_by_id($a) {
     $ids = array();
