@@ -96,7 +96,9 @@ if($is_get){
         //  test form radio html 
         // echo '<br>$ARGS : ';
         // var_dump($ARGS);
-        // //  fin test 
+        // echo '<br>$_REQUEST : ';
+        // var_dump($_REQUEST);
+        //  fin test 
         echo $page_output;
     }
     else {
