@@ -98,7 +98,6 @@ function html_tab_titles(){
                 . html_tab_title('recherche#actes', 'active', 'Actes')
                 . html_tab_title('recherche#personnes', '', 'Personnes')
             . '</ul>';
-
 }
 
 //  divs "Actes" et "Personnes"

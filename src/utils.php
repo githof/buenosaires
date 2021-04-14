@@ -339,7 +339,12 @@ function string_list_of_ids($liste) {
 
     return implode(',', $ids);
 }
-//  Affichage erreurs fermetures de parenthèses mais semble être un bug 
-//  d'affichage VScode uniquement   ***
+
+//  EXPORT  // 
+//  fonction d'appel aux méthodes d'export  //  
+function appel_export_statique($class, $method, $start, $end, $names, $dates, $deux_sens) {   //    $actes_id   //  pour choix actes à exp. 
+    return $class::$method($start, $end, $names, $dates, $deux_sens);      // $actes_id     //  pour choix actes à exp. 
+}
+
 
 ?>

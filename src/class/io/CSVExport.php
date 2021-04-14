@@ -72,17 +72,25 @@ class CSVExport {
 
             self::export_line(array($id, $noms, $prenoms));
         }
+        //  *** test no_accent /
+        // $array_names = array($id, $noms, $prenoms);
+        // return $array_names;
     }
 
     //  PRIVATE METHODS //
 
     private static function add_personne_to_line(&$line, $p, $names = FALSE) {
+
         if($p instanceof Personne) {
             $line[] = $p->id;
             if($names) {
-                $personne = self::$personnes[$p->id];
+                $personne = self::$personnes[$p->id];   
+
                 $line[] = $personne->prenoms_str;
                 $line[] = $personne->noms_str;
+                // echo '<br>'.__METHOD__;
+                // echo '<br>$personne->noms_str : ';
+                // var_dump($personne->noms_str);
             }
         } elseif(is_string($p)) {
             $line[] = $p."_id";
@@ -99,7 +107,7 @@ class CSVExport {
         $line[] = "$date";
     }
 
-    private static function export_relation($relation, $start, $end, $names, $dates, $reverse) {       // 
+    private static function export_relation($relation, $start, $end, $names, $dates, $reverse) { 
         $line = [];
         $line[] = $reverse ? -$relation->id : $relation->id;  
 
@@ -130,10 +138,14 @@ class CSVExport {
 
     //  PUBLIC  //
 
-    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE) {   //  
+    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = TRUE) { 
         global $mysqli;
 
         self::entete();
+
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$deux_sens : ';
+        // var_dump($deux_sens);
 
         $line = [];
         $line[] = "id";
@@ -156,20 +168,30 @@ class CSVExport {
                 $relation->result_from_db($row);
 
                 //  *** par défaut relations dans les 2 sens 
-                self::export_relation(
+                if(!$deux_sens) {
+                    self::export_relation(
                         $relation, 
                         $start, 
                         $end,
                         $names, 
                         $dates, 
                         FALSE);     //   !reverse 
-                self::export_relation(
+                } else {
+                    self::export_relation(
+                        $relation, 
+                        $start, 
+                        $end,
+                        $names, 
+                        $dates, 
+                        FALSE);     //   !reverse 
+                    self::export_relation(
                         $relation, 
                         $start, 
                         $end, 
                         $names, 
                         $dates, 
                         TRUE);      //  reverse 
+                }
             }
         }
     }
