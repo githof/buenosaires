@@ -100,9 +100,9 @@ function html_select_export($label) {
 function html_tab_titles(){
 
     return '<ul class="nav nav-tabs" role="tablist">'
-                . html_tab_title('export#actes', 'active', 'Actes')
+                . html_tab_title('export#actes', '', 'Actes')
                 . html_tab_title('export#personnes', '', 'Personnes')
-                . html_tab_title('export#relations', '', 'Relations')
+                . html_tab_title('export#relations', 'active', 'Relations')
             . '</ul>';
 
 }
@@ -125,22 +125,23 @@ function html_form_group_export($contents) {
 }
 
 function html_export_actes() {
-    $contents = '';
-    $contents .= html_radio_export('', '', 'Tous les actes');
+    // $contents .= html_radio_export('', '', 'Tous les actes');
+    $contents = '<p>Section en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
 
     return $contents;
 }
 
 function html_export_personnes() {
-    $contents = '';
-    $contents .= html_radio_export('', '', 'Toutes les personnes');
-
+    // $contents .= html_radio_export('', '', 'Toutes les personnes');
+    $contents = '<p>Section en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
     return $contents;
 }
 
 
 function html_export_relations() {
-    $contents = '<div class="row">';
+    $contents = '<p>Section en travaux, les résultats ne seront pas systématiquement ceux que vous attendrez. Merci de votre compréhension :)</p>';
+    $contents .= '<div class="row">';
+    
     $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates')) 
                 . html_form_group_export(html_radio_export('names', TRUE, 'Avec les noms')) 
                 . html_form_group_export(html_radio_export('deux_sens', TRUE, 'Dans les 2 sens')) ;
@@ -197,9 +198,9 @@ function html_tabpanel($class, $objet, $data_export) {      //  id="'.$data_expo
 //  *** test remplace html_section // 
 function html_tab_contents() {
     return '<div class="tab-content">'
-                . html_tabpanel('active', 'actes', 'all_actes')
+                . html_tabpanel('', 'actes', 'all_actes')
                 . html_tabpanel('', 'personnes', 'all_personnes')
-                . html_tabpanel('', 'relations', 'all_relations')
+                . html_tabpanel('active', 'relations', 'all_relations')
             . '</div>';
 }
 
