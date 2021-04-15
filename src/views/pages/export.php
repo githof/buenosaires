@@ -217,7 +217,10 @@ function page_export() {
                 break;
             case "all_relations":
                 //  *** envoyer la valeur de $start et de $end 
-                    echo appel_export_statique('CSVExport', 'export_relations', '', '', $_POST["names"], $_POST["dates"], $_POST["deux_sens"]);    //   1, 50,
+                $names = isset($_POST["names"]) ? $_POST["names"] : FALSE;
+                $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
+                $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : FALSE;
+                    echo appel_export_statique('CSVExport', 'export_relations', '', '', $names, $dates, $deux_sens);    //   1, 50,
                     // echo '<br>'.__METHOD__;
                     // echo '<br>post : ';
                     // var_dump($_POST);

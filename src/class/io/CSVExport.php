@@ -21,7 +21,7 @@ class CSVExport {
     public static $CSV_SEPARATOR = ";";
     public static $personnes;
 
-    // public static $lines;
+    //  *** Pour stocker le chemin vers le fichier à créer sur le disque 
     public static $out; 
 
     public function __construct(){
@@ -30,22 +30,18 @@ class CSVExport {
 
     //  PRIVATE METHODS //
 
-    //  *** test fichier local
-    private static function export_lines($line) {
-        // $lines = array();
-        $lines[] = $line;
+    private static function export_line($line) {
+
+        //  *** fichier à enregistrer sur le disque 
+        self::$out = fopen(ROOT.'exports/export_'.time().'.csv', 'a');
+
+        //  *** timeline
+        fputcsv(self::$out, array(time()));
 
         echo '<br>'.__METHOD__;
-        echo '<br>$lines : ';
-        var_dump($lines);
-
-        return $lines;
-    }
-
-    private static function export_line($line) {
-        global $lines;
-
-        self::$out = fopen(ROOT."export.csv", 'a');
+        echo '<br>time() : ';
+        var_dump(time());
+        //  fin timeline 
 
         $first = TRUE;
 
@@ -59,26 +55,11 @@ class CSVExport {
         }
         echo PHP_EOL;
 
-        echo '<br>'.__METHOD__;
-        echo '<br>$line foreach : ';
-        var_dump($line);
-        echo '<br>self::$out : ';
-        var_dump(self::$out);
-
         fputcsv(self::$out, $line);
 
-        // $lines[] = $line;
-        $lines = self::export_lines(array($line));
-
-        echo '<br>'.__METHOD__;
-        echo '<br>$line : ';
-        var_dump($line);
-        echo '<br>$lines : ';
-        var_dump($lines);
-        // echo '<br>self::export_lines($line) : ';
-        // var_dump($lines);
-
-        return $lines;
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$line : ';
+        // var_dump($line);
     }
 
 
@@ -121,7 +102,6 @@ class CSVExport {
     //  PRIVATE METHODS //
 
     private static function add_personne_to_line(&$line, $p, $names = FALSE) {
-        $lines = array();
 
         if($p instanceof Personne) {
             $line[] = $p->id;
@@ -181,9 +161,7 @@ class CSVExport {
     //  PUBLIC  //
 
     public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
-        global $mysqli, $lines, $line;
-
-        // $out = fopen(ROOT."export.csv", 'w');
+        global $mysqli, $line;  //   retirer $line ? 
 
         self::entete();
         // echo '<br>'.__METHOD__;
@@ -238,34 +216,34 @@ class CSVExport {
             }
         }
 
-        fclose($out);
+        //  timeline 
+        fputcsv(self::$out, array(time()));
 
         echo '<br>'.__METHOD__;
-        echo '<br>$lines : ';
-        var_dump($lines);
-        // if(isset($lines) && $lines != NULL)
-        //     self::enregistrer_csv($lines);
-        // else 
-        //     self::enregistrer_csv($line);
+        echo '<br>time() : ';
+        var_dump(time());
+        //  fin timeline 
+
+        fclose(self::$out);
     }
 
     //  *** test enregistrer fichier csv sur le serveur 
-    public static function enregistrer_csv($array) {
+    // public static function enregistrer_csv($array) {
 
-        // $out = fopen('php://export.csv', 'a');
-        $out = fopen(ROOT."export.csv", 'w');
+    //     // $out = fopen('php://export.csv', 'a');
+    //     $out = fopen(ROOT."export.csv", 'w');
 
-        if ($out) 
-            // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
-            fputcsv($out, $array);
-        else 
-            var_dump($out);
+    //     if ($out) 
+    //         // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
+    //         fputcsv($out, $array);
+    //     else 
+    //         var_dump($out);
 
-        // $out = fopen('php://output', 'w');
-        // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
-        fclose($out);
+    //     // $out = fopen('php://output', 'w');
+    //     // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
+    //     fclose($out);
 
-    }
+    // }
 
     public static function entete(){
         header('Content-type: text/csv');
