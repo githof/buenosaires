@@ -138,7 +138,7 @@ class CSVExport {
 
     //  PUBLIC  //
 
-    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = TRUE) { 
+    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
         global $mysqli;
 
         self::entete();
@@ -167,7 +167,7 @@ class CSVExport {
                 $relation = new Relation();
                 $relation->result_from_db($row);
 
-                //  *** par défaut relations dans les 2 sens 
+                //  *** par défaut relations dans 1 seul sens 
                 if(!$deux_sens) {
                     self::export_relation(
                         $relation, 

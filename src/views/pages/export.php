@@ -141,12 +141,9 @@ function html_export_personnes() {
 
 function html_export_relations() {
     $contents = '<div class="row">';
-    $contents .= html_form_group_export(html_radio_export('dates', FALSE, 'Sans les dates') . '<br>'
-                                        . html_radio_export('dates', TRUE, 'Avec les dates')) 
-                . html_form_group_export(html_radio_export('names', FALSE, 'Sans les noms') . '<br>'
-                                        . html_radio_export('names', TRUE, 'Avec les noms')) 
-                . html_form_group_export(html_radio_export('deux_sens', FALSE, 'Dans un seul sens') . '<br>'
-                                        . html_radio_export('deux_sens', TRUE, 'Dans les 2 sens')) ;
+    $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates')) 
+                . html_form_group_export(html_radio_export('names', TRUE, 'Avec les noms')) 
+                . html_form_group_export(html_radio_export('deux_sens', TRUE, 'Dans les 2 sens')) ;
                 // . html_form_group_export(html_radio_export('dates', TRUE, 'Dans les 2 sens') . '<br>'
                 //                                     . html_radio_export('dates', FALSE, 'Sens normal')) ;
     $contents .= '</div>';
@@ -156,19 +153,10 @@ function html_export_relations() {
 
 function html_form_export($objet, $data_export) { 
     $export = "html_export_$objet";
-
-    // if($objet === 'acte') {
-    //     $contents = html_export_actes() ;
-    // } else if($objet === 'personne') {
-    //     $contents = html_export_personnes() ;
-    // } else {
-    //     $contents = html_export_relations() ;
-    // }
     
-    //  export (export seul ne marche pas avec $ARGS cf Dropbox/buenosaires/todoM.txt)    //  &what=all_relations (pas besoin)
+    //  export (export seul ne marche pas avec $ARGS cf Dropbox/buenosaires/todoM.txt)    
     return '<form action="export?export=true" method="POST">'  
             . $export()
-            // . $contents
             . html_submit('', 'Exporter') 
             . html_hidden_type('data_export', $data_export) . 
             '</form>';
@@ -208,7 +196,6 @@ function html_tabpanel($class, $objet, $data_export) {      //  id="'.$data_expo
 
 //  *** test remplace html_section // 
 function html_tab_contents() {
-
     return '<div class="tab-content">'
                 . html_tabpanel('active', 'actes', 'all_actes')
                 . html_tabpanel('', 'personnes', 'all_personnes')
@@ -217,7 +204,7 @@ function html_tab_contents() {
 }
 
 function page_export() {
-    // if(isset($_REQUEST["data_export"])){
+    // if(isset($_REQUEST["data_export"])){     //  $_REQUEST stocke aussi l'URI 
     if(isset($_POST["data_export"])){
 
         // switch($_REQUEST["data_export"]){
@@ -232,8 +219,6 @@ function page_export() {
                 //  *** envoyer la valeur de $start et de $end 
                     echo appel_export_statique('CSVExport', 'export_relations', '', '', $_POST["names"], $_POST["dates"], $_POST["deux_sens"]);    //   1, 50,
                     // echo '<br>'.__METHOD__;
-                    // echo '<br>request : ';
-                    // var_dump($_REQUEST);
                     // echo '<br>post : ';
                     // var_dump($_POST);
                 // break;
@@ -246,27 +231,19 @@ function page_export() {
                 // $page_title = "Page introuvable";
         }
     } else {
-        //  *** test : remplacé par html_tab_titles et html_tab_contents :
+        //  *** remplacé par html_tab_titles et html_tab_contents :
         // echo html_section();
         echo html_tab_titles();
         echo html_tab_contents();
 
         // echo '<br>'.__METHOD__;
-        // echo '<br>request : ';
-        // var_dump($_REQUEST);
         // echo '<br>post : ';
         // var_dump($_POST);
     }
 }
 
-
-
-
-
-
 // echo page_export_lien(); 
 echo page_export(); 
-
 
 
 // var_dump($_POST);
