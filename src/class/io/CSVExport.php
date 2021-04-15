@@ -21,13 +21,32 @@ class CSVExport {
     public static $CSV_SEPARATOR = ";";
     public static $personnes;
 
+    // public static $lines;
+    public static $out; 
+
     public function __construct(){
 
     }
 
     //  PRIVATE METHODS //
 
+    //  *** test fichier local
+    private static function export_lines($line) {
+        // $lines = array();
+        $lines[] = $line;
+
+        echo '<br>'.__METHOD__;
+        echo '<br>$lines : ';
+        var_dump($lines);
+
+        return $lines;
+    }
+
     private static function export_line($line) {
+        global $lines;
+
+        self::$out = fopen(ROOT."export.csv", 'a');
+
         $first = TRUE;
 
         foreach($line as $field) {
@@ -39,7 +58,29 @@ class CSVExport {
             echo $field;
         }
         echo PHP_EOL;
+
+        echo '<br>'.__METHOD__;
+        echo '<br>$line foreach : ';
+        var_dump($line);
+        echo '<br>self::$out : ';
+        var_dump(self::$out);
+
+        fputcsv(self::$out, $line);
+
+        // $lines[] = $line;
+        $lines = self::export_lines(array($line));
+
+        echo '<br>'.__METHOD__;
+        echo '<br>$line : ';
+        var_dump($line);
+        echo '<br>$lines : ';
+        var_dump($lines);
+        // echo '<br>self::export_lines($line) : ';
+        // var_dump($lines);
+
+        return $lines;
     }
+
 
     //  PUBLIC //
 
@@ -80,6 +121,7 @@ class CSVExport {
     //  PRIVATE METHODS //
 
     private static function add_personne_to_line(&$line, $p, $names = FALSE) {
+        $lines = array();
 
         if($p instanceof Personne) {
             $line[] = $p->id;
@@ -139,10 +181,11 @@ class CSVExport {
     //  PUBLIC  //
 
     public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
-        global $mysqli;
+        global $mysqli, $lines, $line;
+
+        // $out = fopen(ROOT."export.csv", 'w');
 
         self::entete();
-
         // echo '<br>'.__METHOD__;
         // echo '<br>$deux_sens : ';
         // var_dump($deux_sens);
@@ -194,6 +237,34 @@ class CSVExport {
                 }
             }
         }
+
+        fclose($out);
+
+        echo '<br>'.__METHOD__;
+        echo '<br>$lines : ';
+        var_dump($lines);
+        // if(isset($lines) && $lines != NULL)
+        //     self::enregistrer_csv($lines);
+        // else 
+        //     self::enregistrer_csv($line);
+    }
+
+    //  *** test enregistrer fichier csv sur le serveur 
+    public static function enregistrer_csv($array) {
+
+        // $out = fopen('php://export.csv', 'a');
+        $out = fopen(ROOT."export.csv", 'w');
+
+        if ($out) 
+            // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
+            fputcsv($out, $array);
+        else 
+            var_dump($out);
+
+        // $out = fopen('php://output', 'w');
+        // fputcsv($out, array('this','is some', 'csv "stuff", you know.'));
+        fclose($out);
+
     }
 
     public static function entete(){
