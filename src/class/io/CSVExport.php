@@ -1,5 +1,6 @@
 <?php
 
+include_once(ROOT."src/class/io/ExportInterface.php");
 include_once(ROOT."src/class/model/Acte.php");
 
 //  *** Déplacer ça dans utils.php ? cf comm plus bas. Ou le remplacer par implode() ? Tester avec l'export de personnes // 
@@ -16,7 +17,7 @@ function array_to_string($array, $separator){
     return $str;
 }
 
-class CSVExport {
+class CSVExport implements ExportInterface {
 
     public static $CSV_SEPARATOR = ";";
     public static $personnes;
@@ -26,6 +27,15 @@ class CSVExport {
     public static $out; 
 
     public function __construct(){ }
+
+    //  INTERFACE   // 
+
+    public static function attr_nom_fichier() {
+        //  *** fichier à enregistrer sur le disque 
+        self::$fichier = ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.csv';
+        // self::$out = fopen(ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.csv', 'a');
+        self::$out = fopen(self::$fichier, 'a');
+    }
 
     //  PRIVATE METHODS //
 
@@ -59,7 +69,8 @@ class CSVExport {
     public static function export_personnes(){
         global $mysqli;
 
-        self::entete();
+        // self::entete();
+        self::attr_nom_fichier();
 
         // self::export_line(array("id","noms","prenoms"));
         fputcsv(self::$out, array("id","noms","prenoms"));
@@ -89,6 +100,16 @@ class CSVExport {
             // self::export_line(array($id, $noms, $prenoms));
             fputcsv(self::$out, array($id, $noms, $prenoms));
         }
+
+        //  timeline 
+        fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
+        // echo '<br>$fichier : ';
+        // var_dump(self::$fichier);
+        // fputcsv(self::$out, array(self::$fichier));
+        
+        fclose(self::$out);
+        
+        self::entete();
     }
 
     //  PRIVATE METHODS //
@@ -151,19 +172,18 @@ class CSVExport {
         // }
     }
 
+
     //  PUBLIC  //
 
     public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
         global $mysqli, $line;  //   retirer $line ? 
 
-        //  *** fichier à enregistrer sur le disque 
-        self::$fichier = ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.csv';
-        // self::$out = fopen(ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.csv', 'a');
-        self::$out = fopen(self::$fichier, 'a');
         
+        self::attr_nom_fichier();
 
-        //  ***  entete() déplacée après fclose() pour pouvoir y avoir accès 
+        //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier (à voir ?) *** // 
         // self::entete();
+        //  *** TODO : Commencer par test entete()   *** // 
 
         $line = [];
         $line[] = "id";
