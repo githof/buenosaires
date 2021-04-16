@@ -167,44 +167,6 @@ class Database extends mysqli{
         return $result;
     }
 
-    //  méthode à virer pour reactiver l'auto_increment normal 
-    // public function next_id($table){
-    //     global $log, $mysqli;
-
-    //     // if($table === "personne"){
-    //     //     $result = $mysqli->select(
-    //     //         "variable",
-    //     //         ["*"],
-    //     //         "nom='PERSONNE_ID_MAX'"
-    //     //     );
-    //     //     if($result != FALSE && $result->num_rows == 1){
-    //     //         $row = $result->fetch_assoc();
-    //     //         $value = intval($row["valeur"]) +1;
-    //     //         $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-    //     //         return $row["valeur"];
-    //     //     }
-    //     //     return FALSE;
-    //     // }
-
-    //     $database_name = SQL_DATABASE_NAME;
-
-    //     // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
-    //     //  ***  Autre mooyen : récupérer la valeur du dernier enregistrement d'une table :
-    //     $s = "SELECT max(id) from `$table`";
-
-    //     $result = $this->query($s);
-
-    //     if($result->num_rows != 1)
-    //         return FALSE;
-
-    //     $row = $result->fetch_assoc();
-
-    //     //  *** On ajoute 1 à la valeur récupérée 
-    //     $value = intval($row['max(id)']) +1;
-
-    //     return $value;
-    // }
-
     public function start_transaction(){
         return $this->query("START TRANSACTION");
     }
@@ -551,7 +513,6 @@ class Database extends mysqli{
 
     public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
         $result = FALSE;
-        // $new_id = NULL;  //  <== vient de next_id() // 
 
         if(!$force_insert && !$obj->pre_into_db())
             return;

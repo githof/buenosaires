@@ -139,7 +139,7 @@ function html_export_personnes() {
 
 
 function html_export_relations() {
-    $contents = '<p>Section en travaux, les résultats ne seront pas systématiquement ceux que vous attendrez. Merci de votre compréhension :)</p>';
+    $contents = '<p>Section en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p>';
     $contents .= '<div class="row">';
     
     $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates')) 
