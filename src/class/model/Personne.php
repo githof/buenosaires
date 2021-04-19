@@ -209,7 +209,6 @@ class Personne implements DatabaseIO{
         return TRUE;
     }
 
-    //  *** pourquoi supprimer (pre)nom_personne avant de l'enregistrer ? Voir si le bug vient de là 
     public function post_into_db(){
         global $mysqli;
 
@@ -222,13 +221,13 @@ class Personne implements DatabaseIO{
 
         $mysqli->start_transaction();
         $i = 1;
-        // $mysqli->delete("prenom_personne", "personne_id='$this->id'");
+        $mysqli->delete("prenom_personne", "personne_id='$this->id'");
         foreach($this->prenoms as $prenom){
             $mysqli->into_db_prenom_personne($this, $prenom, $i);
             $i++;
         }
 
-        // $mysqli->delete("nom_personne", "personne_id='$this->id'");
+        $mysqli->delete("nom_personne", "personne_id='$this->id'");
         $i = 1;
         foreach($this->noms as $nom){
             $mysqli->into_db_nom_personne($this, $nom, $i);

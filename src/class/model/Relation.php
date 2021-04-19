@@ -119,7 +119,7 @@ class Relation implements DatabaseIO {
     public function post_into_db(){
         global $mysqli;
 
-            //  *** Récupérer le dernier id inséré 
+            //  *** Récupérer la dernier id inséré 
             if(!isset($this->id) || ($this->id == 0)) {
                 $this->id = $mysqli->insert_id;
             }
