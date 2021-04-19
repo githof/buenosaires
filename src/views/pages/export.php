@@ -125,7 +125,7 @@ function html_form_group_export($contents) {
 }
 
 function html_export_actes() {
-    $contents = '<h4>Toutes les actes</h4>
+    $contents = '<h4>Tous les actes</h4>
                 <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
     $contents .= html_radio_export('', '', 'Tous les actes');
 
