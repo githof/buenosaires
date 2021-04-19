@@ -212,7 +212,7 @@ class Personne implements DatabaseIO{
     public function post_into_db(){
         global $mysqli;
 
-        //  *** Récupérer la dernier id inséré 
+        //  *** Récupérer le dernier id inséré 
         if(!isset($this->id) || ($this->id == 0)) {
             $this->id = $mysqli->insert_id;
         }

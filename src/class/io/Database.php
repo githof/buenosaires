@@ -27,14 +27,15 @@ class Database extends mysqli{
 
         $s = "SELECT ";
 
-            /*  Warning: count(): Parameter must be an array or an object 
-                that implements Countable 
-            ***/
-            for($i = 0; $i < count($columns); $i++){
-                $s .= $columns[$i];
-                if($i < count($columns) -1)
-                    $s .= ", ";
-            }
+        /*  Warning: count(): Parameter must be an array or an object 
+            that implements Countable 
+            $columns est un string 
+        ***/
+        for($i = 0; $i < count($columns); $i++){
+            $s .= $columns[$i];
+            if($i < count($columns) -1)
+                $s .= ", ";
+        }
 
         $s .= " FROM `$table`";
 
@@ -73,7 +74,7 @@ class Database extends mysqli{
             elseif($key === 'id' && empty($value)) {
                 $vals .= 'NULL';
             } else {
-            //  *** sinon  on l'insère (l'id) dans la bdd 
+            //  *** sinon  on insère l'id dans la bdd 
                     $vals .= "'" . $value . "'";
             }
             
@@ -230,6 +231,7 @@ class Database extends mysqli{
         if(isset($obj->id)){
             $row = $this->from_db_by_id($obj);
             if($obj instanceof Personne){
+                //  *** recherche prénom + nom d'une personne avec son id (pour affichage detail_personne) 
                 $this->from_db_personne_noms_prenoms($obj);
                 if($get_relations_conditions){
                     $this->from_db_personne_relations($obj);
@@ -240,9 +242,17 @@ class Database extends mysqli{
                 $this->from_db_acte_relations($obj);
             }
         } else {
-            if($obj instanceof Personne)
-                $row = $this->from_db_by_same_personne($obj);
-            else
+            //  *** test enregistrer nouvelle personne à chaque fois 
+            if($obj instanceof Personne) {
+                //  et envoyer une alerte si prénoms+noms identiques existe déjà  
+                //  *** J'ai modifié from_db_by_same_personne pour créer nouvelle personne 
+                $rows = $this->from_db_by_same_personne($obj);
+                if(isset($rows) && $rows != NULL) {
+                    foreach($rows as $id) {
+                        $log->d("from database: ".get_class($obj)." id=$id existe déjà");
+                    }
+                }
+            } else 
                 $row = $this->from_db_by_same($obj);
         }
 
@@ -265,37 +275,53 @@ class Database extends mysqli{
         return $row;
     }
 
+    //  *** check si les contenus des tables sont les mêmes que dans l'acte en cours d'import si on n'a pas d'id  
     private function from_db_by_same($obj){
         $row = NULL;
         $s = "";
         $i = 0;
+        //  stocke les valeurs de l'obj dans $values 
+        //  (class/model/obj) 
         $values = $obj->get_same_values();
+
+        //  *** si pas de valeurs, on retourne NULL 
         if($values == NULL){
             $row = NULL;
         }
 
+        //  on Stock les éléments de la requête dans $s 
+        //  *** Si ya des valeurs :
+        //          si $v == 'NULL' --> '$k IS NULL'
+        //          sinon $k = $v dans $s 
         foreach ($values as $k => $v) {
             if(strcmp($v, "NULL") == 0)
-            $s .= "$k IS NULL";
+                $s .= "$k IS NULL";
             else
-            $s .= $k . "='" . $v . "'";
+                $s .= $k . "='" . $v . "'";
 
             if($i < count($values) -1)
-            $s .= " AND ";
+                $s .= " AND ";
             $i++;
         }
 
+        //  *** requête 
         $result = $this->select(
             $obj->get_table_name(),
             ["*"],
             $s
         );
-        if($result->num_rows == 1)
+        //  *** si on récupère 1 ligne de la bdd : 
+        //  on la stocke dans $row 
+        if($result->num_rows == 1) {
             $row = $result->fetch_assoc();
+        }
+        //  *** et on la retourne 
         return $row;
     }
 
+    //  *** attribue un prénom + nom à une personne, mais on connait déjà son id  
     private function from_db_personne_noms_prenoms($personne) {
+        //  *** attribue un prénom à une personne 
         $result = $this->query("
             SELECT prenom.id AS p_id, prenom, no_accent
             FROM prenom_personne INNER JOIN prenom
@@ -308,6 +334,7 @@ class Database extends mysqli{
                 $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
         }
 
+        //  *** attribue un nom à une personne 
         $result = $this->query("
             SELECT nom.id as n_id, nom, no_accent, attribut, ordre
             FROM nom_personne INNER JOIN nom
@@ -343,7 +370,10 @@ class Database extends mysqli{
     }
 
     private function from_db_personne_relations($personne) {
-        $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
+        $result = $this->select("relation", 
+                                ["*"], 
+                                "pers_source_id='$personne->id' 
+                                OR pers_destination_id='$personne->id'");
         $pers_source = NULL;
         $pers_destination = NULL;
         if($result != FALSE && $result->num_rows > 0){
@@ -439,60 +469,83 @@ class Database extends mysqli{
 
     //  PRIVATE METHODS   //
 
+    //  ***  condition "même personne" 
+    //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
+    //  pour alerte dans from_db()
+    //  mais crée une nouvelle personne 
+    /*  ***  Il faudra qu'elle 
+            - appelle une fonction qui vérifie toutes les relations
+            - si c'est la même personne --> appelle la fonction fusion() quand elle sera débuggée 
+    */
     private function from_db_by_same_personne($personne){
         $ids = NULL;
         $ids_tmp = NULL;
 
         foreach($personne->noms as $k => $nom){
             $result = $this->query("
-            SELECT personne_id
-            FROM nom_personne INNER JOIN nom
-            ON nom_personne.nom_id = nom.id
-            WHERE nom.no_accent = '$nom->no_accent'
+                SELECT personne_id
+                FROM nom_personne INNER JOIN nom
+                ON nom_personne.nom_id = nom.id
+                WHERE nom.no_accent = '$nom->no_accent'
             ");
             if($result === FALSE || $result->num_rows == 0)
                 return FALSE;
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];   
 
-            if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
-            else
-            $ids = $ids_tmp;
+            //  ==> pourquoi cette condition ? $ids est toujours NULL, 
+            //  il n'a pas bougé depuis son init à NULL 
+            if(isset($ids)) 
+                $ids = array_intersect($ids, $ids_tmp);
+            else 
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
-            return FALSE;
+                return FALSE;
         }
 
         foreach($personne->prenoms as $k => $prenom){
             $result = $this->query("
-            SELECT personne_id
-            FROM prenom_personne INNER JOIN prenom
-            ON prenom_personne.prenom_id = prenom.id
-            WHERE prenom.no_accent = '$prenom->no_accent'
+                SELECT personne_id
+                FROM prenom_personne INNER JOIN prenom
+                ON prenom_personne.prenom_id = prenom.id
+                WHERE prenom.no_accent = '$prenom->no_accent'
             ");
             if($result === FALSE || $result->num_rows == 0)
             return NULL;
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
-            if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
-            else
-            $ids = $ids_tmp;
+            //  *** $ids = $ids_tmp du foreach $personne->noms 
+            if(isset($ids)) 
+                $ids = array_intersect($ids, $ids_tmp);
+            else 
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
-            return NULL;
-        }
+                return NULL;
+        } 
 
-        if(isset($ids)){
-            return ["id" => array_shift($ids)];
-        }
-        return NULL;
+        //  *** test sans-nom 
+        // if(isset($ids)){
+        //     //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
+        //     //  il faut vérifier d'autres choses que juste prenom + nom 
+        //     //  ou créer une nouvelle personne
+
+        //     return ["id" => array_shift($ids)];     //  ==> remplacer array_shift ? 
+        
+        //     //  Pas encore trouvé comment se fait exactement la chronologie des requêtes
+        // }
+
+        //  *** test sans-noms 
+        // return NULL;
+
+        //  retourner les ids des identiques pour l'alerte 
+        return $ids;
     }
 
     private function updated_values($values_db, $values_obj){
@@ -517,6 +570,15 @@ class Database extends mysqli{
         if(!$force_insert && !$obj->pre_into_db())
             return;
 
+        //  *** test sans-nom
+        //  pour Personne : ne pas tester si déjà présent dans la bdd
+        // if($obj instanceof Personne) {
+        //     $skip_check_same = TRUE;
+        // }
+        //  *** passer quand même par from_db_by_same_personne
+        //  mais la modifier pour créer alerte et nouvelle personne 
+
+        //  *** $values_db = $row;  
         if(!$skip_check_same) {
             $values_db = $this->from_db($obj, FALSE, FALSE);
         }
@@ -606,7 +668,7 @@ class Database extends mysqli{
         return $this->insert(
             "nom_personne",
             $values,
-            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"
+            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"   //  *** ==> je comprends pas '$ordre'$attr, ou pourquoi $attr ? 
         );
     }
 
