@@ -2,9 +2,9 @@
 
 interface ExportInterface {
 
-
-  //  *** fichier à enregistrer sur le disque //  On peut peut-être faire une fonction dans utils.php à la place ? ***  // 
-    static function attr_nom_fichier();
-
+  //  *** fichier à enregistrer sur le disque  
+  static function attr_nom_fichier($object);
+  //  *** entête d'export, différente de l'entête spécifique à un format 
+  static function entete($object);
 
 }

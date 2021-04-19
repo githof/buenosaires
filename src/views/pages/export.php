@@ -125,21 +125,24 @@ function html_form_group_export($contents) {
 }
 
 function html_export_actes() {
-    $contents = html_radio_export('', '', 'Tous les actes');
-    $contents .= '<p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    $contents = '<h4>Toutes les actes</h4>
+                <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    $contents .= html_radio_export('', '', 'Tous les actes');
 
     return $contents;
 }
 
 function html_export_personnes() {
-    $contents = html_radio_export('', '', 'Toutes les personnes');
-    $contents .= '<p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    $contents = '<h4>Tous les personnes</h4>
+    <p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    $contents .= html_radio_export('', '', 'Toutes les personnes');
     return $contents;
 }
 
 
 function html_export_relations() {
-    $contents = '<p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p>';
+    $contents = '<h4>Toutes les relations</h4>
+                <p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p>';
     $contents .= '<div class="row">';
     
     $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates')) 

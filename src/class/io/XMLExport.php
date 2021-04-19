@@ -17,17 +17,28 @@ class XMLExport implements ExportInterface {
     //  INTERFACE   // 
 
     //  *** fichier à enregistrer sur le disque 
-    public static function attr_nom_fichier() {
-        self::$fichier = ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.xml';
+    public static function attr_nom_fichier($object) {
+        if ($object === 'actes')
+            self::$fichier = ROOT.'exports/export_'.$object.'_'.date('Y-m-d_H-i-s').'.xml';
+
         self::$out = fopen(self::$fichier, 'a');
     }
+    
+    public static function entete($object) {
+        header('Content-type: text/xml');
+        header('Content-Disposition: attachment; filename="export_'.$object.'_'.date('Y-m-d_H-i-s').'.xml' . '"');
+        
+        //  *** exporter le fichier enregistré sous le même nom : 
+        readfile(self::$fichier);
+    }
+    
 
     //  PRIVATE METHODS //
 
     private static function export_line($line){
-        fputs(self::$out, $line);
-        echo html_entity_decode($line, ENT_NOQUOTES, 'UTF-8') . PHP_EOL;    //  ENT_XML1
+        fputs(self::$out, html_entity_decode($line, ENT_NOQUOTES, 'UTF-8') . PHP_EOL);
     }
+
 
     //  PUBLIC  //
 
@@ -36,7 +47,7 @@ class XMLExport implements ExportInterface {
     public static function export(){
         global $mysqli;
 
-        self::XML_entete();
+        self::XML_entete('actes');
 
         //  *** pour l'instant je n'ai pas trouvé comment utiliser les méthodes statiques avec un paramètre 
         // foreach($this->actes_id as $acte_id){    //  code d'origine 
@@ -56,9 +67,9 @@ class XMLExport implements ExportInterface {
     public static function export_all(){
         global $mysqli;
 
-        self::attr_nom_fichier();
+        self::attr_nom_fichier('actes');
 
-        self::XML_entete();
+        self::XML_entete('actes');
         
         $results = $mysqli->select("acte_contenu", ["contenu"]);
         if($results != FALSE && $results->num_rows > 0){
@@ -76,11 +87,13 @@ class XMLExport implements ExportInterface {
         
         fclose(self::$out);
         
-        self::entete();
+        self::entete('actes');
     }
+
 
     //  PRIVATE METHODS //
 
+    //  ***  entête xml, différente de l'entête d'export 
     private static function XML_entete(){
         self::export_line('<?xml version="1.0" encoding="UTF-8"?>');
         self::export_line('<document>');
@@ -92,15 +105,7 @@ class XMLExport implements ExportInterface {
         self::export_line('</ACTES>');
         self::export_line('</document>');
     }
-
-    //  *** esport à ce nom-là ok 
-    public static function entete() {
-        header('Content-type: text/xml');
-        header('Content-Disposition: attachment; filename="' . 'export_'.date('Y-m-d_H-i-s').'.xml' . '"');
-
-        //  *** exporter le fichier enregistré : 
-        // readfile(self::$fichier);
-    }
+    
 }
 
 

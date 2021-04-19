@@ -3,8 +3,8 @@
 include_once(ROOT."src/class/io/ExportInterface.php");
 include_once(ROOT."src/class/model/Acte.php");
 
-//  *** Déplacer ça dans utils.php ? cf comm plus bas. Ou le remplacer par implode() ? Tester avec l'export de personnes // 
-function array_to_string($array, $separator){
+//  *** implode() remplace cette fct  // 
+/*  function array_to_string($array, $separator){
     $str = "";
     $i = 0;
     $length = count($array);
@@ -16,6 +16,7 @@ function array_to_string($array, $separator){
     }
     return $str;
 }
+*/
 
 class CSVExport implements ExportInterface {
 
@@ -28,40 +29,50 @@ class CSVExport implements ExportInterface {
 
     public function __construct(){ }
 
+
     //  INTERFACE   // 
 
-    public static function attr_nom_fichier() {
+    public static function attr_nom_fichier($object) {
         //  *** fichier à enregistrer sur le disque 
-        self::$fichier = ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.csv';
-        // self::$out = fopen(ROOT.'exports/export_'.date('Y-m-d_H-i-s').'.csv', 'a');
+            self::$fichier = ROOT.'exports/export_'.$object.'_'.date('Y-m-d_H-i-s').'.csv';
+        
         self::$out = fopen(self::$fichier, 'a');
     }
 
+    public static function entete($object){
+        header('Content-type: text/csv');
+        // header('Content-Disposition: attachment; filename="export.csv"');
+        header('Content-Disposition: attachment; filename="' . 'export_'.$object.'_'.date('Y-m-d_H-i-s').'.csv' . '"');
+        
+        //  *** exporter le fichier enregistré sous le même nom : 
+        readfile(self::$fichier);
+    }
+
+
     //  PRIVATE METHODS //
 
-    private static function export_line($line) {
+    // *** fputcsv remplace la fct export_line()  // 
+    /* private static function export_line($line) {
 
         // //  *** Pour fractionnement des fichiers à chaque ms :
         //  crée un nouveau fichier avec le nom de la ms courante 
-        // self::$out = fopen(ROOT.'exports/export_'.time().'.csv', 'a');
+        self::$out = fopen(ROOT.'exports/export_'.time().'.csv', 'a');
 
-        // $first = TRUE;
+        $first = TRUE;
 
-        // /*  *** On pourrait pas utiliser fputcsv() au lieu de ce trafic avec $CSV_SEPARATOR ? 
-        //     A la fin il suffirait d'exporter le fichier créé, au lieu d'en créer 2 différents
-        // */  
-        // foreach($line as $field) {
-        //     if($first)
-        //         $first = FALSE;
-        //     else
-        //         echo self::$CSV_SEPARATOR;
+        foreach($line as $field) {
+            if($first)
+                $first = FALSE;
+            else
+                echo self::$CSV_SEPARATOR;
 
-        //     echo $field;
-        // }
-        // echo PHP_EOL;
+            echo $field;
+        }
+        echo PHP_EOL;
 
         fputcsv(self::$out, $line);
     }
+    */
 
 
     //  PUBLIC //
@@ -70,7 +81,7 @@ class CSVExport implements ExportInterface {
         global $mysqli;
 
         // self::entete();
-        self::attr_nom_fichier();
+        self::attr_nom_fichier('personnes');
 
         // self::export_line(array("id","noms","prenoms"));
         fputcsv(self::$out, array("id","noms","prenoms"));
@@ -92,10 +103,10 @@ class CSVExport implements ExportInterface {
             foreach($personne->noms as $nom)
                 $noms[] = $nom->to_string();
 
-            $prenoms = array_to_string($prenoms, " ");
-            $noms = array_to_string($noms, " ");
-            // $prenoms = implode(" ", $prenoms);
-            // $noms = implode(" ", $noms);
+            $prenoms = implode(' ', $prenoms);
+            $noms = implode(' ', $noms);
+            // $prenoms = array_to_string($prenoms, " ");
+            // $noms = array_to_string($noms, " ");
 
             // self::export_line(array($id, $noms, $prenoms));
             fputcsv(self::$out, array($id, $noms, $prenoms));
@@ -105,11 +116,10 @@ class CSVExport implements ExportInterface {
         fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
         // echo '<br>$fichier : ';
         // var_dump(self::$fichier);
-        // fputcsv(self::$out, array(self::$fichier));
         
         fclose(self::$out);
         
-        self::entete();
+        self::entete('personnes');
     }
 
     //  PRIVATE METHODS //
@@ -179,7 +189,7 @@ class CSVExport implements ExportInterface {
         global $mysqli, $line;  //   retirer $line ? 
 
         
-        self::attr_nom_fichier();
+        self::attr_nom_fichier('relations');
 
         //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier (à voir ?) *** // 
         // self::entete();
@@ -242,23 +252,10 @@ class CSVExport implements ExportInterface {
         
         fclose(self::$out);
         
-        self::entete();
+        self::entete('relations');
     }
 
-    public static function entete(){
-        
-        //  *** Récupérer les noms des fichiers du dossier exports/ 
-        //  *** Ca ne sert pas pour l'instant, on le virera si ça n'a pas d'utilité 
-        // $dir = ROOT."exports";
-        // $fichiers = scandir($dir,1);
-        
-        header('Content-type: text/csv');
-        // header('Content-Disposition: attachment; filename="export.csv"');
-        header('Content-Disposition: attachment; filename="' . 'export_'.date('Y-m-d_H-i-s').'.csv' . '"');
-        
-        //  *** exporter le fichier enregistré : 
-        readfile(self::$fichier);
-    }
+    
 }
 
 
