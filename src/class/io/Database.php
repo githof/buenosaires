@@ -305,7 +305,9 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc())
-                $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
+                $personne->add_prenom(new Prenom($row["p_id"], 
+                                                $row["prenom"], 
+                                                $row["no_accent"]));
         }
 
         $result = $this->query("
@@ -330,14 +332,14 @@ class Database extends mysqli{
         $condition = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $condition = new Condition(
-                $row["id"],
-                $row["text"],
-                $personne,
-                $row["source_id"]
-            );
-            $this->from_db_condition_list_acte($condition);
-            $personne->conditions[] = $condition;
+                $condition = new Condition(
+                    $row["id"],
+                    $row["text"],
+                    $personne,
+                    $row["source_id"]
+                );
+                $this->from_db_condition_list_acte($condition);
+                $personne->conditions[] = $condition;
             }
         }
     }
@@ -377,14 +379,14 @@ class Database extends mysqli{
         $condition = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $condition = new Condition(
-                $row["id"],
-                $row["text"],
-                new Personne($row["personne_id"]),
-                $row["source_id"]
-            );
-            $this->from_db_condition_list_acte($condition);
-            $acte->conditions[] = $condition;
+                $condition = new Condition(
+                    $row["id"],
+                    $row["text"],
+                    new Personne($row["personne_id"]),
+                    $row["source_id"]
+                );
+                $this->from_db_condition_list_acte($condition);
+                $acte->conditions[] = $condition;
             }
         }
     }
@@ -399,14 +401,14 @@ class Database extends mysqli{
         $relation = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $relation = new Relation(
-                $row["id"],
-                new Personne($row["pers_source_id"]),
-                new Personne($row["pers_destination_id"]),
-                $row["statut_id"]
-            );
-            $this->from_db_relation_list_acte($relation);
-            $acte->relations[] = $relation;
+                $relation = new Relation(
+                    $row["id"],
+                    new Personne($row["pers_source_id"]),
+                    new Personne($row["pers_destination_id"]),
+                    $row["statut_id"]
+                );
+                $this->from_db_relation_list_acte($relation);
+                $acte->relations[] = $relation;
             }
         }
     }
@@ -455,15 +457,16 @@ class Database extends mysqli{
 
             $ids_tmp = [];
             while($row = $result->fetch_assoc())
-            $ids_tmp[] = $row["personne_id"];
+                $ids_tmp[] = $row["personne_id"];
 
+            //  *** $ids ne peut pas être autrement que NULL, pourquoi ce if() else ?
             if(isset($ids))
-            $ids = array_intersect($ids, $ids_tmp);
+                $ids = array_intersect($ids, $ids_tmp);
             else
-            $ids = $ids_tmp;
+                $ids = $ids_tmp;
 
             if(count($ids) == 0)
-            return FALSE;
+                return FALSE;
         }
 
         foreach($personne->prenoms as $k => $prenom){
