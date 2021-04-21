@@ -212,6 +212,7 @@ class Database extends mysqli{
         $contenu = $result->fetch_assoc()["contenu"];
     }
 
+    //  *** sert pour les imports, les affichages, les exports et probablement les suppressions     // 
     public function from_db($obj,
     $update_obj = FALSE,
     $get_relations_conditions = TRUE) {
@@ -256,9 +257,12 @@ class Database extends mysqli{
                 $row = $this->from_db_by_same($obj);
         }
 
+        //  *** pour import : $update_obj == false
+        //  *** pour affichage : $update_obj == true 
         if($update_obj)
             $obj->result_from_db($row);
-        return $row;
+        
+            return $row;
     }
 
     //  PRIVATE METHODS   //
@@ -289,7 +293,7 @@ class Database extends mysqli{
             $row = NULL;
         }
 
-        //  on Stock les éléments de la requête dans $s 
+        //  on Stocke les éléments de la requête dans $s 
         //  *** Si ya des valeurs :
         //          si $v == 'NULL' --> '$k IS NULL'
         //          sinon $k = $v dans $s 
@@ -331,7 +335,11 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc())
-                $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
+                $personne->add_prenom(new Prenom(
+                    $row["p_id"], 
+                    $row["prenom"], 
+                    $row["no_accent"])
+                );
         }
 
         //  *** attribue un nom à une personne 
@@ -344,10 +352,12 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $personne->add_nom( new Nom($row["n_id"],
-                                        $row["nom"],
-                                        $row["no_accent"],
-                                        $row["attribut"]));
+                $personne->add_nom( new Nom(
+                    $row["n_id"],
+                    $row["nom"],
+                    $row["no_accent"],
+                    $row["attribut"])
+                );
             }
         }
     }
@@ -357,14 +367,14 @@ class Database extends mysqli{
         $condition = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $condition = new Condition(
-                $row["id"],
-                $row["text"],
-                $personne,
-                $row["source_id"]
-            );
-            $this->from_db_condition_list_acte($condition);
-            $personne->conditions[] = $condition;
+                $condition = new Condition(
+                    $row["id"],
+                    $row["text"],
+                    $personne,
+                    $row["source_id"]
+                );
+                $this->from_db_condition_list_acte($condition);
+                $personne->conditions[] = $condition;
             }
         }
     }
@@ -378,21 +388,21 @@ class Database extends mysqli{
         $pers_destination = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()) {
-            if($row["pers_source_id"] == $personne->id) {
-                $pers_source = $personne;
-                $pers_destination = new Personne($row["pers_destination_id"]);
-            } else {
-                $pers_source = new Personne($row["pers_source_id"]);
-                $pers_destination = $personne;
-            }
-            $relation = new Relation(
-                $row["id"],
-                $pers_source,
-                $pers_destination,
-                $row["statut_id"]
-            );
-            $this->from_db_relation_list_acte($relation);
-            $personne->relations[] = $relation;
+                if($row["pers_source_id"] == $personne->id) {
+                    $pers_source = $personne;
+                    $pers_destination = new Personne($row["pers_destination_id"]);
+                } else {
+                    $pers_source = new Personne($row["pers_source_id"]);
+                    $pers_destination = $personne;
+                }
+                $relation = new Relation(
+                    $row["id"],
+                    $pers_source,
+                    $pers_destination,
+                    $row["statut_id"]
+                );
+                $this->from_db_relation_list_acte($relation);
+                $personne->relations[] = $relation;
             }
         }
     }
@@ -407,14 +417,14 @@ class Database extends mysqli{
         $condition = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $condition = new Condition(
-                $row["id"],
-                $row["text"],
-                new Personne($row["personne_id"]),
-                $row["source_id"]
-            );
-            $this->from_db_condition_list_acte($condition);
-            $acte->conditions[] = $condition;
+                $condition = new Condition(
+                    $row["id"],
+                    $row["text"],
+                    new Personne($row["personne_id"]),
+                    $row["source_id"]
+                );
+                $this->from_db_condition_list_acte($condition);
+                $acte->conditions[] = $condition;
             }
         }
     }
@@ -429,14 +439,14 @@ class Database extends mysqli{
         $relation = NULL;
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
-            $relation = new Relation(
-                $row["id"],
-                new Personne($row["pers_source_id"]),
-                new Personne($row["pers_destination_id"]),
-                $row["statut_id"]
-            );
-            $this->from_db_relation_list_acte($relation);
-            $acte->relations[] = $relation;
+                $relation = new Relation(
+                    $row["id"],
+                    new Personne($row["pers_source_id"]),
+                    new Personne($row["pers_destination_id"]),
+                    $row["statut_id"]
+                );
+                $this->from_db_relation_list_acte($relation);
+                $acte->relations[] = $relation;
             }
         }
     }
@@ -451,7 +461,7 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc())
-            $condition->actes[] = new Acte($row["acte_id"]);
+                $condition->actes[] = new Acte($row["acte_id"]);
         }
     }
 
@@ -463,7 +473,7 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc())
-            $relation->actes[] = new Acte($row["acte_id"]);
+                $relation->actes[] = new Acte($row["acte_id"]);
         }
     }
 
@@ -471,12 +481,8 @@ class Database extends mysqli{
 
     //  ***  condition "même personne" 
     //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
-    //  pour alerte dans from_db()
+    //  pour alerte dans log.txt via from_db()
     //  mais crée une nouvelle personne 
-    /*  ***  Il faudra qu'elle 
-            - appelle une fonction qui vérifie toutes les relations
-            - si c'est la même personne --> appelle la fonction fusion() quand elle sera débuggée 
-    */
     private function from_db_by_same_personne($personne){
         $ids = NULL;
         $ids_tmp = NULL;
@@ -533,18 +539,14 @@ class Database extends mysqli{
         //  *** test sans-nom 
         // if(isset($ids)){
         //     //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
-        //     //  il faut vérifier d'autres choses que juste prenom + nom 
-        //     //  ou créer une nouvelle personne
+        //     //  il faut ou créer une nouvelle personne et alerter via log.txt 
 
         //     return ["id" => array_shift($ids)];     //  ==> remplacer array_shift ? 
-        
-        //     //  Pas encore trouvé comment se fait exactement la chronologie des requêtes
+
         // }
-
-        //  *** test sans-noms 
+        
         // return NULL;
-
-        //  retourner les ids des identiques pour l'alerte 
+        //  retourne les ids des identiques pour l'alerte 
         return $ids;
     }
 
@@ -556,7 +558,7 @@ class Database extends mysqli{
 
         foreach($values_obj as $key => $val){
             if(!isset($values_db[$key]) || $values_db[$key] != $val)
-            $updated[$key] = $val;
+                $updated[$key] = $val;
         }
 
         return $updated;
@@ -570,15 +572,6 @@ class Database extends mysqli{
         if(!$force_insert && !$obj->pre_into_db())
             return;
 
-        //  *** test sans-nom
-        //  pour Personne : ne pas tester si déjà présent dans la bdd
-        // if($obj instanceof Personne) {
-        //     $skip_check_same = TRUE;
-        // }
-        //  *** passer quand même par from_db_by_same_personne
-        //  mais la modifier pour créer alerte et nouvelle personne 
-
-        //  *** $values_db = $row;  
         if(!$skip_check_same) {
             $values_db = $this->from_db($obj, FALSE, FALSE);
         }
@@ -597,11 +590,13 @@ class Database extends mysqli{
 
         if($result === FALSE)
             return FALSE;
+        
         return $obj->id;
     }
 
     //  PRIVATE METHODS   //
 
+    //  *** ne sert que là, on peut pas la défactoriser ? 
     private function into_db_update($obj, $values){
         if(count($values) == 0)
             return TRUE;
@@ -614,23 +609,11 @@ class Database extends mysqli{
     }
 
     private function into_db_insert($obj, $values){
-        
         global $log;
-        // $new_id = NULL;  //  <== pour next_id() // 
         $result = FALSE;
         $max_try = 2;
 
         while($result === FALSE && $max_try > 0){
-            //  retirer ça, c'est pour utiliser next_id() 
-            // if(!isset($obj->id)){
-            //     $new_id = $this->next_id($obj->get_table_name());
-            //     if($new_id == 0){
-            //         $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");  /* Notice: Undefined property: Prenom::$table_name in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 556 ***/
-            //         return FALSE;
-            //     }
-            //     $obj->id = $new_id;
-            // }
-
             $values["id"] = $obj->id;
             $result = $this->insert($obj->get_table_name(), $values);
             $max_try--;
@@ -668,19 +651,19 @@ class Database extends mysqli{
         return $this->insert(
             "nom_personne",
             $values,
-            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"   //  *** ==> je comprends pas '$ordre'$attr, ou pourquoi $attr ? 
+            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"
         );
     }
 
     public function into_db_acte_has_relation($acte, $relation){
         return $this->query("
-        INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
+            INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
         ");
     }
 
     public function into_db_acte_has_condition($acte, $condition){
         return $this->query("
-        INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
+            INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
         ");
     }
 

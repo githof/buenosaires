@@ -91,26 +91,25 @@ function array_to_string_with_separator($tab, $separator){
 }
 
 //  *** attribue un id déjà existant à une nouvelle personne enregistrée ? 
-//  utilisée nulle part 
-// function renommer_personne($personne, $noms, $prenoms) {
-//     global $mysqli;
+function renommer_personne($personne, $noms, $prenoms) {
+    global $mysqli;
 
-//     $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
-//     $i = 1;
-//     foreach($prenoms as $prenom){
-//         $mysqli->into_db($prenom);
-//         $mysqli->into_db_prenom_personne($personne, $prenom, $i);
-//         $i++;
-//     }
+    $mysqli->delete("prenom_personne", "personne_id='$personne->id'");
+    $i = 1;
+    foreach($prenoms as $prenom){
+        $mysqli->into_db($prenom);
+        $mysqli->into_db_prenom_personne($personne, $prenom, $i);
+        $i++;
+    }
 
-//     $mysqli->delete("nom_personne", "personne_id='$personne->id'");
-//     $i = 1;
-//     foreach($noms as $nom){
-//         $mysqli->into_db($nom);
-//         $mysqli->into_db_nom_personne($personne, $nom, $i);
-//         $i++;
-//     }
-// }
+    $mysqli->delete("nom_personne", "personne_id='$personne->id'");
+    $i = 1;
+    foreach($noms as $nom){
+        $mysqli->into_db($nom);
+        $mysqli->into_db_nom_personne($personne, $nom, $i);
+        $i++;
+    }
+}
 
 function parse_prenoms($prenoms_str){
     $prenoms_array = explode(",", $prenoms_str);

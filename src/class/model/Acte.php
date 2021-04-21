@@ -227,12 +227,12 @@ class Acte implements DatabaseIO{
         $personnes = [];
 
         foreach($this->conditions as $condition)
-        $personnes[] = $condition->personne;
+            $personnes[] = $condition->personne;
 
         foreach($this->relations as $relation)
         {
-        $personnes[] = $relation->personne_source;
-        $personnes[] = $relation->personne_destination;
+            $personnes[] = $relation->personne_source;
+            $personnes[] = $relation->personne_destination;
         }
         return array_unique_by_id($personnes);
     }
@@ -251,10 +251,12 @@ class Acte implements DatabaseIO{
         $mysqli->delete($field, $test);
     }
 
+    //  *** Pas besoin de ça, on peut appeler directement delete_conditions_or_relations($field) je pense // 
     private function delete_conditions() {
         $this->delete_conditions_or_relations('condition');
     }
 
+    //  *** idem // 
     private function delete_relations() {
         $this->delete_conditions_or_relations('relation');
     }

@@ -241,6 +241,7 @@ class Personne implements DatabaseIO{
         foreach($this->conditions as $condition)
             $mysqli->into_db($condition);
 
+            //  *** faire des tests d'affichage pour savoir ce que c'est :
         if(isset($this->xml)){
             $attributesXML = $this->xml->attributes();
             if(!isset($attributesXML["id"]))
@@ -299,7 +300,7 @@ class Personne implements DatabaseIO{
         $prenoms_ids = $this->prenoms_ids_from_db();
         $noms_ids = $this->noms_ids_from_db();
         */
-        //  *** Database::remove_unused_prenoms_noms() appelée dans Acte::remove_from_db() 
+        //  *** C'est fait : Database::remove_unused_prenoms_noms() appelée dans Acte::remove_from_db() 
 
         $mysqli->start_transaction();
         foreach(['prenom', 'nom'] as $field) {
@@ -316,6 +317,7 @@ class Personne implements DatabaseIO{
 	  Import from db is in src/io/IO/Database.php from_db()
 	  (which is ugly i know)
 	 */
+    //  *** Commentaire mérimé non ? 
 
 }
 
