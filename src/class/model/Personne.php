@@ -213,12 +213,17 @@ class Personne implements DatabaseIO{
         global $mysqli;
 
         //  *** Récupérer le dernier id inséré 
+        //  ==> Voir plus bas pour le remplacer par une variable déjà existante // 
         if(!isset($this->id) || ($this->id == 0)) {
             $this->id = $mysqli->insert_id;
         }
 
         $this->is_updated_in_db = TRUE;
-
+        
+        /* *** Je comprends pas pourquoi on supprime la personne avant de l'enregistrer (pour nom et prenom).
+          Avant mes modifs sur la branche "fix-bug-sans-nom", c'est ce qui remplaçait les mêmes prénoms par la nouvelle personne. 
+          De toute façon c'est toujours risqué de faire ça, au minimum il faut faire des vérifs sûres avant.  
+        */
         $mysqli->start_transaction();
         $i = 1;
         $mysqli->delete("prenom_personne", "personne_id='$this->id'");
@@ -241,7 +246,13 @@ class Personne implements DatabaseIO{
         foreach($this->conditions as $condition)
             $mysqli->into_db($condition);
 
-            //  *** faire des tests d'affichage pour savoir ce que c'est :
+        //  *** test export 
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$this->id : ';
+        // var_dump($this->id);
+        //  fin test 
+        
+        //  *** $this->xml->attributes() est vide
         if(isset($this->xml)){
             $attributesXML = $this->xml->attributes();
             if(!isset($attributesXML["id"]))

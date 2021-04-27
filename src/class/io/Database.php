@@ -551,6 +551,13 @@ class Database extends mysqli{
     }
 
     private function updated_values($values_db, $values_obj){
+        // //  *** test
+        // echo '<br>'.__METHOD__;
+        // echo '<br>$values_db : ';
+        // var_dump($values_db);
+        // echo '<br>$values_obj : ';
+        // var_dump($values_obj);
+        // //  fin test 
         $updated = [];
 
         if($values_db == NULL)

@@ -2,6 +2,7 @@
 
 include_once(ROOT."src/html_entities.php");
 
+//  *** Voir si factoriser cette fonction avec src/views/get/auto_complete_personne.php list_personne() ? 
 function all_personnes(){
     global $mysqli;
     $str = "";

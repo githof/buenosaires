@@ -1,5 +1,6 @@
 <?php
 
+//  *** Voir si factoriser cette fonction avec src/views/get/multiselect_list_personne.php all_personnes() ? 
 function list_personne(){
     global $mysqli;
     $personnes = [];
