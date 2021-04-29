@@ -2,6 +2,7 @@
 
 include_once(ROOT."src/html_entities.php");
 
+//  *** ne sert pas 
 function all_acte_id(){
     global $mysqli;
     $str = "<option value='0'>Aucun</option>";

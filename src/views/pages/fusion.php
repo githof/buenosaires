@@ -67,11 +67,11 @@ function traite_dispatch_actes($field, $operation, $dispatch_actes,
     $str = implode(', ', $dispatch_actes[$operation]);
     $req = "$field"."_id = '$throw_id' AND acte_id IN ($str)";
     if($operation = 'delete')
-    $mysqli->delete("acte_has_$field", $req);
+        $mysqli->delete("acte_has_$field", $req);
     else
-    $mysqli->update("acte_has_$field",
-                    ["$field"."_id" => "$keep_id"],
-                    $req);
+        $mysqli->update("acte_has_$field",
+                        ["$field"."_id" => "$keep_id"],
+                        $req);
 }
 
 function fusion_condition_ou_relation($which, $throw, $keep)
@@ -90,6 +90,7 @@ function fusion_condition_ou_relation($which, $throw, $keep)
   $mysqli->delete($which, "id = '$throw->id'");
 }
 
+//  *** on peut pas sauter cette étape ? // 
 function fusion_condition($throw, $keep) {
   fusion_condition_ou_relation('condition', $throw, $keep);
 }
@@ -141,6 +142,7 @@ function has_relation($relation, $personne, $is_source)
     }
 }
 
+//  *** idem plus haut : on pourrait pas sauter cette étape, qui n'ajoute qu'un argument ? // 
 function fusion_relation($throw, $keep) {
   fusion_condition_ou_relation('relation', $throw, $keep);
 }
@@ -170,14 +172,18 @@ function fusion_relations($personne_throw, $personne_keep){
     }
 }
 
+//  *** pas utilisée ? // 
 function fusion_actes($throw, $keep) {
     global $mysqli;
 
     foreach (['epoux', 'epouse'] as $ep)
-    $mysqli->update("acte",
+        $mysqli->update("acte",
                     [$ep => "$keep->id"],
                     "$ep='$throw->id'");
 }
+
+//  *** Remplacée par change_id_personne_contenu ? 
+//  Voir commentaire Christophe plus bas // 
 
 function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     global $mysqli;
@@ -418,6 +424,7 @@ function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
 
 /*__ SELCTION PERSONNES __ */
 
+//  *** à mettre dans html_entities.php (elle sert aussi dans dissocier.php)
 function html_select_personnes(){
     return "
         <section class='max-2'>
@@ -486,6 +493,7 @@ function html_fusion_radio_id($AB, $id){
         </div>
     ";
     // je comprends pas à quoi sert le hidden ici
+    //  ***  Peut-être récupéré par $ARGS["personne-A"] (dans MAIN) ? 
 }
 
 function html_fusion_section_keep($id_A, $id_B){

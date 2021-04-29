@@ -252,13 +252,13 @@ $relations_new) {
     );
 }
 
-
+//  *** à mettre dans html_entities.php (elle sert aussi dans fusion.php) 
 function html_select_personne(){
     ?>
     <section class='max-1'>
         <h4>Choisir une personne à dissocier</h4>
         <div>
-            <input type='text' name='autocomplete' placeholder='Recherche parmis les personnes'>
+            <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
             <span class='autocomplete-search'>recherche en cours ...</span>
         </div>
         <div id='auto-complete-results'>

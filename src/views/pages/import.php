@@ -66,15 +66,16 @@ function html_check_ignore($file_or_text)
     return html_form_group("$input\n  $label");
 }
 
-function html_import_source($file_or_text) {
+//  ***  Remplacée par html_select_sources($file_or_text)   // 
+// function html_import_source($file_or_text) {
 
-    return html_form_group('
-        <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
-        <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
-            all_sources_available()
-        .'</select>
-    ');
-}
+//     return html_form_group('
+//         <label for="import_'.$file_or_text.'_source">Source du/des actes(s) : </label>
+//         <select name="import_'.$file_or_text.'_source" id="import_'.$file_or_text.'_source">'.
+//             all_sources_available()
+//         .'</select>
+//     ');
+// }
 
 function html_form_import($file_or_text) {
 

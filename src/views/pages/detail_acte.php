@@ -44,6 +44,7 @@ if(!isset($result)){
         <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=xml">XML</a>
         <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=gdf">GDF</a>
 <?php       }
+    //  *** Erreur PHP listée sur /home/morgan/Dropbox/BuenosAires/morgan/liste_erreurs_PHP.txt 
     if(can_access($access_pages["supprimer"])){ ?>
         <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
         <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
