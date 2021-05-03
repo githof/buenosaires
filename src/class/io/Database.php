@@ -279,7 +279,8 @@ class Database extends mysqli{
         return $row;
     }
 
-    //  *** check si les contenus des tables sont les mêmes que dans l'acte en cours d'import si on n'a pas d'id  
+    //  *** check si les contenus des tables sont les mêmes que dans l'acte en cours 
+    //  d'import si on n'a pas d'id  
     private function from_db_by_same($obj){
         $row = NULL;
         $s = "";
@@ -551,13 +552,6 @@ class Database extends mysqli{
     }
 
     private function updated_values($values_db, $values_obj){
-        // //  *** test
-        // echo '<br>'.__METHOD__;
-        // echo '<br>$values_db : ';
-        // var_dump($values_db);
-        // echo '<br>$values_obj : ';
-        // var_dump($values_obj);
-        // //  fin test 
         $updated = [];
 
         if($values_db == NULL)

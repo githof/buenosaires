@@ -125,7 +125,7 @@ class Personne implements DatabaseIO{
                 $is_source = ($this->id == $relation->personne_source->id);
 
             switch($relation->statut_id){
-                case STATUT_EPOUX:
+                case STATUT_EPOUX:  //  *** on ne peux pas trouver ce cas-là 
                 case STATUT_EPOUSE:
                     $mariage[] = $relation;
                     break;
@@ -246,13 +246,6 @@ class Personne implements DatabaseIO{
         foreach($this->conditions as $condition)
             $mysqli->into_db($condition);
 
-        //  *** test export 
-        // echo '<br>'.__METHOD__;
-        // echo '<br>$this->id : ';
-        // var_dump($this->id);
-        //  fin test 
-        
-        //  *** $this->xml->attributes() est vide
         if(isset($this->xml)){
             $attributesXML = $this->xml->attributes();
             if(!isset($attributesXML["id"]))
@@ -311,7 +304,8 @@ class Personne implements DatabaseIO{
         $prenoms_ids = $this->prenoms_ids_from_db();
         $noms_ids = $this->noms_ids_from_db();
         */
-        //  *** C'est fait : Database::remove_unused_prenoms_noms() appelée dans Acte::remove_from_db() 
+        //  *** C'est fait : Database::remove_unused_prenoms_noms() 
+        //  appelée dans Acte::remove_from_db() 
 
         $mysqli->start_transaction();
         foreach(['prenom', 'nom'] as $field) {
@@ -328,7 +322,7 @@ class Personne implements DatabaseIO{
 	  Import from db is in src/io/IO/Database.php from_db()
 	  (which is ugly i know)
 	 */
-    //  *** Commentaire mérimé non ? 
+    //  *** Commentaire périmé non ? 
 
 }
 
