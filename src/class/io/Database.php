@@ -153,9 +153,9 @@ class Database extends mysqli{
         $result = parent::query($requete);
 
         //  *** test export 
-        // echo '<br>'.__METHOD__;
-        // echo '<br>$requete : ';
-        // var_dump($requete);
+        echo '<br>'.__METHOD__;
+        echo '<br>$requete : ';
+        var_dump($requete);
         //  fin test 
 
         $m = microtime(TRUE) - $m;
