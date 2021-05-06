@@ -128,7 +128,13 @@ class CSVExport implements ExportInterface {
 
         if($p instanceof Personne) {
             $line[] = $p->id;
-            if($names) {
+            //  *** test BUG $names 
+            echo '<br>$names : ';
+            var_dump($names);
+            //  $names = "0";
+            //  fin test 
+            if($names == "1") {
+                echo "<br>names est 1<br>";
                 $personne = self::$personnes[$p->id];   
 
                 $line[] = $personne->prenoms_str;
@@ -136,7 +142,8 @@ class CSVExport implements ExportInterface {
                 // echo '<br>'.__METHOD__;
                 // echo '<br>$personne->noms_str : ';
                 // var_dump($personne->noms_str);
-            }
+            } else 
+                echo "<br>names est 0<br>";
         } elseif(is_string($p)) {
             $line[] = $p."_id";
 

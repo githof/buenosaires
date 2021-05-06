@@ -145,9 +145,12 @@ function html_export_relations() {
                 <p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p>';
     $contents .= '<div class="row">';
     
-    $contents .= html_form_group_export(html_radio_export('dates', TRUE, 'Avec les dates')) 
-                . html_form_group_export(html_radio_export('names', TRUE, 'Avec les noms')) 
-                . html_form_group_export(html_radio_export('deux_sens', TRUE, 'Dans les 2 sens')) ;
+    $contents .= html_form_group_export(html_radio_export('dates', 1, 'Avec les dates').'<br>'
+                                        .html_radio_export('dates', 0, 'Sans les dates')) 
+                . html_form_group_export(html_radio_export('names', 1, 'Avec les noms').'<br>'
+                                        .html_radio_export('names', 0, 'Sans les noms')) 
+                . html_form_group_export(html_radio_export('deux_sens', 1, 'Dans les 2 sens').'<br>'
+                                        .html_radio_export('deux_sens', 0, 'Dans 1 seul sens')) ;
                 // . html_form_group_export(html_radio_export('dates', TRUE, 'Dans les 2 sens') . '<br>'
                 //                                     . html_radio_export('dates', FALSE, 'Sens normal')) ;
     $contents .= '</div>';
@@ -225,9 +228,9 @@ function page_export() {
                 $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
                 $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : FALSE;
                     echo appel_export_statique('CSVExport', 'export_relations', '', '', $names, $dates, $deux_sens);    //   1, 50,
-                    // echo '<br>'.__METHOD__;
-                    // echo '<br>post : ';
-                    // var_dump($_POST);
+                    echo '<br>'.__METHOD__;
+                    echo '<br>post : ';
+                    var_dump($_POST);
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case.

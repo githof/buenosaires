@@ -153,8 +153,7 @@ class Database extends mysqli{
         $result = parent::query($requete);
 
         //  *** test export 
-        echo '<br>'.__METHOD__;
-        echo '<br>$requete : ';
+        echo '<br>'.__METHOD__.' $requete : ';
         var_dump($requete);
         //  fin test 
 
