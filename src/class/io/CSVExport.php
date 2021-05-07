@@ -86,6 +86,10 @@ class CSVExport implements ExportInterface {
         // self::export_line(array("id","noms","prenoms"));
         fputcsv(self::$out, array("id","noms","prenoms"));
 
+        /*  *** modifier get_personnes() ou utiliser une méthode plus simple :
+            elle récupère toutes les infos des personnes, 
+            même quand on n'en a pas besoin
+        */
         $personnes = $mysqli->get_personnes(FALSE);
 
         foreach($personnes as $id => $personne) {
@@ -128,13 +132,8 @@ class CSVExport implements ExportInterface {
 
         if($p instanceof Personne) {
             $line[] = $p->id;
-            //  *** test BUG $names 
-            echo '<br>$names : ';
-            var_dump($names);
-            //  $names = "0";
-            //  fin test 
+
             if($names == "1") {
-                echo "<br>names est 1<br>";
                 $personne = self::$personnes[$p->id];   
 
                 $line[] = $personne->prenoms_str;
@@ -142,8 +141,7 @@ class CSVExport implements ExportInterface {
                 // echo '<br>'.__METHOD__;
                 // echo '<br>$personne->noms_str : ';
                 // var_dump($personne->noms_str);
-            } else 
-                echo "<br>names est 0<br>";
+            } 
         } elseif(is_string($p)) {
             $line[] = $p."_id";
 
@@ -193,7 +191,7 @@ class CSVExport implements ExportInterface {
     //  PUBLIC  //
 
     public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
-        global $mysqli, $line;  //   retirer $line ? 
+        global $mysqli, $line;  
 
         
         self::attr_nom_fichier('relations');
@@ -214,6 +212,10 @@ class CSVExport implements ExportInterface {
         // self::export_line($line);
         fputcsv(self::$out, $line);
 
+        /*  *** modifier get_personnes() ou utiliser une méthode plus simple :
+            elle récupère toutes les infos des personnes, 
+            même quand on n'en a pas besoin
+        */
         self::$personnes = $mysqli->get_personnes(FALSE);
 
         // faire un Database->get_relations() comme get_personnes 
@@ -252,10 +254,7 @@ class CSVExport implements ExportInterface {
         }
 
         //  timeline 
-        fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
-        // echo '<br>$fichier : ';
-        // var_dump(self::$fichier);
-        // fputcsv(self::$out, array(self::$fichier));
+        // fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
         
         fclose(self::$out);
         

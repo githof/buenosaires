@@ -268,11 +268,16 @@ class Database extends mysqli{
 
     private function from_db_by_id($obj){
         $row = NULL;
-        $result = $this->select(
-            $obj->get_table_name(),
-            ["*"],
-            "id='$obj->id'"
-        );
+        //  *** test personne 
+        // echo '<br>'.__METHOD__.' $obj : ';
+        // var_dump($obj);    
+        if(!($obj instanceof Personne)) {
+            $result = $this->select(
+                $obj->get_table_name(),
+                ["*"],
+                "id='$obj->id'"
+            );
+        }
         if($result->num_rows == 1)
             $row = $result->fetch_assoc();
         return $row;
