@@ -3,6 +3,13 @@
 include_once(ROOT."src/class/model/Personne.php");
 include_once(ROOT."src/html_entities.php");
 
+//  *** rewrite_requete
+//  stocker l'id entrée dans l'url pour pouvoir le comparer avec $personne->id 
+//  et arrêter la boucle from_db 
+$post_id = $url_parsed["id"];
+echo '<br>'.__METHOD__.' $post_id : ';
+var_dump($post_id);
+
 $personne = new Personne($url_parsed["id"]);
 $result = $mysqli->from_db($personne, TRUE);
 if($result == NULL){
@@ -20,12 +27,12 @@ if($result == NULL){
         $name .= $nom->to_string() . " ";
 
     $page_title = "$name";
-if(can_access($access_pages["dissocier"])){?>
-<div class="detail_options">
-    <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
-        <button class="btn btn-info btn-sm">Dissocier</button>
-    </a>
-</div>
+    if(can_access($access_pages["dissocier"])){?>
+        <div class="detail_options">
+            <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
+                <button class="btn btn-info btn-sm">Dissocier</button>
+            </a>
+        </div>
 <?php } ?>
 <section>
     <?php echo html_personne($personne, FALSE, FALSE); ?>

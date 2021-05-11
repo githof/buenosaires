@@ -4,10 +4,10 @@
  * et afficher la liste des id, pour vérifier qu'on récupère bien ce qu'on veut.
  */
 	if(!isset($_POST)){
-			echo "ERREUR. AUCUN FORMULAIRE SOUMIT";
+			echo "ERREUR. AUCUN FORMULAIRE SOUMI";
 	}else{
 		  if(empty($_POST)){
-				echo "AUCUNE PERSONNE SELECTIONNER";
+				echo "AUCUNE PERSONNE SELECTIONNÉE";
 		  }else{
 				foreach($_POST as $id => $nom){
 					echo $nom.' --------> '.$id.' <br />';

@@ -185,7 +185,13 @@ class Personne implements DatabaseIO{
     public function result_from_db($row){
         if($row == NULL)
             return;
-        $this->id = $row["id"];
+        // $this->id = $row["id"];
+        //  *** rewrite-requete
+        if(!$this->id)
+            $this->id = $row["id"];
+        
+        echo '<br>'.__METHOD__.' $row : ';
+        var_dump($row); 
     }
 
     public function values_into_db(){

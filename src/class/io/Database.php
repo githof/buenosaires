@@ -223,17 +223,28 @@ class Database extends mysqli{
     en pratique $obj est toujours rempli par les fonctions
     appelées ici.
     */
-        global $log;
+        global $log, $post_id;
 
         $log->d("from database: ".get_class($obj)." id=$obj->id");
 
+        //  *** rewrite_requete
+        echo '<br>'.__METHOD__.' $post_id : ';
+        var_dump($post_id);
+        echo '<br>'.__METHOD__.' $obj->id : ';
+        var_dump($obj->id);
+
+        if($obj->id == $post_id)
+            echo '$obj->id == $post_id';
+        else 
+            echo '$obj->id != $post_id';
+
         $row = NULL;
-        if(isset($obj->id)){
+        if((isset($obj->id))){
             $row = $this->from_db_by_id($obj);
             if($obj instanceof Personne){
                 //  *** recherche prénom + nom d'une personne avec son id (pour affichage detail_personne) 
                 $this->from_db_personne_noms_prenoms($obj);
-                if($get_relations_conditions){
+                if(($get_relations_conditions) && ($obj->id == $post_id)){
                     $this->from_db_personne_relations($obj);
                     $this->from_db_personne_conditions($obj);
                 }
@@ -258,6 +269,7 @@ class Database extends mysqli{
 
         //  *** pour import : $update_obj == false
         //  *** pour affichage : $update_obj == true 
+        //  *** rewrite-requete
         if($update_obj)
             $obj->result_from_db($row);
         
@@ -277,9 +289,10 @@ class Database extends mysqli{
                 ["*"],
                 "id='$obj->id'"
             );
-        }
-        if($result->num_rows == 1)
-            $row = $result->fetch_assoc();
+            if($result->num_rows == 1)
+                $row = $result->fetch_assoc();
+        } else 
+            return $obj->id;
         return $row;
     }
 
@@ -330,7 +343,14 @@ class Database extends mysqli{
 
     //  *** attribue un prénom + nom à une personne, mais on connait déjà son id  
     private function from_db_personne_noms_prenoms($personne) {
-        //  *** attribue un prénom à une personne 
+
+        //  *** rewrite_requete
+        echo '<br>'.__METHOD__.' $personne->id : ';
+        var_dump($personne->id);
+        echo '<br>'.__METHOD__.' $personne->relations : ';
+        var_dump($personne->relations);
+
+        //  *** attribue un prénom à une personne / recherche le prénom d'une personne 
         $result = $this->query("
             SELECT prenom.id AS p_id, prenom, no_accent
             FROM prenom_personne INNER JOIN prenom
@@ -347,7 +367,7 @@ class Database extends mysqli{
                 );
         }
 
-        //  *** attribue un nom à une personne 
+        //  *** attribue un nom à une personne / recherche le prénom d'une personne 
         $result = $this->query("
             SELECT nom.id as n_id, nom, no_accent, attribut, ordre
             FROM nom_personne INNER JOIN nom
@@ -389,6 +409,9 @@ class Database extends mysqli{
                                 ["*"], 
                                 "pers_source_id='$personne->id' 
                                 OR pers_destination_id='$personne->id'");
+        //  *** rewrite-requete
+        $relations = array();
+
         $pers_source = NULL;
         $pers_destination = NULL;
         if($result != FALSE && $result->num_rows > 0){
@@ -406,10 +429,25 @@ class Database extends mysqli{
                     $pers_destination,
                     $row["statut_id"]
                 );
-                $this->from_db_relation_list_acte($relation);
+
                 $personne->relations[] = $relation;
+
+                $relations[] = $row["id"];
+                //  *** rewrite-requete
+                // echo '<br>'.__METHOD__.' $relation : ';
+                // print_r($relation);
+                // echo '<br>'.__METHOD__.' $relations : ';
+                // var_dump($relations);
+
+                // $this->from_db_relation_list_acte($relation,$relations);
+                // $personne->relations[] = $relation;
             }
         }
+        $relations_str = implode(', ', $relations); 
+        echo '<br>'.__METHOD__.' $relations_str : ';
+        var_dump($relations_str);
+        $this->from_db_relation_list_acte($relation,$relations_str);
+        // $personne->relations[] = $relation;
     }
 
     private function from_db_acte_conditions($acte){
@@ -417,7 +455,7 @@ class Database extends mysqli{
             SELECT *
             FROM acte_has_condition INNER JOIN `condition`
             ON acte_has_condition.condition_id = `condition`.id
-            WHERE acte_has_condition.acte_id = '$acte->id'
+            WHERE acte_has_condition.acte_id = $acte->id
         ");
         $condition = NULL;
         if($result != FALSE && $result->num_rows > 0){
@@ -435,6 +473,9 @@ class Database extends mysqli{
     }
 
     private function from_db_acte_relations($acte){
+        //  *** re<rite-requete
+        $relations = array();
+
         $result = $this->query("
             SELECT *
             FROM acte_has_relation INNER JOIN relation
@@ -450,10 +491,24 @@ class Database extends mysqli{
                     new Personne($row["pers_destination_id"]),
                     $row["statut_id"]
                 );
-                $this->from_db_relation_list_acte($relation);
-                $acte->relations[] = $relation;
+
+                //  *** rewrite-requete 
+                $relations[] = $row["id"];
+                echo '<br>'.__METHOD__.' $row["id"] : ';
+                var_dump($row["id"]);
+                // echo '<br>'.__METHOD__.' $relations : ';
+                // print_r($relations);
+
+                $relations = $row["id"];
+                // $this->from_db_relation_list_acte($relation, $relations);
+                // $acte->relations[] = $relation;
             }
         }
+        $relations_str = implode(', ', $relations); 
+        echo '<br>'.__METHOD__.' $relations_str : ';
+        var_dump($relations_str);
+        $this->from_db_relation_list_acte($relation,$relations_str);
+        $personne->relations[] = $relation;
     }
 
     //  public  //
@@ -470,11 +525,17 @@ class Database extends mysqli{
         }
     }
 
-    public function from_db_relation_list_acte($relation){
+    public function from_db_relation_list_acte($relation, $ids){
+        //  *** rewrite-requete
+        // global $personne, $relations; 
+
+        echo '<br>'.__METHOD__.' $ids : ';
+        var_dump($ids);
         $result = $this->select(
             "acte_has_relation",
             ["acte_id"],
-            "relation_id='$relation->id'"
+            "relation_id IN ($ids)"
+            // "relation_id='$relation->id'"
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc())
