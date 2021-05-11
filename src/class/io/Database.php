@@ -227,16 +227,16 @@ class Database extends mysqli{
 
         $log->d("from database: ".get_class($obj)." id=$obj->id");
 
-        //  *** rewrite_requete
-        echo '<br>'.__METHOD__.' $post_id : ';
-        var_dump($post_id);
-        echo '<br>'.__METHOD__.' $obj->id : ';
-        var_dump($obj->id);
+        //  *** group-relations
+        // echo '<br>'.__METHOD__.' $post_id : ';
+        // var_dump($post_id);
+        // echo '<br>'.__METHOD__.' $obj->id : ';
+        // var_dump($obj->id);
 
-        if($obj->id == $post_id)
-            echo '$obj->id == $post_id';
-        else 
-            echo '$obj->id != $post_id';
+        // if($obj->id == $post_id)
+        //     echo '$obj->id == $post_id';
+        // else 
+        //     echo '$obj->id != $post_id';
 
         $row = NULL;
         if((isset($obj->id))){
@@ -269,7 +269,7 @@ class Database extends mysqli{
 
         //  *** pour import : $update_obj == false
         //  *** pour affichage : $update_obj == true 
-        //  *** rewrite-requete
+        //  *** group-relations
         if($update_obj)
             $obj->result_from_db($row);
         
@@ -344,11 +344,11 @@ class Database extends mysqli{
     //  *** attribue un prénom + nom à une personne, mais on connait déjà son id  
     private function from_db_personne_noms_prenoms($personne) {
 
-        //  *** rewrite_requete
+        //  *** group-relations
         echo '<br>'.__METHOD__.' $personne->id : ';
         var_dump($personne->id);
-        echo '<br>'.__METHOD__.' $personne->relations : ';
-        var_dump($personne->relations);
+        // echo '<br>'.__METHOD__.' $personne->relations : ';
+        // var_dump($personne->relations);
 
         //  *** attribue un prénom à une personne / recherche le prénom d'une personne 
         $result = $this->query("
@@ -409,7 +409,7 @@ class Database extends mysqli{
                                 ["*"], 
                                 "pers_source_id='$personne->id' 
                                 OR pers_destination_id='$personne->id'");
-        //  *** rewrite-requete
+        //  *** group-relations
         $relations = array();
 
         $pers_source = NULL;
@@ -433,7 +433,7 @@ class Database extends mysqli{
                 $personne->relations[] = $relation;
 
                 $relations[] = $row["id"];
-                //  *** rewrite-requete
+                //  *** group-relations
                 // echo '<br>'.__METHOD__.' $relation : ';
                 // print_r($relation);
                 // echo '<br>'.__METHOD__.' $relations : ';
@@ -446,7 +446,7 @@ class Database extends mysqli{
         $relations_str = implode(', ', $relations); 
         echo '<br>'.__METHOD__.' $relations_str : ';
         var_dump($relations_str);
-        $this->from_db_relation_list_acte($relation,$relations_str);
+        $this->from_db_relation_list_acte($relation, $relations_str);
         // $personne->relations[] = $relation;
     }
 
@@ -492,7 +492,7 @@ class Database extends mysqli{
                     $row["statut_id"]
                 );
 
-                //  *** rewrite-requete 
+                //  *** group-relations 
                 $relations[] = $row["id"];
                 echo '<br>'.__METHOD__.' $row["id"] : ';
                 var_dump($row["id"]);
@@ -526,20 +526,27 @@ class Database extends mysqli{
     }
 
     public function from_db_relation_list_acte($relation, $ids){
-        //  *** rewrite-requete
-        // global $personne, $relations; 
-
-        echo '<br>'.__METHOD__.' $ids : ';
-        var_dump($ids);
+        
+        //  *** group-relations        
+        
         $result = $this->select(
             "acte_has_relation",
-            ["acte_id"],
+            ["*"],
+            // ["acte_id"],
             "relation_id IN ($ids)"
             // "relation_id='$relation->id'"
         );
         if($result != FALSE && $result->num_rows > 0){
-            while($row = $result->fetch_assoc())
+            while($row = $result->fetch_assoc()) {
                 $relation->actes[] = new Acte($row["acte_id"]);
+                $relation->id = $row["relation_id"];
+                echo '<br>'.__METHOD__.' $row : ';
+                var_dump($row);
+                foreach ($relation as $rel) {
+                    echo '<br>'.__METHOD__.' $relation : ';
+                    var_dump($rel);
+                }
+            }
         }
     }
 
