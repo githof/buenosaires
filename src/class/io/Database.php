@@ -432,7 +432,7 @@ class Database extends mysqli{
 
                 $personne->relations[] = $relation;
 
-                $relations[] = $row["id"];
+                // $relations[] = $row["id"];
                 //  *** group-relations
                 // echo '<br>'.__METHOD__.' $relation : ';
                 // print_r($relation);
@@ -473,16 +473,16 @@ class Database extends mysqli{
     }
 
     private function from_db_acte_relations($acte){
-        //  *** re<rite-requete
-        $relations = array();
-
+        //  *** group-relations
+        
         $result = $this->query("
-            SELECT *
-            FROM acte_has_relation INNER JOIN relation
-            ON acte_has_relation.relation_id = relation.id
-            WHERE acte_has_relation.acte_id = '$acte->id'
+        SELECT *
+        FROM acte_has_relation INNER JOIN relation
+        ON acte_has_relation.relation_id = relation.id
+        WHERE acte_has_relation.acte_id = '$acte->id'
         ");
-        $relation = NULL;
+        // $relation = NULL;
+        $relations = array();
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $relation = new Relation(
@@ -493,22 +493,28 @@ class Database extends mysqli{
                 );
 
                 //  *** group-relations 
-                $relations[] = $row["id"];
-                echo '<br>'.__METHOD__.' $row["id"] : ';
-                var_dump($row["id"]);
+                // $relations[] = $row["id"];
+                // echo '<br>'.__METHOD__.' $row["id"] : ';
+                // var_dump($row["id"]);
                 // echo '<br>'.__METHOD__.' $relations : ';
                 // print_r($relations);
 
                 $relations = $row["id"];
                 // $this->from_db_relation_list_acte($relation, $relations);
                 // $acte->relations[] = $relation;
+                //  *** test group-relations
+                echo '<br>'.__METHOD__.' $relations : ';
+                var_dump($relations);
+                //  fin test
             }
         }
         $relations_str = implode(', ', $relations); 
+        //  *** test group-relations
         echo '<br>'.__METHOD__.' $relations_str : ';
         var_dump($relations_str);
+        //  fin test
         $this->from_db_relation_list_acte($relation,$relations_str);
-        $personne->relations[] = $relation;
+        $acte->relations[] = $relation;
     }
 
     //  public  //
@@ -538,16 +544,24 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()) {
-                $relation->actes[] = new Acte($row["acte_id"]);
-                $relation->id = $row["relation_id"];
-                echo '<br>'.__METHOD__.' $row : ';
-                var_dump($row);
-                foreach ($relation as $rel) {
-                    echo '<br>'.__METHOD__.' $relation : ';
-                    var_dump($rel);
-                }
+                // echo '<br>'.__METHOD__.' $row : ';
+                // var_dump($row);
+                // for($i = 0; $i < count($row); $i++) {
+                    echo '<br>'.__METHOD__.' $row : ';
+                    var_dump($row);
+                    // $relation->id = $row["relation_id"];
+                    $relation->actes[] = new Acte($row["acte_id"]);
+                    echo '<br>'.__METHOD__.' $relation->id : ';
+                    print_r($relation->id);
+                    echo '<br>'.__METHOD__.' $relation->actes : ';
+                    print_r($relation->actes);
+                // }
             }
         }
+        // foreach ($relation as $rel) {
+            // echo '<br>'.__METHOD__.' $relation->id : ';
+            // var_dump($relation->id);
+        // }
     }
 
     //  PRIVATE METHODS   //
