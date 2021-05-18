@@ -5,6 +5,7 @@ include_once(ROOT."src/html_entities.php");
 
 $personne = new Personne($url_parsed["id"]);
 $result = $mysqli->from_db($personne, TRUE);
+
 if($result == NULL){
 ?>
 <div>
