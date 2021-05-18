@@ -29,7 +29,7 @@ ENGINE = InnoDB;
 --
 
 LOCK TABLES `utilisateurs` WRITE;
-INSERT INTO `utilisateurs` VALUES (1,'Des','Ced','aa@aa.com','440ac85892ca43ad26d44c7ad9d47d3e','2016-09-20',3),(2,'Prieur','Christophe','prieur@didiode.fr','f0f9c00c80dd888f66c3020b61e04e1e','2016-09-20',3),(3,'Moutoukias','Zacarias','zacarias.moutoukias@univ-paris-diderot.fr','f59484ac49e4281cf6d8e17ebd8d997e','2017-04-06',3);
+INSERT INTO `utilisateurs` VALUES (1,'Des','Ced','aa@aa.com','440ac85892ca43ad26d44c7ad9d47d3e','2016-09-20',3),(2,'Prieur','Christophe','prieur@didiode.fr','f0f9c00c80dd888f66c3020b61e04e1e','2016-09-20',3),(3,'Moutoukias','Zacarias','zacarias.moutoukias@univ-paris-diderot.fr','f59484ac49e4281cf6d8e17ebd8d997e','2017-04-06',3),(4,'Prieur','Morgan','ba-tp@chatnoir.lautre.net','5dd23b6d061e802a863d7e50af3e4a22','2020-01-25',3);
 UNLOCK TABLES;
 
 SET SQL_MODE=@OLD_SQL_MODE;

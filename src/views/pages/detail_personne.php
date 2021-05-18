@@ -12,6 +12,7 @@ var_dump($post_id);
 
 $personne = new Personne($url_parsed["id"]);
 $result = $mysqli->from_db($personne, TRUE);
+
 if($result == NULL){
 ?>
 <div>

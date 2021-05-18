@@ -283,16 +283,15 @@ class Database extends mysqli{
         //  *** test personne 
         // echo '<br>'.__METHOD__.' $obj : ';
         // var_dump($obj);    
-        if(!($obj instanceof Personne)) {
+        // if(!($obj instanceof Personne)) {
             $result = $this->select(
                 $obj->get_table_name(),
                 ["*"],
                 "id='$obj->id'"
             );
-            if($result->num_rows == 1)
-                $row = $result->fetch_assoc();
-        } else 
-            return $obj->id;
+        // }
+        if($result->num_rows == 1)
+            $row = $result->fetch_assoc();
         return $row;
     }
 
