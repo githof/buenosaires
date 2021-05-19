@@ -100,6 +100,8 @@ function html_form_import($file_or_text) {
     return $html;
 }
 
+
+//  *** bug fixé // 
 if(isset($_POST["form_type"])){
     $filename;
     $only_new;
@@ -111,7 +113,10 @@ if(isset($_POST["form_type"])){
     else
     {
         $receive_method = "receive_$file_or_text";
-        $str_import = "import_$file_or_text";
+        // $str_import = "import_$file_or_text";
+        $str_import = ($receive_method == "receive_file") ? 
+          "import_file" : 
+          $_POST['import_text'];
         $filename = $receive_method($str_import);
         // NB : pour text, le texte est copié dans un fichier temporaire
         $only_new = isset($_POST[$str_import.'_only_new']);
