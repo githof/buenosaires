@@ -163,6 +163,11 @@ function html_personne_relation($personne, $statut_name, $actes){
 function html_personne_relations($personne){
     $rel_btype = $personne->get_relations_by_type();
 
+    //  *** test rewrite-requete
+    // echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
+    // var_dump($rel_btype['mariage']);
+    //  fin test 
+
     $str = "";
     foreach($rel_btype['mariage'] as $relation){
         $statut_name = "est mariée à";

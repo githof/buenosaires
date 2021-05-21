@@ -3,6 +3,11 @@
 include_once(ROOT."src/class/model/Personne.php");
 include_once(ROOT."src/html_entities.php");
 
+//  *** rewrite_requete
+//  stocker l'id entrée dans l'url pour pouvoir le comparer avec $personne->id 
+//  et arrêter la boucle from_db 
+$post_id = $url_parsed["id"];
+
 $personne = new Personne($url_parsed["id"]);
 $result = $mysqli->from_db($personne, TRUE);
 

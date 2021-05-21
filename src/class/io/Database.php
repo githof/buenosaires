@@ -223,9 +223,17 @@ class Database extends mysqli{
     en pratique $obj est toujours rempli par les fonctions
     appelées ici.
     */
-        global $log;
+        global $log, $post_id;
 
         $log->d("from database: ".get_class($obj)." id=$obj->id");
+
+        echo '$post_id : ';
+        var_dump($post_id);
+
+        // if($obj->id == $post_id)
+        //     echo '$obj->id == $post_id';
+        // else 
+        //     echo '$obj->id != $post_id';
 
         $row = NULL;
         if(isset($obj->id)){
@@ -233,7 +241,9 @@ class Database extends mysqli{
             if($obj instanceof Personne){
                 //  *** recherche prénom + nom d'une personne avec son id (pour affichage detail_personne) 
                 $this->from_db_personne_noms_prenoms($obj);
-                if($get_relations_conditions){
+                //  *** rewrite-requete
+                //  ne pas chercher les relations conditions pour les autres que celui appelé dans l'url
+                if(($get_relations_conditions) && ($obj->id == $post_id)){
                     $this->from_db_personne_relations($obj);
                     $this->from_db_personne_conditions($obj);
                 }
