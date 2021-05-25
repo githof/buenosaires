@@ -71,18 +71,13 @@ function html_acte_small($acte){
 }
 
 function html_list_actes($actes){
-    echo '<br>'.__METHOD__.' $actes : ';
-    print_r($actes);
+
     $html = "";
     foreach($actes as $acte)
-        echo '<br>'.__METHOD__.' $acte->id : ';
-        print_r($acte->id);
-        
         $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
     if(strlen($html) == 0)
         return "";
-    // echo '<br>'.__METHOD__.' $acte->id : ';
-    // print_r($acte->id);
+
     return "<div class='list-acte'>actes: $html</div>";
 }
 
@@ -105,8 +100,6 @@ function html_relation($relation, $show_actes = TRUE){
     $html_actes = ($show_actes)?
         html_list_actes($relation->actes) :
         "";
-    // echo '<br>'.__METHOD__.' $relation->actes : ';
-    // print_r($relation->actes);
     
     return "
         <div class='relation' id='relation-$relation->id'>
@@ -162,13 +155,6 @@ function html_personne_relation($personne, $statut_name, $actes){
     $html_statut = html_relation_statut($statut_name);
     $html_actes = html_list_actes($actes);
 
-    // echo '<br>'.__METHOD__.' $personne : ';
-    // var_dump($personne);    //  seulement l'id 
-    // echo '<br>'.__METHOD__.' $actes : ';
-    // var_dump($actes);   //  vide 
-    echo '<br>'.__METHOD__.' $relation : ';
-    var_dump($relation);
-
     return "
         <div class='relation'>
             $html_statut
@@ -181,8 +167,6 @@ function html_personne_relation($personne, $statut_name, $actes){
 //
 function html_personne_relations($personne){
     $rel_btype = $personne->get_relations_by_type();
-    echo '<br>'.__METHOD__.' $rel_btype : ';
-    var_dump($rel_btype);    //  en cours  
 
     $str = "";
     foreach($rel_btype['mariage'] as $relation){
