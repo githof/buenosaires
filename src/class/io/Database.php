@@ -239,6 +239,7 @@ class Database extends mysqli{
             if($obj instanceof Personne){
                 //  *** recherche prénom + nom d'une personne avec son id (pour affichage detail_personne) 
                 $this->from_db_personne_noms_prenoms($obj);
+                //  *** recherche relations et conditions seulement pour la personne appelée dans l'url 
                 if(($get_relations_conditions) && ($obj->id == $post_id)){
                     $this->from_db_personne_relations($obj);
                     $this->from_db_personne_conditions($obj);
