@@ -19,9 +19,14 @@ isset($_POST["raw_xml"], $_POST["source_id"])){
     $alert->info("Acte mis à jour");
 }
 
+//  *** [tests-has-memory]
+//  stocker l'id entrée dans l'url pour pouvoir le comparer avec $acte->id 
+//  et arrêter la boucle from_db si besoin 
+$post_id = $url_parsed["id"];
+
 $page_title = "Acte {$url_parsed["id"]}";
-$acte = new Acte($url_parsed["id"]);
-$result = $mysqli->from_db($acte, TRUE);
+$acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
+$result = $mysqli->from_db($acte, TRUE);    //  *** re-création d'actes dans from_db_condition_list_acte($condition) et dans from_db_relation_list_acte($relation) 
 if(!isset($result)){
 ?>
 <div>
@@ -44,7 +49,7 @@ if(!isset($result)){
         <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=xml">XML</a>
         <a class="btn btn-info btn-sm" href="acte/<?php echo $acte->id; ?>?export=gdf">GDF</a>
 <?php       }
-    //  *** Erreur PHP listée sur /home/morgan/Dropbox/BuenosAires/morgan/liste_erreurs_PHP.txt 
+    //  *** Erreur PHP listée sur Dropbox/BuenosAires/morgan/liste_erreurs_PHP.txt 
     if(can_access($access_pages["supprimer"])){ ?>
         <button class="btn btn-danger btn-sm" id="acte-suppr-1">Supprimer l'acte</button>
         <button class="btn btn-danger btn-sm" id="acte-suppr-2">Vous êtes sûr ?</button>
@@ -54,6 +59,7 @@ if(!isset($result)){
 <?php }?>
 </div>
 <input id='acte_source_id' type="hidden" value="<?php echo $acte->source_id; ?>">
+
 <section>
     <h4>ID</h4>
     <div id="acte-id">

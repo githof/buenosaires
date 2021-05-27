@@ -23,8 +23,8 @@ function has_memory($class, $id){
         return $memory[$class][$id];
     else{
         switch($class){
-            case "acte":
-                $obj = new Acte($id);
+            case "acte": 
+                $obj = new Acte($id);   //  *** acte_memory() appelée nulle part 
                 break;
             case "personne":
                 $obj = new Personne($id);
@@ -36,12 +36,13 @@ function has_memory($class, $id){
                 $obj = new Condition($id);
                 break;
         }
-        $mysqli->from_db($obj, TRUE);
+        $mysqli->from_db($obj, TRUE);   //  *** vérifier si re-création d'une personne avec le même id 
         $memory[$class][$id] = $obj;
         return $obj;
     }
 }
 
+//  *** [tests-has-memory] décommenter si ça manque qqpart 
 function acte_memory($id){
     return has_memory("acte", $id);
 }
@@ -72,8 +73,12 @@ function html_acte_small($acte){
 
 function html_list_actes($actes){
     $html = "";
-    foreach($actes as $acte)
-        $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
+    
+    // foreach($actes as $acte) {
+    foreach($actes as $acte_id) {
+        // $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
+        $html .= "<a href='acte/$acte_id'>[<span class='acte-ref'>$acte_id</span>]</a>";
+    }
     if(strlen($html) == 0)
         return "";
     return "<div class='list-acte'>actes: $html</div>";
@@ -227,6 +232,11 @@ function html_personne_relations($personne){
 }
 
 function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
+    //  *** [tests-has-memory]
+    // echo '<br>'.__METHOD__.' $condition : ';
+    // var_dump($condition);    
+    //  fin test 
+
     $html_text = html_condition_text($condition->text);
     $html_personne = ($show_personne)?
         html_personne(personne_memory($condition->personne->id)) :
@@ -247,7 +257,7 @@ function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
         </div>";
 }
 
-function html_conditions($conditions, $show_personne = TRUE){
+function html_conditions($conditions, $show_personne = TRUE){ 
     $rows = "";
     foreach($conditions as $condition)
         $rows .= html_condition($condition, $show_personne);

@@ -153,8 +153,8 @@ class Database extends mysqli{
         $result = parent::query($requete);
 
         //  *** test export 
-        echo '<br>'.__METHOD__.' $requete : ';
-        var_dump($requete);
+        // echo '<br>'.__METHOD__.' $requete : ';
+        // var_dump($requete);
         //  fin test 
 
         $m = microtime(TRUE) - $m;
@@ -226,14 +226,6 @@ class Database extends mysqli{
         global $log, $post_id;
 
         $log->d("from database: ".get_class($obj)." id=$obj->id");
-
-        echo '$post_id : ';
-        var_dump($post_id);
-
-        // if($obj->id == $post_id)
-        //     echo '$obj->id == $post_id';
-        // else 
-        //     echo '$obj->id != $post_id';
 
         $row = NULL;
         if(isset($obj->id)){
@@ -475,8 +467,15 @@ class Database extends mysqli{
             "condition_id='$condition->id'"
         );
         if($result != FALSE && $result->num_rows > 0){
-            while($row = $result->fetch_assoc())
-                $condition->actes[] = new Acte($row["acte_id"]);
+            while($row = $result->fetch_assoc()) {  //  *** && ($obj->id == $post_id)
+                //  *** new Acte, alors qu'on l'a créé dans has_memory
+                //  vérifier les chemins d'une instance de chaque classe d'objet 
+                // $condition->actes[] = new Acte($row["acte_id"]);
+                $condition->actes[] = $row["acte_id"];
+            }
+            // echo '<br>'.__METHOD__.' $condition->actes : ';
+            // var_dump($condition->actes);    //  = liste actes ok, depuis bdd, sans créer de nouvel objet 
+            //  *** Il faut voir où ça gêne 
         }
     }
 
@@ -488,7 +487,8 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc())
-                $relation->actes[] = new Acte($row["acte_id"]);
+                // $relation->actes[] = new Acte($row["acte_id"]);
+                $relation->actes[] = $row["acte_id"];
         }
     }
 
