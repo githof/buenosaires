@@ -23,41 +23,54 @@ function has_memory($class, $id){
         return $memory[$class][$id];
     else{
         switch($class){
-            case "acte": 
-                $obj = new Acte($id);   //  *** acte_memory() appelée nulle part 
-                break;
-            case "personne":
+            //  *** acte_memory() appelée nulle part 
+            // case "acte":
+            //     $obj = new Acte($id);
+            //     break;
+            /*  *** Pour l'instant new Personne n'est pas une $personne déjà créée 
+                ==> en cours pour les autres cas (28/05/21) 
+            */
+            case "personne": 
                 $obj = new Personne($id);
                 break;
+            //  *** en cours (28/05/21) 
             case "relation":
                 $obj = new Relation($id);
                 break;
+            //  *** en cours (28/05/21) 
             case "condition":
                 $obj = new Condition($id);
                 break;
         }
-        $mysqli->from_db($obj, TRUE);   //  *** vérifier si re-création d'une personne avec le même id 
+        //  *** vérifier si re-création d'une personne avec le même id 
+        //  en cours (28/05/21)
+        $mysqli->from_db($obj, TRUE);   
         $memory[$class][$id] = $obj;
         return $obj;
     }
 }
 
 //  *** [tests-has-memory] décommenter si ça manque qqpart 
-function acte_memory($id){
-    return has_memory("acte", $id);
-}
+//  acte_memory() appelée nulle part 
+// function acte_memory($id){
+//     return has_memory("acte", $id);
+// }
 
 function personne_memory($id){
     return has_memory("personne", $id);
 }
 
-function relation_memory($id){
-    return has_memory("Relation", $id);
-}
+//  *** [tests-has-memory] décommenter si ça manque qqpart 
+//  relation_memory() appelée nulle part 
+// function relation_memory($id){
+//     return has_memory("Relation", $id);
+// }
 
-function condition_memory($id){
-    return has_memory("condition", $id);
-}
+//  *** [tests-has-memory] décommenter si ça manque qqpart 
+//  condition_memory() appelée nulle part 
+// function condition_memory($id){
+//     return has_memory("condition", $id);
+// }
 
 
 function html_acte_small($acte){
@@ -73,7 +86,11 @@ function html_acte_small($acte){
 
 function html_list_actes($actes){
     $html = "";
-    
+    //  *** tests-has-memory
+    /*  ici $actes est un array de strings, pas un objet : 
+        J'ai modifié Database::from_db_condition|relation_list_acte()
+        pour ne pas re-créer d'objet, comme c'était le cas avant.
+    */
     // foreach($actes as $acte) {
     foreach($actes as $acte_id) {
         // $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
@@ -150,6 +167,10 @@ function html_relations($relations){
         </div>";
 }
 
+//  *** tests-has-memory
+/*  ici $personne est la pers_destinataion en relation avec la personne appelée dans l'url
+    personne_memory() crée un objet new Personne via has-memory() pour pouvoir récupérer ses infos
+*/
 function html_personne_relation($personne, $statut_name, $actes){
     $html_personne = html_personne(personne_memory($personne->id));
     $html_statut = html_relation_statut($statut_name);
@@ -164,13 +185,14 @@ function html_personne_relation($personne, $statut_name, $actes){
 }
 
 // Y'a du boulot de factorisation à faire ici :)
-//
+//  *** test-has-memory 
+//  *** ici $personne est la personne appelée dans l'url 
 function html_personne_relations($personne){
     $rel_btype = $personne->get_relations_by_type();
 
     //  *** test rewrite-requete
-    // echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
-    // var_dump($rel_btype['mariage']);
+    echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
+    var_dump($rel_btype['mariage']);
     //  fin test 
 
     $str = "";
@@ -231,15 +253,14 @@ function html_personne_relations($personne){
     return "<div class='relations'>$str</div>";
 }
 
-function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
-    //  *** [tests-has-memory]
-    // echo '<br>'.__METHOD__.' $condition : ';
-    // var_dump($condition);    
-    //  fin test 
 
+//  *** contourner personne_memory, on n'en a pas besoin, et il re-crée un objet Personne 
+function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
     $html_text = html_condition_text($condition->text);
     $html_personne = ($show_personne)?
-        html_personne(personne_memory($condition->personne->id)) :
+        //  *** tests-has-memory
+        // html_personne(personne_memory($condition->personne->id)) :
+        html_personne($condition->personne->id) :
         "";
     $html_source = html_condition_source($condition->get_source_name());
     $html_actes = ($show_actes)?
@@ -257,9 +278,16 @@ function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
         </div>";
 }
 
-function html_conditions($conditions, $show_personne = TRUE){ 
+function html_conditions($condition, $show_personne = TRUE){ 
+    //  *** [tests-has-memory]
+    global $acte; 
+    // echo '<br>'.__METHOD__.' $acte : ';
+    // var_dump($acte);    
+    // echo '<br>'.__METHOD__.' $condition : ';
+    // var_dump($condition);    
+    //  fin test 
     $rows = "";
-    foreach($conditions as $condition)
+    foreach($condition as $condition)
         $rows .= html_condition($condition, $show_personne);
 
     return "

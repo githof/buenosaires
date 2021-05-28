@@ -263,16 +263,14 @@ class Database extends mysqli{
         if($update_obj)
             $obj->result_from_db($row);
         
-            return $row;
+        return $row;
     }
 
     //  PRIVATE METHODS   //
 
     private function from_db_by_id($obj){
         $row = NULL;
-        //  *** test personne 
-        // echo '<br>'.__METHOD__.' $obj : ';
-        // var_dump($obj);    
+        //  *** Condition pose problème pour plusieurs requêtes url pour l'instant 
         // if(!($obj instanceof Personne)) {
             $result = $this->select(
                 $obj->get_table_name(),
@@ -437,6 +435,11 @@ class Database extends mysqli{
     }
 
     private function from_db_acte_relations($acte){
+        //  *** tests-has-memory 
+        // global $acte; 
+        // echo '<br>'.__METHOD__.' $acte avt req : ';
+        //     var_dump($acte); 
+        //  fin test 
         $result = $this->query("
             SELECT *
             FROM acte_has_relation INNER JOIN relation
@@ -461,21 +464,19 @@ class Database extends mysqli{
     //  public  //
 
     public function from_db_condition_list_acte($condition){
+        global $post_id;
         $result = $this->select(
             "acte_has_condition",
             ["acte_id"],
             "condition_id='$condition->id'"
         );
         if($result != FALSE && $result->num_rows > 0){
-            while($row = $result->fetch_assoc()) {  //  *** && ($obj->id == $post_id)
+            while($row = $result->fetch_assoc()) {  
                 //  *** new Acte, alors qu'on l'a créé dans has_memory
                 //  vérifier les chemins d'une instance de chaque classe d'objet 
                 // $condition->actes[] = new Acte($row["acte_id"]);
                 $condition->actes[] = $row["acte_id"];
             }
-            // echo '<br>'.__METHOD__.' $condition->actes : ';
-            // var_dump($condition->actes);    //  = liste actes ok, depuis bdd, sans créer de nouvel objet 
-            //  *** Il faut voir où ça gêne 
         }
     }
 

@@ -34,7 +34,7 @@ if(can_access($access_pages["dissocier"])){?>
 </div>
 <?php } ?>
 <section>
-    <?php echo html_personne($personne, FALSE, FALSE); ?><!-- re-création new personne() dans html_entities::has_memory --> 
+    <?php echo html_personne($personne, FALSE, FALSE); ?>
 </section>
 <section>
     <h4>ID</h4>
@@ -49,13 +49,14 @@ if(can_access($access_pages["dissocier"])){?>
 <section>
     <h4>CONDITIONS</h4>
     <div>
-        <?php echo html_conditions($personne->conditions, FALSE); ?><!-- re-création new personne() dans html_entities::has_memory -->
+        <?php // *** contourné re-création new personne() dans html_entities::has_memory 
+            echo html_conditions($personne->conditions, FALSE); ?>
     </div>
 </section>
 <section>
     <h4>RELATIONS</h4>
     <div>
-        <?php echo html_personne_relations($personne); ?><!-- re-création new personne() dans html_entities::has_memory -->
+        <?php echo html_personne_relations($personne); ?><!-- Ne re-crée pas new personne() pour la même personne, mais pour l'autre de la relation -->
     </div>
 </section>
 <?php
