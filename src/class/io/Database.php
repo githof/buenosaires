@@ -384,6 +384,12 @@ class Database extends mysqli{
         }
     }
 
+    //  *** tests-has-memory 
+    /*  *** appelée depuis personne_memory() : pas de re-création d'une personne déjà existante :
+        ==> Dans html_entities on a (par ex.) la personne source avec ses infos, 
+        on crée une new Personne($id) (has_memory()) pour récupérer les infos de la pers_destination, 
+        from_db_personne_relations() crée une nouvelle personne pour la pers_destination.
+    */
     private function from_db_personne_relations($personne) {
         $result = $this->select("relation", 
                                 ["*"], 
@@ -435,11 +441,6 @@ class Database extends mysqli{
     }
 
     private function from_db_acte_relations($acte){
-        //  *** tests-has-memory 
-        // global $acte; 
-        // echo '<br>'.__METHOD__.' $acte avt req : ';
-        //     var_dump($acte); 
-        //  fin test 
         $result = $this->query("
             SELECT *
             FROM acte_has_relation INNER JOIN relation

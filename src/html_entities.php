@@ -33,14 +33,14 @@ function has_memory($class, $id){
             case "personne": 
                 $obj = new Personne($id);
                 break;
-            //  *** en cours (28/05/21) 
-            case "relation":
-                $obj = new Relation($id);
-                break;
-            //  *** en cours (28/05/21) 
-            case "condition":
-                $obj = new Condition($id);
-                break;
+            //  *** n'est pas utilisée 
+            // case "relation":
+            //     $obj = new Relation($id);
+            //     break;
+            //  *** n'est pas utilisée 
+            // case "condition":
+            //     $obj = new Condition($id);
+            //     break;
         }
         //  *** vérifier si re-création d'une personne avec le même id 
         //  en cours (28/05/21)
@@ -168,8 +168,10 @@ function html_relations($relations){
 }
 
 //  *** tests-has-memory
-/*  ici $personne est la pers_destinataion en relation avec la personne appelée dans l'url
-    personne_memory() crée un objet new Personne via has-memory() pour pouvoir récupérer ses infos
+/*  *** personne_memory() : pas de re-création d'une personne déjà existante :
+        ==> Ici on a (par ex.) la personne source avec ses infos, 
+        on crée une new Personne($id) (has_memory()) pour récupérer les infos de la pers_destination, 
+        from_db_personne_relations() crée une nouvelle personne pour la pers_destination.
 */
 function html_personne_relation($personne, $statut_name, $actes){
     $html_personne = html_personne(personne_memory($personne->id));
@@ -188,12 +190,13 @@ function html_personne_relation($personne, $statut_name, $actes){
 //  *** test-has-memory 
 //  *** ici $personne est la personne appelée dans l'url 
 function html_personne_relations($personne){
+     
     $rel_btype = $personne->get_relations_by_type();
 
     //  *** test rewrite-requete
-    echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
-    var_dump($rel_btype['mariage']);
-    //  fin test 
+    // echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
+    // var_dump($rel_btype["mariage"]);
+    //  fin test
 
     $str = "";
     foreach($rel_btype['mariage'] as $relation){
@@ -258,9 +261,9 @@ function html_personne_relations($personne){
 function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
     $html_text = html_condition_text($condition->text);
     $html_personne = ($show_personne)?
-        //  *** tests-has-memory
-        // html_personne(personne_memory($condition->personne->id)) :
-        html_personne($condition->personne->id) :
+        //  *** tests-has-memory 210531 
+        html_personne(personne_memory($condition->personne->id)) :
+        // html_personne($condition->personne->id) :
         "";
     $html_source = html_condition_source($condition->get_source_name());
     $html_actes = ($show_actes)?
@@ -279,13 +282,6 @@ function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
 }
 
 function html_conditions($condition, $show_personne = TRUE){ 
-    //  *** [tests-has-memory]
-    global $acte; 
-    // echo '<br>'.__METHOD__.' $acte : ';
-    // var_dump($acte);    
-    // echo '<br>'.__METHOD__.' $condition : ';
-    // var_dump($condition);    
-    //  fin test 
     $rows = "";
     foreach($condition as $condition)
         $rows .= html_condition($condition, $show_personne);
@@ -295,7 +291,10 @@ function html_conditions($condition, $show_personne = TRUE){
 }
 
 function html_personne($personne,
-            $with_url = TRUE, $with_id = TRUE, $id_first = FALSE){
+                        $with_url = TRUE, 
+                        $with_id = TRUE, 
+                        $id_first = FALSE){
+
     $html = "";
     foreach($personne->prenoms as $prenom)
         $html .= "<div class='prenom'>".$prenom->to_string()."</div>";
