@@ -312,7 +312,6 @@ function html_personne($personne,
         else
             $html .= "($personne->id)";
     }
-
     return "<div class='personne'>$html</div>";
 }
 
