@@ -28,7 +28,6 @@ function has_memory($class, $id){
             //     $obj = new Acte($id);
             //     break;
             /*  *** Pour l'instant new Personne n'est pas une $personne déjà créée 
-                ==> en cours pour les autres cas (28/05/21) 
             */
             case "personne": 
                 $obj = new Personne($id);
@@ -42,8 +41,6 @@ function has_memory($class, $id){
             //     $obj = new Condition($id);
             //     break;
         }
-        //  *** vérifier si re-création d'une personne avec le même id 
-        //  en cours (28/05/21)
         $mysqli->from_db($obj, TRUE);   
         $memory[$class][$id] = $obj;
         return $obj;
@@ -190,14 +187,11 @@ function html_personne_relation($personne, $statut_name, $actes){
 //  *** test-has-memory 
 //  *** ici $personne est la personne appelée dans l'url 
 function html_personne_relations($personne){
-     
     $rel_btype = $personne->get_relations_by_type();
-
     //  *** test rewrite-requete
     // echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
     // var_dump($rel_btype["mariage"]);
     //  fin test
-
     $str = "";
     foreach($rel_btype['mariage'] as $relation){
         $statut_name = "est mariée à";
@@ -257,7 +251,13 @@ function html_personne_relations($personne){
 }
 
 
-//  *** contourner personne_memory, on n'en a pas besoin, et il re-crée un objet Personne 
+//  *** tests-has-memory
+/*  Pour l'instant on ne peut pas contourner personne_memory, 
+    on en a besoin pour afficher ses infos, 
+    et le code ne les récupèrera que pour la section Relations.
+    Il faudrait récupérer les infos de la personne en cours avant de les afficher 
+    (utiliser l'objet comme il est prévu pour fonctionner, en fait)
+*/
 function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
     $html_text = html_condition_text($condition->text);
     $html_personne = ($show_personne)?

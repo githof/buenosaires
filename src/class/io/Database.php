@@ -270,7 +270,7 @@ class Database extends mysqli{
 
     private function from_db_by_id($obj){
         $row = NULL;
-        //  *** Condition pose problème pour plusieurs requêtes url pour l'instant 
+        //  *** Cette condition pose problème pour plusieurs requêtes url pour l'instant 
         // if(!($obj instanceof Personne)) {
             $result = $this->select(
                 $obj->get_table_name(),
@@ -473,8 +473,7 @@ class Database extends mysqli{
         );
         if($result != FALSE && $result->num_rows > 0){
             while($row = $result->fetch_assoc()) {  
-                //  *** new Acte, alors qu'on l'a créé dans has_memory
-                //  vérifier les chemins d'une instance de chaque classe d'objet 
+                //  *** [tests-has-memory]
                 // $condition->actes[] = new Acte($row["acte_id"]);
                 $condition->actes[] = $row["acte_id"];
             }
