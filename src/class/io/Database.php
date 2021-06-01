@@ -203,6 +203,8 @@ class Database extends mysqli{
     Testé sans succès, mais j'ai avant de me casser la tête
     à savoir pourquoi, j'ai fait avec Acte->get_contenu
     */
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Acte ? 
     public function get_contenu_acte($acte_id) {
         $result = $this->select("acte_contenu",
                                 ["contenu"],
@@ -328,6 +330,8 @@ class Database extends mysqli{
         return $row;
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     //  *** attribue un prénom + nom à une personne, mais on connait déjà son id  
     private function from_db_personne_noms_prenoms($personne) {
         //  *** attribue un prénom à une personne 
@@ -367,6 +371,8 @@ class Database extends mysqli{
         }
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     private function from_db_personne_conditions($personne) {
         $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
         $condition = NULL;
@@ -390,6 +396,8 @@ class Database extends mysqli{
         on crée une new Personne($id) (has_memory()) pour récupérer les infos de la pers_destination, 
         from_db_personne_relations() crée une nouvelle personne pour la pers_destination.
     */
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     private function from_db_personne_relations($personne) {
         $result = $this->select("relation", 
                                 ["*"], 
@@ -418,6 +426,8 @@ class Database extends mysqli{
         }
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Acte ? 
     private function from_db_acte_conditions($acte){
         $result = $this->query("
             SELECT *
@@ -440,6 +450,8 @@ class Database extends mysqli{
         }
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Acte ? 
     private function from_db_acte_relations($acte){
         $result = $this->query("
             SELECT *
@@ -464,6 +476,8 @@ class Database extends mysqli{
 
     //  public  //
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Condition ? 
     public function from_db_condition_list_acte($condition){
         global $post_id;
         $result = $this->select(
@@ -480,6 +494,8 @@ class Database extends mysqli{
         }
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Relation ? 
     public function from_db_relation_list_acte($relation){
         $result = $this->select(
             "acte_has_relation",
@@ -495,6 +511,8 @@ class Database extends mysqli{
 
     //  PRIVATE METHODS   //
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     //  ***  condition "même personne" 
     //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
     //  pour alerte dans log.txt via from_db()
@@ -639,6 +657,8 @@ class Database extends mysqli{
 
     //  PUBLIC  //
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     public function into_db_prenom_personne($personne, $prenom, $ordre){
 
         $values = [
@@ -653,6 +673,8 @@ class Database extends mysqli{
         );
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     public function into_db_nom_personne($personne, $nom, $ordre){
         $values = [
             "personne_id" => $personne->id,
@@ -683,6 +705,8 @@ class Database extends mysqli{
         ");
     }
 
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
     /*
     Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
     Renvoie la liste des personnes supprimées.

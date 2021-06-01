@@ -291,6 +291,9 @@ class Personne implements DatabaseIO{
 
     //  PUBLIC  //
 
+    //  *** tests-dispatch-database
+    //  ajouté à $acte->remove_from_db()
+    //  à la place de $acte->purge_personne()
     public function remove_from_db($anyway = FALSE) {
         global $mysqli;
 

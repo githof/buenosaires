@@ -61,6 +61,8 @@ $acte = new Acte(5598);
 $acte->remove_from_db();
 */
 
+// $pers = new Personne(15794);
+// $pers->remove_from_db(TRUE);
 
 $acte = new Acte(15000);
 $acte->remove_from_db();
