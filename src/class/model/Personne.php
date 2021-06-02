@@ -6,7 +6,7 @@ include_once(ROOT."src/class/model/Prenom.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Personne implements DatabaseIO{
+class Personne implements DatabaseIO {
 
     public $id;
 
@@ -319,6 +319,24 @@ class Personne implements DatabaseIO{
         $mysqli->end_transaction();
 
         return TRUE;
+    }
+
+    //  *** tests-dispatch-database
+    //  pourrait aller dans Personne ? 
+    /*
+    Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+    Renvoie la liste des personnes supprimées.
+    */
+    public function purge_personnes($personne) {
+        global $mysqli; 
+
+        $removed = [];
+
+        // foreach($personnes as $personne) {
+        if($personne->remove_from_db(TRUE))
+        $removed[] = $personne;
+        // }
+        return $removed;
     }
 
 	/*

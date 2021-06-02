@@ -76,11 +76,11 @@ $acte->remove_from_db();
 $acte = new Acte(15003);
 $acte->remove_from_db();
 
-$acte = new Acte(15004);
-$acte->remove_from_db();
+// $acte = new Acte(15004);
+// $acte->remove_from_db();
 
-$acte = new Acte(15005);
-$acte->remove_from_db();
+// $acte = new Acte(15005);
+// $acte->remove_from_db();
 
 echo "<p>passed</p>\n";
 

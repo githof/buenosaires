@@ -287,11 +287,13 @@ class Acte implements DatabaseIO{
         $mysqli->end_transaction();
 
         //  *** tests-dispatch-database :
-        //  Remplacé $mysqli->purge_personne() par $personne->remove_from_db(TRUE)
-        // $mysqli->purge_personnes($personnes);
+        //  Remplacé $mysqli->remove_from_db() par $personne->purge_personne()
         foreach($personnes as $personne)
-            $personne->remove_from_db(TRUE);
-        //  *** Supprime les noms prénoms orpehlins (Database.php) : 
+            $personne->purge_personnes($personne);
+        // foreach($personnes as $personne)
+        //     $personne->remove_from_db(TRUE);
+
+        //  *** Supprime les noms prénoms orpehlins : 
         $mysqli->remove_unused_prenoms_noms(); 
     }
 }

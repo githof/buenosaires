@@ -494,8 +494,6 @@ class Database extends mysqli{
         }
     }
 
-    //  *** tests-dispatch-database
-    //  pourrait aller dans Relation ? 
     public function from_db_relation_list_acte($relation){
         $result = $this->select(
             "acte_has_relation",
@@ -511,8 +509,6 @@ class Database extends mysqli{
 
     //  PRIVATE METHODS   //
 
-    //  *** tests-dispatch-database
-    //  pourrait aller dans Personne ? 
     //  ***  condition "même personne" 
     //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
     //  pour alerte dans log.txt via from_db()
@@ -584,6 +580,7 @@ class Database extends mysqli{
         return $ids;
     }
 
+    //  *** Cette méthode renvoie $values_obj 
     private function updated_values($values_db, $values_obj){
         $updated = [];
 
@@ -631,6 +628,8 @@ class Database extends mysqli{
     //  PRIVATE METHODS   //
 
     //  *** ne sert que là, on peut pas la défactoriser ? 
+    //  Non : elle appelle get_table_name() de toutes les classes 
+    //  et c'est préférable de n'avoir que des variables et méthodes dans into_db() 
     private function into_db_update($obj, $values){
         if(count($values) == 0)
             return TRUE;
@@ -657,8 +656,7 @@ class Database extends mysqli{
 
     //  PUBLIC  //
 
-    //  *** tests-dispatch-database
-    //  pourrait aller dans Personne ? 
+
     public function into_db_prenom_personne($personne, $prenom, $ordre){
 
         $values = [
@@ -673,8 +671,6 @@ class Database extends mysqli{
         );
     }
 
-    //  *** tests-dispatch-database
-    //  pourrait aller dans Personne ? 
     public function into_db_nom_personne($personne, $nom, $ordre){
         $values = [
             "personne_id" => $personne->id,
@@ -705,21 +701,21 @@ class Database extends mysqli{
         ");
     }
 
-    //  *** tests-dispatch-database
-    //  pourrait aller dans Personne ? 
-    /*
-    Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
-    Renvoie la liste des personnes supprimées.
-    */
-    public function purge_personnes($personnes) {
-        $removed = [];
+    // //  *** tests-dispatch-database
+    // //  pourrait aller dans Personne ? 
+    // /*
+    // Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+    // Renvoie la liste des personnes supprimées.
+    // */
+    // public function purge_personnes($personnes) {
+    //     $removed = [];
 
-        foreach($personnes as $personne) {
-            if($personne->remove_from_db(FALSE))
-            $removed[] = $personne;
-        }
-        return $removed;
-    }
+    //     foreach($personnes as $personne) {
+    //         if($personne->remove_from_db(FALSE))
+    //         $removed[] = $personne;
+    //     }
+    //     return $removed;
+    // }
 
     //  *** Appelée dans Acte::remove_from_db() 
     public function remove_unused_prenoms_noms(){
