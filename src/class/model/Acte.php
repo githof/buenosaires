@@ -105,6 +105,10 @@ class Acte implements DatabaseIO{
 
 	public function get_date() {
         global $mysqli;
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $this : ';
+        var_dump($this);
+        //  fin test 
         $mysqli->from_db($this, TRUE, FALSE);
         return $this->date_start;
 	}

@@ -53,17 +53,26 @@ class Relation implements DatabaseIO {
 
     public function get_date(){
         global $mysqli;
-
+        
         $mysqli->from_db_relation_list_acte($this);
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $this->actes : ';
+        var_dump($this->actes);
+        //  fin test 
         if(isset($this->actes[0])) {
             $acte = $this->actes[0];
             /* je prends le premier qui vient
-                tfaçon y'aura une date pour chaque type de relation
-                donc pour la relation epoux/se y'aura juste l'acte qui va
-                bien
+            tfaçon y'aura une date pour chaque type de relation
+            donc pour la relation epoux/se y'aura juste l'acte qui va
+            bien
             */
-            if($acte != null)
+            if($acte != null){
+                //  *** tests-dispatch-database 
+                echo '<br>'.__METHOD__.' $acte : ';
+                var_dump($acte);
+                //  fin test 
                 return $acte->get_date();
+            }
         }
         return "";
     }

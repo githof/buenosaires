@@ -153,6 +153,10 @@ class CSVExport implements ExportInterface {
     }
 
     private static function add_date(&$line, $relation) {
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $relation : ';
+        var_dump($relation);
+        //  fin test 
         $date = $relation->get_date();
         $line[] = "$date";
     }
