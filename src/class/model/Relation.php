@@ -51,6 +51,8 @@ class Relation implements DatabaseIO {
         return $this->personne_source->id == $id;
     }
 
+    //  *** bug-csvexport
+    //  méthode appelée nulle part ailleurs : pas d'autre bug 
     public function get_date(){
         global $mysqli;
 
@@ -62,13 +64,7 @@ class Relation implements DatabaseIO {
                 donc pour la relation epoux/se y'aura juste l'acte qui va
                 bien
             */
-            //  *** bug-csvexport 
-            // echo '<br>'.__METHOD__.' $acte_str : ';
-            // var_dump($acte_str);
             $acte = new Acte($acte_str);
-            // echo '<br>'.__METHOD__.' $acte : ';
-            // var_dump($acte);
-            //  fin test 
             if($acte != null)
                 return $acte->get_date();
         }

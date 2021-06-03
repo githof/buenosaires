@@ -684,7 +684,7 @@ class Database extends mysqli{
     }
 
     /*
-    Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+    Supprime de la base les personnes de la liste qui n''apparaissent dans aucune table.
     Renvoie la liste des personnes supprimées.
     */
     public function purge_personnes($personnes) {
