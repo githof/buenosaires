@@ -292,8 +292,8 @@ class Personne implements DatabaseIO {
     //  PUBLIC  //
 
     //  *** tests-dispatch-database
-    //  ajouté à $acte->remove_from_db()
-    //  à la place de $acte->purge_personne()
+    //  ajouté purge_personne() à $acte->remove_from_db()
+    //  à la place de $personne->remove_from_db() 
     public function remove_from_db($anyway = FALSE) {
         global $mysqli;
 
@@ -322,7 +322,7 @@ class Personne implements DatabaseIO {
     }
 
     //  *** tests-dispatch-database
-    //  pourrait aller dans Personne ? 
+    //  Déplacé depuis Database  
     /*
     Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
     Renvoie la liste des personnes supprimées.
@@ -332,10 +332,9 @@ class Personne implements DatabaseIO {
 
         $removed = [];
 
-        // foreach($personnes as $personne) {
         if($personne->remove_from_db(TRUE))
         $removed[] = $personne;
-        // }
+
         return $removed;
     }
 
