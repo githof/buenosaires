@@ -704,7 +704,7 @@ class Database extends mysqli{
     }
 
     // //  *** tests-dispatch-database
-    // //  pourrait aller dans Personne ? 
+    // //  déplacé dans Personne  
     // /*
     // Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
     // Renvoie la liste des personnes supprimées.

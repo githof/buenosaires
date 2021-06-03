@@ -1,6 +1,7 @@
 #!/bin/sh
 
 rsync -Cavuz \
+      --omit-dir-times
       --chmod=g+w \
       --filter=":- .gitignore" \
       --filter='- .git' \

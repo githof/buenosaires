@@ -103,6 +103,8 @@ class Acte implements DatabaseIO{
         return "";
     }
 
+    //  *** existe aussi un $relation->get_date() 
+    //  qui utilise ce $acte->get_date()  
 	public function get_date() {
         global $mysqli;
         //  *** tests-dispatch-database 

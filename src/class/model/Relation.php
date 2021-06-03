@@ -51,28 +51,23 @@ class Relation implements DatabaseIO {
         return $this->personne_source->id == $id;
     }
 
+    //  *** bug-csvexport
+    //  méthode appelée nulle part ailleurs : pas d'autre bug 
     public function get_date(){
         global $mysqli;
         
         $mysqli->from_db_relation_list_acte($this);
         //  *** tests-dispatch-database 
-        echo '<br>'.__METHOD__.' $this->actes : ';
-        var_dump($this->actes);
-        //  fin test 
         if(isset($this->actes[0])) {
-            $acte = $this->actes[0];
+            $acte_str = $this->actes[0];
             /* je prends le premier qui vient
             tfaçon y'aura une date pour chaque type de relation
             donc pour la relation epoux/se y'aura juste l'acte qui va
             bien
             */
-            if($acte != null){
-                //  *** tests-dispatch-database 
-                echo '<br>'.__METHOD__.' $acte : ';
-                var_dump($acte);
-                //  fin test 
+            $acte = new Acte($acte_str);
+            if($acte != null)
                 return $acte->get_date();
-            }
         }
         return "";
     }

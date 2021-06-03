@@ -13,9 +13,6 @@ matrimonios*.xml
 test-*.xml
 bricolages
 
-# exports, pour l'instant : tests 
-exports
 
-# dossier morgan
 perso/
-
+exports/
