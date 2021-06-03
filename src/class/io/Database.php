@@ -180,7 +180,6 @@ class Database extends mysqli{
     // [ id => personne ]
     public function get_personnes($get_relations_conditions = TRUE) {
         $personnes = [];
-
         /*
             pas du tout optimal : je fais un premier select pour
             avoir la liste des ids, puis un select par id
