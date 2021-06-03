@@ -56,12 +56,19 @@ class Relation implements DatabaseIO {
 
         $mysqli->from_db_relation_list_acte($this);
         if(isset($this->actes[0])) {
-            $acte = $this->actes[0];
+            $acte_str = $this->actes[0];
             /* je prends le premier qui vient
                 tfaçon y'aura une date pour chaque type de relation
                 donc pour la relation epoux/se y'aura juste l'acte qui va
                 bien
             */
+            //  *** bug-csvexport 
+            // echo '<br>'.__METHOD__.' $acte_str : ';
+            // var_dump($acte_str);
+            $acte = new Acte($acte_str);
+            // echo '<br>'.__METHOD__.' $acte : ';
+            // var_dump($acte);
+            //  fin test 
             if($acte != null)
                 return $acte->get_date();
         }
