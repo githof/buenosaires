@@ -496,6 +496,7 @@ class Database extends mysqli{
 
     //  *** tests-dispatch-database 
     //  new Acte() manque pour CSVExport.php 
+    //  corrigé dans Relation->get_date() 
     public function from_db_relation_list_acte($relation){
         $result = $this->select(
             "acte_has_relation",

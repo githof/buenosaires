@@ -52,7 +52,8 @@ class Relation implements DatabaseIO {
     }
 
     //  *** bug-csvexport
-    //  méthode appelée nulle part ailleurs : pas d'autre bug 
+    //  ajouté création new Acte() 
+    //  méthode appelée nulle part ailleurs : pas de bug à cause de ça . 
     public function get_date(){
         global $mysqli;
         
