@@ -84,10 +84,6 @@ function html_acte_small($acte){
 function html_list_actes($actes){
     $html = "";
     //  *** tests-has-memory
-    /*  ici $actes est un array de strings, pas un objet : 
-        J'ai modifié Database::from_db_condition|relation_list_acte()
-        pour ne pas re-créer d'objet, comme c'était le cas avant.
-    */
     // foreach($actes as $acte) {
     foreach($actes as $acte_id) {
         // $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
@@ -184,7 +180,6 @@ function html_personne_relation($personne, $statut_name, $actes){
 }
 
 // Y'a du boulot de factorisation à faire ici :)
-//  *** test-has-memory 
 //  *** ici $personne est la personne appelée dans l'url 
 function html_personne_relations($personne){
     $rel_btype = $personne->get_relations_by_type();
@@ -250,29 +245,28 @@ function html_personne_relations($personne){
     return "<div class='relations'>$str</div>";
 }
 
-
-//  *** tests-has-memory
-/*  Pour l'instant on ne peut pas contourner personne_memory, 
-    on en a besoin pour afficher ses infos, 
-    et le code ne les récupèrera que pour la section Relations.
-    Il faudrait récupérer les infos de la personne en cours avant de les afficher 
-    (utiliser l'objet comme il est prévu pour fonctionner, en fait)
-*/
-function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
-    $html_text = html_condition_text($condition->text);
-    $html_personne = ($show_personne)?
-        //  *** tests-has-memory 210531 
-        html_personne(personne_memory($condition->personne->id)) :
-        // html_personne($condition->personne->id) :
+function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE, $obj){
+    global $personne, $acte; 
+    $html_text = html_condition_text($condition->text);    
+    
+    if($show_personne) {
+        if($obj->id == $acte->id) {  
+        //  ***  Pour detail_acte.php, on doit récupérer les infos des $personnes (personne_memory()) 
+            $html_personne = html_personne(personne_memory($condition->personne->id));
+        } else {
+        //  ***  Pour detail_personne.php on a déjà les infos de la personne 
+            $html_personne = html_personne($condition->personne->id);
+        }
+    } else 
         "";
     $html_source = html_condition_source($condition->get_source_name());
     $html_actes = ($show_actes)?
         html_list_actes($condition->actes) :
         "";
-
+    
     return "
         <div class='condition' id='condition-$condition->id'>
-            $html_text
+            $html_text  
             $html_personne
             <div class='more'>
                 $html_source
@@ -281,10 +275,23 @@ function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
         </div>";
 }
 
-function html_conditions($condition, $show_personne = TRUE){ 
+function html_conditions($conditions, $show_personne = TRUE){ 
+    //  *** $conditions = $personne|$acte->conditions 
+    global $personne, $acte;
     $rows = "";
-    foreach($condition as $condition)
-        $rows .= html_condition($condition, $show_personne);
+
+    //  *** $obj = $acte|$personne 
+    
+    if($conditions[0] == $acte->conditions[0]) {
+    //  ***  si la fct est appelée par detail_acte.php 
+        $obj = $acte;
+    } else {
+    //  ***  si la fct est appelée par detail_personne.php 
+        $obj = $personne;
+    }
+    foreach($conditions as $condition)
+        // $rows .= html_condition($condition, $show_personne);
+        $rows .= html_condition($condition, $show_personne, TRUE, $obj);
 
     return "
         <div class='conditions'>$rows</div>";

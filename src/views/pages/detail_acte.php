@@ -27,6 +27,7 @@ $post_id = $url_parsed["id"];
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
 $result = $mysqli->from_db($acte, TRUE);    //  *** re-création d'actes dans from_db_condition_list_acte($condition) et dans from_db_relation_list_acte($relation) 
+
 if(!isset($result)){
 ?>
 <div>
