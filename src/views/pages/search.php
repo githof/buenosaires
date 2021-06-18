@@ -97,7 +97,7 @@ function html_input_date($label, $name){
     ');
 }
 
-//  $nom_ou_nom = 'nom' 
+//  $nom_ou_prenom = 'nom' 
 function html_select_personnes_nom($title, $name_select, $nom_ou_prenom) {
     $html_option_list = selected_noms($nom_ou_prenom);
 
@@ -174,13 +174,16 @@ function html_form_search($acte_or_personne) {
 
 //  sélectionner la/les lettre/s 
 
-function html_select_letters_personnes($title, $letter_select, $nom_ou_prenom) {
+function html_select_letters($title, $letter_select, $nom_ou_prenom) {
 
     $letter_select = 'letter_'.$nom_ou_prenom;
     $letters_base = array(
         '(', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'pas de nom'
-        );
+    );
+    if($nom_ou_prenom == 'prenom') 
+        $trash = array_shift($letters_base);
+    
     $str = '';
     foreach($letters_base as $letter) {
         $str .= '<option value="'.$letter.'">'.$letter.'</option>';
@@ -199,15 +202,15 @@ function html_form_letters($acte_or_personne) {
     $contents = '';
 
     if($acte_or_personne == 'acte') {
-        $contents .=  html_select_letters_personnes(
+        $contents .=  html_select_letters(
                           'Avec pour initiale du nom de famille', 
                           'letter', 'nom');
     } else {
-        $contents .= html_select_letters_personnes(
+        $contents .= html_select_letters(
                       'Avec pour initiale d\un des noms de famille', 
                       'letter', 'nom')
                     . ' ou '
-                    . html_select_letters_personnes(
+                    . html_select_letters(
                       'Avec pour initiale d\'un des prénoms', 
                       'letter', 'prenom');
     }
