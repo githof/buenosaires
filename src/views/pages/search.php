@@ -202,11 +202,13 @@ function html_form_letters($acte_or_personne) {
     $contents = '';
 
     if($acte_or_personne == 'acte') {
-        $contents .=  html_select_letters(
+        $contents .=  '<p>(Pour récupérer tous les noms, ne rien choisir.)</p>'
+                        . html_select_letters(
                           'Avec pour initiale du nom de famille', 
                           'letter', 'nom');
     } else {
-        $contents .= html_select_letters(
+        $contents .= '<p>(Pour récupérer tous les noms/prénoms, ne rien choisir.)</p>'
+                    . html_select_letters(
                       'Avec pour initiale d\un des noms de famille', 
                       'letter', 'nom')
                     . ' ou '
