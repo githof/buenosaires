@@ -29,8 +29,8 @@ function selected($nom_ou_prenom){
     if(isset($_GET[$name_select])) {
         $letter = $_GET[$name_select];
 
-        echo '<br>'. __METHOD__.' $letter : ';
-        var_dump($letter);
+        // echo '<br>'. __METHOD__.' $letter : ';
+        // var_dump($letter);
 
         if(($letter == 'pas de nom') || (empty($letter))) {
             $result = $mysqli->query("
@@ -183,7 +183,7 @@ function html_tabpanel($class, $name, $acte_or_personne) {
     return '<div role="tabpanel" class="tab-pane '
         . $class . '" id="' . $name . '">
                 <section>
-                    <div>' 
+                    <div>' .
                         $contents . 
                     '</div>
                 </section>
