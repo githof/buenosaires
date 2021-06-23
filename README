@@ -1,5 +1,5 @@
 
-INSTALL
+# INSTALL
 
 Activer mod_rewrite de Apache2
 
@@ -16,3 +16,19 @@ Nécessite l'option AllowOverride All
         Options +FollowSymLinks
         AllowOverride All
     </Directory>
+
+
+# STRUCTURE DU CODE SOURCE
+
+- structure de données dans src/class/model
+- pages du site dans src/views/pages
+- I/O dans src/class/io (y compris de et vers la base de données)
+
+## Exemple d'accès à une personne
+
+l'url personne/id (pareil pour acte/id) :
+- charge le script pages/detail_personne.php
+- un nouvel objet Personne est créé (donc classe model/Personne.php)
+- il est rempli depuis la base par io/Database.php
+la fonction from_db, qui dispatche selon la classe
+-> c'est un peu moche, ce serait sans doute mieux d'en faire des méthodes spécifiques de chaque classe

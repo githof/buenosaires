@@ -1,4 +1,5 @@
 RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/buenosaires/old(/|$)
+RewriteCond %{REQUEST_URI} !^.*\.(jpg|css|js|gif|png|eot|svg|ttf|woff|woff2)$ [NC]
 RewriteRule ^(.*)$ index.php [QSA,L]
+php_value memory_limit 1G
