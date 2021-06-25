@@ -169,14 +169,14 @@ function html_form_export($objet, $data_export) {
             '</form>';
 }
 
-//  *** test remplacé par html_form_export() // 
+//  *** remplacé par html_form_export() // 
 // function html_form_wrap($action, $method) { 
 //     return '<form  action="' . $action . '" method="' . $method . '">'
 //             . html_form_group(html_select_export(''))   
 //             . html_form_group(html_submit('', 'Exporter')) . 
 //             '</form>';
 // }
-//  *** test : remplacé par html_tab_contents() // 
+//  *** remplacé par html_tab_contents() // 
 // function html_section($action, $method) {   
 //     return '
 //         <section>
@@ -201,7 +201,7 @@ function html_tabpanel($class, $objet, $data_export) {      //  id="'.$data_expo
             </div>';
 }
 
-//  *** test remplace html_section // 
+//  *** remplace html_section // 
 function html_tab_contents() {
     return '<div class="tab-content">'
                 . html_tabpanel('active', 'actes', 'all_actes')
