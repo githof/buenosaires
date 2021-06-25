@@ -193,14 +193,10 @@
       return $value;
     }
 
-    //  docu *** 
-    //  d'après la doc sql "rend les changements permanents" ? 
     public function start_transaction(){
       return $this->query("START TRANSACTION");
     }
 
-    //  docu *** 
-    //  commit (où ?) 
     public function end_transaction(){
       return $this->query("COMMIT");
     }
@@ -260,7 +256,6 @@
       return $result->fetch_assoc()["contenu"];
     }
 
-    //  docu *** 
     //  tous les cas de SELECT avant d'envoyer la requete INSERT 
     public function from_db($obj,
       $update_obj = FALSE,
@@ -301,7 +296,6 @@
       return $row;
     }
 
-    //  docu *** 
     //  SELECT by id 
     private function from_db_by_id($obj){
       $row = NULL;
@@ -315,7 +309,6 @@
       return $row;
     }
 
-    //  docu *** 
     //  SELECT by value 
     private function from_db_by_same($obj){
       $row = NULL;
@@ -347,7 +340,6 @@
       return $row;
     }
 
-    //  docu *** 
     //  SELECT personne by nom ou prenom 
     private function from_db_personne_noms_prenoms($personne){
       $result = $this->query("
@@ -379,7 +371,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT personne by condition
     private function from_db_personne_conditions($personne){
       $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
@@ -398,7 +389,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT personne by relation 
     private function from_db_personne_relations($personne){
       $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
@@ -425,7 +415,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT acte_has_condition 
     private function from_db_acte_conditions($acte){
       $result = $this->query("
@@ -449,7 +438,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT acte_has_relation 
     private function from_db_acte_relations($acte){
       $result = $this->query("
@@ -473,7 +461,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT conditions par acte 
     public function from_db_condition_list_acte($condition){
       $result = $this->select(
@@ -487,7 +474,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT relations par acte 
     public function from_db_relation_list_acte($relation){
       $result = $this->select(
@@ -501,7 +487,6 @@
       }
     }
 
-    //  docu *** 
     //  SELECT personne by nom + prenom  
     //  ==> factoriser avec from_db_personne_noms_prenoms ?   *** 
     private function from_db_by_same_personne($personne){
@@ -560,7 +545,6 @@
       return NULL;
     }
 
-    //  docu *** 
     //  attribuer une id aux objets (depuis le xml, ou depuis la bdd si différents) 
     private function updated_values($values_db, $values_obj){
       $updated = [];
@@ -576,7 +560,6 @@
       return $updated;
     }
 
-    //  docu *** 
     //  stocke toutes les données avec id avant enregistrement 
     public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE){
       $result = FALSE;
@@ -604,7 +587,6 @@
       return $obj->id;
     }
 
-    //  docu *** 
     //  données pour UPDATE 
     private function into_db_update($obj, $values){
       if(count($values) == 0)
@@ -617,7 +599,6 @@
       );
     }
 
-    //  docu *** 
     //  données pour insert  
     private function into_db_insert($obj, $values){
       global $log;
@@ -642,7 +623,6 @@
       return $result;
     }
 
-    //  docu *** 
     //  INSERT données pour prenom personne 
     public function into_db_prenom_personne($personne, $prenom, $ordre){
       $values = [
@@ -657,7 +637,6 @@
       );
     }
 
-    //  docu *** 
     //  INSERT données pour nom personne 
     public function into_db_nom_personne($personne, $nom, $ordre){
       $values = [
@@ -677,7 +656,6 @@
       );
     }
 
-    //  docu *** 
     //  INSERT données pour acte_has_relation 
     public function into_db_acte_has_relation($acte, $relation){
       return $this->query("
@@ -685,7 +663,6 @@
       ");
     }
 
-    //  docu *** 
     //  INSERT données pour acte_has_condition
     public function into_db_acte_has_condition($acte, $condition){
       return $this->query("
@@ -710,7 +687,6 @@
       return $removed;
     }
 
-    //  docu *** 
     //  supprime les nom ou prénoms sans personne_id 
     //  ==> l'ajouter à $personne->remove_from_db ou dans Database::purge_personnes ? *** 
     public function remove_unused_prenoms_noms(){
