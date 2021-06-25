@@ -383,7 +383,7 @@
             $personne,
             $row["source_id"]
           );
-          $this->from_db_condition_list_acte($condition);
+          $this->from_db_condition_list_actes($condition);
           $personne->conditions[] = $condition;
         }
       }
@@ -432,7 +432,7 @@
             new Personne($row["personne_id"]),
             $row["source_id"]
           );
-          $this->from_db_condition_list_acte($condition);
+          $this->from_db_condition_list_actes($condition);
           $acte->conditions[] = $condition;
       }
       }
@@ -462,7 +462,7 @@
     }
 
     //  SELECT conditions par acte 
-    public function from_db_condition_list_acte($condition){
+    public function from_db_condition_list_actes($condition){
       $result = $this->select(
         "acte_has_condition",
         ["acte_id"],
