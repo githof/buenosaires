@@ -409,7 +409,7 @@
             $pers_destination,
             $row["statut_id"]
           );
-          $this->from_db_relation_list_acte($relation);
+          $this->from_db_relation_list_actes($relation);
           $personne->relations[] = $relation;
         }
       }
@@ -455,7 +455,7 @@
             new Personne($row["pers_destination_id"]),
             $row["statut_id"]
           );
-          $this->from_db_relation_list_acte($relation);
+          $this->from_db_relation_list_actes($relation);
           $acte->relations[] = $relation;
         }
       }
@@ -475,7 +475,7 @@
     }
 
     //  SELECT relations par acte 
-    public function from_db_relation_list_acte($relation){
+    public function from_db_relation_list_actes($relation){
       $result = $this->select(
         "acte_has_relation",
         ["acte_id"],
