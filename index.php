@@ -3,8 +3,6 @@
 // afficher les erreurs /!\ #devOnly /!\  ***
 // error_reporting(E_ALL);
 // ini_set("display_errors", 1);
-// include("/home/morgan/internet/file_with_errors.php");
-// echo "<br>";
 // end #devOnly
 
 $exec_time_script = microtime(TRUE);

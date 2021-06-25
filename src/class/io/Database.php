@@ -219,7 +219,9 @@
         while($row = $results->fetch_assoc()){
           $id = $row["id"];
           $personne = new Personne($id);
-          $this->from_db($personne, $get_relations_conditions);
+          //  *** tests-disppatch-database 
+          // $this->from_db($personne, $get_relations_conditions);
+          $personne->personne_from_db($personne->id, $get_relations_conditions);
           $personnes[$id] = $personne;
         }
       }
@@ -274,13 +276,18 @@
       $row = NULL;
       if(isset($obj->id)){
         $row = $this->from_db_by_id($obj);
-        if($obj instanceof Personne){
-          $this->from_db_personne_noms_prenoms($obj);
-          if($get_relations_conditions){
-            $this->from_db_personne_relations($obj);
-            $this->from_db_personne_conditions($obj);
-          }
-        }else if($obj instanceof Acte && $get_relations_conditions){
+        //  *** tests-dispatch-database
+        /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
+          pour pas avoir à tester si $obj est une personne par ex
+        */
+        // if($obj instanceof Personne){
+        //   $this->from_db_personne_noms_prenoms($obj);
+        //   if($get_relations_conditions){
+        //     $this->from_db_personne_relations($obj);
+        //     $this->from_db_personne_conditions($obj);
+        //   }
+        // }else 
+        if($obj instanceof Acte && $get_relations_conditions){
           $this->from_db_acte_conditions($obj);
           $this->from_db_acte_relations($obj);
         }
@@ -341,14 +348,15 @@
     }
 
     //  SELECT personne by nom ou prenom 
-    private function from_db_personne_noms_prenoms($personne){
+    // private function from_db_personne_noms_prenoms($personne){
+    public function from_db_personne_noms_prenoms($personne){      
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
         FROM prenom_personne INNER JOIN prenom
         ON prenom_personne.prenom_id = prenom.id
         WHERE prenom_personne.personne_id = '$personne->id'
         ORDER BY prenom_personne.ordre"
-      );
+      );  
       if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc())
           $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
@@ -360,7 +368,7 @@
         ON nom_personne.nom_id = nom.id
         WHERE nom_personne.personne_id = '$personne->id'
         ORDER BY nom_personne.ordre"
-      );
+      );  
       if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
           $personne->add_nom( new Nom($row["n_id"],
@@ -371,26 +379,9 @@
       }
     }
 
-    //  SELECT personne by condition
-    private function from_db_personne_conditions($personne){
-      $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
-      $condition = NULL;
-      if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
-          $condition = new Condition(
-            $row["id"],
-            $row["text"],
-            $personne,
-            $row["source_id"]
-          );
-          $this->from_db_condition_list_actes($condition);
-          $personne->conditions[] = $condition;
-        }
-      }
-    }
-
     //  SELECT personne by relation 
-    private function from_db_personne_relations($personne){
+    // private function from_db_personne_relations($personne){
+    public function from_db_personne_relations($personne){
       $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
       $pers_source = NULL;
       $pers_destination = NULL;
@@ -411,6 +402,25 @@
           );
           $this->from_db_relation_list_actes($relation);
           $personne->relations[] = $relation;
+        }
+      }
+    }
+
+    //  SELECT personne by condition
+    // private function from_db_personne_conditions($personne){
+    public function from_db_personne_conditions($personne){
+      $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
+      $condition = NULL;
+      if($result != FALSE && $result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+          $condition = new Condition(
+            $row["id"],
+            $row["text"],
+            $personne,
+            $row["source_id"]
+          );
+          $this->from_db_condition_list_actes($condition);
+          $personne->conditions[] = $condition;
         }
       }
     }
