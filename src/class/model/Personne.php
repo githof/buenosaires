@@ -167,9 +167,10 @@ class Personne implements DatabaseIO {
 
     //  PUBLIC  //
 
-    public function personne_from_db($get_relations_conditions) {
+    public function personne_from_db($id, $get_relations_conditions) {
         global $mysqli;
 
+        //  *** tests-dispatch-database 
         $mysqli->from_db_personne_noms_prenoms($this);
         if($get_relations_conditions){
             // $this->from_db_personne_relations($this->id);
@@ -177,6 +178,7 @@ class Personne implements DatabaseIO {
             $mysqli->from_db_personne_relations($this);
             $mysqli->from_db_personne_conditions($this);
         }
+        return $this;
     }
 
     public function get_relations_by_type() {

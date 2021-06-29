@@ -57,7 +57,7 @@ class Relation implements DatabaseIO {
     public function get_date(){
         global $mysqli;
         
-        $mysqli->from_db_relation_list_acte($this);
+        $mysqli->from_db_relation_list_actes($this);
         //  *** tests-dispatch-database 
         if(isset($this->actes[0])) {
             $acte_str = $this->actes[0];

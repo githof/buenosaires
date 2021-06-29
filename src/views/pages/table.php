@@ -95,7 +95,7 @@ function print_table_relation($results){
     while($row = $results->fetch_assoc()){
         $relation = new Relation();
         $relation->result_from_db($row);
-        $mysqli->from_db_relation_list_acte($relation);
+        $mysqli->from_db_relation_list_actes($relation);
 
         $html_statut = html_relation_statut($relation->get_statut_name());
         $html_source = html_personne(personne_memory($relation->personne_source->id));

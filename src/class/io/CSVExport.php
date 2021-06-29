@@ -197,7 +197,6 @@ class CSVExport implements ExportInterface {
     public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
         global $mysqli, $line;  
 
-        
         self::attr_nom_fichier('relations');
 
         //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier (à voir ?) *** // 
@@ -222,12 +221,23 @@ class CSVExport implements ExportInterface {
         */
         self::$personnes = $mysqli->get_personnes(FALSE);
 
+        //  *** test export 
+        // echo '<br>'.__METHOD__.' $personnes : ';
+        // var_dump(self::$personnes);   //  undefined variable $personnes 
+        //  fin test 
+
         // faire un Database->get_relations() comme get_personnes 
         $results = $mysqli->select("relation", ["*"]);
         if($results != FALSE && $results->num_rows){
             while($row = $results->fetch_assoc()){
                 $relation = new Relation();
                 $relation->result_from_db($row);
+
+                //  *** test export 
+                // echo '<br>'.__METHOD__.' $relation->id == 1 : ';
+                // if($relation->id == '1') 
+                //     var_dump($relation);
+                //  fin test 
 
                 //  *** par défaut relations dans 1 seul sens 
                 if(!$deux_sens) {

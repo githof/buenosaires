@@ -228,8 +228,7 @@ function page_export() {
                 $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
                 $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : FALSE;
                     echo appel_export_statique('CSVExport', 'export_relations', '', '', $names, $dates, $deux_sens);    //   1, 50,
-                    // echo '<br>'.__METHOD__;
-                    // echo '<br>post : ';
+                    // echo '<br>'.__METHOD__.'<br>post : ';
                     // var_dump($_POST);
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter

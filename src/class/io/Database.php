@@ -22,211 +22,186 @@
       }
     }
 
+
     //  METHODES POUR EFFECTUER LES REQUETES (CRUD) À ENVOYER À LA BDD   //
 
-    public function select($table, $columns, $where = "", $more = ""){
+    public function select($table, $columns, $where = "", $more = "") { 
       global $log;
 
       $s = "SELECT ";
 
-      //  ***   Erreurs sur $columns :
-      //  Warning: count(): Parameter must be an array or an object that implements Countable 
-      //  in /home/morgan/internet/buenosaires/src/class/io/Database.php on line 33 et line 35 //
+      /*  Warning: count(): Parameter must be an array or an object 
+          that implements Countable 
+          $columns est un string 
+      ***/
       for($i = 0; $i < count($columns); $i++){
-        $s .= $columns[$i];
-        if($i < count($columns) -1)
-          $s .= ", ";
+          $s .= $columns[$i];
+          if($i < count($columns) -1)
+              $s .= ", ";
       }
 
       $s .= " FROM `$table`";
 
       if(strlen($where) > 0)
-        $s .= " WHERE " . $where;
+          $s .= " WHERE " . $where;
 
       $s .= " " . $more;
 
       return $this->query($s);
     }
 
-    public function insert($table, $values, $more = ""){
-      global $log;
+    public function insert($table, $values, $more = "") {
+        global $log;
 
-      $s = "INSERT INTO `$table` (";
+        $s = "INSERT INTO `$table` (";
 
-      $keys = "";
-      $vals = "";
-      $i = 0;
+        $keys = "";
+        $vals = "";
+        $i = 0;
 
-      foreach($values as $key => $value){
-        $keys .= $key;
+        //  stocke dans $s les colonnes et les valeurs
+        //  il faut exclure la colonne qui stocke l'id
+        //  pour les tables qui ont l'auto_increment
 
-        if(strcmp($value, "now()") == 0)
-          $vals .= $value;
-        else
-          $vals .= "'" . $value . "'";
+        //  insérer un enregistrement sans données (1 seule colonne qui a AI) :
+        //  insert into personne (`id`) values (null);
+        foreach($values as $key => $value){
+        
+            $keys .= $key;
+            
+            //  pour utilisateur
+            if(strcmp($value, "now()") == 0)
+                $vals .= $value;
+            //  *** pour toutes les autres tables : 
+            //  si l'id n'est pas défini, on insère "NULL" pour lui attribuer un id avec l'auto_increment 
+            elseif($key === 'id' && empty($value)) {
+                $vals .= 'NULL';
+            } else {
+            //  *** sinon  on insère l'id dans la bdd 
+                    $vals .= "'" . $value . "'";
+            }
+            
+            if($i < count($values) -1){
+                $keys .= ", ";
+                $vals .= ", ";
+            }
 
-        if($i < count($values) -1){
-          $keys .= ", ";
-          $vals .= ", ";
+            $i++;
         }
 
-        $i++;
-      }
+        $s .= $keys . ") VALUES (" . $vals . ")";
 
-      $s .= $keys . ") VALUES (" . $vals . ")";
+        if(strlen($more) > 0)
+            $s .= " " . $more;
 
-      if(strlen($more) > 0)
-        $s .= " " . $more;
-
-      return $this->query($s);
+        return $this->query($s);
     }
 
     public function update($table, $values, $where, $more = ""){
-      global $log;
-      $s = "UPDATE `$table` SET ";
+        global $log;
+        
+        $s = "UPDATE `$table` SET ";
 
-      $i = 0;
+        $i = 0;
 
-      foreach($values as $key => $value){
-        $s .= " " . $key . " = ";
+        foreach($values as $key => $value){
+            $s .= " " . $key . " = ";
 
-        if(strcmp($value, "now()") == 0)
-          $s .= $value;
-        else
-          $s .= "'" . $value . "'";
+            if(strcmp($value, "now()") == 0)
+                $s .= $value;
+            else
+                $s .= "'" . $value . "'";
 
-        if($i < count($values) -1)
-          $s .= ", ";
+            if($i < count($values) -1)
+                $s .= ", ";
 
-        $i++;
-      }
+            $i++;
+        }
 
-      if(strlen($where) > 0)
-        $s .= " WHERE " . $where;
+        if(strlen($where) > 0)
+            $s .= " WHERE " . $where;
 
-      if(strlen($more) > 0)
-        $s .= " " . $more;
+        if(strlen($more) > 0)
+            $s .= " " . $more;
 
-      return $this->query($s);
+        return $this->query($s);
     }
 
     public function delete($table, $where, $more = ""){
-      global $log;
+        global $log, $obj;
+        $id = $this->insert_id;
 
-      $s = "DELETE FROM `$table`";
+        $s = "DELETE FROM `$table`";
 
-      if(strlen($where) > 0)
-        $s .= " WHERE " . $where;
+        if(strlen($where) > 0)
+            $s .= " WHERE " . $where;
 
-      if(strlen($more) > 0)
-        $s .= " " . $more;
+        if(strlen($more) > 0)
+            $s .= " " . $more;
 
-      return $this->query($s);
+        return $this->query($s);
     }
 
-    //  envoie les requêtes (méthodes précédentes) à la bdd //
     //  Warning: Declaration of Database::query($requete) should be compatible with mysqli::query($query, $resultmode = NULL)
     //  Depuis PHP7 il faut préciser quelle utilisation de $resultmode on va faire : MYSQLI_USE_RESULT ou MYSQLI_STORE_RESULT 
     //  Avant $resultmode = MYSQLI_USE_RESULT était appliqué par défaut
     //  mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
-    public function query($requete, $resultmode = MYSQLI_USE_RESULT){
-      global $log;
 
-      //  *** test
-      // echo '<br>'.__METHOD__.'<br>';
-      // var_dump($requete);
-      //  fin test 
+    /*  J'ai mis MYSQLI_USE_RESULT, je sais pas si c'est le cas. A changer quand je saurai ***/
+    public function query($requete, $resultmode = MYSQLI_USE_RESULT) {
+        global $log;
 
-      $log->i(trim($requete));
-      $m = microtime(TRUE);
-      $result = parent::query($requete);
-      $m = microtime(TRUE) - $m;
-      if($result === FALSE){
-        $log->e("SQL error : $this->error");
-        return FALSE;
-      }
-      $log->d("exec time: ".($m*1000)." ms");
-      return $result;
-    }
+        $log->i(trim($requete));
+        $m = microtime(TRUE);
+        $result = parent::query($requete);
 
-    //  Voir si auto_increment automatique ne serait pas mieux ? // 
-    //  si on doit ajouter un enregistrement : checke la prochaine valeur de l'auto_increment et l'affecte comme id à l'enregistrement 
-    public function next_id($table){
-      global $log, $mysqli;
+        //  *** test export 
+        // echo '<br>'.__METHOD__.' $requete : ';
+        // var_dump($requete);
+        //  fin test 
 
-      if($table === "personne"){
-        $result = $mysqli->select(
-          "variable",
-          ["*"],
-          "nom='PERSONNE_ID_MAX'"
-        );
-        if($result != FALSE && $result->num_rows == 1){
-          $row = $result->fetch_assoc();
-          $value = intval($row["valeur"]) +1;
-          $mysqli->update("variable", ["valeur" => $value], "nom='PERSONNE_ID_MAX'");
-          return $row["valeur"];
+        $m = microtime(TRUE) - $m;
+        if($result === FALSE){
+            $log->e("SQL error : $this->error");
+            return FALSE;
         }
-        return FALSE;
-      }
+        $log->d("exec time: ".($m*1000)." ms");
 
-      //  ***  Problème d'auto_increment pas (toujours) incrémenté //
-      //  Utilisé SELECT max(id) à la place de SELECT AUTO_INCREMENT ... FROM information_schema ... //
-      //  Voir morgan/todoM.txt sur Dropbox   //
-      $database_name = SQL_DATABASE_NAME;
-
-      //  *** autre requête pour récupérer la valeur de l'AI 
-      // $s = "SELECT AUTO_INCREMENT as id FROM information_schema.tables WHERE table_name='$table' AND table_schema='$database_name'";
-      $s = "SELECT max(id) from `$table`";
-
-      $result = $this->query($s);
-      if($result->num_rows != 1)
-          return FALSE;
-
-      $row = $result->fetch_assoc();
-      
-      //  *** Ajout 1 à la valeur retournée pour simuler l'auto_increment
-      // echo '<br>$row max(id) : ';
-      // var_dump($row);
-      $value = intval($row['max(id)']) +1;
-      // echo '<br>$value+1 : '.var_dump($value);
-
-      return $value;
+        return $result;
     }
 
     public function start_transaction(){
-      return $this->query("START TRANSACTION");
+        return $this->query("START TRANSACTION");
     }
 
     public function end_transaction(){
-      return $this->query("COMMIT");
+        return $this->query("COMMIT");
     }
 
     // À généraliser, j'en avais besoin je l'ai mis là tant qu'à
     // faire
     // [ id => personne ]
-    public function get_personnes($get_relations_conditions = TRUE)
-    {
-      $personnes = [];
-
-      /*
-        pas du tout optimal : je fais un premier select pour
-        avoir la liste des ids, puis un select par id
-        C'est juste pour pouvoir utiliser la fonction from_db où a
-        priori tous les cas sont traités
-      */
-      $results = $this->select("personne", ["id"]);
-      if($results != FALSE && $results->num_rows){
-        while($row = $results->fetch_assoc()){
-          $id = $row["id"];
-          $personne = new Personne($id);
-          //  *** tests-disppatch-database 
-          // $this->from_db($personne, $get_relations_conditions);
-          $personne->personne_from_db($personne->id, $get_relations_conditions);
-          $personnes[$id] = $personne;
+    public function get_personnes($get_relations_conditions = TRUE) {
+        $personnes = [];
+        /*
+            pas du tout optimal : je fais un premier select pour
+            avoir la liste des ids, puis un select par id
+            C'est juste pour pouvoir utiliser la fonction from_db où a
+            priori tous les cas sont traités
+        */
+        $results = $this->select("personne", ["id"]);
+        if($results != FALSE && $results->num_rows){
+            while($row = $results->fetch_assoc()){
+                $id = $row["id"];
+                $personne = new Personne($id);
+                // $this->from_db($personne, $get_relations_conditions);
+                $personne->personne_from_db($personne, $get_relations_conditions);
+                $personnes[$id] = $personne;
+            }
         }
-      }
-      return $personnes;
+        return $personnes;
     }
+
 
     //  *** à tester avec CSVExport::export_relations 
     // public function get_relations() {
@@ -279,6 +254,10 @@
         //  *** tests-dispatch-database
         /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
           pour pas avoir à tester si $obj est une personne par ex
+          Test export personnes ==> ok 
+          Test detail_personne et detail_acte ==> ok
+          Test import acte ==> ok
+          Test export relations ==> ok 
         */
         // if($obj instanceof Personne){
         //   $this->from_db_personne_noms_prenoms($obj);
@@ -291,7 +270,8 @@
           $this->from_db_acte_conditions($obj);
           $this->from_db_acte_relations($obj);
         }
-      }else{
+      }else{ 
+        // Pour import d'actes 
         if($obj instanceof Personne)
           $row = $this->from_db_by_same_personne($obj);
         else
@@ -302,6 +282,9 @@
         $obj->result_from_db($row);
       return $row;
     }
+
+    //  PRIVATE METHODS   //
+
 
     //  SELECT by id 
     private function from_db_by_id($obj){
@@ -315,6 +298,7 @@
         $row = $result->fetch_assoc();
       return $row;
     }
+
 
     //  SELECT by value 
     private function from_db_by_same($obj){
@@ -347,9 +331,12 @@
       return $row;
     }
 
+    //  *** tests-dispatch-database
+
     //  SELECT personne by nom ou prenom 
-    // private function from_db_personne_noms_prenoms($personne){
-    public function from_db_personne_noms_prenoms($personne){      
+    // private function from_db_personne_noms_prenoms($personne)'{'
+    public function from_db_personne_noms_prenoms($personne){ 
+      
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
         FROM prenom_personne INNER JOIN prenom
@@ -361,7 +348,7 @@
         while($row = $result->fetch_assoc())
           $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
       }
-    
+
       $result = $this->query("
         SELECT nom.id as n_id, nom, no_accent, attribut, ordre
         FROM nom_personne INNER JOIN nom
@@ -378,8 +365,15 @@
         }
       }
     }
-
-    //  SELECT personne by relation 
+    
+    //  *** tests-has-memory 
+    /*  *** appelée depuis personne_memory() : pas de re-création d'une personne déjà existante :
+    ==> Dans html_entities on a (par ex.) la personne source avec ses infos, 
+    on crée une new Personne($id) (has_memory()) pour récupérer les infos de la pers_destination, 
+    from_db_personne_relations() crée une nouvelle personne pour la pers_destination.
+    */
+    //  *** tests-dispatch-database
+    //  SELECT relations by personne 
     // private function from_db_personne_relations($personne){
     public function from_db_personne_relations($personne){
       $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
@@ -405,8 +399,8 @@
         }
       }
     }
-
-    //  SELECT personne by condition
+    
+    //  SELECT conditions by personne
     // private function from_db_personne_conditions($personne){
     public function from_db_personne_conditions($personne){
       $result = $this->select("condition", ["*"], "personne_id='$personne->id'");
@@ -425,7 +419,8 @@
       }
     }
 
-    //  SELECT acte_has_condition 
+    //  *** tests-dispatch-database
+    //  SELECT acte_has_condition conditions by acte  
     private function from_db_acte_conditions($acte){
       $result = $this->query("
         SELECT *
@@ -448,7 +443,8 @@
       }
     }
 
-    //  SELECT acte_has_relation 
+    //  *** tests-dispatch-database
+    //  SELECT acte_has_relation relations by acte 
     private function from_db_acte_relations($acte){
       $result = $this->query("
         SELECT *
@@ -471,7 +467,10 @@
       }
     }
 
-    //  SELECT conditions par acte 
+    //  public  //
+
+    //  *** tests-dispatch-database
+    //  SELECT actes by condition 
     public function from_db_condition_list_actes($condition){
       $result = $this->select(
         "acte_has_condition",
@@ -479,12 +478,17 @@
         "condition_id='$condition->id'"
       );
       if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc())
-          $condition->actes[] = new Acte($row["acte_id"]);
+        while($row = $result->fetch_assoc()) {
+          // $relation->actes[] = new Acte($row["acte_id"]);
+          $condition->actes[] = $row["acte_id"];
+        }
       }
     }
 
-    //  SELECT relations par acte 
+    //  *** tests-dispatch-database 
+    //  new Acte() manque pour CSVExport.php 
+    //  corrigé dans Relation->get_date() 
+    //  SELECT  actes by relation 
     public function from_db_relation_list_actes($relation){
       $result = $this->select(
         "acte_has_relation",
@@ -493,216 +497,230 @@
       );
       if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc())
-          $relation->actes[] = new Acte($row["acte_id"]);
+          // $relation->actes[] = new Acte($row["acte_id"]);
+          $relation->actes[] = $row["acte_id"];
       }
     }
+
+    //  PRIVATE METHODS   //
 
     //  SELECT personne by nom + prenom  
-    //  ==> factoriser avec from_db_personne_noms_prenoms ?   *** 
+    //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
+    //  pour alerte dans log.txt via from_db()
+    //  mais crée une nouvelle personne 
     private function from_db_by_same_personne($personne){
-      $ids = NULL;
-      $ids_tmp = NULL;
+        $ids = NULL;
+        $ids_tmp = NULL;
 
-      foreach($personne->noms as $k => $nom){
-        $result = $this->query("
-          SELECT personne_id
-          FROM nom_personne INNER JOIN nom
-          ON nom_personne.nom_id = nom.id
-          WHERE nom.no_accent = '$nom->no_accent'
-        ");
-        if($result === FALSE || $result->num_rows == 0)
-          return FALSE;
+        foreach($personne->noms as $k => $nom){
+            $result = $this->query("
+                SELECT personne_id
+                FROM nom_personne INNER JOIN nom
+                ON nom_personne.nom_id = nom.id
+                WHERE nom.no_accent = '$nom->no_accent'
+            ");
+            if($result === FALSE || $result->num_rows == 0)
+                return FALSE;
 
-        $ids_tmp = [];
-        while($row = $result->fetch_assoc())
-          $ids_tmp[] = $row["personne_id"];
+            $ids_tmp = [];
+            while($row = $result->fetch_assoc())
+                $ids_tmp[] = $row["personne_id"];   
 
-        if(isset($ids))
-          $ids = array_intersect($ids, $ids_tmp);
-        else
-          $ids = $ids_tmp;
+            //  ==> pourquoi cette condition ? $ids est toujours NULL, 
+            //  il n'a pas bougé depuis son init à NULL 
+            if(isset($ids)) 
+                $ids = array_intersect($ids, $ids_tmp);
+            else 
+                $ids = $ids_tmp;
 
-        if(count($ids) == 0)
-          return FALSE;
-      }
-
-      foreach($personne->prenoms as $k => $prenom){
-        $result = $this->query("
-        SELECT personne_id
-        FROM prenom_personne INNER JOIN prenom
-        ON prenom_personne.prenom_id = prenom.id
-        WHERE prenom.no_accent = '$prenom->no_accent'
-        ");
-        if($result === FALSE || $result->num_rows == 0)
-          return NULL;
-
-        $ids_tmp = [];
-        while($row = $result->fetch_assoc())
-          $ids_tmp[] = $row["personne_id"];
-
-        if(isset($ids))
-          $ids = array_intersect($ids, $ids_tmp);
-        else
-          $ids = $ids_tmp;
-
-        if(count($ids) == 0)
-          return NULL;
-      }
-
-      if(isset($ids)){
-        return ["id" => array_shift($ids)];
-      }
-      return NULL;
-    }
-
-    //  attribuer une id aux objets (depuis le xml, ou depuis la bdd si différents) 
-    private function updated_values($values_db, $values_obj){
-      $updated = [];
-
-      if($values_db == NULL)
-        return $values_obj;
-
-      foreach($values_obj as $key => $val){
-        if(!isset($values_db[$key]) || $values_db[$key] != $val)
-          $updated[$key] = $val;
-      }
-
-      return $updated;
-    }
-
-    //  stocke toutes les données avec id avant enregistrement 
-    public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE){
-      $result = FALSE;
-      $new_id = NULL;
-
-      if(!$force_insert && !$obj->pre_into_db())
-        return;
-
-      if(!$skip_check_same)
-        $values_db = $this->from_db($obj, FALSE, FALSE);
-      if(isset($values_db["id"]))
-        $obj->id = $values_db["id"];
-      $values_obj = $obj->values_into_db();
-      $values_updated = $this->updated_values($values_db, $values_obj);
-
-      if(isset($values_db, $obj->id))
-        $result = $this->into_db_update($obj, $values_updated);
-      else
-        $result = $this->into_db_insert($obj, $values_updated);
-
-      $obj->post_into_db();
-
-      if($result === FALSE)
-        return FALSE;
-      return $obj->id;
-    }
-
-    //  données pour UPDATE 
-    private function into_db_update($obj, $values){
-      if(count($values) == 0)
-        return TRUE;
-
-      return $this->update(
-        $obj->get_table_name(),
-        $values,
-        "id='$obj->id'"
-      );
-    }
-
-    //  données pour insert  
-    private function into_db_insert($obj, $values){
-      global $log;
-      $new_id = NULL;
-      $result = FALSE;
-      $max_try = 2;
-
-      while($result === FALSE && $max_try > 0){
-        if(!isset($obj->id)){
-          $new_id = $this->next_id($obj->get_table_name());
-          if($new_id == 0){
-            $log->e("Aucun nouvel id trouvé pour l'insert dans $obj->table_name");
-            return FALSE;
-          }
-          $obj->id = $new_id;
+            if(count($ids) == 0)
+                return FALSE;
         }
 
-        $values["id"] = $obj->id;
-        $result = $this->insert($obj->get_table_name(), $values);
-        $max_try--;
-      }
-      return $result;
+        foreach($personne->prenoms as $k => $prenom){
+            $result = $this->query("
+                SELECT personne_id
+                FROM prenom_personne INNER JOIN prenom
+                ON prenom_personne.prenom_id = prenom.id
+                WHERE prenom.no_accent = '$prenom->no_accent'
+            ");
+            if($result === FALSE || $result->num_rows == 0)
+            return NULL;
+
+            $ids_tmp = [];
+            while($row = $result->fetch_assoc())
+                $ids_tmp[] = $row["personne_id"];
+
+            //  *** $ids = $ids_tmp du foreach $personne->noms 
+            if(isset($ids)) 
+                $ids = array_intersect($ids, $ids_tmp);
+            else 
+                $ids = $ids_tmp;
+
+            if(count($ids) == 0)
+                return NULL;
+        } 
+
+        //  *** test sans-nom 
+        // if(isset($ids)){
+        //     //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
+        //     //  il faut ou créer une nouvelle personne et alerter via log.txt 
+
+        //     return ["id" => array_shift($ids)];     //  ==> remplacer array_shift ? 
+
+        // }
+        
+        // return NULL;
+        //  retourne les ids des identiques pour l'alerte 
+        return $ids;
     }
 
-    //  INSERT données pour prenom personne 
+    //  *** Cette méthode renvoie $values_obj 
+    private function updated_values($values_db, $values_obj){
+        $updated = [];
+
+        if($values_db == NULL)
+            return $values_obj;
+
+        foreach($values_obj as $key => $val){
+            if(!isset($values_db[$key]) || $values_db[$key] != $val)
+                $updated[$key] = $val;
+        }
+
+        return $updated;
+    }
+
+    //  PUBLIC  //
+
+    public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
+        $result = FALSE;
+
+        if(!$force_insert && !$obj->pre_into_db())
+            return;
+
+        if(!$skip_check_same) {
+            $values_db = $this->from_db($obj, FALSE, FALSE);
+        }
+        if(isset($values_db["id"])) {
+            $obj->id = $values_db["id"];
+        }
+        $values_obj = $obj->values_into_db();
+        $values_updated = $this->updated_values($values_db, $values_obj);
+
+        if(isset($values_db, $obj->id))
+            $result = $this->into_db_update($obj, $values_updated);
+        else
+            $result = $this->into_db_insert($obj, $values_updated);
+
+        $obj->post_into_db();
+
+        if($result === FALSE)
+            return FALSE;
+        
+        return $obj->id;
+    }
+
+    //  PRIVATE METHODS   //
+
+    //  *** ne sert que là, on peut pas la défactoriser ? 
+    //  Non : elle appelle get_table_name() de toutes les classes 
+    //  et c'est préférable de n'avoir que des variables et méthodes dans into_db() 
+    private function into_db_update($obj, $values){
+        if(count($values) == 0)
+            return TRUE;
+
+        return $this->update(
+            $obj->get_table_name(),
+            $values,
+            "id='$obj->id'"
+        );
+    }
+
+    private function into_db_insert($obj, $values){
+        global $log;
+        $result = FALSE;
+        $max_try = 2;
+
+        while($result === FALSE && $max_try > 0){
+            $values["id"] = $obj->id;
+            $result = $this->insert($obj->get_table_name(), $values);
+            $max_try--;
+        }
+        return $result;
+    }
+
+    //  PUBLIC  //
+
+
     public function into_db_prenom_personne($personne, $prenom, $ordre){
-      $values = [
-        "personne_id" => $personne->id,
-        "prenom_id" => $prenom->id,
-        "ordre" => $ordre
-      ];
-      return $this->insert(
-        "prenom_personne",
-        $values,
-        "ON DUPLICATE KEY UPDATE ordre='$ordre'"
-      );
+
+        $values = [
+            "personne_id" => $personne->id,
+            "prenom_id" => $prenom->id,
+            "ordre" => $ordre
+        ];
+        return $this->insert(
+            "prenom_personne",
+            $values,
+            "ON DUPLICATE KEY UPDATE ordre='$ordre'"
+        );
     }
 
     //  INSERT données pour nom personne 
     public function into_db_nom_personne($personne, $nom, $ordre){
-      $values = [
-        "personne_id" => $personne->id,
-        "nom_id" => $nom->id,
-        "ordre" => $ordre
-      ];
-      $attr = "";
-      if(isset($nom->attribut)){
-        $values["attribut"] = $nom->attribut;
-        $attr = ", attribut='$nom->attribut'";
-      }
-      return $this->insert(
-        "nom_personne",
-        $values,
-        "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"
-      );
+        $values = [
+            "personne_id" => $personne->id,
+            "nom_id" => $nom->id,
+            "ordre" => $ordre
+        ];
+        $attr = "";
+        if(isset($nom->attribut)){
+            $values["attribut"] = $nom->attribut;
+            $attr = ", attribut='$nom->attribut'";
+        }
+        return $this->insert(
+            "nom_personne",
+            $values,
+            "ON DUPLICATE KEY UPDATE ordre='$ordre'$attr"
+        );
     }
 
     //  INSERT données pour acte_has_relation 
     public function into_db_acte_has_relation($acte, $relation){
-      return $this->query("
-      INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
-      ");
+        return $this->query("
+            INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
+        ");
     }
 
     //  INSERT données pour acte_has_condition
     public function into_db_acte_has_condition($acte, $condition){
-      return $this->query("
-      INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
-      ");
+        return $this->query("
+            INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
+        ");
     }
 
-    /*
-    Supprime de la base les personnes de la liste qui n''apparaissent dans aucune table.
-    Renvoie la liste des personnes supprimées.
-    */
-    public function purge_personnes($personnes)
-    {
-      $removed = [];
+    // //  *** tests-dispatch-database
+    // //  déplacé dans Personne  
+    // /*
+    // Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
+    // Renvoie la liste des personnes supprimées.
+    // */
+    // public function purge_personnes($personnes) {
+    //     $removed = [];
 
-      foreach($personnes as $personne)
-      {
-        if($personne->remove_from_db(FALSE))
-          $removed[] = $personne;
-      }
+    //     foreach($personnes as $personne) {
+    //         if($personne->remove_from_db(FALSE))
+    //         $removed[] = $personne;
+    //     }
+    //     return $removed;
+    // }
 
-      return $removed;
-    }
-
-    //  supprime les nom ou prénoms sans personne_id 
-    //  ==> l'ajouter à $personne->remove_from_db ou dans Database::purge_personnes ? *** 
+    //  *** Appelée dans Acte::remove_from_db() 
     public function remove_unused_prenoms_noms(){
-      $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
-      $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");
+        $this->delete("prenom", "id NOT IN (SELECT prenom_id FROM prenom_personne)");
+        $this->delete("nom", "id NOT IN (SELECT nom_id FROM nom_personne)");
     }
+
   }
 
 ?>
