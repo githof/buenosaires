@@ -51,6 +51,7 @@ class Relation implements DatabaseIO {
         return $this->personne_source->id == $id;
     }
 
+    
     //  *** bug-csvexport
     //  ajouté création new Acte() 
     //  méthode appelée nulle part ailleurs : pas de bug à cause de ça . 

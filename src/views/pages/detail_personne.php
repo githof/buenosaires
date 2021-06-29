@@ -52,7 +52,9 @@ if(can_access($access_pages["dissocier"])){?>
     <h4>CONDITIONS</h4>
     <div>
         <?php // *** contourné re-création new personne() dans html_entities::has_memory 
-            echo html_conditions($personne->conditions, FALSE); ?>
+            echo html_conditions($personne->conditions, FALSE);
+            
+        ?>
     </div>
 </section>
 <section>
