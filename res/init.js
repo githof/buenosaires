@@ -91,7 +91,8 @@ function add_personne_auto_complete_personne(id, html, $div_form, max){
 function send_auto_complete_personne_query(findme, $div_results, $div_form, max){
     $(".autocomplete-search").show();
     $.get("get?s=auto_complete_personne&str="+findme, function(data, status){
-        console.log(data);
+        console.log(`findme : ${findme}`);  //  ok 
+        console.log(`data : ${data}`);  //  *** ne récupère pas les données de la bdd
         $div_results.html("");
         var $data = $("<div>"+data+"</div>");
         $.each($data.children().toArray(), function(index, value){
@@ -173,6 +174,7 @@ $(document).ready(function(){
     $(".autocomplete-search").hide();
     $("input[name='autocomplete']").bind('input keyup', function(){
         var $this = $(this);
+        // console.log(`$this : ${this}`); 
         var delay = 1000;
         var val = $this.val();
 

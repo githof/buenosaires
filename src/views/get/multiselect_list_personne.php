@@ -11,7 +11,8 @@ function all_personnes(){
     if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $personne = new Personne($row["id"]);
-            $mysqli->from_db($personne);
+            // $mysqli->from_db($personne);
+            $personne->from_db($personne);
             $html = "";
 
             $html .= " [$personne->id]";

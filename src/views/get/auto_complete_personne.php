@@ -1,6 +1,5 @@
 <?php
 
-//  *** Voir si factoriser cette fonction avec src/views/get/multiselect_list_personne.php all_personnes() ? 
 function list_personne(){
     global $mysqli;
     $personnes = [];
@@ -9,7 +8,8 @@ function list_personne(){
     if($results != FALSE && $results->num_rows > 0){
         while($row = $results->fetch_assoc()){
             $personne = new Personne($row["id"]);
-            $mysqli->from_db($personne);
+            // $mysqli->from_db($personne);
+            $personne->from_db($personne, TRUE);
             $str = "";
 
             $str .= " [$personne->id]";

@@ -23,7 +23,7 @@
     }
 
 
-    //  METHODES POUR EFFECTUER LES REQUETES (CRUD) À ENVOYER À LA BDD   //
+    //  METHODES POUR EFFECTUER LES REQUETES (CRUD) À ENVOYER À LA BDD via query()   //
 
     public function select($table, $columns, $where = "", $more = "") { 
       global $log;
@@ -34,7 +34,14 @@
           that implements Countable 
           $columns est un string 
       ***/
-      for($i = 0; $i < count($columns); $i++){
+      //  *** test export 
+    //   echo '<br>'.__METHOD__.' $columns : ';
+    //   var_dump($columns);
+      //    ==> $columns : string(1) "*" 
+      //    Alors qu'un tableau est envoyé : Database::from_db_by_id() 
+      //  fin test 
+
+      for($i = 0; $i < count([$columns]); $i++){
           $s .= $columns[$i];
           if($i < count($columns) -1)
               $s .= ", ";
@@ -195,7 +202,7 @@
                 $id = $row["id"];
                 $personne = new Personne($id);
                 // $this->from_db($personne, $get_relations_conditions);
-                $personne->personne_from_db($personne, $get_relations_conditions);
+                $personne->from_db($personne, $get_relations_conditions);
                 $personnes[$id] = $personne;
             }
         }
@@ -249,15 +256,16 @@
 
       $log->d("from database: ".get_class($obj)." id=$obj->id");
       $row = NULL;
-      if(isset($obj->id)){
-        $row = $this->from_db_by_id($obj);
-        //  *** tests-dispatch-database
+      //  *** tests-dispatch-database
+    //   if(isset($obj->id)){
+    //     $row = $this->from_db_by_id($obj);
         /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
           pour pas avoir à tester si $obj est une personne par ex
           Test export personnes ==> ok 
           Test detail_personne et detail_acte ==> ok
           Test import acte ==> ok
           Test export relations ==> ok 
+          Test fusion et dissocier --> bloquées par cors *** 
         */
         // if($obj instanceof Personne){
         //   $this->from_db_personne_noms_prenoms($obj);
@@ -265,16 +273,17 @@
         //     $this->from_db_personne_relations($obj);
         //     $this->from_db_personne_conditions($obj);
         //   }
-        // }else 
+        // } else 
         if($obj instanceof Acte && $get_relations_conditions){
           $this->from_db_acte_conditions($obj);
           $this->from_db_acte_relations($obj);
-        }
+        // }
       }else{ 
         // Pour import d'actes 
-        if($obj instanceof Personne)
-          $row = $this->from_db_by_same_personne($obj);
-        else
+        //  *** tests-dispatch-database 
+        // if($obj instanceof Personne)
+        //   $row = $this->from_db_by_same_personne($obj);
+        // else
           $row = $this->from_db_by_same($obj);
       }
 
@@ -287,8 +296,10 @@
 
 
     //  SELECT by id 
-    private function from_db_by_id($obj){
+    // private function from_db_by_id($obj){
+    public function from_db_by_id($obj){
       $row = NULL;
+      
       $result = $this->select(
         $obj->get_table_name(),
         ["*"],
@@ -508,9 +519,15 @@
     //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
     //  pour alerte dans log.txt via from_db()
     //  mais crée une nouvelle personne 
-    private function from_db_by_same_personne($personne){
+    // private function from_db_by_same_personne($personne){
+    public function from_db_by_same_personne($personne){
         $ids = NULL;
         $ids_tmp = NULL;
+
+        //  *** test export 
+        echo '<br>'.__METHOD__.' $personne : ';
+        var_dump($personne);
+        //  fin test 
 
         foreach($personne->noms as $k => $nom){
             $result = $this->query("
@@ -598,9 +615,10 @@
         if(!$force_insert && !$obj->pre_into_db())
             return;
 
-        if(!$skip_check_same) {
-            $values_db = $this->from_db($obj, FALSE, FALSE);
-        }
+        //  *** Tester si $obj == quelle classe, pour appeler le bon from_db()
+        // if(!$skip_check_same) {
+        //     $values_db = $this->from_db($obj, FALSE, FALSE);
+        // }
         if(isset($values_db["id"])) {
             $obj->id = $values_db["id"];
         }

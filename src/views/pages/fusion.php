@@ -1,6 +1,7 @@
 <?php
 
 include_once(ROOT."src/html_entities.php");
+include_once(ROOT."src/class/model/Personne.php");
 
 
 function has_same_id($array, $id){
@@ -189,7 +190,8 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     global $mysqli;
 
     $personne = new Personne($personne_id_old);
-    $mysqli->from_db($personne);
+    // $mysqli->from_db($personne);
+    $personne->from_db($personne);
 
     $actes = [];
 
@@ -430,7 +432,7 @@ function html_select_personnes(){
         <section class='max-2'>
             <h4>Choisir deux personnes à fusionner</h4>
             <div>
-                <input type='text' name='autocomplete' placeholder='Recherche parmis les personnes'>
+                <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
                 <span class='autocomplete-search'>recherche en cours ...</span>
             </div>
             <div id='auto-complete-results'>
@@ -613,8 +615,10 @@ if(isset($ARGS["personne-A"],
     $personne_A = new Personne($ARGS["personne-A"]);
     $personne_B = new Personne($ARGS["personne-B"]);
 
-    $mysqli->from_db($personne_A);
-    $mysqli->from_db($personne_B);
+    // $mysqli->from_db($personne_A);
+    $personne->from_db($personne_A);
+    // $mysqli->from_db($personne_B);
+    $personne->from_db($personne_B);
 
     $noms = parse_noms($ARGS["noms"]);
     $prenoms = parse_prenoms($ARGS["prenoms"]);
@@ -634,8 +638,10 @@ if(isset($ARGS["personne-A"],
 }else if(isset($ARGS["personne-A"], $ARGS["personne-B"])){
     $personne_A = new Personne($ARGS["personne-A"]);
     $personne_B = new Personne($ARGS["personne-B"]);
-    $mysqli->from_db($personne_A);
-    $mysqli->from_db($personne_B);
+    // $mysqli->from_db($personne_A);
+    // $mysqli->from_db($personne_B);
+    $personne->from_db($personne_A);
+    $personne->from_db($personne_B);
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{

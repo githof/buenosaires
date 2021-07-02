@@ -11,7 +11,7 @@ $post_id = $url_parsed["id"];
 $personne = new Personne($url_parsed["id"]);    //  *** création new Personne() 
 //  *** tests-dispatch-database 
 // $result = $mysqli->from_db($personne, TRUE);    //  *** Pas de re-création 
-$result = $personne->personne_from_db($personne->id, TRUE);    //  *** Pas de re-création 
+$result = $personne->from_db($personne, TRUE);    //  *** Pas de re-création 
 
 if($result == NULL){
 ?>

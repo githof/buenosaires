@@ -167,17 +167,28 @@ class Personne implements DatabaseIO {
 
     //  PUBLIC  //
 
-    public function personne_from_db($id, $get_relations_conditions) {
+    public function from_db($obj, $get_relations_conditions) {
         global $mysqli;
 
         //  *** tests-dispatch-database 
-        $mysqli->from_db_personne_noms_prenoms($this);
-        if($get_relations_conditions){
-            // $this->from_db_personne_relations($this->id);
-            // $this->from_db_personne_conditions($this->id);
-            $mysqli->from_db_personne_relations($this);
-            $mysqli->from_db_personne_conditions($this);
-        }
+
+        //  *** tests-dispatch-database  
+        // echo '<br>'.__METHOD__.' $obj : ';
+        // var_dump($obj);
+        //  fin test 
+
+        if(isset($obj->id)){
+            $row = $mysqli->from_db_by_id($obj);
+            $mysqli->from_db_personne_noms_prenoms($this);
+            if($get_relations_conditions){
+                // $this->from_db_personne_relations($this->id);
+                // $this->from_db_personne_conditions($this->id);
+                $mysqli->from_db_personne_relations($this);
+                $mysqli->from_db_personne_conditions($this);
+            } 
+        } else 
+            $row = $mysqli->from_db_by_same_personne($obj);
+      
         return $this;
     }
 

@@ -35,7 +35,8 @@ $html = "";
 
 if(isset($ARGS["id"])){
     $personne = new Personne($ARGS["id"]);
-    if($mysqli->from_db($personne) != NULL){
+    // if($mysqli->from_db($personne) != NULL){
+    if($personne->from_db($personne) != NULL){
         $html = html_personne_fusion($personne);
     }
 }
