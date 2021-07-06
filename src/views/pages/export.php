@@ -17,7 +17,7 @@ include_once(ROOT."src/utils.php");
 //  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
 //  on verra comment on gère ça mais oui 
 
-//  balise-a    //  
+//  balise a (remplacée)    //  
 function html_section_titre($title, $href, $label) {
     return '
         <section>
@@ -30,7 +30,6 @@ function html_section_titre($title, $href, $label) {
         </section>
     ';
 }
-
 function html_export_lien($href, $label) {
     return '<div>
                 <a class="btn btn-info btn-sm bold" href="'. $href .'">'
@@ -38,7 +37,6 @@ function html_export_lien($href, $label) {
                 '</a>
             </div>';
 }
-
 function page_export_lien() {
     global $ARGS;
     if(isset($ARGS["export"])){
@@ -125,17 +123,18 @@ function html_form_group_export($contents) {
 }
 
 function html_export_actes() {
-    $contents = '<h4>Tous les actes</h4>
-                <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
-    $contents .= html_radio_export('', '', 'Tous les actes');
+    $contents = '<h4>Tous les actes</h4>';
+                // <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    // $contents .= html_form_group_export(html_radio_export('', '1', 'Tous les actes'));
 
     return $contents;
 }
 
 function html_export_personnes() {
-    $contents = '<h4>Tous les personnes</h4>
-    <p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
-    $contents .= html_radio_export('', '', 'Toutes les personnes');
+    $contents = '<h4>Tous les personnes</h4>';
+    // <p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'));
+    
     return $contents;
 }
 
@@ -150,9 +149,7 @@ function html_export_relations() {
                 . html_form_group_export(html_radio_export('names', 1, 'Avec les noms').'<br>'
                                         .html_radio_export('names', 0, 'Sans les noms')) 
                 . html_form_group_export(html_radio_export('deux_sens', 1, 'Dans les 2 sens').'<br>'
-                                        .html_radio_export('deux_sens', 0, 'Dans 1 seul sens')) ;
-                // . html_form_group_export(html_radio_export('dates', TRUE, 'Dans les 2 sens') . '<br>'
-                //                                     . html_radio_export('dates', FALSE, 'Sens normal')) ;
+                                        .html_radio_export('deux_sens', 0, 'Dans 1 seul sens'));
     $contents .= '</div>';
 
     return $contents;
@@ -169,28 +166,11 @@ function html_form_export($objet, $data_export) {
             '</form>';
 }
 
-//  *** remplacé par html_form_export() // 
-// function html_form_wrap($action, $method) { 
-//     return '<form  action="' . $action . '" method="' . $method . '">'
-//             . html_form_group(html_select_export(''))   
-//             . html_form_group(html_submit('', 'Exporter')) . 
-//             '</form>';
-// }
-//  *** remplacé par html_tab_contents() // 
-// function html_section($action, $method) {   
-//     return '
-//         <section>
-//             <h4>'. 'Données à exporter' . '</h4>'    
-//             . html_form_wrap($action, $method) .    
-//         '</section>
-//     ';   
-// }
-
 
 //  *** tabs Actes / Personnes / Relations 
 
 //  *** $objet à la place de $acte_or_personne // 
-function html_tabpanel($class, $objet, $data_export) {      //  id="'.$data_export.'" // 
+function html_tabpanel($class, $objet, $data_export) { 
     return '<div role="tabpanel" class="tab-pane '
         . $class . '" id="' . $objet . '">  
                 <section>
@@ -211,13 +191,13 @@ function html_tab_contents() {
 }
 
 function page_export() {
-    // if(isset($_REQUEST["data_export"])){     //  $_REQUEST stocke aussi l'URI 
-    if(isset($_POST["data_export"])){
 
-        // switch($_REQUEST["data_export"]){
+    if(isset($_POST["data_export"])){
         switch($_POST["data_export"]){
             case "all_actes":
-                    echo appel_export_statique('XMLExport', 'export_all', '', '', '', '', '');  //  export, '4968',
+                echo appel_export_statique('XMLExport', 'export_all', '', '', '', '', '');  //  export, '4968',
+                // echo '<br>'.__METHOD__.'<br>post : ';
+                // var_dump($_POST);
                 break;
             case "all_personnes":
                     echo appel_export_statique('CSVExport', 'export_personnes', '', '', '', '', '');
@@ -240,22 +220,13 @@ function page_export() {
                 // $page_title = "Page introuvable";
         }
     } else {
-        //  *** remplacé par html_tab_titles et html_tab_contents :
-        // echo html_section();
         echo html_tab_titles();
         echo html_tab_contents();
-
-        // echo '<br>'.__METHOD__;
-        // echo '<br>post : ';
-        // var_dump($_POST);
     }
 }
 
-// echo page_export_lien(); 
 echo page_export(); 
 
-
-// var_dump($_POST);
 
 ?>
 
