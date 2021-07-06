@@ -245,7 +245,7 @@ class CSVExport implements ExportInterface {
         }
 
         //  timeline 
-        fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
+        // fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
         // echo '<br>$fichier : ';
         // var_dump(self::$fichier);
         // fputcsv(self::$out, array(self::$fichier));

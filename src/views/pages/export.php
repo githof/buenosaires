@@ -123,16 +123,18 @@ function html_form_group_export($contents) {
 }
 
 function html_export_actes() {
-    $contents = '<h4>Tous les actes</h4>
-                <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
-    $contents .= html_form_group_export(html_radio_export('', '1', 'Tous les actes'));
+    $contents = '<h4>Tous les actes</h4>';
+                // <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    // $contents .= html_form_group_export(html_radio_export('', '1', 'Tous les actes'));
+
     return $contents;
 }
 
 function html_export_personnes() {
-    $contents = '<h4>Tous les personnes</h4>
-    <p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
-    $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'));
+    $contents = '<h4>Tous les personnes</h4>';
+    // <p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'));
+    
     return $contents;
 }
 

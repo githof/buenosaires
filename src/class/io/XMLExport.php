@@ -78,7 +78,7 @@ class XMLExport implements ExportInterface {
             }
         }
         //  timeline 
-        fputs(self::$out, date('Y-m-d_H-i-s'));
+        // fputs(self::$out, date('Y-m-d_H-i-s'));
         // echo '<br>$fichier : ';
         // var_dump(self::$fichier);
         
