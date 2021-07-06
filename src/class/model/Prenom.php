@@ -2,11 +2,14 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
+include_once(ROOT."src/class/io/PreDatabase.php");
+
+
 /*
   Nom et Prenom pourraient hériter d'une même classe...
  */
 
-class Prenom implements DatabaseIO{
+class Prenom extends PreDatabase implements DatabaseIO{
 
     public $id;
 

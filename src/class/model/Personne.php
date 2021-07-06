@@ -1,12 +1,15 @@
 <?php
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
+
+include_once(ROOT."src/class/io/PreDatabase.php");
+
 include_once(ROOT."src/class/model/Nom.php");
 include_once(ROOT."src/class/model/Prenom.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Personne implements DatabaseIO {
+class Personne extends PreDatabase implements DatabaseIO {
 
     public $id;
 
@@ -167,30 +170,53 @@ class Personne implements DatabaseIO {
 
     //  PUBLIC  //
 
-    public function from_db($obj, $get_relations_conditions) {
-        global $mysqli;
+    // public function from_db($obj, $get_relations_conditions) {
+    //     global $mysqli;
 
-        //  *** tests-dispatch-database 
-
-        //  *** tests-dispatch-database  
-        // echo '<br>'.__METHOD__.' $obj : ';
-        // var_dump($obj);
-        //  fin test 
-
-        if(isset($obj->id)){
-            $row = $mysqli->from_db_by_id($obj);
-            $mysqli->from_db_personne_noms_prenoms($this);
-            if($get_relations_conditions){
-                // $this->from_db_personne_relations($this->id);
-                // $this->from_db_personne_conditions($this->id);
-                $mysqli->from_db_personne_relations($this);
-                $mysqli->from_db_personne_conditions($this);
-            } 
-        } else 
-            $row = $mysqli->from_db_by_same_personne($obj);
+    //     if(isset($obj->id)){
+    //         $row = $mysqli->from_db_by_id($obj);
+    //         $mysqli->from_db_personne_noms_prenoms($this);
+    //         if($get_relations_conditions){
+    //             // $this->from_db_personne_relations($this->id);
+    //             // $this->from_db_personne_conditions($this->id);
+    //             $mysqli->from_db_personne_relations($this);
+    //             $mysqli->from_db_personne_conditions($this);
+    //         } 
+    //     } else 
+    //         $row = $mysqli->from_db_by_same_personne($obj);
       
-        return $this;
-    }
+    //     return $this;
+    // }
+
+    // public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
+    //     global $mysqli;
+    //     $result = FALSE;
+
+    //     if(!$force_insert && !$obj->pre_into_db())
+    //         return;
+
+    //     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db()
+    //     if(!$skip_check_same) {
+    //         $values_db = $personne->from_db($obj, FALSE, FALSE);
+    //     }
+    //     if(isset($values_db["id"])) {
+    //         $obj->id = $values_db["id"];
+    //     }
+    //     $values_obj = $obj->values_into_db();
+    //     $values_updated = $mysqli->updated_values($values_db, $values_obj);
+
+    //     if(isset($values_db, $obj->id))
+    //         $result = $this->into_db_update($obj, $values_updated);
+    //     else
+    //         $result = $this->into_db_insert($obj, $values_updated);
+
+    //     $obj->post_into_db();
+
+    //     if($result === FALSE)
+    //         return FALSE;
+        
+    //     return $obj->id;
+    // }
 
     public function get_relations_by_type() {
         $this->dispatch_relations_by_type();
@@ -224,11 +250,13 @@ class Personne implements DatabaseIO {
             return FALSE;
 
         foreach($this->prenoms as $prenom){
-            $mysqli->into_db($prenom);
+            // $mysqli->into_db($prenom);
+            $this->into_db($prenom);
         }
 
         foreach($this->noms as $nom){
-            $mysqli->into_db($nom);
+            // $mysqli->into_db($nom);
+            $this->into_db($nom);
         }
 
         return TRUE;
@@ -266,10 +294,12 @@ class Personne implements DatabaseIO {
         $mysqli->end_transaction();
 
         foreach($this->relations as $relation)
-            $mysqli->into_db($relation);
+            // $mysqli->into_db($relation);
+            $this->into_db($relation);
 
         foreach($this->conditions as $condition)
-            $mysqli->into_db($condition);
+            // $mysqli->into_db($condition);
+            $this->into_db($condition);
 
         if(isset($this->xml)){
             $attributesXML = $this->xml->attributes();

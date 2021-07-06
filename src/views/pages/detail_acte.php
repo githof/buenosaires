@@ -25,8 +25,10 @@ isset($_POST["raw_xml"], $_POST["source_id"])){
 $post_id = $url_parsed["id"];
 
 $page_title = "Acte {$url_parsed["id"]}";
-$acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
-$result = $mysqli->from_db($acte, TRUE);    //  *** re-création d'actes dans from_db_condition_list_acte($condition) et dans from_db_relation_list_actes($relation) 
+// $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
+$obj = new Acte($url_parsed["id"]); 
+// $result = $mysqli->from_db($acte, TRUE);    //  *** re-création d'actes dans from_db_condition_list_acte($condition) et dans from_db_relation_list_actes($relation) 
+$result = $obj->from_db($obj, TRUE); 
 if(!isset($result)){
 ?>
 <div>
@@ -63,47 +65,61 @@ if(!isset($result)){
 <section>
     <h4>ID</h4>
     <div id="acte-id">
-        <?php echo $acte->id ?>
+        <?php //    echo $acte->id
+            echo $obj->id
+        ?>
     </div>
 </section>
 <section>
     <h4>EPOUX</h4>
     <div>
-        <?php if(isset($acte->epoux))
-            echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+        <?php //    if(isset($acte->epoux))
+            if(isset($obj->epoux))
+            // echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+            echo html_personne(personne_memory($obj->epoux->id), TRUE, TRUE, FALSE);
         ?>
     </div>
 </section>
 <section>
     <h4>EPOUSE</h4>
     <div>
-        <?php if(isset($acte->epouse))
-                echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+        <?php //    if(isset($acte->epouse))
+            if(isset($obj->epouse))
+                // echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+                echo html_personne(personne_memory($obj->epouse->id), TRUE, TRUE, FALSE);
         ?>
     </div>
 </section>
 <section>
     <h4>DATE</h4>
     <div>
-        <?php echo html_date($acte->date_start, $acte->date_end); ?>
+        <?php //    echo html_date($acte->date_start, $acte->date_end);
+            echo html_date($obj->date_start, $obj->date_end);
+        ?>
     </div>
 </section>
 <section>
     <h4>CONDITIONS</h4>
     <div>
-        <?php echo html_conditions($acte->conditions); ?>
+        <?php //    echo html_conditions($acte->conditions); 
+            echo html_conditions($obj->conditions);
+        ?>
     </div>
 </section>
 <section>
     <h4>RELATIONS</h4>
     <div>
-        <?php echo html_relations($acte->relations); ?>
+        <?php //    echo html_relations($acte->relations); 
+            echo html_relations($obj->relations);
+        ?>
     </div>
 </section>
 <section>
     <h4>CONTENU BRUT</h4>
     <div>
-        <?php echo $acte->get_contenu(); ?>
+        <?php //    echo $acte->get_contenu(); 
+            echo $obj->get_contenu();
+        ?>
     </div>
 </section>
 <section>
@@ -118,9 +134,12 @@ if(!isset($result)){
     <div>
         <div class='acte-contenu xmlselect-edit'>
             <form method='post' id='form-raw-xml'>
-                <input type='hidden' name='source_id' value='<?php echo $acte->source_id; ?>'>
+                <!-- <input type='hidden' name='source_id' value='<?php //  echo $acte->source_id; ?>'> -->
+                <input type='hidden' name='source_id' value='<?php echo $obj->source_id; ?>'>
                 <textarea style='display: none;' id='raw-xml' name='raw_xml'>
-                    <?php echo $acte->get_contenu(); ?>
+                    <?php //    echo $acte->get_contenu(); 
+                        echo $obj->get_contenu(); 
+                    ?>
                 </textarea>
             </form>
         </div>

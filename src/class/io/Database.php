@@ -34,7 +34,7 @@
           that implements Countable 
           $columns est un string 
       ***/
-      //  *** test export 
+      //  *** tests-dispatch-database  
     //   echo '<br>'.__METHOD__.' $columns : ';
     //   var_dump($columns);
       //    ==> $columns : string(1) "*" 
@@ -241,56 +241,56 @@
     }
 
     //  tous les cas de SELECT avant d'envoyer la requete INSERT 
-    public function from_db($obj,
-      $update_obj = FALSE,
-      $get_relations_conditions = TRUE){
-      /*
-        De ce qu'il me semble, $update_obj sert à renseigner l'id
-        de $obj s'il ne l'est pas.
-        En tout cas il ne sert à pas à indiquer si on veut
-        modifier $obj :
-        en pratique $obj est toujours rempli par les fonctions
-        appelées ici.
-      */
-      global $log;
+    // public function from_db($obj,
+    //   $update_obj = FALSE,
+    //   $get_relations_conditions = TRUE){
+    //   /*
+    //     De ce qu'il me semble, $update_obj sert à renseigner l'id
+    //     de $obj s'il ne l'est pas.
+    //     En tout cas il ne sert à pas à indiquer si on veut
+    //     modifier $obj :
+    //     en pratique $obj est toujours rempli par les fonctions
+    //     appelées ici.
+    //   */
+    //   global $log;
 
-      $log->d("from database: ".get_class($obj)." id=$obj->id");
-      $row = NULL;
-      //  *** tests-dispatch-database
-    //   if(isset($obj->id)){
-    //     $row = $this->from_db_by_id($obj);
-        /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
-          pour pas avoir à tester si $obj est une personne par ex
-          Test export personnes ==> ok 
-          Test detail_personne et detail_acte ==> ok
-          Test import acte ==> ok
-          Test export relations ==> ok 
-          Test fusion et dissocier --> bloquées par cors *** 
-        */
-        // if($obj instanceof Personne){
-        //   $this->from_db_personne_noms_prenoms($obj);
-        //   if($get_relations_conditions){
-        //     $this->from_db_personne_relations($obj);
-        //     $this->from_db_personne_conditions($obj);
-        //   }
-        // } else 
-        if($obj instanceof Acte && $get_relations_conditions){
-          $this->from_db_acte_conditions($obj);
-          $this->from_db_acte_relations($obj);
-        // }
-      }else{ 
-        // Pour import d'actes 
-        //  *** tests-dispatch-database 
-        // if($obj instanceof Personne)
-        //   $row = $this->from_db_by_same_personne($obj);
-        // else
-          $row = $this->from_db_by_same($obj);
-      }
+    //   $log->d("from database: ".get_class($obj)." id=$obj->id");
+    //   $row = NULL;
+    //   //  *** tests-dispatch-database
+    // //   if(isset($obj->id)){
+    // //     $row = $this->from_db_by_id($obj);
+    //     /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
+    //       pour pas avoir à tester si $obj est une personne par ex
+    //       Test export personnes ==> ok 
+    //       Test detail_personne et detail_acte ==> ok
+    //       Test import acte ==> ok
+    //       Test export relations ==> ok 
+    //       Test fusion et dissocier --> bloquées par cors *** 
+    //     */
+    //     // if($obj instanceof Personne){
+    //     //   $this->from_db_personne_noms_prenoms($obj);
+    //     //   if($get_relations_conditions){
+    //     //     $this->from_db_personne_relations($obj);
+    //     //     $this->from_db_personne_conditions($obj);
+    //     //   }
+    //     // } else 
+    //     // if($obj instanceof Acte && $get_relations_conditions){
+    //     //   $this->from_db_acte_conditions($obj);
+    //     //   $this->from_db_acte_relations($obj);
+    //     // }
+    //   // }else{ 
+    //     // Pour import d'actes 
+    //     //  *** tests-dispatch-database 
+    //     // if($obj instanceof Personne)
+    //     //   $row = $this->from_db_by_same_personne($obj);
+    //     // else
+    //       // $row = $this->from_db_by_same($obj);
+    //   // }
 
-      if($update_obj)
-        $obj->result_from_db($row);
-      return $row;
-    }
+    //   if($update_obj)
+    //     $obj->result_from_db($row);
+    //   return $row;
+    // }
 
     //  PRIVATE METHODS   //
 
@@ -312,7 +312,8 @@
 
 
     //  SELECT by value 
-    private function from_db_by_same($obj){
+    // private function from_db_by_same($obj){
+    public function from_db_by_same($obj){
       $row = NULL;
       $s = "";
       $i = 0;
@@ -432,7 +433,8 @@
 
     //  *** tests-dispatch-database
     //  SELECT acte_has_condition conditions by acte  
-    private function from_db_acte_conditions($acte){
+    // private function from_db_acte_conditions($acte){
+    public function from_db_acte_conditions($acte){
       $result = $this->query("
         SELECT *
         FROM acte_has_condition INNER JOIN `condition`
@@ -456,7 +458,8 @@
 
     //  *** tests-dispatch-database
     //  SELECT acte_has_relation relations by acte 
-    private function from_db_acte_relations($acte){
+    // private function from_db_acte_relations($acte){
+    public function from_db_acte_relations($acte){
       $result = $this->query("
         SELECT *
         FROM acte_has_relation INNER JOIN relation
@@ -525,8 +528,8 @@
         $ids_tmp = NULL;
 
         //  *** test export 
-        echo '<br>'.__METHOD__.' $personne : ';
-        var_dump($personne);
+        // echo '<br>'.__METHOD__.' $personne : ';
+        // var_dump($personne);
         //  fin test 
 
         foreach($personne->noms as $k => $nom){
@@ -593,7 +596,8 @@
     }
 
     //  *** Cette méthode renvoie $values_obj 
-    private function updated_values($values_db, $values_obj){
+    // private function updated_values($values_db, $values_obj){
+    public function updated_values($values_db, $values_obj){
         $updated = [];
 
         if($values_db == NULL)
@@ -609,41 +613,42 @@
 
     //  PUBLIC  //
 
-    public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
-        $result = FALSE;
+    // public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
+    //     $result = FALSE;
 
-        if(!$force_insert && !$obj->pre_into_db())
-            return;
+    //     if(!$force_insert && !$obj->pre_into_db())
+    //         return;
 
-        //  *** Tester si $obj == quelle classe, pour appeler le bon from_db()
-        // if(!$skip_check_same) {
-        //     $values_db = $this->from_db($obj, FALSE, FALSE);
-        // }
-        if(isset($values_db["id"])) {
-            $obj->id = $values_db["id"];
-        }
-        $values_obj = $obj->values_into_db();
-        $values_updated = $this->updated_values($values_db, $values_obj);
+    //     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db()
+    //     // if(!$skip_check_same) {
+    //     //     $values_db = $this->from_db($obj, FALSE, FALSE);
+    //     // }
+    //     if(isset($values_db["id"])) {
+    //         $obj->id = $values_db["id"];
+    //     }
+    //     $values_obj = $obj->values_into_db();
+    //     $values_updated = $this->updated_values($values_db, $values_obj);
 
-        if(isset($values_db, $obj->id))
-            $result = $this->into_db_update($obj, $values_updated);
-        else
-            $result = $this->into_db_insert($obj, $values_updated);
+    //     if(isset($values_db, $obj->id))
+    //         $result = $this->into_db_update($obj, $values_updated);
+    //     else
+    //         $result = $this->into_db_insert($obj, $values_updated);
 
-        $obj->post_into_db();
+    //     $obj->post_into_db();
 
-        if($result === FALSE)
-            return FALSE;
+    //     if($result === FALSE)
+    //         return FALSE;
         
-        return $obj->id;
-    }
+    //     return $obj->id;
+    // }
 
     //  PRIVATE METHODS   //
 
     //  *** ne sert que là, on peut pas la défactoriser ? 
     //  Non : elle appelle get_table_name() de toutes les classes 
     //  et c'est préférable de n'avoir que des variables et méthodes dans into_db() 
-    private function into_db_update($obj, $values){
+    // private function into_db_update($obj, $values){
+    public function into_db_update($obj, $values){
         if(count($values) == 0)
             return TRUE;
 
@@ -654,7 +659,8 @@
         );
     }
 
-    private function into_db_insert($obj, $values){
+    // private function into_db_insert($obj, $values){
+    public function into_db_insert($obj, $values){
         global $log;
         $result = FALSE;
         $max_try = 2;

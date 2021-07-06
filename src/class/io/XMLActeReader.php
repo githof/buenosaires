@@ -126,7 +126,8 @@ class XMLActeReader {
         $acte = new Acte($acte_id);
         $acte->source_id = $this->source_id;
         $this->read_acte_node($acte, $xml_acte);
-        if($mysqli->into_db($acte)){
+        // if($mysqli->into_db($acte)){
+        if($acte->into_db($acte)){
             $log->i("Acte$position ajouté avec succès");
             return TRUE;
         }

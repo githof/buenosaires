@@ -1,9 +1,12 @@
 <?php
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
+
+include_once(ROOT."src/class/io/PreDatabase.php");
+
 include_once(ROOT."src/class/model/Personne.php");
 
-class Relation implements DatabaseIO {
+class Relation extends PreDatabase implements DatabaseIO {
 
     public $id;
 
@@ -69,6 +72,7 @@ class Relation implements DatabaseIO {
             */
             $acte = new Acte($acte_str);
             if($acte != null)
+
                 return $acte->get_date();
         }
         return "";
@@ -110,10 +114,12 @@ class Relation implements DatabaseIO {
         global $mysqli;
 
         if(!$this->personne_source->is_updated_in_db)
-            $mysqli->into_db($this->personne_source);
+            // $mysqli->into_db($this->personne_source);
+            $this->into_db($this->personne_source);
 
         if(!$this->personne_destination->is_updated_in_db)
-            $mysqli->into_db($this->personne_destination);
+            // $mysqli->into_db($this->personne_destination);
+            $this->into_db($this->personne_destination);
 
         if(!$this->personne_source->is_valid() ||
             !$this->personne_destination->is_valid())

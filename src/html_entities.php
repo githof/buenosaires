@@ -70,23 +70,23 @@ function personne_memory($id){
 //     return has_memory("condition", $id);
 // }
 
+//  *** tests-dispatch-database --> non utilisée ? 
+// function html_acte_small($acte){
+//     $periode = html_periode(periode_memory($acte->values["periode_id"]));
 
-function html_acte_small($acte){
-    $periode = html_periode(periode_memory($acte->values["periode_id"]));
-
-    return "
-    <div class='acte_small'>
-        <div class='acte_small_id'>
-            <a href='./acte/$acte->id'>$acte->id</a>
-        </div>
-    </div>";
-}
+//     return "
+//     <div class='acte_small'>
+//         <div class='acte_small_id'>
+//             <a href='./acte/$acte->id'>$acte->id</a>
+//         </div>
+//     </div>";
+// }
 
 function html_list_actes($actes){
     $html = "";
     //  *** tests-has-memory
     /*  ici $actes est un array de strings, pas un objet : 
-        J'ai modifié Database::from_db_condition|relation_list_acte()
+        J'ai modifié Database::from_db_condition|relation_list_actes()
         pour ne pas re-créer d'objet, comme c'était le cas avant.
     */
     // foreach($actes as $acte) {

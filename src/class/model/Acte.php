@@ -1,11 +1,14 @@
 <?php
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
+
+include_once(ROOT."src/class/io/PreDatabase.php");
+
 include_once(ROOT."src/class/model/Personne.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Acte implements DatabaseIO{
+class Acte extends PreDatabase implements DatabaseIO{
 
     public $id;
 
@@ -107,7 +110,8 @@ class Acte implements DatabaseIO{
     //  qui utilise ce $acte->get_date()  
 	public function get_date() {
         global $mysqli;
-        $mysqli->from_db($this, TRUE, FALSE);
+        // $mysqli->from_db($this, TRUE, FALSE);
+        $this->from_db($this, TRUE, FALSE);
         return $this->date_start;
 	}
 
@@ -184,17 +188,21 @@ class Acte implements DatabaseIO{
             $this->epouse->add_relation($this->epouse, $this->epoux, STATUT_EPOUSE);
         }
 
-        if(isset($this->epoux))
-            $mysqli->into_db($this->epoux);
+        if(isset($this->epoux)) 
+            // $mysqli->into_db($this->epoux);
+            $this->into_db($this->epoux);
 
         if(isset($this->epouse))
-            $mysqli->into_db($this->epouse);
+            // $mysqli->into_db($this->epouse);
+            $this->into_db($this->epouse);
 
         foreach($this->temoins as $temoin)
-            $mysqli->into_db($temoin);
+            // $mysqli->into_db($temoin);
+            $this->into_db($temoin);
 
         foreach($this->parrains as $parrain)
-            $mysqli->into_db($parrain);
+            // $mysqli->into_db($parrain);
+            $this->into_db($parrain);
 
         return TRUE;
     }
