@@ -283,8 +283,9 @@ class Acte extends PreDatabase implements DatabaseIO{
     public function remove_from_db() {
         global $mysqli;
 
-        $mysqli->from_db($this);
+        // $mysqli->from_db($this);
         // ^ remplit les champs conditions et relations
+        $this->from_db($this);
         $personnes = $this->personnes();
 
         $mysqli->start_transaction();

@@ -135,7 +135,7 @@ function print_table_condition($results){
     while($row = $results->fetch_assoc()){
         $condition = new Condition();
         $condition->result_from_db($row);
-        $mysqli->from_db_condition_list_acte($condition);
+        $mysqli->from_db_condition_list_actes($condition);
 
         $html_text = html_condition_text($condition->text);
         $html_personne = html_personne(personne_memory($condition->personne->id));
