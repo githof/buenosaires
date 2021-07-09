@@ -6,6 +6,8 @@ $id = $url_parsed["id"];
 $html = "Impossible de réaliser la suppression";
 $page_title = "Suppression de l'acte $id";
 
+//  *** test-personne-suppr 
+
 if($type == "acte"){
     $acte = new Acte($id);
     // if($mysqli->from_db($acte) == NULL)
@@ -14,6 +16,12 @@ if($type == "acte"){
     // $mysqli->delete_acte($acte);
     $acte->remove_from_db();
     $html = "Suppression de l'acte $id réalisée avec succès";
+} elseif($type == "personne") {
+    $personne = new Personne($id);
+    if($personne->from_db($personne) == NULL)
+        $html = "La personne n'existe pas";
+    $personne->remove_from_db();
+    $html = "Suppression de la personne $id réalisée avec succès";
 }
 
 ?>

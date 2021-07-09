@@ -46,6 +46,16 @@ function setup_button_delete_acte(){
     });
 }
 
+//  *** test-personne-suppr 
+function setup_button_delete_personne() {
+    $("#personne-suppr-5").hide();
+
+    $("#personne-suppr-1").click(function() {
+        $("#personne-suppr-1").hide();
+        $("#personne-suppr-5").show();
+    });
+}
+setup_button_delete_personne();
 
 function add_personne_auto_complete_personne(id, html, $div_form, max){
     var pers = "A";
