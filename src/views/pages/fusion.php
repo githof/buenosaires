@@ -91,7 +91,7 @@ function fusion_condition_ou_relation($which, $throw, $keep)
   $mysqli->delete($which, "id = '$throw->id'");
 }
 
-//  *** on peut pas sauter cette étape ? // 
+//  *** on peut pas réécrire cette étape comme dans import ? // 
 function fusion_condition($throw, $keep) {
   fusion_condition_ou_relation('condition', $throw, $keep);
 }
@@ -143,7 +143,7 @@ function has_relation($relation, $personne, $is_source)
     }
 }
 
-//  *** idem plus haut : on pourrait pas sauter cette étape, qui n'ajoute qu'un argument ? // 
+//  *** idem plus haut : on pourrait pas réécrire cette étape comme dans import ? // 
 function fusion_relation($throw, $keep) {
   fusion_condition_ou_relation('relation', $throw, $keep);
 }
@@ -189,9 +189,10 @@ function fusion_actes($throw, $keep) {
 function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     global $mysqli;
 
-    $personne = new Personne($personne_id_old);
+    // $personne = new Personne($personne_id_old);
+    $obj = new Personne($personne_id_old);
     // $mysqli->from_db($personne);
-    $personne->from_db($personne);
+    $obj->from_db($personne);
 
     $actes = [];
 
@@ -261,20 +262,24 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     }
 }
 
-function change_prenoms_ou_noms($field, $noms, $personne)
+// function change_prenoms_ou_noms($field, $noms, $personne)
+function change_prenoms_ou_noms($field, $noms, $obj)
 // $field = 'prenom' ou 'nom'
 {
     global $mysqli;
 
     if(count($noms) == 0) return;
 
-    $cond = "personne_id='$personne->id'";
+    // $cond = "personne_id='$personne->id'";
+    $cond = "personne_id='$obj->id'";
     $mysqli->delete($field."_personne", $cond);
     $i = 1;
     foreach($noms as $nom){
-        $mysqli->into_db($nom);
+        // $mysqli->into_db($nom);
+        $obj->into_db($nom);
         $into_db = 'into_db_'.$field.'_personne';
-        $mysqli->{$into_db}($personne, $nom, $i);
+        // $mysqli->{$into_db}($personne, $nom, $i);
+        $mysqli->{$into_db}($obj, $nom, $i);
         $i++;
     }
 }
@@ -616,9 +621,9 @@ if(isset($ARGS["personne-A"],
     $personne_B = new Personne($ARGS["personne-B"]);
 
     // $mysqli->from_db($personne_A);
-    $personne->from_db($personne_A);
+    $personne_A->from_db($personne_A);
     // $mysqli->from_db($personne_B);
-    $personne->from_db($personne_B);
+    $personne_B->from_db($personne_B);
 
     $noms = parse_noms($ARGS["noms"]);
     $prenoms = parse_prenoms($ARGS["prenoms"]);
@@ -640,8 +645,8 @@ if(isset($ARGS["personne-A"],
     $personne_B = new Personne($ARGS["personne-B"]);
     // $mysqli->from_db($personne_A);
     // $mysqli->from_db($personne_B);
-    $personne->from_db($personne_A);
-    $personne->from_db($personne_B);
+    $personne_A->from_db($personne_A);
+    $personne_B->from_db($personne_B);
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{
