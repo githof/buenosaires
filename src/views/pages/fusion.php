@@ -143,7 +143,7 @@ function has_relation($relation, $personne, $is_source)
     }
 }
 
-//  *** idem plus haut : on pourrait pas sauter cette étape, qui n'ajoute qu'un argument ? // 
+//  *** idem plus haut : on pourrait pas sauter cette étape ? // 
 function fusion_relation($throw, $keep) {
   fusion_condition_ou_relation('relation', $throw, $keep);
 }
@@ -186,95 +186,98 @@ function fusion_actes($throw, $keep) {
 //  *** Remplacée par change_id_personne_contenu ? 
 //  Voir commentaire Christophe plus bas // 
 
-function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
-    global $mysqli;
+// function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
+//     global $mysqli;
 
-    $personne = new Personne($personne_id_old);
-    // $mysqli->from_db($personne);
-    $personne->from_db($personne);
+//     $personne = new Personne($personne_id_old);
+//     $mysqli->from_db($personne);
 
-    $actes = [];
+//     $actes = [];
 
-    /*
-      Dans ce qui suit,
-      Je pense pas qu'il y ait de raison de traiter séparément
-      epoux/se et le reste,
-      et surtout de faire une requête alors qu'on a tout dans
-      les conditions et relations
-    */
+//     /*
+//       Dans ce qui suit,
+//       Je pense pas qu'il y ait de raison de traiter séparément
+//       epoux/se et le reste,
+//       et surtout de faire une requête alors qu'on a tout dans
+//       les conditions et relations
+//     */
 
-    $results = $mysqli->select(
-        "acte",
-        ["id"],
-        "epoux='$personne_id_old' OR epouse='$personne_id_old'"
-    );
-    if($results != FALSE && $results->num_rows > 0){
-        while($row = $results->fetch_assoc())
-            $actes[] = $row["id"];
-    }
+//     $results = $mysqli->select(
+//         "acte",
+//         ["id"],
+//         "epoux='$personne_id_old' OR epouse='$personne_id_old'"
+//     );
+//     if($results != FALSE && $results->num_rows > 0){
+//         while($row = $results->fetch_assoc())
+//             $actes[] = $row["id"];
+//     }
 
-    foreach($personne->conditions as $condition){
-        foreach($condition->actes as $acte)
-            $actes[] = $acte->id;
-    }
+//     foreach($personne->conditions as $condition){
+//         foreach($condition->actes as $acte)
+//             $actes[] = $acte->id;
+//     }
 
-    foreach($personne->relations as $relation){
-        foreach($relation->actes as $acte)
-            $actes[] = $acte->id;
-    }
+//     foreach($personne->relations as $relation){
+//         foreach($relation->actes as $acte)
+//             $actes[] = $acte->id;
+//     }
 
-    $actes = array_unique($actes);
+//     $actes = array_unique($actes);
 
-    foreach($actes as $acte){
-        $results = $mysqli->select(
-            "acte_contenu",
-            ["contenu"],
-            "acte_id='$acte'"
-        );
-        $contenu = $results->fetch_assoc()["contenu"];
-        $xml = new SimpleXMLElement($contenu);
+//     foreach($actes as $acte){
+//         $results = $mysqli->select(
+//             "acte_contenu",
+//             ["contenu"],
+//             "acte_id='$acte'"
+//         );
+//         $contenu = $results->fetch_assoc()["contenu"];
+//         $xml = new SimpleXMLElement($contenu);
 
-    /* Ouch, d'où c'est exhaustif ?
-        Faudrait pas mettre ça ailleurs, un peu plus paramétrable ?
-        Voire, faire un parcours systématique plutôt ? */
-        $paths = [
-            "epoux", "epouse", "epoux/pere", "epoux/mere", "epouse/pere",
-            "epouse/mere", "temoins/temoin", "temoins/temoin/pere",
-            "temoins/temoin/mere"
-        ];
+//     /* Ouch, d'où c'est exhaustif ?
+//         Faudrait pas mettre ça ailleurs, un peu plus paramétrable ?
+//         Voire, faire un parcours systématique plutôt ? */
+//         $paths = [
+//             "epoux", "epouse", "epoux/pere", "epoux/mere", "epouse/pere",
+//             "epouse/mere", "temoins/temoin", "temoins/temoin/pere",
+//             "temoins/temoin/mere"
+//         ];
 
-        foreach($paths as $path){
-            $results = $xml->xpath($path);
-            while(list( , $node) = each($results)){
-                $attr = $node->attributes();
-                if($attr["id"] == $personne_id_old)
-                    $attr["id"] = $personne_id_new;
-            }
-        }
-        $contenu = $xml->asXML();
+//         foreach($paths as $path){
+//             $results = $xml->xpath($path);
+//             while(list( , $node) = each($results)){
+//                 $attr = $node->attributes();
+//                 if($attr["id"] == $personne_id_old)
+//                     $attr["id"] = $personne_id_new;
+//             }
+//         }
+//         $contenu = $xml->asXML();
 
-        $mysqli->update(
-            "acte_contenu",
-            ["contenu" => $contenu],
-            "acte_id='$acte'"
-        );
-    }
-}
+//         $mysqli->update(
+//             "acte_contenu",
+//             ["contenu" => $contenu],
+//             "acte_id='$acte'"
+//         );
+//     }
+// }
 
-function change_prenoms_ou_noms($field, $noms, $personne)
+// function change_prenoms_ou_noms($field, $noms, $personne)
+function change_prenoms_ou_noms($field, $noms, $obj)
 // $field = 'prenom' ou 'nom'
 {
     global $mysqli;
 
     if(count($noms) == 0) return;
 
-    $cond = "personne_id='$personne->id'";
+    // $cond = "personne_id='$personne->id'";
+    $cond = "personne_id='$obj->id'";
     $mysqli->delete($field."_personne", $cond);
     $i = 1;
     foreach($noms as $nom){
-        $mysqli->into_db($nom);
+        // $mysqli->into_db($nom);
+        $obj->into_db($nom);
         $into_db = 'into_db_'.$field.'_personne';
-        $mysqli->{$into_db}($personne, $nom, $i);
+        // $mysqli->{$into_db}($personne, $nom, $i);
+        $mysqli->{$into_db}($obj, $nom, $i);
         $i++;
     }
 }
@@ -286,17 +289,21 @@ function fusion_tables($personne_throw, $personne_keep) {
     }
 }
 
-function renomme_personne($personne, $noms, $prenoms) {
+// function renomme_personne($personne, $noms, $prenoms) {
+function renomme_personne($obj, $noms, $prenoms) {
     foreach(['prenom', 'nom'] as $field) {
         $liste = "$field".'s';
-        change_prenoms_ou_noms($field, ${$liste}, $personne);
+        // change_prenoms_ou_noms($field, ${$liste}, $personne);
+        change_prenoms_ou_noms($field, ${$liste}, $obj);
     }
 }
 
-function recense_actes($personne) {
+// function recense_actes($personne) {
+function recense_actes($obj) {
     $actes = [];
     foreach(['conditions', 'relations'] as $field)
-        $liste = $personne->{$field};
+        // $liste = $personne->{$field};
+        $liste = $obj->{$field};
         foreach($liste as $element)
             foreach($element->actes as $acte)
                 $actes[] = $acte;
@@ -349,7 +356,8 @@ function change_id_personne_contenu($acte, $old_id, $new_id) {
                     );
 }
 
-function change_id_personne_contenus($personne, $new_id)
+// function change_id_personne_contenus($personne, $new_id)
+function change_id_personne_contenus($obj, $new_id)
 // nouvelle version de fusion_update_contenu_acte (plus haut)
 /*
 Peut-être que pour dissoc on a besoin exactement de la même fonction,
@@ -358,9 +366,11 @@ auquel cas il faudrait la mettre qq part genre utils.php:
 break;
 */
 {
-    $actes = recense_actes($personne);
+    // $actes = recense_actes($personne);
+    $actes = recense_actes($obj);
     foreach($actes as $acte) {
-        change_id_personne_contenu($acte, $personne->id, $new_id);
+        // change_id_personne_contenu($acte, $personne->id, $new_id);
+        change_id_personne_contenu($acte, $obj->id, $new_id);
     }
 }
 
@@ -385,43 +395,43 @@ function fusion($personne_throw, $personne_keep, $noms, $prenoms)
     $mysqli->end_transaction();
 }
 
-function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
-    global $mysqli, $log;
+// function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
+//     global $mysqli, $log;
 
-/* Déjà faudrait ptet attendre d'être sûrs que les trucs soient créés
-    avant de supprimer */
-    $mysqli->delete("prenom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
-    $i = 1;
-    foreach($prenoms as $prenom){
-        $mysqli->into_db($prenom);
-        $mysqli->into_db_prenom_personne($personne_keep, $prenom, $i);
-        $i++;
-    }
+// /* Déjà faudrait ptet attendre d'être sûrs que les trucs soient créés
+//     avant de supprimer */
+//     $mysqli->delete("prenom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
+//     $i = 1;
+//     foreach($prenoms as $prenom){
+//         $mysqli->into_db($prenom);
+//         $mysqli->into_db_prenom_personne($personne_keep, $prenom, $i);
+//         $i++;
+//     }
 
-    $mysqli->delete("nom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
-    $i = 1;
-    foreach($noms as $nom){
-        $mysqli->into_db($nom);
-        $mysqli->into_db_nom_personne($personne_keep, $nom, $i);
-        $i++;
-    }
+//     $mysqli->delete("nom_personne", "personne_id='$personne_keep->id' OR personne_id='$personne_throw->id'");
+//     $i = 1;
+//     foreach($noms as $nom){
+//         $mysqli->into_db($nom);
+//         $mysqli->into_db_nom_personne($personne_keep, $nom, $i);
+//         $i++;
+//     }
 
-/* là-dedans on ne s'occupe que des actes où la personne est époux/se */
-/* (juil 2020 : non, on les traite séparément, mais y'a pas trop de raison) */
-    fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
+// /* là-dedans on ne s'occupe que des actes où la personne est époux/se */
+// /* (juil 2020 : non, on les traite séparément, mais y'a pas trop de raison) */
+//     fusion_update_contenu_acte($personne_throw->id, $personne_keep->id);
 
-    $log->d("fusion actes"); // pourquoi ici ??
+//     $log->d("fusion actes"); // pourquoi ici ??
 
-/* idem, du coup */
-    $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
-    $mysqli->update("acte", ["epouse" => "$personne_keep->id"], "epouse='$personne_throw->id'");
+// /* idem, du coup */
+//     $mysqli->update("acte", ["epoux" => "$personne_keep->id"], "epoux='$personne_throw->id'");
+//     $mysqli->update("acte", ["epouse" => "$personne_keep->id"], "epouse='$personne_throw->id'");
 
-    fusion_conditions($personne_keep, $personne_throw);
-    fusion_relations($personne_keep, $personne_throw);
+//     fusion_conditions($personne_keep, $personne_throw);
+//     fusion_relations($personne_keep, $personne_throw);
 
-    $log->d("fusion remove personne");
-    $mysqli->delete_personne($personne_throw->id);
-}
+//     $log->d("fusion remove personne");
+//     $mysqli->delete_personne($personne_throw->id);
+// }
 
 
 /*__ SELCTION PERSONNES __ */
@@ -612,13 +622,16 @@ if(isset($ARGS["personne-A"],
         $ARGS["id"],
         $ARGS["noms"],
         $ARGS["prenoms"])) {
+    //  *** tests-dispatch-database
+    global $obj;
+
     $personne_A = new Personne($ARGS["personne-A"]);
     $personne_B = new Personne($ARGS["personne-B"]);
 
     // $mysqli->from_db($personne_A);
-    $personne->from_db($personne_A);
+    $personne_A->from_db($personne_A);
     // $mysqli->from_db($personne_B);
-    $personne->from_db($personne_B);
+    $personne_B->from_db($personne_B);
 
     $noms = parse_noms($ARGS["noms"]);
     $prenoms = parse_prenoms($ARGS["prenoms"]);
@@ -640,8 +653,8 @@ if(isset($ARGS["personne-A"],
     $personne_B = new Personne($ARGS["personne-B"]);
     // $mysqli->from_db($personne_A);
     // $mysqli->from_db($personne_B);
-    $personne->from_db($personne_A);
-    $personne->from_db($personne_B);
+    $personne_A->from_db($personne_A);
+    $personne_B->from_db($personne_B);
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{

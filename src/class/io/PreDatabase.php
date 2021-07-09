@@ -71,7 +71,7 @@ class PreDatabase {
         $obj->id = $values_db["id"];
     }
     $values_obj = $obj->values_into_db();
-    $values_updated = $mysqli->updated_values($values_db, $values_obj);
+    $values_updated = $mysqli->updated_values($values_db, $values_obj); //  *** Notice: Undefined variable: values_db 
 
     if(isset($values_db, $obj->id))
         $result = $mysqli->into_db_update($obj, $values_updated);
