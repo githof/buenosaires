@@ -344,8 +344,8 @@ function html_form_per_acte($entity, $personne_id){
     
     foreach($entity->actes as $acte){
         //  *** tests-dispatch-database 
-        echo '<br>'.__METHOD__.' $acte : ';
-        var_dump($acte);
+        // echo '<br>'.__METHOD__.' $acte : ';
+        // var_dump($acte);
         //  fin test 
         // $name_acte = $name."-".$acte->id;   //  *** Notice: Trying to get property 'id' of non-object 
         $name_acte = $name."-".$acte;       //<div>Acte $acte->id</div>".   //  *** Notice: Trying to get property 'id' of non-object 
@@ -499,23 +499,5 @@ if(isset($ARGS["id"])){
     html_select_personne();
 }
 
-/**** */
-// function change_id_personne_contenus($personne, $new_id)
-function change_id_personne_contenus($obj, $new_id)
-// nouvelle version de fusion_update_contenu_acte (plus haut)
-/*
-Peut-être que pour dissoc on a besoin exactement de la même fonction,
-auquel cas il faudrait la mettre qq part genre utils.php:
-// code...
-break;
-*/
-{
-    // $actes = recense_actes($personne);
-    $actes = recense_actes($obj);
-    foreach($actes as $acte) {
-        // change_id_personne_contenu($acte, $personne->id, $new_id);
-        change_id_personne_contenu($acte, $obj->id, $new_id);
-    }
-}
 
 ?>
