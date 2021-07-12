@@ -17,7 +17,7 @@ $urls = [
         =>  ["delete", "Supprimer acte"],
     //  *** test-personne-suppr 
     "/(?'page'supprimer)/(?'type'personne)/(?'id'\d+)"
-        =>  ["delete", "supprimer personne"],
+        =>  ["delete", "Supprimer personne"],
     "/(?'page'get)"
         =>  ["", ""],
     "/(?'page'import)"

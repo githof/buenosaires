@@ -48,10 +48,26 @@ function setup_button_delete_acte(){
 
 //  *** test-personne-suppr 
 function setup_button_delete_personne() {
+    $("#personne-suppr-2").hide();
+    $("#personne-suppr-3").hide();
+    $("#personne-suppr-4").hide();
     $("#personne-suppr-5").hide();
 
-    $("#personne-suppr-1").click(function() {
+    $("#personne-suppr-1").click(function(){
         $("#personne-suppr-1").hide();
+        $("#personne-suppr-2").show();
+    });
+    $("#personne-suppr-2").click(function(){
+        $("#personne-suppr-2").hide();
+        $("#personne-suppr-3").show();
+    });
+    $("#personne-suppr-3").click(function(){
+        $("#personne-suppr-3").hide();
+        $("#personne-suppr-4").show();
+    });
+
+    $("#personne-suppr-4").click(function() {
+        $("#personne-suppr-4").hide();
         $("#personne-suppr-5").show();
     });
 }
