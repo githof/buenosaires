@@ -1,14 +1,13 @@
 <?php
 
 
-
 class PreDatabase {
 
-  public $obj;
+  // public $obj;
 
-  public function __construct($obj) {
-    $this->$obj = $obj;
-  }
+  // public function __construct($obj) {
+  //   $this->$obj = $obj;
+  // }
 
   public function from_db($obj,
     $update_obj = FALSE,
@@ -23,28 +22,30 @@ class PreDatabase {
     */
     global $log, $mysqli;
 
-    $log->d("from database: ".get_class($obj)." id=$obj->id");
+    // $log->d("from database: ".get_class($obj)." id=$obj->id");
+    // $log->d("from database: ".$obj." id=$obj->id");
     $row = NULL;
     //  *** tests-dispatch-database
     if(isset($obj->id)){
       $row = $mysqli->from_db_by_id($obj);
       
-      if(get_class($obj) == 'Personne'){
-        $mysqli->from_db_personne_noms_prenoms($obj);
-        if($get_relations_conditions){
-          $mysqli->from_db_personne_relations($obj);
-          $mysqli->from_db_personne_conditions($obj);
-        }
-      } elseif(get_class($obj) == 'Acte' && $get_relations_conditions){
-        $mysqli->from_db_acte_conditions($obj);
-        $mysqli->from_db_acte_relations($obj);
-      }
+      // if(get_class($obj) == 'Personne'){
+      //   $mysqli->from_db_personne_noms_prenoms($obj);
+      //   if($get_relations_conditions){
+      //     $mysqli->from_db_personne_relations($obj);
+      //     $mysqli->from_db_personne_conditions($obj);
+      //   }
+      // } 
+      // elseif(get_class($obj) == 'Acte' && $get_relations_conditions){
+      //   $mysqli->from_db_acte_conditions($obj);
+      //   $mysqli->from_db_acte_relations($obj);
+      // }
     }else{ 
       // Pour import d'actes 
       //  *** tests-dispatch-database 
-      if($obj instanceof Personne)
-        $row = $mysqli->from_db_by_same_personne($obj);
-      else
+      // if($obj instanceof Personne)
+      //   $row = $mysqli->from_db_by_same_personne($obj);
+      // else
         $row = $mysqli->from_db_by_same($obj);
     }
 

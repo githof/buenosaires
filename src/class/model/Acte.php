@@ -23,7 +23,11 @@ class Acte extends PreDatabase implements DatabaseIO{
     public $relations;
     public $conditions;
 
+    public $acte;
+
     public function __construct($id = NULL, $contenu = NULL){
+        global $acte;
+
         $this->id = $id;
         $this->source_id = SOURCE_DEFAULT_ID;
         $this->contenu = NULL;
@@ -35,6 +39,7 @@ class Acte extends PreDatabase implements DatabaseIO{
         $this->date_end = NULL;
         $this->conditions = [];
         $this->relations = [];
+        $this->from_db($acte, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function set_contenu($contenu){
@@ -61,6 +66,29 @@ class Acte extends PreDatabase implements DatabaseIO{
 
     public function add_parrain($parrain){
         $this->parrains[] = $parrain;
+    }
+
+    //  *** tests-dispatch-database 
+    public function from_db($acte, $update_obj = FALSE,
+    $get_relations_conditions = TRUE) {
+        global $mysqli;
+
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $acte : ';
+        var_dump($acte);
+        //  fin test 
+
+        parent::from_db($this);
+
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $acte 2 : ';
+        var_dump($acte);
+        //  fin test 
+
+        if($get_relations_conditions){
+            $mysqli->from_db_acte_conditions($this);
+            $mysqli->from_db_acte_relations($this);
+        }
     }
 
     public function recursive_link_conditions_and_relations($personne){

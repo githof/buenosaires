@@ -28,7 +28,11 @@ class Personne extends PreDatabase implements DatabaseIO {
 
     public $is_updated_in_db;
 
+    public $personne;
+
     public function __construct($id = NULL){
+        global $personne;
+
         $this->id = $id;
         $this->prenoms = [];
         $this->prenoms_str = "";
@@ -40,6 +44,9 @@ class Personne extends PreDatabase implements DatabaseIO {
         $this->pere = NULL;
         $this->mere = NULL;
         $this->is_updated_in_db = FALSE;
+        //  *** tests-dispatch-database 
+        $this->from_db($personne, $update_obj = FALSE,
+        $get_relations_conditions = TRUE);
     }
 
     public function add_prenom_str($s){
@@ -170,23 +177,34 @@ class Personne extends PreDatabase implements DatabaseIO {
 
     //  PUBLIC  //
 
-    // public function from_db($obj, $get_relations_conditions) {
-    //     global $mysqli;
+    public function from_db($personne, $get_relations_conditions) {
+        global $mysqli;
 
-    //     if(isset($obj->id)){
-    //         $row = $mysqli->from_db_by_id($obj);
-    //         $mysqli->from_db_personne_noms_prenoms($this);
-    //         if($get_relations_conditions){
-    //             // $this->from_db_personne_relations($this->id);
-    //             // $this->from_db_personne_conditions($this->id);
-    //             $mysqli->from_db_personne_relations($this);
-    //             $mysqli->from_db_personne_conditions($this);
-    //         } 
-    //     } else 
-    //         $row = $mysqli->from_db_by_same_personne($obj);
+        // if(isset($obj->id)){
+        //     $row = $mysqli->from_db_by_id($obj);
+        //     $mysqli->from_db_personne_noms_prenoms($this);
+        //     if($get_relations_conditions){
+        //         // $this->from_db_personne_relations($this->id);
+        //         // $this->from_db_personne_conditions($this->id);
+        //         $mysqli->from_db_personne_relations($this);
+        //         $mysqli->from_db_personne_conditions($this);
+        //     } 
+        // } else 
+        //     $row = $mysqli->from_db_by_same_personne($obj);
       
-    //     return $this;
-    // }
+        // return $this;
+        /********************** */
+        parent::from_db($this);
+
+        $mysqli->from_db_personne_noms_prenoms($personne);
+        if($get_relations_conditions){
+            $mysqli->from_db_personne_relations($personne);
+            $mysqli->from_db_personne_conditions($personne);
+        } else 
+            $row = $mysqli->from_db_by_same_personne($personne);
+        
+        return $this;
+    }
 
     // public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
     //     global $mysqli;
