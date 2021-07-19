@@ -9,9 +9,7 @@ class PreDatabase {
   //   $this->$obj = $obj;
   // }
 
-  public function from_db($obj,
-    $update_obj = FALSE,
-    $get_relations_conditions = TRUE){
+  public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE){
     /*
       De ce qu'il me semble, $update_obj sert à renseigner l'id
       de $obj s'il ne l'est pas.
@@ -24,33 +22,34 @@ class PreDatabase {
 
     // $log->d("from database: ".get_class($obj)." id=$obj->id");
     // $log->d("from database: ".$obj." id=$obj->id");
-    $row = NULL;
+    // $row = NULL;
     //  *** tests-dispatch-database
     if(isset($obj->id)){
       $row = $mysqli->from_db_by_id($obj);
-      
-      // if(get_class($obj) == 'Personne'){
-      //   $mysqli->from_db_personne_noms_prenoms($obj);
-      //   if($get_relations_conditions){
-      //     $mysqli->from_db_personne_relations($obj);
-      //     $mysqli->from_db_personne_conditions($obj);
-      //   }
-      // } 
-      // elseif(get_class($obj) == 'Acte' && $get_relations_conditions){
-      //   $mysqli->from_db_acte_conditions($obj);
-      //   $mysqli->from_db_acte_relations($obj);
-      // }
-    }else{ 
+    }
+    //   // if(get_class($obj) == 'Personne'){
+    //   //   $mysqli->from_db_personne_noms_prenoms($obj);
+    //   //   if($get_relations_conditions){
+    //   //     $mysqli->from_db_personne_relations($obj);
+    //   //     $mysqli->from_db_personne_conditions($obj);
+    //   //   }
+    //   // } 
+    //   // elseif(get_class($obj) == 'Acte' && $get_relations_conditions){
+    //   //   $mysqli->from_db_acte_conditions($obj);
+    //   //   $mysqli->from_db_acte_relations($obj);
+    //   // }
+    // }else{ 
       // Pour import d'actes 
       //  *** tests-dispatch-database 
       // if($obj instanceof Personne)
       //   $row = $mysqli->from_db_by_same_personne($obj);
-      // else
+      else
         $row = $mysqli->from_db_by_same($obj);
-    }
+    
 
     if($update_obj)
       $obj->result_from_db($row);
+
     return $row;
   }
 

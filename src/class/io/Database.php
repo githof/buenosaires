@@ -160,12 +160,13 @@
 
         $log->i(trim($requete));
         $m = microtime(TRUE);
-        $result = parent::query($requete);
-
+        
         //  *** test export 
         // echo '<br>'.__METHOD__.' $requete : ';
         // var_dump($requete);
         //  fin test 
+
+        $result = parent::query($requete);
 
         $m = microtime(TRUE) - $m;
         if($result === FALSE){
@@ -261,10 +262,10 @@
     // //     $row = $this->from_db_by_id($obj);
     //     /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
     //       pour pas avoir à tester si $obj est une personne par ex
-    //       Test export personnes ==> ok 
-    //       Test detail_personne et detail_acte ==> ok
-    //       Test import acte ==> ok
-    //       Test export relations ==> ok 
+    //       Test export personnes  
+    //       Test detail_personne et detail_acte 
+    //       Test import acte 
+    //       Test export relations 
     //       Test fusion et dissocier --> bloquées par cors *** 
     //     */
     //     // if($obj instanceof Personne){
@@ -299,7 +300,7 @@
     // private function from_db_by_id($obj){
     public function from_db_by_id($obj){
       $row = NULL;
-      
+
       $result = $this->select(
         $obj->get_table_name(),
         ["*"],
@@ -307,6 +308,7 @@
       );
       if($result->num_rows == 1)
         $row = $result->fetch_assoc();
+
       return $row;
     }
 
@@ -348,6 +350,11 @@
     //  SELECT personne by nom ou prenom 
     // private function from_db_personne_noms_prenoms($personne)'{'
     public function from_db_personne_noms_prenoms($personne){ 
+
+      //  *** test export 
+      // echo '<br>'.__METHOD__.' $personne : ';
+      // var_dump($personne);
+      //  fin test 
       
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
@@ -388,6 +395,10 @@
     //  SELECT relations by personne 
     // private function from_db_personne_relations($personne){
     public function from_db_personne_relations($personne){
+      //  *** tests-dispatch-database 
+      // echo '<br>'.__METHOD__.' $personne : ';
+      // var_dump($personne);
+      //  fin test 
       $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
       $pers_source = NULL;
       $pers_destination = NULL;
@@ -452,7 +463,7 @@
           );
           $this->from_db_condition_list_actes($condition);
           $acte->conditions[] = $condition;
-      }
+        }
       }
     }
 
@@ -527,8 +538,8 @@
         $ids = NULL;
         $ids_tmp = NULL;
 
-        //  *** test export 
-        // echo '<br>'.__METHOD__.' $personne : ';
+        //  *** tests-dispatch-database 
+        // echo '<br>'.__METHOD__;
         // var_dump($personne);
         //  fin test 
 

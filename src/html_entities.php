@@ -296,6 +296,11 @@ function html_personne($personne,
                         $with_id = TRUE, 
                         $id_first = FALSE){
 
+    //  *** tests-dispatch-database 
+    // echo '<br>'.__METHOD__.' $personne : ';
+    // var_dump($personne);
+    //  fin test 
+
     $html = "";
     foreach($personne->prenoms as $prenom)
         $html .= "<div class='prenom'>".$prenom->to_string()."</div>";

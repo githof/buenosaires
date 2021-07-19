@@ -45,8 +45,7 @@ class Personne extends PreDatabase implements DatabaseIO {
         $this->mere = NULL;
         $this->is_updated_in_db = FALSE;
         //  *** tests-dispatch-database 
-        $this->from_db($personne, $update_obj = FALSE,
-        $get_relations_conditions = TRUE);
+        parent::from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function add_prenom_str($s){
@@ -177,31 +176,26 @@ class Personne extends PreDatabase implements DatabaseIO {
 
     //  PUBLIC  //
 
-    public function from_db($personne, $get_relations_conditions) {
-        global $mysqli;
-
-        // if(isset($obj->id)){
-        //     $row = $mysqli->from_db_by_id($obj);
-        //     $mysqli->from_db_personne_noms_prenoms($this);
-        //     if($get_relations_conditions){
-        //         // $this->from_db_personne_relations($this->id);
-        //         // $this->from_db_personne_conditions($this->id);
-        //         $mysqli->from_db_personne_relations($this);
-        //         $mysqli->from_db_personne_conditions($this);
-        //     } 
-        // } else 
-        //     $row = $mysqli->from_db_by_same_personne($obj);
-      
-        // return $this;
-        /********************** */
-        parent::from_db($this);
-
-        $mysqli->from_db_personne_noms_prenoms($personne);
-        if($get_relations_conditions){
-            $mysqli->from_db_personne_relations($personne);
-            $mysqli->from_db_personne_conditions($personne);
+    public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
+        global $log, $mysqli, $row;
+        
+        //  *** tests-dispatch-database 
+        // echo '<br>'.__METHOD__.' $row : ';
+        // var_dump($row);  //  *** NULL 
+        //  fin test 
+        
+        if(isset($this->id)) {
+            $mysqli->from_db_by_id($this); 
+            $mysqli->from_db_personne_noms_prenoms($this);
+            if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
+                $mysqli->from_db_personne_relations($this);
+                $mysqli->from_db_personne_conditions($this);
+            }
         } else 
-            $row = $mysqli->from_db_by_same_personne($personne);
+            $row = $mysqli->from_db_by_same_personne($this);
+
+        if($update_obj)
+            $this->result_from_db($row);
         
         return $this;
     }

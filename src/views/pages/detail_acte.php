@@ -26,21 +26,11 @@ $post_id = $url_parsed["id"];
 
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
-// $obj = new Acte($url_parsed["id"]); 
-// $result = $mysqli->from_db($acte, TRUE);    //  *** re-création d'actes dans from_db_condition_list_acte($condition) et dans from_db_relation_list_actes($relation) 
-// $result = $obj->from_db($obj, TRUE); 
 
-//  *** tests-dispatch-database 
-echo '<br>'.__METHOD__.' $acte 1 : ';
-var_dump($acte);
-//  fin test 
-// $result = $acte->from_db($acte, FALSE, TRUE); 
-$result = $acte;
-//  *** tests-dispatch-database 
-echo '<br>'.__METHOD__.' $result : ';
-var_dump($result);
-//  fin test 
-if(!isset($result)){
+$result = $acte->from_db($acte, TRUE);  
+
+// if(!isset($result)){
+if(!isset($result->epoux)){
 ?>
 <div>
     Aucun acte enregistré avec cet id
@@ -87,8 +77,11 @@ if(!isset($result)){
     <div>
         <?php if(isset($acte->epoux))
             // if(isset($obj->epoux))
-            echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+            // echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+            echo html_personne(personne_memory($acte->epoux), TRUE, TRUE, FALSE);
             // echo html_personne(personne_memory($obj->epoux->id), TRUE, TRUE, FALSE);
+        else 
+            echo 'Pas d\'acte->epoux';
         ?>
     </div>
 </section>
@@ -97,7 +90,8 @@ if(!isset($result)){
     <div>
         <?php if(isset($acte->epouse))
             // if(isset($obj->epouse))
-                echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+                // echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+                echo html_personne(personne_memory($acte->epouse), TRUE, TRUE, FALSE);
                 // echo html_personne(personne_memory($obj->epouse->id), TRUE, TRUE, FALSE);
         ?>
     </div>
