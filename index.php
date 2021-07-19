@@ -1,13 +1,13 @@
 <?php
 
 // afficher les erreurs /!\ #devOnly /!\  ***
-// error_reporting(E_ALL);
-// ini_set("display_errors", 1);
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 // end #devOnly
 
 $exec_time_script = microtime(TRUE);
 
-//  *** à mettre dans html_entities ou URLRewriter ou config 
+//  *** à mettre dans html_entities ou URLRewriter ou config ? 
 define("ROOT", __DIR__ . "/");
 
 session_start();

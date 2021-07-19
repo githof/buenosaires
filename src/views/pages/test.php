@@ -84,4 +84,27 @@ $acte->remove_from_db();
 
 echo "<p>passed</p>\n";
 
+abstract class Animal {
+
+  function get_species() {
+      echo "I am an animal.";
+  }
+
+}
+
+class Dog extends Animal {
+
+   function __construct(){
+       $this->get_species();
+   }
+
+   function get_species(){
+       parent::get_species();
+       echo "More specifically, I am a dog.";
+   }
+}
+
+$dog = new Dog();
+$dog->get_species();
+
 ?>

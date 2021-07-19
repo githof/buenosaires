@@ -39,7 +39,8 @@ class Acte extends PreDatabase implements DatabaseIO{
         $this->date_end = NULL;
         $this->conditions = [];
         $this->relations = [];
-        parent::from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
+        $this->from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
+        // parent::from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function set_contenu($contenu){
@@ -71,39 +72,43 @@ class Acte extends PreDatabase implements DatabaseIO{
     //  *** tests-dispatch-database 
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
         global $log, $mysqli, $row;
-        $row = NULL; 
-
-        // parent::from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE);
+        // $row = NULL; 
 
         if(isset($obj->id)) {
+            parent::from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE);
             $row = $mysqli->from_db_by_id($obj);
 
-            if($row != NULL) { 
-                $this->id = ($row["id"]);
-                $this->set_epoux($row["epoux"]);
-                $this->set_epouse($row["epouse"]);
-                $this->date_start = $row["date_start"];
-                $this->date_end = $row["date_end"];
-            }
+            //  *** tests-dispatch-database 
+            echo '<br>'.__METHOD__.' $row 1 : ';
+            var_dump($row);
+            //  fin test 
 
-            if($get_relations_conditions) {
-                $row = $mysqli->from_db_acte_conditions($obj);
-                $row = $mysqli->from_db_acte_relations($obj);
-            }
-        // }
-        } else 
-            $row = $mysqli->from_db_by_same($obj);
+            // if($row != NULL) { 
+            //     $this->id = ($row["id"]);
+            //     $this->set_epoux($row["epoux"]);
+            //     $this->set_epouse($row["epouse"]);
+            //     $this->date_start = $row["date_start"];
+            //     $this->date_end = $row["date_end"];
+            // }
+
+            // if($get_relations_conditions) {
+            //     $row = $mysqli->from_db_acte_conditions($obj);
+            //     $row = $mysqli->from_db_acte_relations($obj);
+            // }
+        }
+        // } else 
+        //     $row = $mysqli->from_db_by_same($obj);
         
-        if($update_obj)
-            $obj->result_from_db($row);
+        // if($update_obj)
+        //     $obj->result_from_db($row);
         
         //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $this : ';
-        // var_dump($this);
+        echo '<br>'.__METHOD__.' $row 2 : ';
+        var_dump($row);
         //  fin test 
 
-        // return $row; 
-        return $this; 
+        return $row; 
+        // return $this; 
     }
 
     public function recursive_link_conditions_and_relations($personne){

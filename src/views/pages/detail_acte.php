@@ -27,10 +27,15 @@ $post_id = $url_parsed["id"];
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
 
+//  *** tests-dispatch-database 
+echo '<br>'.__METHOD__.' $acte : ';
+var_dump($acte);  
+//  fin test 
+
 $result = $acte->from_db($acte, TRUE);  
 
-// if(!isset($result)){
-if(!isset($result->epoux)){
+if(!isset($result)){
+// if(!isset($result->epoux)){
 ?>
 <div>
     Aucun acte enregistré avec cet id

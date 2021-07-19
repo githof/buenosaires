@@ -179,25 +179,24 @@ class Personne extends PreDatabase implements DatabaseIO {
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
         global $log, $mysqli, $row;
         
-        //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $row : ';
-        // var_dump($row);  //  *** NULL 
-        //  fin test 
         
-        if(isset($this->id)) {
-            $mysqli->from_db_by_id($this); 
-            $mysqli->from_db_personne_noms_prenoms($this);
+        if(isset($obj->id)) {
+            $row = $mysqli->from_db_by_id($obj); 
+            $row = $mysqli->from_db_personne_noms_prenoms($obj);
             if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
-                $mysqli->from_db_personne_relations($this);
-                $mysqli->from_db_personne_conditions($this);
+                $row = $mysqli->from_db_personne_relations($obj);
+                $row = $mysqli->from_db_personne_conditions($obj);
             }
         } else 
-            $row = $mysqli->from_db_by_same_personne($this);
-
-        if($update_obj)
-            $this->result_from_db($row);
+            $row = $mysqli->from_db_by_same_personne($obj);
         
-        return $this;
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $row : ';
+        var_dump($row);  //  *** NULL 
+        //  fin test 
+        
+        return $row;
+        // return $this;
     }
 
     // public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
