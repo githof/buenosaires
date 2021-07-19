@@ -43,7 +43,7 @@ echo "hello, world<br>";
 // $unique = array_unique_by_id($arr);
 // var_dump($unique);
 
-echo '<h3>Suppression à la main</h3>';
+// echo '<h3>Suppression à la main</h3>';
 
 /*
 Calderon + Basav
