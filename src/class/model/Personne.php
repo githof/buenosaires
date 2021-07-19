@@ -179,13 +179,13 @@ class Personne extends PreDatabase implements DatabaseIO {
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
         global $log, $mysqli, $row;
         
-        
         if(isset($obj->id)) {
-            $row = $mysqli->from_db_by_id($obj); 
-            $row = $mysqli->from_db_personne_noms_prenoms($obj);
+            $row = parent::from_db($obj, $update_obj,
+                $get_relations_conditions);
+            $mysqli->from_db_personne_noms_prenoms($obj);
             if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
-                $row = $mysqli->from_db_personne_relations($obj);
-                $row = $mysqli->from_db_personne_conditions($obj);
+                $mysqli->from_db_personne_relations($obj);
+                $mysqli->from_db_personne_conditions($obj);
             }
         } else 
             $row = $mysqli->from_db_by_same_personne($obj);
