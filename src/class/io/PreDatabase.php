@@ -9,7 +9,7 @@ abstract class PreDatabase {
   //   $this->$obj = $obj;
   // }
 
-  public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE){
+  public function from_db($obj, $update_obj = TRUE, $get_relations_conditions = TRUE){
     /*
       De ce qu'il me semble, $update_obj sert à renseigner l'id
       de $obj s'il ne l'est pas.
@@ -20,7 +20,7 @@ abstract class PreDatabase {
     */
     global $log, $mysqli;
 
-    $log->d("from database: ".get_class($obj)." id=$obj->id");
+    // $log->d("from database: ".get_class($obj)." id=$obj->id");
     // $log->d("from database: ".$obj." id=$obj->id");
     // $row = NULL;
     //  *** tests-dispatch-database
@@ -49,12 +49,17 @@ abstract class PreDatabase {
       else
         $row = $mysqli->from_db_by_same($obj);
     
-    if($update_obj)
-      $obj->result_from_db($row);
+    //  *** tests-dispatch-database 
+    // echo '<br><br>'.__METHOD__.' $row : ';
+    // var_dump($row);
+    //  fin test 
+
+    // if($update_obj)
+    //   $obj->result_from_db($row);
 
     //  *** tests-dispatch-database 
-    echo '<br>'.__METHOD__.' $row PreDb : ';
-    var_dump($row);
+    // echo '<br>'.__METHOD__.' $obj PreDb : ';
+    // var_dump($obj);
     //  fin test 
 
     return $row;
@@ -80,8 +85,8 @@ abstract class PreDatabase {
         $values_db = $obj->from_db($obj, FALSE, FALSE);
     }
     //  *** tests-dispatch-database 
-    echo '<br>'.__METHOD__.' $values_db : ';
-    var_dump($values_db);
+    // echo '<br>'.__METHOD__.' $values_db : ';
+    // var_dump($values_db);
     //  fin test 
     if(isset($values_db["id"])) { 
             $obj->id = $values_db["id"];

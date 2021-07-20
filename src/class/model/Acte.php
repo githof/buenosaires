@@ -39,8 +39,7 @@ class Acte extends PreDatabase implements DatabaseIO{
         $this->date_end = NULL;
         $this->conditions = [];
         $this->relations = [];
-        $this->from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
-        // parent::from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
+        // $this->from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function set_contenu($contenu){
@@ -72,43 +71,35 @@ class Acte extends PreDatabase implements DatabaseIO{
     //  *** tests-dispatch-database 
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
         global $log, $mysqli, $row;
-        // $row = NULL; 
 
         if(isset($obj->id)) {
             $row = parent::from_db($obj, $update_obj,
                 $get_relations_conditions);
 
             //  *** tests-dispatch-database 
-            echo '<br>'.__METHOD__.' $row 1 : ';
-            var_dump($row);
+            // echo '<br><br>'.__METHOD__.' $row : ';
+            // var_dump($row);
+            // echo '<br>'.__METHOD__.' $obj : ';
+            // var_dump($obj);
             //  fin test 
-
-            // if($row != NULL) { 
-            //     $this->id = ($row["id"]);
-            //     $this->set_epoux($row["epoux"]);
-            //     $this->set_epouse($row["epouse"]);
-            //     $this->date_start = $row["date_start"];
-            //     $this->date_end = $row["date_end"];
-            // }
-
             if($get_relations_conditions) {
                 $mysqli->from_db_acte_conditions($obj);
                 $mysqli->from_db_acte_relations($obj);
             }
-        }
-        else 
+        } else 
             $row = $mysqli->from_db_by_same($obj);
         
         if($update_obj)
-            $obj->result_from_db($row);
-        
-        //  *** tests-dispatch-database 
-        echo '<br>'.__METHOD__.' $row 2 : ';
-        var_dump($row);
-        //  fin test 
+          $this->result_from_db($row);
 
+        //  *** tests-dispatch-database 
+        // echo '<br><br>'.__METHOD__.' $row : ';
+        // var_dump($row);
+        // echo '<br>'.__METHOD__.' $this : ';
+        // var_dump($this);
+        //  fin test 
+        
         return $row; 
-        // return $this; 
     }
 
     public function recursive_link_conditions_and_relations($personne){
@@ -178,6 +169,7 @@ class Acte extends PreDatabase implements DatabaseIO{
             return;
 
         $this->id = $row["id"];
+        $this->contenu = $this->get_contenu();
         if(isset($row["epoux"]))
             $this->set_epoux(new Personne($row["epoux"]));
         if(isset($row["epouse"]))
@@ -186,6 +178,13 @@ class Acte extends PreDatabase implements DatabaseIO{
             $this->date_start = $row["date_start"];
         if(isset($row["date_end"]))
             $this->date_end = $row["date_end"];
+
+        //  *** tests-dispatch-database 
+        // echo '<br>'.__METHOD__.' $this : ';
+        // var_dump($this);
+        // echo '<br>'.__METHOD__.' $row : ';
+        // var_dump($row);
+        //  fin test 
     }
 
     public function values_into_db(){

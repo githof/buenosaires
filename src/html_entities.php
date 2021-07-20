@@ -16,6 +16,11 @@ $memory = [
 function has_memory($class, $id){
     global $memory, $mysqli;
 
+    //  *** tests-dispatch-database 
+    // echo '<br>'.__METHOD__.' $memory : ';
+    // var_dump($memory);
+    //  fin test 
+
     if(!isset($class))
         return;
 
