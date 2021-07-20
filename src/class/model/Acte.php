@@ -76,12 +76,6 @@ class Acte extends PreDatabase implements DatabaseIO{
             $row = parent::from_db($obj, $update_obj,
                 $get_relations_conditions);
 
-            //  *** tests-dispatch-database 
-            // echo '<br><br>'.__METHOD__.' $row : ';
-            // var_dump($row);
-            // echo '<br>'.__METHOD__.' $obj : ';
-            // var_dump($obj);
-            //  fin test 
             if($get_relations_conditions) {
                 $mysqli->from_db_acte_conditions($obj);
                 $mysqli->from_db_acte_relations($obj);
@@ -92,13 +86,6 @@ class Acte extends PreDatabase implements DatabaseIO{
         if($update_obj)
           $this->result_from_db($row);
 
-        //  *** tests-dispatch-database 
-        // echo '<br><br>'.__METHOD__.' $row : ';
-        // var_dump($row);
-        // echo '<br>'.__METHOD__.' $this : ';
-        // var_dump($this);
-        //  fin test 
-        
         return $row; 
     }
 
@@ -178,13 +165,6 @@ class Acte extends PreDatabase implements DatabaseIO{
             $this->date_start = $row["date_start"];
         if(isset($row["date_end"]))
             $this->date_end = $row["date_end"];
-
-        //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $this : ';
-        // var_dump($this);
-        // echo '<br>'.__METHOD__.' $row : ';
-        // var_dump($row);
-        //  fin test 
     }
 
     public function values_into_db(){

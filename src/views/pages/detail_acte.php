@@ -27,12 +27,6 @@ $post_id = $url_parsed["id"];
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
 
-//  *** tests-dispatch-database 
-// echo '<br>'.__METHOD__.' $acte : ';
-// var_dump($acte);  // *** id ok, le reste : NULL 
-/*  Les données viennent de $memory, au lieu de l'objet $acte */ 
-//  fin test 
-
 $result = $acte->from_db($acte, TRUE);  
 
 if(!isset($result)){

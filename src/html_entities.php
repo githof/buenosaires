@@ -16,11 +16,6 @@ $memory = [
 function has_memory($class, $id){
     global $memory, $mysqli;
 
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' $memory : ';
-    // var_dump($memory);
-    //  fin test 
-
     if(!isset($class))
         return;
 
@@ -300,11 +295,6 @@ function html_personne($personne,
                         $with_url = TRUE, 
                         $with_id = TRUE, 
                         $id_first = FALSE){
-
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' $personne : ';
-    // var_dump($personne);
-    //  fin test 
 
     $html = "";
     foreach($personne->prenoms as $prenom)
