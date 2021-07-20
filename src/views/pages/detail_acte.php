@@ -27,16 +27,11 @@ $post_id = $url_parsed["id"];
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
 
-//  *** tests-dispatch-database 
-// echo '<br>'.__METHOD__.' $acte : ';
-// var_dump($acte);  
-//  fin test 
+$result = $acte->from_db($acte, TRUE);  
 
-// $result = $acte->from_db($acte, TRUE);  
-
-// if(!isset($result)){
+if(!isset($result)){
 // if(!isset($result->epoux)){
-if(!isset($acte)){
+// if(!isset($acte)){
 ?>
 <div>
     Aucun acte enregistré avec cet id
@@ -83,9 +78,8 @@ if(!isset($acte)){
     <div>
         <?php if(isset($acte->epoux))
             // if(isset($obj->epoux))
-            // echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
-            echo html_personne(personne_memory($acte->epoux), TRUE, TRUE, FALSE);
-            // echo html_personne(personne_memory($obj->epoux->id), TRUE, TRUE, FALSE);
+            echo html_personne(personne_memory($acte->epoux->id), TRUE, TRUE, FALSE);
+            // echo html_personne(personne_memory($acte->epoux), TRUE, TRUE, FALSE);
         else 
             echo 'Pas d\'acte->epoux';
         ?>
@@ -96,9 +90,8 @@ if(!isset($acte)){
     <div>
         <?php if(isset($acte->epouse))
             // if(isset($obj->epouse))
-                // echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
-                echo html_personne(personne_memory($acte->epouse), TRUE, TRUE, FALSE);
-                // echo html_personne(personne_memory($obj->epouse->id), TRUE, TRUE, FALSE);
+                echo html_personne(personne_memory($acte->epouse->id), TRUE, TRUE, FALSE);
+                // echo html_personne(personne_memory($acte->epouse), TRUE, TRUE, FALSE);
         ?>
     </div>
 </section>
@@ -129,7 +122,8 @@ if(!isset($acte)){
 <section>
     <h4>CONTENU BRUT</h4>
     <div>
-        <?php echo $acte->get_contenu(); 
+        <?php echo $acte->contenu ? $acte->contenu : 'Pas d\'acte->contenu'; 
+            // echo $acte->get_contenu(); 
             // echo $obj->get_contenu();
         ?>
     </div>

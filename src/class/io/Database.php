@@ -161,7 +161,7 @@
         $log->i(trim($requete));
         $m = microtime(TRUE);
         
-        //  *** test export 
+        //  *** tests-dispatch-database 
         // echo '<br>'.__METHOD__.' $requete : ';
         // var_dump($requete);
         //  fin test 

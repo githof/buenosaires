@@ -12,14 +12,16 @@ $post_id = $url_parsed["id"];
 $personne = new Personne($url_parsed["id"]);    //  *** création new Personne() 
 //  *** tests-dispatch-database 
 // $result = $mysqli->from_db($personne, TRUE);    //  *** Pas de re-création 
-$result = $personne->from_db($personne, TRUE);    //  *** Pas de re-création 
-// $result = $obj->from_db($obj, TRUE); 
+// $result = $personne->from_db($personne, TRUE);    //  *** Pas de re-création 
+$result = $personne->from_db($personne, TRUE); 
+
 //  *** tests-dispatch-database 
 // echo '<br>'.__METHOD__.' $result : ';
 // var_dump($result);
 //  fin test 
 
-if($result == NULL){
+// if($result == NULL){
+if($personne == NULL){
 ?>
 <div>
     Aucune personne enregistrée avec cet id
