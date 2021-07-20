@@ -30,8 +30,6 @@ $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas 
 $result = $acte->from_db($acte, TRUE);  
 
 if(!isset($result)){
-// if(!isset($result->epoux)){
-// if(!isset($acte)){
 ?>
 <div>
     Aucun acte enregistré avec cet id
@@ -143,8 +141,8 @@ if(!isset($result)){
                 <input type='hidden' name='source_id' value='<?php echo $acte->source_id; ?>'>
                 <!-- <input type='hidden' name='source_id' value='<?php // echo $obj->source_id; ?>'> -->
                 <textarea style='display: none;' id='raw-xml' name='raw_xml'>
-                    <?php echo $acte->get_contenu(); 
-                        // echo $obj->get_contenu(); 
+                    <?php echo $acte->contenu; 
+                        // echo $acte->get_contenu(); 
                     ?>
                 </textarea>
             </form>

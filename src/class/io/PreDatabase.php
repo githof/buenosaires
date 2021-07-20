@@ -20,47 +20,17 @@ abstract class PreDatabase {
     */
     global $log, $mysqli;
 
-    // $log->d("from database: ".get_class($obj)." id=$obj->id");
+    $log->d("from database: ".get_class($obj)." id=$obj->id");
     // $log->d("from database: ".$obj." id=$obj->id");
     // $row = NULL;
     //  *** tests-dispatch-database
     if(isset($obj->id)){
       $row = $mysqli->from_db_by_id($obj);
-    }
-    //  *** déplacé dans Personne : 
-    //   // if(get_class($obj) == 'Personne'){
-    //   //   $mysqli->from_db_personne_noms_prenoms($obj);
-    //   //   if($get_relations_conditions){
-    //   //     $mysqli->from_db_personne_relations($obj);
-    //   //     $mysqli->from_db_personne_conditions($obj);
-    //   //   }
-    //   // } 
-    //  *** déplacé dans Acte : 
-    //   // elseif(get_class($obj) == 'Acte' && $get_relations_conditions){
-    //   //   $mysqli->from_db_acte_conditions($obj);
-    //   //   $mysqli->from_db_acte_relations($obj);
-    //   // }
-    // }else{ 
-      //  *** déplacé dans Acte et Personne : 
-      // Pour import d'actes 
-      //  *** tests-dispatch-database 
-      // if($obj instanceof Personne)
-      //   $row = $mysqli->from_db_by_same_personne($obj);
-      else
+    } else
         $row = $mysqli->from_db_by_same($obj);
-    
-    //  *** tests-dispatch-database 
-    // echo '<br><br>'.__METHOD__.' $row : ';
-    // var_dump($row);
-    //  fin test 
 
-    // if($update_obj)
-    //   $obj->result_from_db($row);
-
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' $obj PreDb : ';
-    // var_dump($obj);
-    //  fin test 
+    if($update_obj)
+      $obj->result_from_db($row);
 
     return $row;
   }

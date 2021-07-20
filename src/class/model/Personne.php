@@ -176,8 +176,9 @@ class Personne extends PreDatabase implements DatabaseIO {
 
     //  PUBLIC  //
 
+    //  *** tests-dispatch-database 
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
-        global $log, $mysqli, $row;
+        global $log, $mysqli; 
         
         if(isset($obj->id)) {
             $row = parent::from_db($obj, $update_obj,
@@ -189,11 +190,6 @@ class Personne extends PreDatabase implements DatabaseIO {
             }
         } else 
             $row = $mysqli->from_db_by_same_personne($obj);
-        
-        //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $row : ';
-        // var_dump($row);  //  *** NULL 
-        //  fin test 
         
         return $row;
     }

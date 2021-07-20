@@ -70,7 +70,7 @@ class Acte extends PreDatabase implements DatabaseIO{
 
     //  *** tests-dispatch-database 
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
-        global $log, $mysqli, $row;
+        global $log, $mysqli; 
 
         if(isset($obj->id)) {
             $row = parent::from_db($obj, $update_obj,
@@ -82,9 +82,6 @@ class Acte extends PreDatabase implements DatabaseIO{
             }
         } else 
             $row = $mysqli->from_db_by_same($obj);
-        
-        if($update_obj)
-          $this->result_from_db($row);
 
         return $row; 
     }
@@ -129,6 +126,7 @@ class Acte extends PreDatabase implements DatabaseIO{
             $row = $result->fetch_assoc();
             return $row["contenu"];
         }
+
         return "";
     }
 
