@@ -1,13 +1,17 @@
 <?php
 
 
-abstract class PreDatabase {
+abstract class PreDatabase implements DatabaseIO {
 
-  // public $obj;
+  //  DATABASEIO  
 
-  // public function __construct($obj) {
-  //   $this->$obj = $obj;
-  // }
+  // public function get_table_name(){}
+  // public function get_same_values(){}
+  // public function result_from_db($row){}
+  // public function values_into_db(){}
+  // public function pre_into_db(){}
+  // public function post_into_db(){}
+
 
   public function from_db($obj, $update_obj = TRUE, $get_relations_conditions = TRUE){
     /*
@@ -21,8 +25,7 @@ abstract class PreDatabase {
     global $log, $mysqli;
 
     $log->d("from database: ".get_class($obj)." id=$obj->id");
-    // $log->d("from database: ".$obj." id=$obj->id");
-    // $row = NULL;
+
     //  *** tests-dispatch-database
     if(isset($obj->id)){
       $row = $mysqli->from_db_by_id($obj);
@@ -39,11 +42,6 @@ abstract class PreDatabase {
   public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
     global $mysqli;
 
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' $obj : ';
-    // var_dump($obj);
-    //  fin test 
-
     $result = FALSE;
 
     if(!$force_insert && !$obj->pre_into_db())
@@ -54,10 +52,7 @@ abstract class PreDatabase {
         // $values_db = $mysqli->from_db($obj, FALSE, FALSE);
         $values_db = $obj->from_db($obj, FALSE, FALSE);
     }
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' $values_db : ';
-    // var_dump($values_db);
-    //  fin test 
+    
     if(isset($values_db["id"])) { 
             $obj->id = $values_db["id"];
     }
@@ -76,9 +71,6 @@ abstract class PreDatabase {
     
     return $obj->id;
   }
-
-
-
 
 }
 
