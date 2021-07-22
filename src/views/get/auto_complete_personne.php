@@ -8,8 +8,7 @@ function list_personne(){
     if($results != FALSE && $results->num_rows > 0){
         while($row = $results->fetch_assoc()){
             $personne = new Personne($row["id"]);
-            // $mysqli->from_db($personne);
-            $personne->from_db($personne, TRUE);
+            $personne->from_db(TRUE);
             $str = "";
 
             $str .= " [$personne->id]";

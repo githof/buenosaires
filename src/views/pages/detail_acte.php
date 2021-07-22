@@ -27,7 +27,7 @@ $post_id = $url_parsed["id"];
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
 
-$result = $acte->from_db($acte, TRUE);  
+$result = $acte-TRUE);  
 
 if(!isset($result)){
 ?>
