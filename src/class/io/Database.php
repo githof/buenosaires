@@ -296,7 +296,7 @@
 
 
     //  SELECT by id 
-    // private function from_db_by_id($obj){
+    // return NULL si rien trouvé
     public function from_db_by_id($obj){
       $row = NULL;
 
