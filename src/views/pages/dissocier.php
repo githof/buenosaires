@@ -41,8 +41,7 @@ function dissocier_input_conditions_relations(){
             $item = new Relation($split["id"]);
         }else
             continue;
-        // $mysqli->from_db($item, TRUE);
-        $personne->from_db($item, TRUE);
+        $item->from_db(TRUE);
         $id = "{$split["id"]}";
         switch($value){
             case "a":
@@ -75,7 +74,7 @@ function dissocier_input_conditions_relations(){
                 else if(startsWith($key, "relation"))
                     $item = new Relation($id);
                 // $mysqli->from_db($item, TRUE);
-                $personne->from_db($item, TRUE);
+                $item->from_db(TRUE);
 
                 $item->id = NULL;
                 if(isset($new[$id]))
@@ -439,8 +438,7 @@ if(isset($ARGS["id"])){
     $noms_B = parse_noms($ARGS["noms-B"]);
 
     $personne = new Personne($ARGS["id"]);
-    // $mysqli->from_db($personne);
-    $personne->from_db($personne);
+    $personne->from_db();
 
     $res = dissocier_input_conditions_relations();
     $conditions_A = $res[0];
@@ -458,8 +456,7 @@ if(isset($ARGS["id"])){
 
 }else if(isset($ARGS["personne-A"])){
     $personne = new Personne($ARGS["personne-A"]);
-    // $mysqli->from_db($personne);
-    $personne->from_db($personne);
+    $personne->from_db();
     html_dissocier($personne);
 }else{
     html_select_personne();
