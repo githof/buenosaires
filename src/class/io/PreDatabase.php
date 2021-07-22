@@ -1,18 +1,19 @@
 <?php
 
 
+abstract class PreDatabase implements DatabaseIO {
 
-class PreDatabase {
+  //  DATABASEIO  
 
-  public $obj;
+  // public function get_table_name(){}
+  // public function get_same_values(){}
+  // public function result_from_db($row){}
+  // public function values_into_db(){}
+  // public function pre_into_db(){}
+  // public function post_into_db(){}
 
-  public function __construct($obj) {
-    $this->$obj = $obj;
-  }
 
-  public function from_db($obj,
-    $update_obj = FALSE,
-    $get_relations_conditions = TRUE){
+  public function from_db($obj, $update_obj = TRUE, $get_relations_conditions = TRUE){
     /*
       De ce qu'il me semble, $update_obj sert à renseigner l'id
       de $obj s'il ne l'est pas.
@@ -24,32 +25,16 @@ class PreDatabase {
     global $log, $mysqli;
 
     $log->d("from database: ".get_class($obj)." id=$obj->id");
-    $row = NULL;
+
     //  *** tests-dispatch-database
     if(isset($obj->id)){
       $row = $mysqli->from_db_by_id($obj);
-      
-      if(get_class($obj) == 'Personne'){
-        $mysqli->from_db_personne_noms_prenoms($obj);
-        if($get_relations_conditions){
-          $mysqli->from_db_personne_relations($obj);
-          $mysqli->from_db_personne_conditions($obj);
-        }
-      } elseif(get_class($obj) == 'Acte' && $get_relations_conditions){
-        $mysqli->from_db_acte_conditions($obj);
-        $mysqli->from_db_acte_relations($obj);
-      }
-    }else{ 
-      // Pour import d'actes 
-      //  *** tests-dispatch-database 
-      if($obj instanceof Personne)
-        $row = $mysqli->from_db_by_same_personne($obj);
-      else
+    } else
         $row = $mysqli->from_db_by_same($obj);
-    }
 
     if($update_obj)
       $obj->result_from_db($row);
+
     return $row;
   }
 
@@ -67,8 +52,9 @@ class PreDatabase {
         // $values_db = $mysqli->from_db($obj, FALSE, FALSE);
         $values_db = $obj->from_db($obj, FALSE, FALSE);
     }
-    if(isset($values_db["id"])) {
-        $obj->id = $values_db["id"];
+    
+    if(isset($values_db["id"])) { 
+            $obj->id = $values_db["id"];
     }
     $values_obj = $obj->values_into_db();
     $values_updated = $mysqli->updated_values($values_db, $values_obj);
@@ -85,9 +71,6 @@ class PreDatabase {
     
     return $obj->id;
   }
-
-
-
 
 }
 

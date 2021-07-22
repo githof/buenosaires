@@ -7,7 +7,7 @@
 
 $exec_time_script = microtime(TRUE);
 
-//  *** à mettre dans html_entities ou URLRewriter ou config 
+//  *** à mettre dans html_entities ou URLRewriter ou config ? 
 define("ROOT", __DIR__ . "/");
 
 session_start();

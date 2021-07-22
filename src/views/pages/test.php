@@ -43,7 +43,7 @@ echo "hello, world<br>";
 // $unique = array_unique_by_id($arr);
 // var_dump($unique);
 
-echo '<h3>Suppression à la main</h3>';
+// echo '<h3>Suppression à la main</h3>';
 
 /*
 Calderon + Basav
@@ -64,17 +64,17 @@ $acte->remove_from_db();
 // $pers = new Personne(15794);
 // $pers->remove_from_db(TRUE);
 
-$acte = new Acte(15000);
-$acte->remove_from_db();
+// $acte = new Acte(15000);
+// $acte->remove_from_db();
 
-$acte = new Acte(15001);
-$acte->remove_from_db();
+// $acte = new Acte(15001);
+// $acte->remove_from_db();
 
-$acte = new Acte(15002);
-$acte->remove_from_db();
+// $acte = new Acte(15002);
+// $acte->remove_from_db();
 
-$acte = new Acte(15003);
-$acte->remove_from_db();
+// $acte = new Acte(15003);
+// $acte->remove_from_db();
 
 // $acte = new Acte(15004);
 // $acte->remove_from_db();
@@ -83,5 +83,28 @@ $acte->remove_from_db();
 // $acte->remove_from_db();
 
 echo "<p>passed</p>\n";
+
+// abstract class Animal {
+
+//     function get_species() {
+//         echo "I am an animal.";
+//     }
+
+//  }
+
+//  class Dog extends Animal {
+
+//      function __construct(){
+//          $this->get_species();
+//      }
+
+//      function get_species(){
+//          parent::get_species();
+//          echo "More specifically, I am a dog.";
+//      }
+// }
+
+// $dog = new Dog();
+
 
 ?>

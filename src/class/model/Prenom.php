@@ -19,6 +19,7 @@ class Prenom extends PreDatabase implements DatabaseIO{
     public function __construct($id = NULL, $prenom = NULL, $no_accent = NULL){
         $this->id = $id;
         $this->set_prenom($prenom, $no_accent);
+        parent::from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function set_prenom($default, $no_accent = NULL){
@@ -78,6 +79,18 @@ class Prenom extends PreDatabase implements DatabaseIO{
             $this->id = $mysqli->insert_id;
         }
     }
+
+    //  *** tests-dispatch-database 
+    // public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
+    //     global $log, $mysqli;
+                
+    //     if(isset($this->id)){
+    //         $mysqli->from_db_by_id($this);
+    //     } else 
+    //         $mysqli->from_db_by_same($this);
+        
+    //     return $this;
+    // }
 }
 
 ?>
