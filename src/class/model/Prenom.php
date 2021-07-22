@@ -78,18 +78,6 @@ class Prenom extends PreDatabase implements DatabaseIO{
             $this->id = $mysqli->insert_id;
         }
     }
-
-    //  *** tests-dispatch-database 
-    // public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
-    //     global $log, $mysqli;
-                
-    //     if(isset($this->id)){
-    //         $mysqli->from_db_by_id($this);
-    //     } else 
-    //         $mysqli->from_db_by_same($this);
-        
-    //     return $this;
-    // }
 }
 
 ?>

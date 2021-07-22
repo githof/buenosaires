@@ -8,12 +8,13 @@ $page_title = "Suppression de l'acte $id";
 
 if($type == "acte"){
     $acte = new Acte($id);
-    // if($mysqli->from_db($acte) == NULL)
-    if($acte->from_db($acte) == NULL)
+    if($acte->from_db() == NULL)
         $html = "L'acte n'existe pas";
-    // $mysqli->delete_acte($acte);
-    $acte->remove_from_db();
-    $html = "Suppression de l'acte $id réalisée avec succès";
+    else
+    {
+        $acte->remove_from_db();
+        $html = "Suppression de l'acte $id réalisée avec succès";
+    }
 }
 
 ?>
