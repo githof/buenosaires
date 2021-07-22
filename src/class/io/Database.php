@@ -162,8 +162,8 @@
         $m = microtime(TRUE);
         
         //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $requete : ';
-        // var_dump($requete);
+        echo '<br>'.__METHOD__.' $requete : ';
+        var_dump($requete);
         //  fin test 
 
         $result = parent::query($requete);

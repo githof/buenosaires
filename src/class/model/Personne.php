@@ -174,7 +174,13 @@ class Personne extends PreDatabase implements DatabaseIO {
         }
     }
 
+
     //  PUBLIC  //
+
+    public function get_relations_by_type() {
+        $this->dispatch_relations_by_type();
+        return $this->relations_by_type;
+    }
 
     //  *** tests-dispatch-database 
     public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
@@ -184,13 +190,21 @@ class Personne extends PreDatabase implements DatabaseIO {
             $row = parent::from_db($obj, $update_obj,
                 $get_relations_conditions);
             $mysqli->from_db_personne_noms_prenoms($obj);
+
             if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
-                $mysqli->from_db_personne_relations($obj);
                 $mysqli->from_db_personne_conditions($obj);
+                $mysqli->from_db_personne_relations($obj);
             }
         } else 
             $row = $mysqli->from_db_by_same_personne($obj);
-        
+
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $row : ';
+        var_dump($row);
+        echo '<br>'.__METHOD__.' $this : ';
+        var_dump($this);
+        //  fin test 
+
         return $row;
     }
 
@@ -224,11 +238,7 @@ class Personne extends PreDatabase implements DatabaseIO {
     //     return $obj->id;
     // }
 
-    public function get_relations_by_type() {
-        $this->dispatch_relations_by_type();
-        return $this->relations_by_type;
-    }
-
+    
     // DATABASE IO
 
     public function get_table_name(){
@@ -358,8 +368,13 @@ class Personne extends PreDatabase implements DatabaseIO {
     public function remove_from_db($anyway = FALSE) {
         global $mysqli;
 
+        //  *** tests-dispatch-database 
+        echo '<br>'.__METHOD__.' $this : ';
+        var_dump($this);
+        //  fin test 
+
         if(! $anyway)
-        if($this->is_in_anything()) return FALSE;
+            if($this->is_in_anything()) return FALSE;
 
         /*
         Je vais pas me préoccuper de supprimer les prénoms/noms
@@ -379,6 +394,8 @@ class Personne extends PreDatabase implements DatabaseIO {
         $mysqli->delete("personne", "id=$this->id");
         $mysqli->end_transaction();
 
+        
+
         return TRUE;
     }
 
@@ -394,7 +411,7 @@ class Personne extends PreDatabase implements DatabaseIO {
         $removed = [];
 
         if($personne->remove_from_db(TRUE))
-        $removed[] = $personne;
+            $removed[] = $personne;
 
         return $removed;
     }

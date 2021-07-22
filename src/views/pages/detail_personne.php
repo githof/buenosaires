@@ -10,18 +10,22 @@ $post_id = $url_parsed["id"];
 
 // $obj = new Personne($url_parsed["id"]);
 $personne = new Personne($url_parsed["id"]);    //  *** création new Personne() 
-//  *** tests-dispatch-database 
-// $result = $mysqli->from_db($personne, TRUE);    //  *** Pas de re-création 
-// $result = $personne->from_db($personne, TRUE);    //  *** Pas de re-création 
-$result = $personne->from_db($personne, TRUE); 
+
+//  *** test-personne-suppr 
+$personne->from_db($personne);
+echo '<br>'.__METHOD__.' $personne->from_db($personne) : ';
+var_dump($personne);
+//  fin test
+
+$result = $personne->from_db($personne, TRUE);    //  *** Pas de re-création 
 
 //  *** tests-dispatch-database 
 // echo '<br>'.__METHOD__.' $result : ';
 // var_dump($result);
 //  fin test 
 
-// if($result == NULL){
-if($personne == NULL){
+if($result == NULL){
+// if($personne == NULL){
 ?>
 <div>
     Aucune personne enregistrée avec cet id
@@ -44,8 +48,8 @@ if($personne == NULL){
 
 <?php 
 if(can_access($access_pages["dissocier"])){?>
-    <!-- <a href="dissocier?personne-A=<?php echo $personne->id; ?>"> -->
-    <a href="dissocier?personne-A=<?php echo $obj->id; ?>">
+    <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
+    <!-- <a href="dissocier?personne-A=<?php // echo $obj->id; ?>"> -->
         <button class="btn btn-info btn-sm">Dissocier</button>
     </a>
 <?php } 
@@ -56,7 +60,7 @@ if(can_access($access_pages["supprimer"])){ ?>
     <button class="btn btn-danger btn-sm" id="personne-suppr-3">Parce que vous allez vraiment le faire</button>
     <button class="btn btn-danger btn-sm" id="personne-suppr-4">Dernière chance ?</button>
     <!-- <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php // echo $acte->id; ?>">Okay, okay</a> -->
-    <a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/<?php echo $obj->id; ?>">Okay, okay</a>
+    <a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/<?php echo $personne->id; ?>">Okay, okay</a>
 <?php } ?>
 
 </div>

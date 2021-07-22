@@ -313,6 +313,11 @@ class Acte extends PreDatabase implements DatabaseIO{
         $this->from_db($this);
         $personnes = $this->personnes();
 
+        //  *** test-personne-suppr 
+        echo '<br>'.__METHOD__.' $personnes : ';
+        var_dump($personnes);
+        //  fin test 
+
         $mysqli->start_transaction();
         foreach(['conditions', 'relations'] as $liste)
             if(! empty($this->{$liste})) {
@@ -324,11 +329,11 @@ class Acte extends PreDatabase implements DatabaseIO{
 
         //  *** tests-dispatch-database :
         //  Remplacé $mysqli->remove_from_db() par $personne->purge_personne()
-        foreach($personnes as $personne)
-            $personne->purge_personnes($personne);
+        foreach($personnes as $personne) {
         // foreach($personnes as $personne)
-        //     $personne->remove_from_db(TRUE);
-
+            $personne->remove_from_db(TRUE);
+            $personne->purge_personnes($personne);
+        }
         //  *** Supprime les noms prénoms orpehlins : 
         $mysqli->remove_unused_prenoms_noms(); 
     }

@@ -34,7 +34,12 @@ abstract class PreDatabase implements DatabaseIO {
 
     if($update_obj)
       $obj->result_from_db($row);
-
+      //  *** tests-dispatch-database 
+      echo '<br>'.__METHOD__.' $row : ';
+      var_dump($row);
+      echo '<br>'.__METHOD__.' $this : ';
+      var_dump($this);
+      //  fin test 
     return $row;
   }
 
