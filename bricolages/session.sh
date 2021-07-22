@@ -3,6 +3,7 @@ xml=LASTDATA/matrimonios.xml
 periode=LASTDATA/periode.xml
 corpus=LASTDATA/corpus.xml
 periode_test=LASTDATA/periode-test.xml
+sample=MORGANSAMPLE/actes_tries_modifies-2021-06-23.xml
 xml_belgrano=DATA/grep-belgrano.xml
 actes=DATAWEB/actes.csv
 # id_acte,epoux,epouse,periode
@@ -27,6 +28,12 @@ corpus ()
 periode ()
 {
   cat "$periode"
+}
+
+morgan ()
+{
+  cat "$sample" \
+  | grep -v '^ *$'
 }
 
 on ()
