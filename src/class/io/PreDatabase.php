@@ -13,27 +13,31 @@ abstract class PreDatabase implements DatabaseIO {
   // public function post_into_db(){}
 
 
-  public function from_db($obj, $update_obj = TRUE, $get_relations_conditions = TRUE){
+  public function from_db(
+      $update_obj = TRUE,
+      $get_relations_conditions = TRUE)
+  {
     /*
       De ce qu'il me semble, $update_obj sert à renseigner l'id
-      de $obj s'il ne l'est pas.
+      de $this s'il ne l'est pas.
       En tout cas il ne sert à pas à indiquer si on veut
-      modifier $obj :
-      en pratique $obj est toujours rempli par les fonctions
+      modifier $this :
+      en pratique $this est toujours rempli par les fonctions
       appelées ici.
     */
     global $log, $mysqli;
 
-    $log->d("from database: ".get_class($obj)." id=$obj->id");
+    $log->d("from database: "
+            .get_class($this)." id=$this->id");
 
     //  *** tests-dispatch-database
-    if(isset($obj->id)){
-      $row = $mysqli->from_db_by_id($obj);
+    if(isset($this->id)){
+      $row = $mysqli->from_db_by_id($this);
     } else
-        $row = $mysqli->from_db_by_same($obj);
+        $row = $mysqli->from_db_by_same($this);
 
     if($update_obj)
-      $obj->result_from_db($row);
+      $this->result_from_db($row);
 
     return $row;
   }

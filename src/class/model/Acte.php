@@ -39,7 +39,6 @@ class Acte extends PreDatabase implements DatabaseIO{
         $this->date_end = NULL;
         $this->conditions = [];
         $this->relations = [];
-        // $this->from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function set_contenu($contenu){
@@ -69,19 +68,22 @@ class Acte extends PreDatabase implements DatabaseIO{
     }
 
     //  *** tests-dispatch-database 
-    public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
+    public function from_db(
+            $update_obj = FALSE,
+            $get_relations_conditions = TRUE)
+    {
         global $log, $mysqli; 
 
-        if(isset($obj->id)) {
-            $row = parent::from_db($obj, $update_obj,
+        if(isset($this->id)) {
+            $row = parent::from_db($update_obj,
                 $get_relations_conditions);
 
             if($get_relations_conditions) {
-                $mysqli->from_db_acte_conditions($obj);
-                $mysqli->from_db_acte_relations($obj);
+                $mysqli->from_db_acte_conditions($this);
+                $mysqli->from_db_acte_relations($this);
             }
         } else 
-            $row = $mysqli->from_db_by_same($obj);
+            $row = $mysqli->from_db_by_same($this);
 
         return $row; 
     }

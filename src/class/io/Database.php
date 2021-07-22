@@ -202,8 +202,7 @@
             while($row = $results->fetch_assoc()){
                 $id = $row["id"];
                 $personne = new Personne($id);
-                // $this->from_db($personne, $get_relations_conditions);
-                $personne->from_db($personne, $get_relations_conditions);
+                $personne->from_db(FALSE, $get_relations_conditions);
                 $personnes[$id] = $personne;
             }
         }

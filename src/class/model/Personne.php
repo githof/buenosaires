@@ -44,8 +44,6 @@ class Personne extends PreDatabase implements DatabaseIO {
         $this->pere = NULL;
         $this->mere = NULL;
         $this->is_updated_in_db = FALSE;
-        //  *** tests-dispatch-database 
-        // $this->from_db($this, $update_obj = FALSE, $get_relations_conditions = TRUE);
     }
 
     public function add_prenom_str($s){
@@ -177,19 +175,22 @@ class Personne extends PreDatabase implements DatabaseIO {
     //  PUBLIC  //
 
     //  *** tests-dispatch-database 
-    public function from_db($obj, $update_obj = FALSE, $get_relations_conditions = TRUE) {
+    public function from_db(
+            $update_obj = FALSE,
+            $get_relations_conditions = TRUE)
+    {
         global $log, $mysqli; 
         
-        if(isset($obj->id)) {
-            $row = parent::from_db($obj, $update_obj,
+        if(isset($this->id)) {
+            $row = parent::from_db($update_obj,
                 $get_relations_conditions);
-            $mysqli->from_db_personne_noms_prenoms($obj);
+            $mysqli->from_db_personne_noms_prenoms($this);
             if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
-                $mysqli->from_db_personne_relations($obj);
-                $mysqli->from_db_personne_conditions($obj);
+                $mysqli->from_db_personne_relations($this);
+                $mysqli->from_db_personne_conditions($this);
             }
         } else 
-            $row = $mysqli->from_db_by_same_personne($obj);
+            $row = $mysqli->from_db_by_same_personne($this);
         
         return $row;
     }
