@@ -8,7 +8,7 @@ include_once(ROOT."src/class/model/Personne.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Acte extends PreDatabase implements DatabaseIO{
+class Acte extends PreDatabase {    //  *** implements DatabaseIO 
 
     public $id;
 

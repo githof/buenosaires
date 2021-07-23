@@ -262,24 +262,24 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     }
 }
 
-// function change_prenoms_ou_noms($field, $noms, $personne)
-function change_prenoms_ou_noms($field, $noms, $obj)
+function change_prenoms_ou_noms($field, $noms, $personne)
+// function change_prenoms_ou_noms($field, $noms, $obj)
 // $field = 'prenom' ou 'nom'
 {
     global $mysqli;
 
     if(count($noms) == 0) return;
 
-    // $cond = "personne_id='$personne->id'";
-    $cond = "personne_id='$obj->id'";
+    $cond = "personne_id='$personne->id'";
+    // $cond = "personne_id='$obj->id'";
     $mysqli->delete($field."_personne", $cond);
     $i = 1;
     foreach($noms as $nom){
         // $mysqli->into_db($nom);
-        $obj->into_db($nom);
+        $personne->into_db($nom);
         $into_db = 'into_db_'.$field.'_personne';
-        // $mysqli->{$into_db}($personne, $nom, $i);
-        $mysqli->{$into_db}($obj, $nom, $i);
+        $mysqli->{$into_db}($personne, $nom, $i);
+        // $mysqli->{$into_db}($obj, $nom, $i);
         $i++;
     }
 }

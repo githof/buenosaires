@@ -43,18 +43,18 @@ abstract class PreDatabase implements DatabaseIO {
   }
 
   //  *** Pour import d'un acte 
-  public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
+  public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {  
     global $mysqli;
 
     $result = FALSE;
-
+    
     if(!$force_insert && !$obj->pre_into_db())
         return;
 
     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db() 
     if(!$skip_check_same) {
         // $values_db = $mysqli->from_db($obj, FALSE, FALSE);
-        $values_db = $obj->from_db($obj, FALSE, FALSE);
+        $values_db = $obj->from_db(FALSE, FALSE);
     }
     
     if(isset($values_db["id"])) { 

@@ -173,11 +173,13 @@ $relations_new) {
     $personne_new->prenoms = $prenoms_new;
     $personne_new->noms = $noms_new;
 
-    $mysqli->into_db($personne_new, FALSE, TRUE);
+    // $mysqli->into_db($personne_new, FALSE, TRUE);
+    $personne_new->into_db($personne_new, FALSE, TRUE);
 
     $personne_source->condition = [];
     $personne_new->relations = [];
-    $mysqli->into_db($personne_source);
+    // $mysqli->into_db($personne_source);
+    $personne_source->into_db($personne_source);
 
     $mysqli->delete(
         "acte_has_condition",
@@ -223,7 +225,8 @@ $relations_new) {
 
     foreach($conditions_new as $condition){
         $condition->personne = $personne_new;
-        $mysqli->into_db($condition);
+        // $mysqli->into_db($condition);
+        $condition->into_db($condition);
         foreach($condition->actes as $actes)
             $mysqli->into_db_acte_has_condition($acte, $condition);
     }
@@ -241,7 +244,8 @@ $relations_new) {
             $relation->personne_source = $personne_new;
         else
             $relation->personne_destination = $personne_new;
-        $mysqli->into_db($relation, TRUE);
+        // $mysqli->into_db($relation, TRUE);
+        $relation->into_db($relation, TRUE);
         foreach($relation->actes as $acte)
             $mysqli->into_db_acte_has_relation($acte, $relation);
     }
