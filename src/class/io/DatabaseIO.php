@@ -8,6 +8,10 @@
         public function values_into_db();
         public function pre_into_db();
         public function post_into_db();
+        
+        public function from_db(
+            $update_obj = TRUE,
+            $get_relations_conditions = TRUE);
     }
 
 ?>

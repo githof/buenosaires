@@ -13,7 +13,7 @@ abstract class PreDatabase implements DatabaseIO {
   // public function post_into_db(){}
 
 
-  public function from_db(
+ public function from_db(
       $update_obj = TRUE,
       $get_relations_conditions = TRUE)
   {
@@ -40,7 +40,7 @@ abstract class PreDatabase implements DatabaseIO {
       $this->result_from_db($row);
 
     return $row;
-  }
+  } 
 
   //  *** Pour import d'un acte 
   public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {  

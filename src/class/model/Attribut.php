@@ -2,7 +2,7 @@
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
-    class Attribut implements DatabaseIO{
+    class Attribut {
 
         public $id;
 
