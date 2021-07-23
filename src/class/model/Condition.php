@@ -5,7 +5,7 @@
     include_once(ROOT."src/class/io/PreDatabase.php");
 
 
-    class Condition extends PreDatabase implements DatabaseIO{
+    class Condition extends PreDatabase {
 
         public $id;
 

@@ -9,7 +9,7 @@ include_once(ROOT."src/class/io/PreDatabase.php");
   Nom et Prenom pourraient hériter d'une même classe...
  */
 
-class Prenom extends PreDatabase implements DatabaseIO{
+class Prenom extends PreDatabase {
 
     public $id;
 

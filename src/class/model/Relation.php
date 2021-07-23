@@ -6,7 +6,7 @@ include_once(ROOT."src/class/io/PreDatabase.php");
 
 include_once(ROOT."src/class/model/Personne.php");
 
-class Relation extends PreDatabase implements DatabaseIO {
+class Relation extends PreDatabase {
 
     public $id;
 

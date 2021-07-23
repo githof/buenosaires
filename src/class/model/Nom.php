@@ -9,7 +9,7 @@
   Nom et Prenom pourraient hériter d'une même classe...
  */
 
-    class Nom extends PreDatabase implements DatabaseIO{
+    class Nom extends PreDatabase {
 
         public $id;
 
