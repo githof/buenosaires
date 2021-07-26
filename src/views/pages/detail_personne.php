@@ -50,10 +50,6 @@ if(can_access($access_pages["dissocier"])){?>
 <section>
     <h4>PERIODE</h4>
     <?php echo html_personne_periode($personne->id); 
-    // echo html_personne_periode($obj->id);
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' var_dump($obj) : ';
-    // var_dump($obj);
     ?>
 </section>
 <section>

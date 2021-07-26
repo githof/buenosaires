@@ -350,11 +350,6 @@
     // private function from_db_personne_noms_prenoms($personne)'{'
     public function from_db_personne_noms_prenoms($personne){ 
 
-      //  *** test export 
-      // echo '<br>'.__METHOD__.' $personne : ';
-      // var_dump($personne);
-      //  fin test 
-      
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
         FROM prenom_personne INNER JOIN prenom
@@ -394,10 +389,7 @@
     //  SELECT relations by personne 
     // private function from_db_personne_relations($personne){
     public function from_db_personne_relations($personne){
-      //  *** tests-dispatch-database 
-      // echo '<br>'.__METHOD__.' $personne : ';
-      // var_dump($personne);
-      //  fin test 
+      
       $result = $this->select("relation", ["*"], "pers_source_id='$personne->id' OR pers_destination_id='$personne->id'");
       $pers_source = NULL;
       $pers_destination = NULL;
@@ -536,11 +528,6 @@
     public function from_db_by_same_personne($personne){
         $ids = NULL;
         $ids_tmp = NULL;
-
-        //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__;
-        // var_dump($personne);
-        //  fin test 
 
         foreach($personne->noms as $k => $nom){
             $result = $this->query("
