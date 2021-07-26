@@ -9,23 +9,9 @@ include_once(ROOT."src/html_entities.php");
 $post_id = $url_parsed["id"];
 
 // $obj = new Personne($url_parsed["id"]);
-$personne = new Personne($url_parsed["id"]);    //  *** création new Personne() 
-
-//  *** test-personne-suppr 
-$personne->from_db($personne);
-echo '<br>'.__METHOD__.' $personne->from_db($personne) : ';
-var_dump($personne);
-//  fin test
-
-$result = $personne->from_db($personne, TRUE);    //  *** Pas de re-création 
-
-//  *** tests-dispatch-database 
-// echo '<br>'.__METHOD__.' $result : ';
-// var_dump($result);
-//  fin test 
-
+$personne = new Personne($url_parsed["id"]);
+$result = $personne->from_db(TRUE); 
 if($result == NULL){
-// if($personne == NULL){
 ?>
 <div>
     Aucune personne enregistrée avec cet id
@@ -79,10 +65,6 @@ if(can_access($access_pages["supprimer"])){ ?>
 <section>
     <h4>PERIODE</h4>
     <?php echo html_personne_periode($personne->id); 
-    // echo html_personne_periode($obj->id);
-    //  *** tests-dispatch-database 
-    // echo '<br>'.__METHOD__.' var_dump($obj) : ';
-    // var_dump($obj);
     ?>
 </section>
 <section>

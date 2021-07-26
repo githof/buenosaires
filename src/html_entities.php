@@ -41,8 +41,7 @@ function has_memory($class, $id){
             //     $obj = new Condition($id);
             //     break;
         }
-        // $mysqli->from_db($obj, TRUE);   
-        $obj->from_db($obj, TRUE);   
+        $obj->from_db(TRUE);   
         $memory[$class][$id] = $obj;
         return $obj;
     }

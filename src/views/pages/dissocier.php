@@ -41,8 +41,7 @@ function dissocier_input_conditions_relations(){
             $item = new Relation($split["id"]);
         }else
             continue;
-        // $mysqli->from_db($item, TRUE);
-        $personne->from_db($item, TRUE);
+        $item->from_db(TRUE);
         $id = "{$split["id"]}";
         switch($value){
             case "a":
@@ -75,7 +74,7 @@ function dissocier_input_conditions_relations(){
                 else if(startsWith($key, "relation"))
                     $item = new Relation($id);
                 // $mysqli->from_db($item, TRUE);
-                $personne->from_db($item, TRUE);
+                $item->from_db(TRUE);
 
                 $item->id = NULL;
                 if(isset($new[$id]))
@@ -174,11 +173,13 @@ $relations_new) {
     $personne_new->prenoms = $prenoms_new;
     $personne_new->noms = $noms_new;
 
-    $mysqli->into_db($personne_new, FALSE, TRUE);
+    // $mysqli->into_db($personne_new, FALSE, TRUE);
+    $personne_new->into_db($personne_new, FALSE, TRUE);
 
     $personne_source->condition = [];
     $personne_new->relations = [];
-    $mysqli->into_db($personne_source);
+    // $mysqli->into_db($personne_source);
+    $personne_source->into_db($personne_source);
 
     $mysqli->delete(
         "acte_has_condition",
@@ -224,7 +225,8 @@ $relations_new) {
 
     foreach($conditions_new as $condition){
         $condition->personne = $personne_new;
-        $mysqli->into_db($condition);
+        // $mysqli->into_db($condition);
+        $condition->into_db($condition);
         foreach($condition->actes as $actes)
             $mysqli->into_db_acte_has_condition($acte, $condition);
     }
@@ -242,7 +244,8 @@ $relations_new) {
             $relation->personne_source = $personne_new;
         else
             $relation->personne_destination = $personne_new;
-        $mysqli->into_db($relation, TRUE);
+        // $mysqli->into_db($relation, TRUE);
+        $relation->into_db($relation, TRUE);
         foreach($relation->actes as $acte)
             $mysqli->into_db_acte_has_relation($acte, $relation);
     }
@@ -439,8 +442,7 @@ if(isset($ARGS["id"])){
     $noms_B = parse_noms($ARGS["noms-B"]);
 
     $personne = new Personne($ARGS["id"]);
-    // $mysqli->from_db($personne);
-    $personne->from_db($personne);
+    $personne->from_db();
 
     $res = dissocier_input_conditions_relations();
     $conditions_A = $res[0];
@@ -458,8 +460,7 @@ if(isset($ARGS["id"])){
 
 }else if(isset($ARGS["personne-A"])){
     $personne = new Personne($ARGS["personne-A"]);
-    // $mysqli->from_db($personne);
-    $personne->from_db($personne);
+    $personne->from_db();
     html_dissocier($personne);
 }else{
     html_select_personne();

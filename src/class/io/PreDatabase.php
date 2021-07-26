@@ -13,49 +13,48 @@ abstract class PreDatabase implements DatabaseIO {
   // public function post_into_db(){}
 
 
-  public function from_db($obj, $update_obj = TRUE, $get_relations_conditions = TRUE){
+ public function from_db(
+      $update_obj = TRUE,
+      $get_relations_conditions = TRUE)
+  {
     /*
       De ce qu'il me semble, $update_obj sert à renseigner l'id
-      de $obj s'il ne l'est pas.
+      de $this s'il ne l'est pas.
       En tout cas il ne sert à pas à indiquer si on veut
-      modifier $obj :
-      en pratique $obj est toujours rempli par les fonctions
+      modifier $this :
+      en pratique $this est toujours rempli par les fonctions
       appelées ici.
     */
     global $log, $mysqli;
 
-    $log->d("from database: ".get_class($obj)." id=$obj->id");
+    $log->d("from database: "
+            .get_class($this)." id=$this->id");
 
     //  *** tests-dispatch-database
-    if(isset($obj->id)){
-      $row = $mysqli->from_db_by_id($obj);
+    if(isset($this->id)){
+      $row = $mysqli->from_db_by_id($this);
     } else
-        $row = $mysqli->from_db_by_same($obj);
+        $row = $mysqli->from_db_by_same($this);
 
     if($update_obj)
-      $obj->result_from_db($row);
-      //  *** tests-dispatch-database 
-      echo '<br>'.__METHOD__.' $row : ';
-      var_dump($row);
-      echo '<br>'.__METHOD__.' $this : ';
-      var_dump($this);
-      //  fin test 
+      $this->result_from_db($row);
+
     return $row;
-  }
+  } 
 
   //  *** Pour import d'un acte 
-  public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
+  public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {  
     global $mysqli;
 
     $result = FALSE;
-
+    
     if(!$force_insert && !$obj->pre_into_db())
         return;
 
     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db() 
     if(!$skip_check_same) {
         // $values_db = $mysqli->from_db($obj, FALSE, FALSE);
-        $values_db = $obj->from_db($obj, FALSE, FALSE);
+        $values_db = $obj->from_db(FALSE, FALSE);
     }
     
     if(isset($values_db["id"])) { 
