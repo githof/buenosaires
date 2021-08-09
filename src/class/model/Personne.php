@@ -172,7 +172,13 @@ class Personne extends PreDatabase {
         }
     }
 
+
     //  PUBLIC  //
+
+    public function get_relations_by_type() {
+        $this->dispatch_relations_by_type();
+        return $this->relations_by_type;
+    }
 
     //  *** tests-dispatch-database 
     public function from_db(
@@ -225,11 +231,7 @@ class Personne extends PreDatabase {
     //     return $obj->id;
     // }
 
-    public function get_relations_by_type() {
-        $this->dispatch_relations_by_type();
-        return $this->relations_by_type;
-    }
-
+    
     // DATABASE IO
 
     public function get_table_name(){
@@ -323,17 +325,17 @@ class Personne extends PreDatabase {
         global $mysqli;
 
         switch ($table) {
-        case 'condition':
-            $filter = "personne_id = $this->id";
-            break;
-        case 'relation':
-            $filter = "pers_source_id = $this->id"
-            . " OR pers_destination_id = $this->id";
-            break;
-        case 'acte':
-            $filter = "epoux = $this->id"
-            . " OR epouse = $this->id";
-            break;
+            case 'condition':
+                $filter = "personne_id = $this->id";
+                break;
+            case 'relation':
+                $filter = "pers_source_id = $this->id"
+                . " OR pers_destination_id = $this->id";
+                break;
+            case 'acte':
+                $filter = "epoux = $this->id"
+                . " OR epouse = $this->id";
+                break;
         }
         $count = 'COUNT(*) AS nb';
         $result = $mysqli->select($table, [$count], $filter);
@@ -345,6 +347,7 @@ class Personne extends PreDatabase {
     }
 
     private function is_in_anything() {
+
         foreach(['condition', 'relation', 'acte'] as $table) {
             if($this->is_in($table)) return TRUE;
         }
@@ -358,10 +361,10 @@ class Personne extends PreDatabase {
     //  à la place de $personne->remove_from_db() 
     public function remove_from_db($anyway = FALSE) {
         global $mysqli;
-
-        if(! $anyway)
-        if($this->is_in_anything()) return FALSE;
-
+        
+        if(! $anyway) {
+            if($this->is_in_anything()) return FALSE;
+        }
         /*
         Je vais pas me préoccuper de supprimer les prénoms/noms
         qui se retrouvent orphelins.
@@ -375,6 +378,12 @@ class Personne extends PreDatabase {
         $mysqli->start_transaction();
         foreach(['prenom', 'nom'] as $field) {
             $table = $field.'_personne';
+            $mysqli->delete($table, "personne_id=$this->id");
+        } 
+        //  *** test-personne-suppr 
+        //  Impossible à supprimer de cette façon, il faut d'abord supprimer acte_condition/acte_relation 
+        foreach(['condition', 'relation'] as $field) {
+            $table = $field;
             $mysqli->delete($table, "personne_id=$this->id");
         }
         $mysqli->delete("personne", "id=$this->id");
@@ -395,7 +404,7 @@ class Personne extends PreDatabase {
         $removed = [];
 
         if($personne->remove_from_db(TRUE))
-        $removed[] = $personne;
+            $removed[] = $personne;
 
         return $removed;
     }

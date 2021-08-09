@@ -326,11 +326,11 @@ class Acte extends PreDatabase {
 
         //  *** tests-dispatch-database :
         //  Remplacé $mysqli->remove_from_db() par $personne->purge_personne()
-        foreach($personnes as $personne)
-            $personne->purge_personnes($personne);
+        foreach($personnes as $personne) {
         // foreach($personnes as $personne)
-        //     $personne->remove_from_db(TRUE);
-
+            $personne->remove_from_db(TRUE);
+            $personne->purge_personnes($personne);
+        }
         //  *** Supprime les noms prénoms orpehlins : 
         $mysqli->remove_unused_prenoms_noms(); 
     }

@@ -15,6 +15,9 @@ $urls = [
         =>  ["results", "Résultats de la recherche"],
     "/(?'page'supprimer)/(?'type'acte)/(?'id'\d+)"
         =>  ["delete", "Supprimer acte"],
+    //  *** test-personne-suppr 
+    "/(?'page'supprimer)/(?'type'personne)/(?'id'\d+)"
+        =>  ["delete", "Supprimer personne"],
     "/(?'page'get)"
         =>  ["", ""],
     "/(?'page'import)"

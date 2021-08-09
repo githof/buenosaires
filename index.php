@@ -61,7 +61,7 @@ if(isset($url_parsed["page"])){
             $alert->warning("Accès a un contenu restreint");
         }
     } else {
-        if(can_access($access_pages[$url_parsed["page"]])){     //  *** undefined index resultat line 66 // 
+        if(can_access($access_pages[$url_parsed["page"]])){     //  *** undefined index resultat // 
             $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
         } else {

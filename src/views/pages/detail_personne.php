@@ -28,14 +28,29 @@ if($result == NULL){
         $name .= $nom->to_string() . " ";
 
     $page_title = "$name";
-if(can_access($access_pages["dissocier"])){?>
+?>
+
 <div class="detail_options">
+
+<?php 
+if(can_access($access_pages["dissocier"])){?>
     <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
-    <!-- <a href="dissocier?personne-A=<?php// echo $obj->id; ?>"> -->
+    <!-- <a href="dissocier?personne-A=<?php // echo $obj->id; ?>"> -->
         <button class="btn btn-info btn-sm">Dissocier</button>
     </a>
-</div>
+<?php } 
+
+if(can_access($access_pages["supprimer"])){ ?>
+    <button class="btn btn-danger btn-sm" id="personne-suppr-1">Supprimer la personne</button>
+    <button class="btn btn-danger btn-sm" id="personne-suppr-2">Vous êtes sûr ?</button>
+    <button class="btn btn-danger btn-sm" id="personne-suppr-3">Parce que vous allez vraiment le faire</button>
+    <button class="btn btn-danger btn-sm" id="personne-suppr-4">Dernière chance ?</button>
+    <!-- <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php // echo $acte->id; ?>">Okay, okay</a> -->
+    <a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/<?php echo $personne->id; ?>">Okay, okay</a>
 <?php } ?>
+
+</div>
+
 <section>
     <?php echo html_personne($personne, FALSE, FALSE); ?>
     <?php //    echo html_personne($obj, FALSE, FALSE); ?>
