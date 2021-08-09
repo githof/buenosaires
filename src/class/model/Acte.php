@@ -315,11 +315,6 @@ class Acte extends PreDatabase {
         $this->from_db($this);
         $personnes = $this->personnes();
 
-        //  *** test-personne-suppr 
-        echo '<br>'.__METHOD__.' $personnes : ';
-        var_dump($personnes);
-        //  fin test 
-
         $mysqli->start_transaction();
         foreach(['conditions', 'relations'] as $liste)
             if(! empty($this->{$liste})) {

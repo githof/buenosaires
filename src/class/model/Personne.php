@@ -325,17 +325,17 @@ class Personne extends PreDatabase {
         global $mysqli;
 
         switch ($table) {
-        case 'condition':
-            $filter = "personne_id = $this->id";
-            break;
-        case 'relation':
-            $filter = "pers_source_id = $this->id"
-            . " OR pers_destination_id = $this->id";
-            break;
-        case 'acte':
-            $filter = "epoux = $this->id"
-            . " OR epouse = $this->id";
-            break;
+            case 'condition':
+                $filter = "personne_id = $this->id";
+                break;
+            case 'relation':
+                $filter = "pers_source_id = $this->id"
+                . " OR pers_destination_id = $this->id";
+                break;
+            case 'acte':
+                $filter = "epoux = $this->id"
+                . " OR epouse = $this->id";
+                break;
         }
         $count = 'COUNT(*) AS nb';
         $result = $mysqli->select($table, [$count], $filter);
@@ -347,6 +347,7 @@ class Personne extends PreDatabase {
     }
 
     private function is_in_anything() {
+
         foreach(['condition', 'relation', 'acte'] as $table) {
             if($this->is_in($table)) return TRUE;
         }
@@ -360,15 +361,10 @@ class Personne extends PreDatabase {
     //  à la place de $personne->remove_from_db() 
     public function remove_from_db($anyway = FALSE) {
         global $mysqli;
-
-        //  *** tests-dispatch-database 
-        echo '<br>'.__METHOD__.' $this : ';
-        var_dump($this);
-        //  fin test 
-
-        if(! $anyway)
+        
+        if(! $anyway) {
             if($this->is_in_anything()) return FALSE;
-
+        }
         /*
         Je vais pas me préoccuper de supprimer les prénoms/noms
         qui se retrouvent orphelins.
@@ -383,11 +379,15 @@ class Personne extends PreDatabase {
         foreach(['prenom', 'nom'] as $field) {
             $table = $field.'_personne';
             $mysqli->delete($table, "personne_id=$this->id");
+        } 
+        //  *** test-personne-suppr 
+        //  Impossible à supprimer de cette façon, il faut d'abord supprimer acte_condition/acte_relation 
+        foreach(['condition', 'relation'] as $field) {
+            $table = $field;
+            $mysqli->delete($table, "personne_id=$this->id");
         }
         $mysqli->delete("personne", "id=$this->id");
         $mysqli->end_transaction();
-
-        
 
         return TRUE;
     }
