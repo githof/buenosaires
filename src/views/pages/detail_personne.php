@@ -64,8 +64,7 @@ function html_affichage_personne() {
         html_personne_name(); 
 
         $html = 
-            '</div>
-            <section>'
+            '<section>'
                 . html_personne($personne, FALSE, FALSE) . 
             '</section>
             <section>
