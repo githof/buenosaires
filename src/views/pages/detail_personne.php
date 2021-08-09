@@ -11,20 +11,15 @@ $post_id = $url_parsed["id"];
 // $obj = new Personne($url_parsed["id"]);
 $personne = new Personne($url_parsed["id"]);
 $result = $personne->from_db(TRUE); 
+
 if($result == NULL){
-?>
-<div>
-    Aucune personne enregistrée avec cet id
-</div>
-<?php
+    $html = "Aucune personne enregistrée avec cet id";
 }else{
     $name = "";
     foreach($personne->prenoms as $prenom)
-    // foreach($obj->prenoms as $prenom)
         $name .= $prenom->to_string() . " ";
 
     foreach($personne->noms as $nom)
-    // foreach($obj->noms as $nom)
         $name .= $nom->to_string() . " ";
 
     $page_title = "$name";
@@ -33,19 +28,34 @@ if($result == NULL){
 <div class="detail_options">
 
 <?php 
-if(can_access($access_pages["dissocier"])){?>
-    <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
-    <!-- <a href="dissocier?personne-A=<?php // echo $obj->id; ?>"> -->
-        <button class="btn btn-info btn-sm">Dissocier</button>
-    </a>
-<?php } 
+
+//  $type = $personne ou $acte 
+function html_actions_personne_ou_acte($type) {
+
+    if(can_access($access_pages["dissocier"])){ 
+        return '<a href="dissocier?personne-A=$personne->id">
+            <button class="btn btn-info btn-sm">Dissocier</button>
+        </a>';
+    }
+    if(can_access($access_pages["dissocier"])){ 
+        return '<a href="dissocier?personne-A=$personne->id">
+            <button class="btn btn-info btn-sm">Dissocier</button>
+        </a>';
+    }
+
+}
+
+?>
+
+
+
+<?php 
 
 if(can_access($access_pages["supprimer"])){ ?>
     <button class="btn btn-danger btn-sm" id="personne-suppr-1">Supprimer la personne</button>
     <button class="btn btn-danger btn-sm" id="personne-suppr-2">Vous êtes sûr ?</button>
     <button class="btn btn-danger btn-sm" id="personne-suppr-3">Parce que vous allez vraiment le faire</button>
     <button class="btn btn-danger btn-sm" id="personne-suppr-4">Dernière chance ?</button>
-    <!-- <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php // echo $acte->id; ?>">Okay, okay</a> -->
     <a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/<?php echo $personne->id; ?>">Okay, okay</a>
 <?php } ?>
 
