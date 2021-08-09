@@ -47,15 +47,16 @@ function html_form_connexion() {    //  $contents  (inutile)
     </div>';
 }
 
-function html_button($type, $class, $data, $value) {
+//  *** déplacé dans html_entities.php 
+// function html_button($type, $class, $data, $value) {
 
-    return '
-        <button type="' . $type . '" 
-        class="' . $class . '" '
-        . $data . '>'
-        . $value 
-        . '</button>';
-}
+//     return '
+//         <button type="' . $type . '" 
+//         class="' . $class . '" '
+//         . $data . '>'
+//         . $value 
+//         . '</button>';
+// }
 
 function html_form_deconnexion(){
 
