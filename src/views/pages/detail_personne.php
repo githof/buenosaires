@@ -51,6 +51,15 @@ function html_personne_name() {
     return $page_title;
 }
 
+//  *** pour affichage sections 
+function html_section_personne($contents) {
+    $html =
+        '<section>'
+                . $contents . 
+            '</section>'; 
+    return $html; 
+}
+
 //  *** affichage général 
 function html_affichage_personne() {
     global $personne, $access_pages; 
@@ -63,9 +72,8 @@ function html_affichage_personne() {
 
         html_personne_name(); 
 
-        $html = 
-            '</div>
-            <section>'
+        $html = html_actions_personne() . 
+            '<section>'
                 . html_personne($personne, FALSE, FALSE) . 
             '</section>
             <section>
