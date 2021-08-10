@@ -11,18 +11,16 @@ $post_id = $url_parsed["id"];
 $personne = new Personne($url_parsed["id"]);
 
 //  *** pour boutons d'actions 
-function html_actions_personne() {
+function html_actions_personne($page) {
     global $personne, $access_pages; 
 
-    $html = '<div class="detail_options">';
-
-    if(can_access($access_pages["dissocier"])){ 
+    if($page == 'dissocier' && can_access($access_pages["dissocier"])){ 
         $html .= '<a href="dissocier?personne-A='.$personne->id.'">' 
             . html_button('', 'btn btn-info btn-sm', '', 'Dissocier')
             . '</a>';
     }
 
-    if(can_access($access_pages["supprimer"])){ 
+    if($page == 'supprimer' && can_access($access_pages["supprimer"])){ 
         $html .= 
             html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-1"', 'Supprimer la personne') 
             . html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-2"', 'Vous êtes sûr ?')
@@ -31,11 +29,16 @@ function html_actions_personne() {
             . '<a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/'.$personne->id.'">Okay, okay</a>'; 
     } 
 
-    $html .= '</div>';
-
     return $html;
 
 }
+
+// //  *** pour aligner boutons d'actions (déplacé dans html_entities.php) 
+// function html_div_actions($contents) {
+//     return '<div class="detail_options">'
+//         . $contents . 
+//     '</div>';
+// }
 
 //  *** pour page_title 
 function html_personne_name() {
@@ -51,17 +54,17 @@ function html_personne_name() {
     return $page_title;
 }
 
-//  *** pour affichage sections 
-function html_section($title, $id, $contents) {
-    $html =
-        '<section>
-            <h4>'.$title.'</h4>
-            <div id="'.$id.'">'
-                . $contents . 
-            '</div>
-        </section>'; 
-    return $html; 
-}
+// //  *** pour affichage sections (déplacé dans html_entities.php) 
+// function html_section($title, $id, $contents) {
+//     $html =
+//         '<section>
+//             <h4>'.$title.'</h4>
+//             <div id="'.$id.'">'
+//                 . $contents . 
+//             '</div>
+//         </section>'; 
+//     return $html; 
+// }
 
 //  *** affichage général 
 function html_affichage_personne() {
@@ -75,7 +78,8 @@ function html_affichage_personne() {
 
         html_personne_name(); 
 
-        $html = html_actions_personne() . 
+        $html = html_div_actions(html_actions_personne('dissocier') . 
+                                html_actions_personne('supprimer')) . 
             '<section>'
                 . html_personne($personne, FALSE, FALSE) . 
             '</section>'

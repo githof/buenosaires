@@ -430,5 +430,24 @@ function html_button($type, $class, $data, $value) {
         . '</button>';
 }
 
+//  *** pour affichage sections 
+function html_section($title, $id, $contents) {
+    $html =
+        '<section>
+            <h4>'.$title.'</h4>
+            <div id="'.$id.'">'
+                . $contents . 
+            '</div>
+        </section>'; 
+    return $html; 
+}
+
+//  *** pour aligner boutons d'actions detail_personne/acte.php 
+function html_div_actions($contents) {
+    return '<div class="detail_options">'
+        . $contents . 
+    '</div>';
+}
+
 
 ?>

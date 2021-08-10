@@ -34,13 +34,13 @@ $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas 
 function html_actions_acte($page) {
     global $access_pages, $acte;
 
-    if($page == "export" && can_access($access_pages['export'])){ 
+    if($page == 'export' && can_access($access_pages['export'])){ 
         $html = '
         <a class="btn btn-info btn-sm" href="acte/'.$acte->id.'?export=xml">XML</a>
         <a class="btn btn-info btn-sm" href="acte/'.$acte->id.'?export=gdf">GDF</a>';
     }
 
-    if($page == "supprimer" && can_access($access_pages['supprimer'])){ 
+    if($page == 'supprimer' && can_access($access_pages['supprimer'])){ 
         $html = 
             html_button('', 'btn btn-danger btn-sm', 'id="acte-suppr-1"', 'Supprimer l\'acte') 
             . html_button('', 'btn btn-danger btn-sm', 'id="acte-suppr-2"', 'Vous êtes sûr ?')
@@ -59,12 +59,12 @@ function html_actions_acte($page) {
     return $html; 
 }
 
-//  *** pour aligner boutons d'actions 
-function html_div_actions($contents) {
-    return '<div class="detail_options">'
-        . $contents . 
-    '</div>';
-}
+// //  *** pour aligner boutons d'actions (déplacé dans html_entities.php) 
+// function html_div_actions($contents) {
+//     return '<div class="detail_options">'
+//         . $contents . 
+//     '</div>';
+// }
 
 //  *** pour affichage section contenu balisé 
 function html_affichage_contenu_balise() {
@@ -92,16 +92,17 @@ function html_affichage_contenu_balise() {
     return $html;
 }
 
-function html_section($title, $id, $contents) {
-    $html =
-        '<section>
-            <h4>'.$title.'</h4>
-            <div id="'.$id.'">'
-                . $contents . 
-            '</div>
-        </section>'; 
-    return $html; 
-}
+//  *** pour affichage sections (déplacé dans html_entities.php) 
+// function html_section($title, $id, $contents) {
+//     $html =
+//         '<section>
+//             <h4>'.$title.'</h4>
+//             <div id="'.$id.'">'
+//                 . $contents . 
+//             '</div>
+//         </section>'; 
+//     return $html; 
+// }
 
 //  *** pour affichage général 
 function html_affichage_acte() {
