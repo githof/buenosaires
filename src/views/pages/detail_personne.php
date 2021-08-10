@@ -52,11 +52,14 @@ function html_personne_name() {
 }
 
 //  *** pour affichage sections 
-function html_section_personne($contents) {
+function html_section($title, $id, $contents) {
     $html =
-        '<section>'
+        '<section>
+            <h4>'.$title.'</h4>
+            <div id="'.$id.'">'
                 . $contents . 
-            '</section>'; 
+            '</div>
+        </section>'; 
     return $html; 
 }
 
@@ -75,30 +78,11 @@ function html_affichage_personne() {
         $html = html_actions_personne() . 
             '<section>'
                 . html_personne($personne, FALSE, FALSE) . 
-            '</section>
-            <section>
-                <h4>ID</h4>
-                <div>'
-                    . $personne->id . 
-                '</div>
-            </section>
-            <section>
-                <h4>PERIODE</h4>'
-                . html_personne_periode($personne->id) . 
-            '</section>
-            <section>
-                <h4>CONDITIONS</h4>
-                <div>'
-                    . html_conditions($personne->conditions, FALSE) . 
-                '</div>
-            </section>
-            <section>
-                <h4>RELATIONS</h4>
-                <div>'
-                    . html_personne_relations($personne) . 
-                '</div>
-            </section>';
-
+            '</section>'
+            . html_section('ID', '', $personne->id) 
+            . html_section('PERIODE', '', html_personne_periode($personne->id)) 
+            . html_section('CONDITIONS', '', html_conditions($personne->conditions, FALSE)) 
+            . html_section('RELATIONS', '', html_personne_relations($personne));
     }
 
     return $html; 
