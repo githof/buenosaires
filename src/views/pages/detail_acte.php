@@ -28,7 +28,6 @@ $post_id = $url_parsed["id"];
 $page_title = "Acte {$url_parsed["id"]}";
 $acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
 
-// $result = $acte->from_db(TRUE); 
 
 //  *** pour boutons d'actions 
 function html_actions_acte($page) {
@@ -36,8 +35,8 @@ function html_actions_acte($page) {
 
     if($page == 'export' && can_access($access_pages['export'])){ 
         $html = '
-        <a class="btn btn-info btn-sm" href="acte/'.$acte->id.'?export=xml">XML</a>
-        <a class="btn btn-info btn-sm" href="acte/'.$acte->id.'?export=gdf">GDF</a>';
+        <a class="btn btn-info btn-sm" href="acte/'.$acte->id.'?export=xml">XML</a>';
+        //  <a class="btn btn-info btn-sm" href="acte/'.$acte->id.'?export=gdf">GDF</a>
     }
 
     if($page == 'supprimer' && can_access($access_pages['supprimer'])){ 
@@ -88,7 +87,6 @@ function html_affichage_contenu_balise() {
         </div>
         </section>';
     
-
     return $html;
 }
 
@@ -104,9 +102,14 @@ function html_affichage_contenu_balise() {
 //     return $html; 
 // }
 
+//  *** appel à la méthode XMLExport::export // 
+function appel_export_acte($class, $method, $acte_id) { 
+    return $class::$method($acte_id); 
+}
+
 //  *** pour affichage général 
 function html_affichage_acte() {
-    global $acte;
+    global $acte, $ARGS, $url_parsed;
 
     $result = $acte->from_db(TRUE); 
 
@@ -118,8 +121,9 @@ function html_affichage_acte() {
     }else{
         if(isset($ARGS["export"])){
             if($ARGS["export"] == "xml"){
-                $export = new XMLExport([$acte->id]);
-                $export->export();
+                // $export = new XMLExport([$acte->id]);
+                // $export->export();
+                echo appel_export_acte('XMLExport', 'export', $acte->id);
             }else if($ARGS["export"] == "gdf"){
 
             }
@@ -141,7 +145,8 @@ function html_affichage_acte() {
             . html_affichage_contenu_balise();
         }
     }
-    return $html; 
+    if(isset($html))
+        return $html; 
 }
 
 

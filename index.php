@@ -61,7 +61,7 @@ if(isset($url_parsed["page"])){
             $alert->warning("Accès a un contenu restreint");
         }
     } else {
-        if(can_access($access_pages[$url_parsed["page"]])){     //  *** undefined index resultat // 
+        if(can_access($access_pages[$url_parsed["page"]])){ 
             $view = ROOT."src/views/pages/" . $url_parsed["include"] . ".php";
             $page_title = $url_parsed["title"];
         } else {
@@ -96,6 +96,8 @@ if($is_get){
         // var_dump($ARGS);
         // echo '<br>$_REQUEST : ';
         // var_dump($_REQUEST);
+        // echo '<br>$_POST : ';
+        // var_dump($_POST);
         //  fin test 
         echo $page_output;
     }

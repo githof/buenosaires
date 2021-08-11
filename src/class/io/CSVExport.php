@@ -34,7 +34,7 @@ class CSVExport implements ExportInterface {
 
     public static function attr_nom_fichier($object) {
         //  *** fichier à enregistrer sur le disque 
-            self::$fichier = ROOT.'exports/export_'.$object.'_'.date('Y-m-d_H-i-s').'.csv';
+        self::$fichier = ROOT.'exports/export_'.$object.'_'.date('Y-m-d_H-i-s').'.csv';
         
         self::$out = fopen(self::$fichier, 'a');
     }
