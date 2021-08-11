@@ -8,82 +8,91 @@ include_once(ROOT."src/html_entities.php");
 //  et arrêter la boucle from_db 
 $post_id = $url_parsed["id"];
 
-// $obj = new Personne($url_parsed["id"]);
 $personne = new Personne($url_parsed["id"]);
-$result = $personne->from_db(TRUE); 
-if($result == NULL){
-?>
-<div>
-    Aucune personne enregistrée avec cet id
-</div>
-<?php
-}else{
-    $name = "";
+
+//  *** pour boutons d'actions 
+function html_actions_personne($page) {
+    global $personne, $access_pages; 
+
+    if($page == 'dissocier' && can_access($access_pages["dissocier"])){ 
+        $html .= '<a href="dissocier?personne-A='.$personne->id.'">' 
+            . html_button('', 'btn btn-info btn-sm', '', 'Dissocier')
+            . '</a>';
+    }
+
+    if($page == 'supprimer' && can_access($access_pages["supprimer"])){ 
+        $html .= 
+            html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-1"', 'Supprimer la personne') 
+            . html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-2"', 'Vous êtes sûr ?')
+            . html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-3"', 'Parce que vous allez vraiment le faire')
+            . html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-4"', 'Dernière chance ?')
+            . '<a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/'.$personne->id.'">Okay, okay</a>'; 
+    } 
+
+    return $html;
+
+}
+
+// //  *** pour aligner boutons d'actions (déplacé dans html_entities.php) 
+// function html_div_actions($contents) {
+//     return '<div class="detail_options">'
+//         . $contents . 
+//     '</div>';
+// }
+
+//  *** pour page_title 
+function html_personne_name() {
+    global $personne, $page_title; 
+
+    $page_title = "";
     foreach($personne->prenoms as $prenom)
-    // foreach($obj->prenoms as $prenom)
-        $name .= $prenom->to_string() . " ";
+        $page_title .= $prenom->to_string() . " ";
 
     foreach($personne->noms as $nom)
-    // foreach($obj->noms as $nom)
-        $name .= $nom->to_string() . " ";
+        $page_title .= $nom->to_string() . " ";
 
-    $page_title = "$name";
-?>
-
-<div class="detail_options">
-
-<?php 
-if(can_access($access_pages["dissocier"])){?>
-    <a href="dissocier?personne-A=<?php echo $personne->id; ?>">
-    <!-- <a href="dissocier?personne-A=<?php // echo $obj->id; ?>"> -->
-        <button class="btn btn-info btn-sm">Dissocier</button>
-    </a>
-<?php } 
-
-if(can_access($access_pages["supprimer"])){ ?>
-    <button class="btn btn-danger btn-sm" id="personne-suppr-1">Supprimer la personne</button>
-    <button class="btn btn-danger btn-sm" id="personne-suppr-2">Vous êtes sûr ?</button>
-    <button class="btn btn-danger btn-sm" id="personne-suppr-3">Parce que vous allez vraiment le faire</button>
-    <button class="btn btn-danger btn-sm" id="personne-suppr-4">Dernière chance ?</button>
-    <!-- <a class="btn btn-danger btn-sm" id="acte-suppr-5" href="supprimer/acte/<?php // echo $acte->id; ?>">Okay, okay</a> -->
-    <a class="btn btn-danger btn-sm" id="personne-suppr-5" href="supprimer/personne/<?php echo $personne->id; ?>">Okay, okay</a>
-<?php } ?>
-
-</div>
-
-<section>
-    <?php echo html_personne($personne, FALSE, FALSE); ?>
-    <?php //    echo html_personne($obj, FALSE, FALSE); ?>
-</section>
-<section>
-    <h4>ID</h4>
-    <div>
-        <?php echo $personne->id; ?>
-        <?php // echo $obj->id; ?>
-    </div>
-</section>
-<section>
-    <h4>PERIODE</h4>
-    <?php echo html_personne_periode($personne->id); 
-    ?>
-</section>
-<section>
-    <h4>CONDITIONS</h4>
-    <div>
-        <?php // *** contourné re-création new personne() dans html_entities::has_memory 
-            echo html_conditions($personne->conditions, FALSE);
-            // echo html_conditions($obj->conditions, FALSE);
-            
-        ?>
-    </div>
-</section>
-<section>
-    <h4>RELATIONS</h4>
-    <div>
-        <?php echo html_personne_relations($personne); ?><!-- Ne re-crée pas new personne() pour la même personne, mais pour l'autre de la relation --> 
-        <?php // echo html_personne_relations($obj); ?>
-    </div>
-</section>
-<?php
+    return $page_title;
 }
+
+// //  *** pour affichage sections (déplacé dans html_entities.php) 
+// function html_section($title, $id, $contents) {
+//     $html =
+//         '<section>
+//             <h4>'.$title.'</h4>
+//             <div id="'.$id.'">'
+//                 . $contents . 
+//             '</div>
+//         </section>'; 
+//     return $html; 
+// }
+
+//  *** affichage général 
+function html_affichage_personne() {
+    global $personne, $access_pages; 
+
+    $result = $personne->from_db(TRUE); 
+
+    if($result == NULL){
+        $html = "Aucune personne enregistrée avec cet id";
+    }else{
+
+        html_personne_name(); 
+
+        $html = html_div_actions(html_actions_personne('dissocier') . 
+                                html_actions_personne('supprimer')) . 
+            '<section>'
+                . html_personne($personne, FALSE, FALSE) . 
+            '</section>'
+            . html_section('ID', '', $personne->id) 
+            . html_section('PERIODE', '', html_personne_periode($personne->id)) 
+            . html_section('CONDITIONS', '', html_conditions($personne->conditions, FALSE)) 
+            . html_section('RELATIONS', '', html_personne_relations($personne));
+    }
+
+    return $html; 
+
+}
+
+echo html_affichage_personne(); 
+
 ?>
