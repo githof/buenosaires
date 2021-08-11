@@ -342,7 +342,7 @@ function string_list_of_ids($liste) {
 }
 
 //  EXPORT  // 
-//  fonction d'appel aux méthodes d'export  //  
+//  fonction d'appel aux méthodes d'export (sauf pour les actes)  //  
 function appel_export_statique($class, $method, $start, $end, $names, $dates, $deux_sens) {   //    $actes_id   //  pour choix actes à exp. 
     return $class::$method($start, $end, $names, $dates, $deux_sens);      // $actes_id     //  pour choix actes à exp. 
 }
