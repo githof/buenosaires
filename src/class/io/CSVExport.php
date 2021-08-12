@@ -128,7 +128,7 @@ class CSVExport implements ExportInterface {
 
     //  PRIVATE METHODS //
 
-    private static function add_personne_to_line(&$line, $p, $names = FALSE) {
+    private static function add_personne_to_line(&$line, $p, $names) {
 
         if($p instanceof Personne) {
             $line[] = $p->id;
@@ -161,12 +161,10 @@ class CSVExport implements ExportInterface {
         $line[] = "$date";
     }
 
-    private static function export_relation($relation, $start, $end, $names, $dates, $reverse) { 
+    private static function export_relation($relation, $names, $dates, $reverse) { 
         $line = [];
         $line[] = $reverse ? -$relation->id : $relation->id;  
 
-        //  *** pour pouvoir exporter une fraction des relations par id : 
-        // if((isset($relation->id)) && ($relation->id >= $start) && ($relation->id <= $end)) {
             if($reverse){
                 self::add_personne_to_line($line,
                     $relation->personne_destination,
@@ -188,14 +186,13 @@ class CSVExport implements ExportInterface {
 
             // self::export_line($line);
             fputcsv(self::$out, $line);
-        // }
     }
 
 
     //  PUBLIC  //
 
-    public static function export_relations($start, $end, $names = FALSE, $dates = FALSE, $deux_sens = FALSE) { 
-        global $mysqli, $line;  
+    public static function export_relations($names, $dates, $deux_sens) {  // $names = TRUE, $dates = TRUE, $deux_sens = TRUE
+        global $mysqli, $line; 
 
         self::attr_nom_fichier('relations');
 
@@ -243,23 +240,17 @@ class CSVExport implements ExportInterface {
                 if(!$deux_sens) {
                     self::export_relation(
                         $relation, 
-                        $start, 
-                        $end,
                         $names, 
                         $dates, 
                         FALSE);     //   !reverse 
                 } else {
                     self::export_relation(
                         $relation, 
-                        $start, 
-                        $end,
                         $names, 
                         $dates, 
                         FALSE);     //   !reverse 
                     self::export_relation(
                         $relation, 
-                        $start, 
-                        $end, 
                         $names, 
                         $dates, 
                         TRUE);      //  reverse 

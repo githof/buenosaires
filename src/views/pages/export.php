@@ -75,8 +75,8 @@ function page_export_lien() {
 
 
 //  fonction d'appel aux méthodes d'export  //  dans utils.php  // 
-// function appel_export_statique($class, $method, $start, $end, $names, $dates) {   //    $actes_id   //  pour choix actes à exp. 
-//     return $class::$method($start, $end, $names, $dates);      // $actes_id     //  pour choix actes à exp. 
+// function appel_export_statique($class, $method, $names, $dates) { 
+//     return $class::$method($names, $dates); 
 // }
 
 
@@ -93,6 +93,7 @@ function html_select_export($label) {
             '</select>';
 }
 //  fin form sans options    //  
+
 
 //  *** onglets des tabs // 
 function html_tab_titles(){
@@ -131,9 +132,11 @@ function html_export_actes() {
 }
 
 function html_export_personnes() {
-    $contents = '<h4>Tous les personnes</h4>';
-    // <p>Section Personnes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
+    $contents = '<h4>Tous les personnes</h4> 
+    <p>Section Personnes en travaux. Merci de votre compréhension :)</p>';
     // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'));
+    // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
+    //             . html_form_group_export(html_radio_personnes('attributs', '1', 'Avec attributs'));
     
     return $contents;
 }
@@ -144,12 +147,9 @@ function html_export_relations() {
                 <p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p>';
     $contents .= '<div class="row">';
     
-    $contents .= html_form_group_export(html_radio_export('dates', 1, 'Avec les dates').'<br>'
-                                        .html_radio_export('dates', 0, 'Sans les dates')) 
-                . html_form_group_export(html_radio_export('names', 1, 'Avec les noms').'<br>'
-                                        .html_radio_export('names', 0, 'Sans les noms')) 
-                . html_form_group_export(html_radio_export('deux_sens', 1, 'Dans les 2 sens').'<br>'
-                                        .html_radio_export('deux_sens', 0, 'Dans 1 seul sens'));
+    $contents .= html_form_group_export(html_radio_export('dates', 1, 'Avec les dates')) 
+                . html_form_group_export(html_radio_export('names', 0, 'Sans les noms')) 
+                . html_form_group_export(html_radio_export('deux_sens', 0, 'Dans 1 seul sens'));
     $contents .= '</div>';
 
     return $contents;
@@ -195,21 +195,30 @@ function page_export() {
     if(isset($_POST["data_export"])){
         switch($_POST["data_export"]){
             case "all_actes":
-                echo appel_export_statique('XMLExport', 'export_all', '', '', '', '', '');  //  export, '4968',
+                echo appel_export_actes('XMLExport', 'export_all');  //  export, '4968',
                 // echo '<br>'.__METHOD__.'<br>post : ';
                 // var_dump($_POST);
                 break;
             case "all_personnes":
-                    echo appel_export_statique('CSVExport', 'export_personnes', '', '', '', '', '');
+                // $accents = isset($_POST["accents"]) ? $_POST["accents"] : FALSE;
+                // $attributs = isset($_POST["attributs"]) ? $_POST["attributs"] : FALSE;
+                $accents = isset($_POST["accents"]) ? $_POST["accents"] : TRUE;
+                $attributs = isset($_POST["attributs"]) ? $_POST["attributs"] : TRUE;
+                    // echo appel_export_statique('CSVExport', 'export_personnes', '', '', '');
+                    echo appel_export_personnes('CSVExport', 'export_personnes', $accents, $attributs);
                 break;
             case "all_relations":
                 //  *** envoyer la valeur de $start et de $end 
-                $names = isset($_POST["names"]) ? $_POST["names"] : FALSE;
+                $names = isset($_POST["names"]) ? $_POST["names"] : TRUE;
                 $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
-                $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : FALSE;
-                    echo appel_export_statique('CSVExport', 'export_relations', '', '', $names, $dates, $deux_sens);    //   1, 50,
+                $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : TRUE;
+                    echo appel_export_relations('CSVExport', 'export_relations', $names, $dates, $deux_sens);    //   1, 50,
+                    //  *** rewrite-noms-export 
                     // echo '<br>'.__METHOD__.'<br>post : ';
                     // var_dump($_POST);
+                    // echo '<br>'.__METHOD__.'<br>$dates : ';
+                    // var_dump($dates);
+                    //  fin test 
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case.

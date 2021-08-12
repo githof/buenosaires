@@ -11,6 +11,7 @@ function safe($string){
     return htmlspecialchars($mysqli->real_escape_string(trim($string)));
 }
 
+//  Utilisée dans Nom et Prenom 
 function no_accent($string){
     return str_replace(
         [
@@ -29,6 +30,7 @@ function no_accent($string){
     );
 }
 
+//  Utilisée dans Nom et Prenom 
 function accent_uppercase($string){
     return str_replace(
         [
@@ -342,9 +344,17 @@ function string_list_of_ids($liste) {
 }
 
 //  EXPORT  // 
-//  fonction d'appel aux méthodes d'export (sauf pour les actes)  //  
-function appel_export_statique($class, $method, $start, $end, $names, $dates, $deux_sens) {   //    $actes_id   //  pour choix actes à exp. 
-    return $class::$method($start, $end, $names, $dates, $deux_sens);      // $actes_id     //  pour choix actes à exp. 
+//  fonction d'appel aux méthodes d'export  //  
+function appel_export_relations($class, $method, $names, $dates, $deux_sens) { 
+    return $class::$method($names, $dates, $deux_sens); 
+}
+
+function appel_export_personnes($class, $method, $accents, $attributs) { 
+    return $class::$method($accents, $attributs); 
+}
+
+function appel_export_actes($class, $method) { 
+    return $class::$method(); 
 }
 
 
