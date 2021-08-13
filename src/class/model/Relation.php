@@ -72,7 +72,6 @@ class Relation extends PreDatabase {
             */
             $acte = new Acte($acte_str);
             if($acte != null)
-
                 return $acte->get_date();
         }
         return "";

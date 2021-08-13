@@ -206,6 +206,7 @@
                 $personnes[$id] = $personne;
             }
         }
+
         return $personnes;
     }
 
@@ -230,6 +231,7 @@
     à savoir pourquoi, j'ai fait avec Acte->get_contenu
     */
     //  *** Corrigé  // 
+    //  *** doubon avec $acte->get_contenu() 
     public function get_contenu_acte($acte_id)
     {
       $result = $this->select(

@@ -221,7 +221,7 @@ function page_export() {
                     //  fin test 
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
-                pour renvoyer (ici) vers 404 en default case.
+                pour renvoyer (ici) vers 404 en default case ? 
             */
             // default:
             //  *** voir si on met ça ou autre chose

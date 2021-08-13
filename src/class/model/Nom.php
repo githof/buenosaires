@@ -24,6 +24,10 @@
         }
 
         public function set_nom($default, $no_accent = NULL){
+            //  *** test export 
+            echo '<br>'.__METHOD__.' $default : ';
+            var_dump($default);
+            //  fin test 
             if($default == NULL)
                 return;
 
@@ -39,11 +43,21 @@
             $attr = "";
             if(isset($this->attribut))
                 $attr = $this->attribut . " ";
-                $nom = $no_accent ?
+            $nom = $no_accent ?
                 $this->nom :
                 $this->no_accent;
 
             return $attr . $nom;
+        }
+
+        //  *** rewrite-noms-export (pas appelée pour l'instant WIP) 
+        public function nom_no_accent() {
+            $attr = "";
+            if(isset($this->attribut))
+                $attr = $this->attribut . " ";
+            $nom = $this->no_accent;
+
+            return $nom;
         }
 
 

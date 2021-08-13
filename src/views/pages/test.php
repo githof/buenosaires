@@ -61,6 +61,9 @@ $acte = new Acte(5598);
 $acte->remove_from_db();
 */
 
+// $nom = new Nom('', 'machin', 'truc', '');
+// $nom->nom_no_accent('');
+
 // $pers = new Personne(15794);
 // $pers->remove_from_db(TRUE);
 

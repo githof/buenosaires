@@ -41,10 +41,9 @@ class CSVExport implements ExportInterface {
 
     public static function entete($object){
         header('Content-type: text/csv');
-        // header('Content-Disposition: attachment; filename="export.csv"');
         header('Content-Disposition: attachment; filename="' . 'export_'.$object.'_'.date('Y-m-d_H-i-s').'.csv' . '"');
         
-        //  *** exporter le fichier enregistré sous le même nom : 
+        //  *** exporter le fichier sous le même nom : 
         readfile(self::$fichier);
     }
 
@@ -118,8 +117,6 @@ class CSVExport implements ExportInterface {
 
         //  timeline 
         fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
-        // echo '<br>$fichier : ';
-        // var_dump(self::$fichier);
         
         fclose(self::$out);
         
@@ -130,7 +127,8 @@ class CSVExport implements ExportInterface {
 
     private static function add_personne_to_line(&$line, $p, $names) {
 
-        if($p instanceof Personne) {
+        // if($p instanceof Personne) {
+        if(gettype($p) != 'string') {
             $line[] = $p->id;
 
             if($names == "1") {
@@ -142,7 +140,8 @@ class CSVExport implements ExportInterface {
                 // echo '<br>$personne->noms_str : ';
                 // var_dump($personne->noms_str);
             } 
-        } elseif(is_string($p)) {
+        // } elseif(is_string($p)) {
+        } else {
             $line[] = $p."_id";
 
             if($names) {
@@ -198,7 +197,6 @@ class CSVExport implements ExportInterface {
 
         //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier (à voir ?) *** // 
         // self::entete();
-        //  *** TODO : Commencer par test entete()   *** // 
 
         $line = [];
         $line[] = "id";
@@ -212,16 +210,7 @@ class CSVExport implements ExportInterface {
         // self::export_line($line);
         fputcsv(self::$out, $line);
 
-        /*  *** modifier get_personnes() ou utiliser une méthode plus simple :
-            elle récupère toutes les infos des personnes, 
-            même quand on n'en a pas besoin
-        */
         self::$personnes = $mysqli->get_personnes(FALSE);
-
-        //  *** test export 
-        // echo '<br>'.__METHOD__.' $personnes : ';
-        // var_dump(self::$personnes);   //  undefined variable $personnes 
-        //  fin test 
 
         // faire un Database->get_relations() comme get_personnes 
         $results = $mysqli->select("relation", ["*"]);
@@ -236,7 +225,7 @@ class CSVExport implements ExportInterface {
                 //     var_dump($relation);
                 //  fin test 
 
-                //  *** par défaut relations dans 1 seul sens 
+                //  *** par défaut relations dans les 2 sens 
                 if(!$deux_sens) {
                     self::export_relation(
                         $relation, 
