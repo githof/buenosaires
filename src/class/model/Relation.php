@@ -2,11 +2,11 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
-include_once(ROOT."src/class/io/PreDatabase.php");
+include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 include_once(ROOT."src/class/model/Personne.php");
 
-class Relation extends PreDatabase {
+class Relation extends DatabaseEntity {
 
     public $id;
 

@@ -2,14 +2,14 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
-include_once(ROOT."src/class/io/PreDatabase.php");
+include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 include_once(ROOT."src/class/model/Nom.php");
 include_once(ROOT."src/class/model/Prenom.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Personne extends PreDatabase {
+class Personne extends DatabaseEntity {
 
     public $id;
 

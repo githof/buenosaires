@@ -2,10 +2,10 @@
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
-    include_once(ROOT."src/class/io/PreDatabase.php");
+    include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 
-    class Condition extends PreDatabase {
+    class Condition extends DatabaseEntity {
 
         public $id;
 

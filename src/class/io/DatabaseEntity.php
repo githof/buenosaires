@@ -1,7 +1,7 @@
 <?php
 
 
-abstract class PreDatabase implements DatabaseIO {
+abstract class DatabaseEntity implements DatabaseIO {
 
   //  DATABASEIO  
 

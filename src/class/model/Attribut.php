@@ -1,8 +1,9 @@
 <?php
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
+    include_once(ROOT."src/class/io/DatabaseEntity.php");
 
-    class Attribut {
+    class Attribut extends DatabaseEntity {
 
         public $id;
 
