@@ -42,9 +42,9 @@ class Prenom extends DatabaseEntity {
 
     // DATABASE IO
 
-    public function get_table_name(){
-        return "prenom";
-    }
+    // public function get_table_name(){
+    //     return "prenom";
+    // }
 
     public function get_same_values(){
         return [

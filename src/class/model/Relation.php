@@ -80,9 +80,9 @@ class Relation extends DatabaseEntity {
 
     // DATABASE IO
 
-    public function get_table_name(){
-        return "relation";
-    }
+    // public function get_table_name(){
+    //     return "relation";
+    // }
 
     public function get_same_values(){
         return [

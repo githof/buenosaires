@@ -5,7 +5,9 @@ abstract class DatabaseEntity implements DatabaseIO {
 
   //  DATABASEIO  
 
-  // public function get_table_name(){}
+  public function get_table_name(){
+    return strtolower(get_class($this));
+  }
   // public function get_same_values(){}
   // public function result_from_db($row){}
   // public function values_into_db(){}

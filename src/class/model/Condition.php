@@ -52,9 +52,9 @@
 
         // DATABASE IO
 
-        public function get_table_name(){
-            return "condition";
-        }
+        // public function get_table_name(){
+        //     return "condition";
+        // }
 
         public function get_same_values(){
             return [

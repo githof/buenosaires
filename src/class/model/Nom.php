@@ -49,9 +49,9 @@
 
         // DATABASE IO
 
-        public function get_table_name(){
-            return "nom";
-        }
+        // public function get_table_name(){
+        //     return "nom";
+        // }
 
         public function get_same_values(){
             $values = [];

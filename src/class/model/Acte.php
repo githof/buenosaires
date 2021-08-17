@@ -143,9 +143,9 @@ class Acte extends DatabaseEntity {
 
     // DATABASE IO
 
-    public function get_table_name(){
-        return "acte";
-    }
+    // public function get_table_name(){
+    //     return "acte";
+    // }
 
     public function get_same_values(){
         return [];
