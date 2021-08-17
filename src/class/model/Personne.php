@@ -248,9 +248,9 @@ class Personne extends DatabaseEntity {
         $this->id = $row["id"];
     }
 
-    public function values_into_db(){
-        return [];
-    }
+    // public function values_into_db(){
+    //     return [];
+    // }
 
     public function pre_into_db(){
         global $mysqli;

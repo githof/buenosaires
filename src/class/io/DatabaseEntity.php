@@ -21,7 +21,15 @@ abstract class DatabaseEntity implements DatabaseIO {
     if($row == NULL)
       return;
   }
-  // public function values_into_db(){}
+
+  //  *** Implémentation minimale pour Personne, 
+  // ajout de propriétés dans les autres classes 
+  public function values_into_db(){
+    return [];
+  }
+
+
+
   // public function pre_into_db(){}
   // public function post_into_db(){}
 

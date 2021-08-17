@@ -168,7 +168,8 @@ class Acte extends DatabaseEntity {
     }
 
     public function values_into_db(){
-        $values = [];
+        // $values = [];
+
         if(isset($this->epoux, $this->epoux->id) && $this->epoux->is_valid())
             $values["epoux"] = $this->epoux->id;
         if(isset($this->epouse, $this->epouse->id) && $this->epouse->is_valid())

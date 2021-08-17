@@ -68,7 +68,8 @@
         }
 
         public function values_into_db(){
-            $values = [];
+            // $values = [];
+
             $values["nom"] = $this->nom;
             $values["no_accent"] = $this->no_accent;
             return $values;
