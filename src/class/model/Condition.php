@@ -65,8 +65,8 @@
         }
 
         public function result_from_db($row){
-            if($row == NULL)
-                return;
+            // if($row == NULL)
+            //     return;
 
             $this->id = $row["id"];
             $this->set_text($row["text"]);

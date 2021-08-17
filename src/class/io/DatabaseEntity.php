@@ -15,8 +15,12 @@ abstract class DatabaseEntity implements DatabaseIO {
     return [];
   }
 
-  
-  // public function result_from_db($row){}
+  //  *** Implémentation minimale pour toutes les classes,
+  //  ajouts dans les classes quand on en a besoin 
+  public function result_from_db($row){
+    if($row == NULL)
+      return;
+  }
   // public function values_into_db(){}
   // public function pre_into_db(){}
   // public function post_into_db(){}

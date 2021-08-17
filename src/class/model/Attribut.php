@@ -32,8 +32,8 @@
         }
 
         public function result_from_db($row){
-            if($row == NULL)
-                return;
+            // if($row == NULL)
+            //     return;
             $this->id = $row["id"];
             $this->set_value($row["value"]);
         }

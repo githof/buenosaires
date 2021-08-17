@@ -93,8 +93,8 @@ class Relation extends DatabaseEntity {
     }
 
     public function result_from_db($row){
-        if($row == NULL)
-            return;
+        // if($row == NULL)
+        //     return;
 
         $this->id = $row["id"];
         $this->set_personne_source(new Personne($row["pers_source_id"]));
