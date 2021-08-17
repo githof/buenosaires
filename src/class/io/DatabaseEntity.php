@@ -28,9 +28,13 @@ abstract class DatabaseEntity implements DatabaseIO {
     return [];
   }
 
+  //  *** Implémentation minimale, ajout de code dans Personne, Acte et Relation 
+  public function pre_into_db(){
+    return TRUE; 
+  }
 
 
-  // public function pre_into_db(){}
+  
   // public function post_into_db(){}
 
 

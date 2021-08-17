@@ -82,9 +82,9 @@
             ];
         }
 
-        public function pre_into_db(){
-            return TRUE;
-        }
+        // public function pre_into_db(){
+        //     return TRUE;
+        // }
 
         public function post_into_db(){
             global $mysqli;
