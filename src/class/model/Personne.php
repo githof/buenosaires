@@ -238,9 +238,9 @@ class Personne extends DatabaseEntity {
     //     return "personne";
     // }
 
-    public function get_same_values(){
-        return [];
-    }
+    // public function get_same_values(){
+    //     return [];
+    // }
 
     public function result_from_db($row){
         if($row == NULL)

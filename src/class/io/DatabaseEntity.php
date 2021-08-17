@@ -8,7 +8,14 @@ abstract class DatabaseEntity implements DatabaseIO {
   public function get_table_name(){
     return strtolower(get_class($this));
   }
-  // public function get_same_values(){}
+
+  //  *** Implémentation minimale pour Acte et Personne, 
+  //  implémentations spécifiques dans les autres classes 
+  public function get_same_values(){
+    return [];
+  }
+
+  
   // public function result_from_db($row){}
   // public function values_into_db(){}
   // public function pre_into_db(){}

@@ -147,9 +147,9 @@ class Acte extends DatabaseEntity {
     //     return "acte";
     // }
 
-    public function get_same_values(){
-        return [];
-    }
+    // public function get_same_values(){
+    //     return [];
+    // }
 
     public function result_from_db($row){
         if($row == NULL)
