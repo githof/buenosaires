@@ -15,13 +15,13 @@ function html_actions_personne($page) {
     global $personne, $access_pages; 
 
     if($page == 'dissocier' && can_access($access_pages["dissocier"])){ 
-        $html .= '<a href="dissocier?personne-A='.$personne->id.'">' 
+        $html = '<a href="dissocier?personne-A='.$personne->id.'">' 
             . html_button('', 'btn btn-info btn-sm', '', 'Dissocier')
             . '</a>';
     }
 
     if($page == 'supprimer' && can_access($access_pages["supprimer"])){ 
-        $html .= 
+        $html = 
             html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-1"', 'Supprimer la personne') 
             . html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-2"', 'Vous êtes sûr ?')
             . html_button('', 'btn btn-danger btn-sm', 'id="personne-suppr-3"', 'Parce que vous allez vraiment le faire')

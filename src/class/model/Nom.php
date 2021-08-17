@@ -60,8 +60,8 @@
         }
 
         public function result_from_db($row){
-            // if($row == NULL)
-            //     return;
+            if($row == NULL)
+                return;
 
             $this->id = $row["id"];
             $this->set_nom($row["nom"], $row["no_accent"]);
@@ -79,14 +79,14 @@
         //     return TRUE;
         // }
 
-        public function post_into_db(){
-            global $mysqli;
+        // public function post_into_db(){
+        //     global $mysqli;
 
-            //  *** Récupérer la dernier id inséré 
-            if(!isset($this->id) || ($this->id == 0)) {
-                $this->id = $mysqli->insert_id;
-            }
-        }
+        //      *** Récupérer la dernier id inséré 
+        //     if(!isset($this->id) || ($this->id == 0)) {
+        //         $this->id = $mysqli->insert_id;
+        //     }
+        // }
     }
 
 ?>

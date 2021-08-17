@@ -15,12 +15,12 @@ abstract class DatabaseEntity implements DatabaseIO {
     return [];
   }
 
-  //  *** Implémentation minimale pour toutes les classes,
-  //  ajouts dans les classes quand on en a besoin 
-  public function result_from_db($row){
-    if($row == NULL)
-      return;
-  }
+  //  *** Pas d'implémentation commune 
+  // public function result_from_db($row){
+  //   if($row == NULL) {
+  //     return;
+  //   }
+  // }
 
   //  *** Implémentation minimale pour Personne, 
   // ajout de propriétés dans les autres classes 
@@ -33,9 +33,14 @@ abstract class DatabaseEntity implements DatabaseIO {
     return TRUE; 
   }
 
+  public function post_into_db(){
+    global $mysqli;
 
-  
-  // public function post_into_db(){}
+    //  *** Récupérer le dernier id inséré 
+    if(!isset($this->id) || ($this->id == 0)) {
+      $this->id = $mysqli->insert_id;
+    }
+  }
 
 
  public function from_db(

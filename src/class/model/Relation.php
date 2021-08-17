@@ -93,8 +93,8 @@ class Relation extends DatabaseEntity {
     }
 
     public function result_from_db($row){
-        // if($row == NULL)
-        //     return;
+        if($row == NULL)
+            return;
 
         $this->id = $row["id"];
         $this->set_personne_source(new Personne($row["pers_source_id"]));
@@ -128,13 +128,13 @@ class Relation extends DatabaseEntity {
         return TRUE;
     }
 
-    public function post_into_db(){
-        global $mysqli;
+    // public function post_into_db(){
+    //     global $mysqli;
 
-        //  *** Récupérer le dernier id inséré 
-        if(!isset($this->id) || ($this->id == 0)) {
-            $this->id = $mysqli->insert_id;
-        }
-    }
+    //      *** Récupérer le dernier id inséré 
+    //     if(!isset($this->id) || ($this->id == 0)) {
+    //         $this->id = $mysqli->insert_id;
+    //     }
+    // }
 }
 ?>

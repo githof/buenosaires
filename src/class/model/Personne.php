@@ -243,8 +243,8 @@ class Personne extends DatabaseEntity {
     // }
 
     public function result_from_db($row){
-        // if($row == NULL)
-        //     return;
+        if($row == NULL)
+            return;
         $this->id = $row["id"];
     }
 
@@ -275,7 +275,6 @@ class Personne extends DatabaseEntity {
         global $mysqli;
 
         //  *** Récupérer le dernier id inséré 
-        //  ==> Voir plus bas pour le remplacer par une variable déjà existante // 
         if(!isset($this->id) || ($this->id == 0)) {
             $this->id = $mysqli->insert_id;
         }
