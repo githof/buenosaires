@@ -3,6 +3,7 @@
 include_once(ROOT."src/html_entities.php");
 
 
+//  *** cette fonction / ce fichier n'est utilisé nulle part ? 
 function html_personne_fusion($personne){
     $html = "<div class='id'>$personne->id</div>";
 

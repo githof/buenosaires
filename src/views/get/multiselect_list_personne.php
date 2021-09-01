@@ -2,7 +2,7 @@
 
 include_once(ROOT."src/html_entities.php");
 
-//  *** Est-ce que cette fonction est utilisée, et où ? 
+
 function all_personnes(){
     global $mysqli;
     $str = "";
