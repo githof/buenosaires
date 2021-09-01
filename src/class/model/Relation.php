@@ -2,11 +2,11 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
-include_once(ROOT."src/class/io/PreDatabase.php");
+include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 include_once(ROOT."src/class/model/Personne.php");
 
-class Relation extends PreDatabase {
+class Relation extends DatabaseEntity {
 
     public $id;
 
@@ -79,9 +79,9 @@ class Relation extends PreDatabase {
 
     // DATABASE IO
 
-    public function get_table_name(){
-        return "relation";
-    }
+    // public function get_table_name(){
+    //     return "relation";
+    // }
 
     public function get_same_values(){
         return [
@@ -127,13 +127,13 @@ class Relation extends PreDatabase {
         return TRUE;
     }
 
-    public function post_into_db(){
-        global $mysqli;
+    // public function post_into_db(){
+    //     global $mysqli;
 
-        //  *** Récupérer le dernier id inséré 
-        if(!isset($this->id) || ($this->id == 0)) {
-            $this->id = $mysqli->insert_id;
-        }
-    }
+    //      *** Récupérer le dernier id inséré 
+    //     if(!isset($this->id) || ($this->id == 0)) {
+    //         $this->id = $mysqli->insert_id;
+    //     }
+    // }
 }
 ?>

@@ -2,14 +2,14 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
-include_once(ROOT."src/class/io/PreDatabase.php");
+include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 include_once(ROOT."src/class/model/Nom.php");
 include_once(ROOT."src/class/model/Prenom.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Personne extends PreDatabase {
+class Personne extends DatabaseEntity {
 
     public $id;
 
@@ -234,13 +234,13 @@ class Personne extends PreDatabase {
     
     // DATABASE IO
 
-    public function get_table_name(){
-        return "personne";
-    }
+    // public function get_table_name(){
+    //     return "personne";
+    // }
 
-    public function get_same_values(){
-        return [];
-    }
+    // public function get_same_values(){
+    //     return [];
+    // }
 
     public function result_from_db($row){
         if($row == NULL)
@@ -248,9 +248,9 @@ class Personne extends PreDatabase {
         $this->id = $row["id"];
     }
 
-    public function values_into_db(){
-        return [];
-    }
+    // public function values_into_db(){
+    //     return [];
+    // }
 
     public function pre_into_db(){
         global $mysqli;
@@ -275,7 +275,6 @@ class Personne extends PreDatabase {
         global $mysqli;
 
         //  *** Récupérer le dernier id inséré 
-        //  ==> Voir plus bas pour le remplacer par une variable déjà existante // 
         if(!isset($this->id) || ($this->id == 0)) {
             $this->id = $mysqli->insert_id;
         }

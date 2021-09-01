@@ -1,16 +1,46 @@
 <?php
 
 
-abstract class PreDatabase implements DatabaseIO {
+abstract class DatabaseEntity implements DatabaseIO {
 
   //  DATABASEIO  
 
-  // public function get_table_name(){}
-  // public function get_same_values(){}
-  // public function result_from_db($row){}
-  // public function values_into_db(){}
-  // public function pre_into_db(){}
-  // public function post_into_db(){}
+  public function get_table_name(){
+    return strtolower(get_class($this));
+  }
+
+  //  *** Implémentation minimale pour Acte et Personne, 
+  //  implémentations spécifiques dans les autres classes 
+  public function get_same_values(){
+    return [];
+  }
+
+  //  *** Pas d'implémentation commune 
+  // public function result_from_db($row){
+  //   if($row == NULL) {
+  //     return;
+  //   }
+  // }
+
+  //  *** Implémentation minimale pour Personne, 
+  // ajout de propriétés dans les autres classes 
+  public function values_into_db(){
+    return [];
+  }
+
+  //  *** Implémentation minimale, ajout de code dans Personne, Acte et Relation 
+  public function pre_into_db(){
+    return TRUE; 
+  }
+
+  public function post_into_db(){
+    global $mysqli;
+
+    //  *** Récupérer le dernier id inséré 
+    if(!isset($this->id) || ($this->id == 0)) {
+      $this->id = $mysqli->insert_id;
+    }
+  }
 
 
  public function from_db(

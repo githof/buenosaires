@@ -3,13 +3,13 @@
     include_once(ROOT."src/class/model/Attribut.php");
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
-    include_once(ROOT."src/class/io/PreDatabase.php");
+    include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 /*
   Nom et Prenom pourraient hériter d'une même classe...
  */
 
-    class Nom extends PreDatabase {
+    class Nom extends DatabaseEntity {
 
         public $id;
 
@@ -63,9 +63,9 @@
 
         // DATABASE IO
 
-        public function get_table_name(){
-            return "nom";
-        }
+        // public function get_table_name(){
+        //     return "nom";
+        // }
 
         public function get_same_values(){
             $values = [];
@@ -82,24 +82,25 @@
         }
 
         public function values_into_db(){
-            $values = [];
+            // $values = [];
+
             $values["nom"] = $this->nom;
             $values["no_accent"] = $this->no_accent;
             return $values;
         }
 
-        public function pre_into_db(){
-            return TRUE;
-        }
+        // public function pre_into_db(){
+        //     return TRUE;
+        // }
 
-        public function post_into_db(){
-            global $mysqli;
+        // public function post_into_db(){
+        //     global $mysqli;
 
-            //  *** Récupérer la dernier id inséré 
-            if(!isset($this->id) || ($this->id == 0)) {
-                $this->id = $mysqli->insert_id;
-            }
-        }
+        //      *** Récupérer la dernier id inséré 
+        //     if(!isset($this->id) || ($this->id == 0)) {
+        //         $this->id = $mysqli->insert_id;
+        //     }
+        // }
     }
 
 ?>

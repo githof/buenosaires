@@ -2,13 +2,13 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
-include_once(ROOT."src/class/io/PreDatabase.php");
+include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 include_once(ROOT."src/class/model/Personne.php");
 include_once(ROOT."src/class/model/Relation.php");
 include_once(ROOT."src/class/model/Condition.php");
 
-class Acte extends PreDatabase { 
+class Acte extends DatabaseEntity { 
 
     public $id;
 
@@ -143,13 +143,13 @@ class Acte extends PreDatabase {
 
     // DATABASE IO
 
-    public function get_table_name(){
-        return "acte";
-    }
+    // public function get_table_name(){
+    //     return "acte";
+    // }
 
-    public function get_same_values(){
-        return [];
-    }
+    // public function get_same_values(){
+    //     return [];
+    // }
 
     public function result_from_db($row){
         if($row == NULL)
@@ -168,7 +168,8 @@ class Acte extends PreDatabase {
     }
 
     public function values_into_db(){
-        $values = [];
+        // $values = [];
+
         if(isset($this->epoux, $this->epoux->id) && $this->epoux->is_valid())
             $values["epoux"] = $this->epoux->id;
         if(isset($this->epouse, $this->epouse->id) && $this->epouse->is_valid())

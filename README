@@ -1,6 +1,7 @@
 
 # INSTALL
 
+## SERVEUR 
 Activer mod_rewrite de Apache2
 
     cmd: a2enmod rewrite
@@ -16,6 +17,26 @@ Nécessite l'option AllowOverride All
         Options +FollowSymLinks
         AllowOverride All
     </Directory>
+
+## BBD
+fichiers du dossier sql à importer ou copier-coller :													(17/03/21) 
+    sql/tables_site.sql 
+    sql/tables_metadata.sql
+    sql/tables_data.sql sauf la table `variable` 																															(30/03/21) 
+    (sql/tables-dump-2017.sql et sql/tables_tag_whatever.sql ne sont plus à jour)
+
+## Code
+ajouter un fichier /local-config.php contenant les infos de connexion à la 					(17/03/21) 
+    bdd et le nom de ROOT :
+        <?php
+        // base URL for all relative URLs
+        define("BASE_URL", "http://www.buenosaires.fr/");
+
+        define("SQL_SERVER", '<serveur>');
+        define("SQL_USER", '<user>');
+        define("SQL_PASS", '<mdp>');
+        define("SQL_DATABASE_NAME", 'buenosaires'); //	nom de la bdd 
+
 
 
 # STRUCTURE DU CODE SOURCE

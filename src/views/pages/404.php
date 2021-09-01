@@ -2,4 +2,5 @@
 
     $page_title = "Page introuvable";
 
-?>Page introuvable
+?>
+<div>Page introuvable</div>

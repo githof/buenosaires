@@ -2,14 +2,14 @@
 
 include_once(ROOT."src/class/io/DatabaseIO.php");
 
-include_once(ROOT."src/class/io/PreDatabase.php");
+include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 
 /*
   Nom et Prenom pourraient hériter d'une même classe...
  */
 
-class Prenom extends PreDatabase {
+class Prenom extends DatabaseEntity {
 
     public $id;
 
@@ -42,9 +42,9 @@ class Prenom extends PreDatabase {
 
     // DATABASE IO
 
-    public function get_table_name(){
-        return "prenom";
-    }
+    // public function get_table_name(){
+    //     return "prenom";
+    // }
 
     public function get_same_values(){
         return [
@@ -66,18 +66,18 @@ class Prenom extends PreDatabase {
         ];
     }
 
-    public function pre_into_db(){
-        return TRUE;
-    }
+    // public function pre_into_db(){
+    //     return TRUE;
+    // }
 
-    public function post_into_db(){
-        global $mysqli;
+    // public function post_into_db(){
+    //     global $mysqli;
 
-        //  *** Récupérer le dernier id inséré 
-        if(!isset($this->id) || ($this->id == 0)) {
-            $this->id = $mysqli->insert_id;
-        }
-    }
+    //      *** Récupérer le dernier id inséré 
+    //     if(!isset($this->id) || ($this->id == 0)) {
+    //         $this->id = $mysqli->insert_id;
+    //     }
+    // }
 }
 
 ?>

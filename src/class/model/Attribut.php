@@ -1,8 +1,9 @@
 <?php
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
+    include_once(ROOT."src/class/io/DatabaseEntity.php");
 
-    class Attribut {
+    class Attribut extends DatabaseEntity {
 
         public $id;
 
@@ -20,9 +21,9 @@
 
         // DATABASE IO
 
-        public function get_table_name(){
-            return "attribut";
-        }
+        // public function get_table_name(){
+        //     return "attribut";
+        // }
 
         public function get_same_values(){
             return [
@@ -43,9 +44,9 @@
             ];
         }
 
-        public function pre_into_db(){
-            return TRUE;
-        }
+        // public function pre_into_db(){
+        //     return TRUE;
+        // }
 
         public function post_into_db(){}
     }

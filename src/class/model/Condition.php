@@ -2,10 +2,10 @@
 
     include_once(ROOT."src/class/io/DatabaseIO.php");
 
-    include_once(ROOT."src/class/io/PreDatabase.php");
+    include_once(ROOT."src/class/io/DatabaseEntity.php");
 
 
-    class Condition extends PreDatabase {
+    class Condition extends DatabaseEntity {
 
         public $id;
 
@@ -52,9 +52,9 @@
 
         // DATABASE IO
 
-        public function get_table_name(){
-            return "condition";
-        }
+        // public function get_table_name(){
+        //     return "condition";
+        // }
 
         public function get_same_values(){
             return [
@@ -82,18 +82,18 @@
             ];
         }
 
-        public function pre_into_db(){
-            return TRUE;
-        }
+        // public function pre_into_db(){
+        //     return TRUE;
+        // }
 
-        public function post_into_db(){
-            global $mysqli;
+        // public function post_into_db(){
+        //     global $mysqli;
 
-            //  *** Récupérer la dernier id inséré 
-            if(!isset($this->id) || ($this->id == 0)) {
-                $this->id = $mysqli->insert_id;
-            }
-        }
+        //      *** Récupérer la dernier id inséré 
+        //     if(!isset($this->id) || ($this->id == 0)) {
+        //         $this->id = $mysqli->insert_id;
+        //     }
+        // }
     }
 
 ?>
