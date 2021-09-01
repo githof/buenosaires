@@ -61,8 +61,15 @@ $acte = new Acte(5598);
 $acte->remove_from_db();
 */
 
-// $nom = new Nom('', 'machin', 'truc', '');
-// $nom->nom_no_accent('');
+$nom = new Nom('', 'machin', 'truc', 'de');
+echo $nom->to_string();
+echo ' ';
+echo '$nom::no_accent : '. $nom->no_accent;
+
+echo '<br>';
+$pers = new Personne('4');
+echo $pers->add_nom_sans_de($nom); 
+
 
 // $pers = new Personne(15794);
 // $pers->remove_from_db(TRUE);

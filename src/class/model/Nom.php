@@ -25,10 +25,11 @@
 
         public function set_nom($default, $no_accent = NULL){
             //  *** test export 
-            echo '<br>'.__METHOD__.' $default : ';
-            var_dump($default);
+            // echo '<br>'.__METHOD__.' $default : ';
+            // var_dump($default);
+            // echo '<br>';
             //  fin test 
-            if($default == NULL)
+            if($default == NULL) 
                 return;
 
             $default = trim(strtoupper(accent_uppercase($default)));
@@ -50,14 +51,15 @@
             return $attr . $nom;
         }
 
-        //  *** rewrite-noms-export (pas appelée pour l'instant WIP) 
-        public function nom_no_accent() {
-            $attr = "";
-            if(isset($this->attribut))
-                $attr = $this->attribut . " ";
-            $nom = $this->no_accent;
-
-            return $nom;
+        //  *** rewrite-noms-export
+        //  test noms sans "de" 
+        public function to_string_sans_de($no_accent = FALSE) {
+            $nom = $no_accent ?
+                $this->nom :
+                $this->no_accent;
+            // echo '<br>'.__METHOD__.'() nom : ';
+            // var_dump($this->nom);
+            return $nom; 
         }
 
 

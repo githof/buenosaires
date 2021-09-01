@@ -76,7 +76,9 @@ class CSVExport implements ExportInterface {
 
     //  PUBLIC //
 
-    public static function export_personnes(){
+    //  *** rewrite-noms-export
+    //  no_accent
+    public static function export_personnes($no_accent){
         global $mysqli;
 
         // self::entete();
@@ -98,6 +100,10 @@ class CSVExport implements ExportInterface {
             Prenom,
             qui d'ailleurs pourraient hériter d'une même classe
             */
+            if($no_accent) {
+                $prenoms = [];
+                
+            }
             $prenoms = [];
             foreach($personne->prenoms as $prenom)
                 $prenoms[] = $prenom->to_string();
