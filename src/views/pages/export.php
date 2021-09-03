@@ -17,83 +17,6 @@ include_once(ROOT."src/utils.php");
 //  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
 //  on verra comment on gère ça mais oui 
 
-//  balise a (remplacée)    //  
-function html_section_titre($title, $href, $label) {
-    return '
-        <section>
-            <h4>'. $title .'</h4>
-            <div>
-                <a class="btn btn-info btn-sm bold" href="'. $href .'">'
-                    . $label .
-                '</a>
-            </div>
-        </section>
-    ';
-}
-function html_export_lien($href, $label) {
-    return '<div>
-                <a class="btn btn-info btn-sm bold" href="'. $href .'">'
-                    . $label .
-                '</a>
-            </div>';
-}
-function page_export_lien() {
-    global $ARGS;
-    if(isset($ARGS["export"])){
-
-        switch($ARGS["what"]){
-            case "all_actes":
-                // if($ARGS["export"] == "xml"){
-                    echo appel_export_statique('XMLExport', 'export_all', '', '');
-                // }
-                break;
-            case "all_personnes":
-                // if($ARGS["export"] == "csv"){
-                    // echo appel_export_statique('CSVExport', 'export_personnes', '', '');
-                    echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE); 
-                // }
-                break;
-            case "all_relations":
-                // if($ARGS["export"] == "csv"){
-                    echo appel_export_statique('CSVExport', 'export_relations', TRUE, TRUE);    //   1, 50,
-                // }
-                // break;
-            /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
-                pour renvoyer (ici) vers 404 en default case.
-            */
-            // default:
-            //  *** voir si on met ça ou autre chose
-                // $view = ROOT."src/views/pages/404.php";
-                // $page_title = "Page introuvable";
-        }
-    }else{
-        echo html_section_titre('Tous les actes', 'export?export=xml&what=all_actes', 'XML');
-        echo html_section_titre('Toutes les personnes', 'export?export=csv&what=all_personnes', 'CSV');
-        echo html_section_titre('Toutes les relations', 'export?export=csv&what=all_relations', 'CSV');
-    }
-}
-//  fin balise-a  //    
-
-
-//  fonction d'appel aux méthodes d'export  //  dans utils.php  // 
-// function appel_export_statique($class, $method, $names, $dates) { 
-//     return $class::$method($names, $dates); 
-// }
-
-
-//  form sans options -- remplacé (voir plus bas)   //  
-function html_option($data_export, $choice) {
-    return '<option value="' . $data_export . '">' . $choice . '</option>';
-}
-function html_select_export($label) {
-    return '<label for="data_export">' . $label . '</label>
-            <select class="form-control" name="data_export" id="data_export">'
-                . html_option('all_actes', 'Actes') 
-                . html_option('all_personnes', 'Personnes')
-                . html_option('all_relations', 'Relations') . 
-            '</select>';
-}
-//  fin form sans options    //  
 
 
 //  *** onglets des tabs // 
@@ -145,11 +68,13 @@ function html_export_personnes() {
 
 function html_export_relations() {
     $contents = '<h4>Toutes les relations</h4>
-                <p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p>';
-    $contents .= '<div class="row">';
+                
+                <p>Par défaut : export avec les noms, sans les dates, et dans les 2 sens. Cocher les cases pour changer ce comportement.<br> 
+                Attention : les dates risquent de provoquer un dépassement du timout, ce problème n\'est pas encore réglé.</p>';
+    $contents .= '<div class="row">';   //  <p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p> 
     
-    $contents .= html_form_group_export(html_radio_export('dates', 1, 'Avec les dates')) 
-                . html_form_group_export(html_radio_export('names', 0, 'Sans les noms')) 
+    $contents .= html_form_group_export(html_radio_export('names', 0, 'Sans les noms')) 
+                . html_form_group_export(html_radio_export('dates', 1, 'Avec les dates')) 
                 . html_form_group_export(html_radio_export('deux_sens', 0, 'Dans 1 seul sens'));
     $contents .= '</div>';
 

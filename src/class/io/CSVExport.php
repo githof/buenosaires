@@ -162,6 +162,7 @@ class CSVExport implements ExportInterface {
         }
     }
 
+    //  *** méthode à revoir : elle prend trop de ressources 
     private static function add_date(&$line, $relation) {
         //  *** tests-dispatch-database 
         // echo '<br>'.__METHOD__.' $relation : ';
