@@ -67,11 +67,12 @@ class Acte extends DatabaseEntity {
         $this->parrains[] = $parrain;
     }
 
-    //  *** tests-dispatch-database 
+    //  *** rewrite-noms-export
+    //  test sans "de" : $attr pour $attribut, param indisp pour compatibilité avec DatabaseIO 
     public function from_db(
             $update_obj = FALSE,
             $get_relations_conditions = TRUE, 
-            $aattr = TRUE)
+            $attr = TRUE)
     {
         global $log, $mysqli; 
 
