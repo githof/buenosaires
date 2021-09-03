@@ -53,17 +53,6 @@
             return $attr . $nom;
         }
 
-        //  *** rewrite-noms-export
-        //  test noms sans "de" 
-        public function to_string_sans_de($no_accent = FALSE) {
-            $nom = $no_accent ?
-                $this->nom :
-                $this->no_accent;
-            // echo '<br>'.__METHOD__.'() nom : ';
-            // var_dump($this->nom);
-            return $nom; 
-        }
-
 
         // DATABASE IO
 

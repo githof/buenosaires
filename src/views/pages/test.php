@@ -68,7 +68,7 @@ echo '$nom::no_accent : '. $nom->no_accent;
 
 echo '<br>';
 $pers = new Personne('4');
-echo $pers->add_nom_sans_de($nom); 
+// echo $pers->add_nom_sans_de($nom); 
 
 
 // $pers = new Personne(15794);

@@ -88,23 +88,6 @@ class Personne extends DatabaseEntity {
         $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string();
     }
 
-    //  *** rewrite-noms-export
-    //  test noms sans "de"
-    public function add_nom_sans_de($nom) {
-        foreach($this->noms as $_nom) {
-            if((isset($_nom->id, $nom->id)
-            && $nom->id == $nom->id)
-            || ($_nom->no_accent == $nom->no_accent)) {
-                return;
-            }
-        }
-        $this->noms[] = $nom; 
-        $str = $this->noms_str;
-        $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string_sans_de();
-        return $this->noms_str;
-    } 
-
-
     public function add_condition($text, $source_id){
         $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
     }
@@ -203,7 +186,8 @@ class Personne extends DatabaseEntity {
         return $this->relations_by_type;
     }
 
-    //  *** tests-dispatch-database 
+    //  *** rewrite-noms-export
+    //  test noms sans "de" 
     public function from_db(
             $update_obj = FALSE,
             $get_relations_conditions = TRUE, 
