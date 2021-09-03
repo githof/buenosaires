@@ -189,8 +189,12 @@
     // À généraliser, j'en avais besoin je l'ai mis là tant qu'à
     // faire
     // [ id => personne ]
-    public function get_personnes($get_relations_conditions = TRUE) {
+    public function get_personnes($get_relations_conditions = TRUE, $attr = TRUE) {
         $personnes = [];
+        //  *** rewrite-noms-export 
+        // echo '<br>'.__METHOD__.'<br>attr : ';
+        // var_dump($attr);
+        //  fin test 
         /*
             pas du tout optimal : je fais un premier select pour
             avoir la liste des ids, puis un select par id
@@ -202,7 +206,10 @@
             while($row = $results->fetch_assoc()){
                 $id = $row["id"];
                 $personne = new Personne($id);
-                $personne->from_db(FALSE, $get_relations_conditions);
+                if($attr == TRUE)
+                  $personne->from_db(FALSE, $get_relations_conditions);
+                else 
+                  $personne->from_db(FALSE, $get_relations_conditions, FALSE);
                 $personnes[$id] = $personne;
             }
         }
@@ -348,9 +355,17 @@
 
     //  *** tests-dispatch-database
 
+    //  *** rewrite-noms-export
+    //  test $attr = FALSE 
     //  SELECT personne by nom ou prenom 
     // private function from_db_personne_noms_prenoms($personne)'{'
-    public function from_db_personne_noms_prenoms($personne){ 
+    // public function from_db_personne_noms_prenoms($personne){ 
+      public function from_db_personne_noms_prenoms($personne, $attr = FALSE){ 
+
+        //  *** rewrite-noms-export 
+        // echo '<br>'.__METHOD__.'<br>attr : ';
+        // var_dump($attr);    //  false, ok :)
+        //  fin test 
 
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
@@ -364,19 +379,36 @@
           $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
       }
 
-      $result = $this->query("
-        SELECT nom.id as n_id, nom, no_accent, attribut, ordre
-        FROM nom_personne INNER JOIN nom
-        ON nom_personne.nom_id = nom.id
-        WHERE nom_personne.personne_id = '$personne->id'
-        ORDER BY nom_personne.ordre"
-      );  
-      if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
-          $personne->add_nom( new Nom($row["n_id"],
-                                      $row["nom"],
-                                      $row["no_accent"],
-                                      $row["attribut"]));
+      if($attr == TRUE) {
+        $result = $this->query("
+          SELECT nom.id as n_id, nom, no_accent, attribut, ordre
+          FROM nom_personne INNER JOIN nom
+          ON nom_personne.nom_id = nom.id
+          WHERE nom_personne.personne_id = '$personne->id'
+          ORDER BY nom_personne.ordre"
+        );  
+        if($result != FALSE && $result->num_rows > 0){
+          while($row = $result->fetch_assoc()){
+            $personne->add_nom( new Nom($row["n_id"],
+                                        $row["nom"],
+                                        $row["no_accent"],
+                                        $row["attribut"]));
+          }
+        }
+      } else {
+        $result = $this->query("
+          SELECT nom.id as n_id, nom, no_accent, ordre
+          FROM nom_personne INNER JOIN nom
+          ON nom_personne.nom_id = nom.id
+          WHERE nom_personne.personne_id = '$personne->id'
+          ORDER BY nom_personne.ordre"
+        );  
+        if($result != FALSE && $result->num_rows > 0){
+          while($row = $result->fetch_assoc()){
+            $personne->add_nom( new Nom($row["n_id"],
+                                        $row["nom"],
+                                        $row["no_accent"]));
+          }
         }
       }
     }

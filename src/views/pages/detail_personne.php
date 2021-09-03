@@ -70,7 +70,7 @@ function html_personne_name() {
 function html_affichage_personne() {
     global $personne, $access_pages; 
 
-    $result = $personne->from_db(TRUE); 
+    $result = $personne->from_db(TRUE, TRUE, FALSE); 
 
     if($result == NULL){
         $html = "Aucune personne enregistrée avec cet id";

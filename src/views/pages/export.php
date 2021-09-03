@@ -49,7 +49,8 @@ function page_export_lien() {
                 break;
             case "all_personnes":
                 // if($ARGS["export"] == "csv"){
-                    echo appel_export_statique('CSVExport', 'export_personnes', '', '');
+                    // echo appel_export_statique('CSVExport', 'export_personnes', '', '');
+                    echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE); 
                 // }
                 break;
             case "all_relations":
@@ -132,11 +133,11 @@ function html_export_actes() {
 }
 
 function html_export_personnes() {
-    $contents = '<h4>Tous les personnes</h4> 
+    $contents = '<h4>Toutes les personnes</h4> 
     <p>Section Personnes en travaux. Merci de votre compréhension :)</p>';
-    // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'));
+    // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'))
     // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
-    //             . html_form_group_export(html_radio_personnes('attributs', '1', 'Avec attributs'));
+    $contents = html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'));
     
     return $contents;
 }
@@ -200,12 +201,18 @@ function page_export() {
                 // var_dump($_POST);
                 break;
             case "all_personnes":
-                // $accents = isset($_POST["accents"]) ? $_POST["accents"] : FALSE;
-                // $attributs = isset($_POST["attributs"]) ? $_POST["attributs"] : FALSE;
                 $accents = isset($_POST["accents"]) ? $_POST["accents"] : TRUE;
-                $attributs = isset($_POST["attributs"]) ? $_POST["attributs"] : TRUE;
-                    // echo appel_export_statique('CSVExport', 'export_personnes', '', '', '');
-                    echo appel_export_personnes('CSVExport', 'export_personnes', $accents, $attributs);
+                // $attr = isset($_POST["attr"]) ? $_POST["attr"] : FALSE;
+                $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
+                    echo appel_export_personnes('CSVExport', 'export_personnes', $accents, $attr);
+                    // echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE);
+                    //  *** rewrite-noms-export 
+                    // echo '<br>'.__METHOD__.'<br>post : ';
+                    // var_dump($_POST);
+                    // echo '<br>'.__METHOD__.'<br>attr : ';
+                    // if(isset($attr))
+                    //     var_dump($attr);
+                    //  fin test 
                 break;
             case "all_relations":
                 //  *** envoyer la valeur de $start et de $end 
@@ -213,12 +220,7 @@ function page_export() {
                 $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
                 $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : TRUE;
                     echo appel_export_relations('CSVExport', 'export_relations', $names, $dates, $deux_sens);    //   1, 50,
-                    //  *** rewrite-noms-export 
-                    // echo '<br>'.__METHOD__.'<br>post : ';
-                    // var_dump($_POST);
-                    // echo '<br>'.__METHOD__.'<br>$dates : ';
-                    // var_dump($dates);
-                    //  fin test 
+                    
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case ? 

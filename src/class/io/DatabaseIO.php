@@ -11,7 +11,8 @@
         
         public function from_db(
             $update_obj = TRUE,
-            $get_relations_conditions = TRUE);
+            $get_relations_conditions = TRUE, 
+            $attr = TRUE);
     }
 
 ?>

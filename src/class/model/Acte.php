@@ -70,7 +70,8 @@ class Acte extends DatabaseEntity {
     //  *** tests-dispatch-database 
     public function from_db(
             $update_obj = FALSE,
-            $get_relations_conditions = TRUE)
+            $get_relations_conditions = TRUE, 
+            $aattr = TRUE)
     {
         global $log, $mysqli; 
 

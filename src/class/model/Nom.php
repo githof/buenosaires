@@ -40,7 +40,9 @@
                 $this->no_accent = $no_accent;
         }
 
-        public function to_string($no_accent = FALSE){
+        //  *** rewrite-noms-export
+        //  test sans "de" : $attr pour $attribut 
+        public function to_string($no_accent = FALSE, $attr = FALSE){
             $attr = "";
             if(isset($this->attribut))
                 $attr = $this->attribut . " ";

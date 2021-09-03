@@ -66,15 +66,21 @@ class Personne extends DatabaseEntity {
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
     }
 
-    public function add_nom($nom){
+    //  *** rewrite-noms-export
+    //  test sans "de" : $attr pour $attribut 
+    public function add_nom($nom, $attr = FALSE){
         foreach($this->noms as $_nom){
             if((isset($_nom->id, $nom->id)
             && $_nom->id == $nom->id)
             || ($_nom->no_accent == $nom->no_accent)){
-                if(isset($nom->attribut)){
-                    $_nom->attribut = $nom->attribut;
+                if($attr == TRUE) {
+                    return;
+                } else {
+                    if(isset($nom->attribut)){
+                        $_nom->attribut = $nom->attribut;
+                    }
                 }
-                return;
+                // return;
             }
         }
         $this->noms[] = $nom;
@@ -200,14 +206,22 @@ class Personne extends DatabaseEntity {
     //  *** tests-dispatch-database 
     public function from_db(
             $update_obj = FALSE,
-            $get_relations_conditions = TRUE)
+            $get_relations_conditions = TRUE, 
+            $attr = TRUE)
     {
         global $log, $mysqli; 
-        
+        // //  *** rewrite-noms-export 
+        // echo '<br>'.__METHOD__.'<br>attr : ';
+        // var_dump($attr);    //  false 
+        // //  fin test 
         if(isset($this->id)) {
             $row = parent::from_db($update_obj,
                 $get_relations_conditions);
-            $mysqli->from_db_personne_noms_prenoms($this);
+            // $mysqli->from_db_personne_noms_prenoms($this);
+            if($attr == TRUE)
+                $mysqli->from_db_personne_noms_prenoms($this, TRUE);
+            else 
+                $mysqli->from_db_personne_noms_prenoms($this, FALSE);
             if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
                 $mysqli->from_db_personne_relations($this);
                 $mysqli->from_db_personne_conditions($this);

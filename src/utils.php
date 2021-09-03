@@ -349,8 +349,8 @@ function appel_export_relations($class, $method, $names, $dates, $deux_sens) {
     return $class::$method($names, $dates, $deux_sens); 
 }
 
-function appel_export_personnes($class, $method, $accents, $attributs) { 
-    return $class::$method($accents, $attributs); 
+function appel_export_personnes($class, $method, $accents, $attr) { 
+    return $class::$method($accents, $attr); 
 }
 
 function appel_export_actes($class, $method) { 
