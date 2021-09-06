@@ -24,11 +24,6 @@
         }
 
         public function set_nom($default, $no_accent = NULL){
-            //  *** test export 
-            // echo '<br>'.__METHOD__.' $default : ';
-            // var_dump($default);
-            // echo '<br>';
-            //  fin test 
             if($default == NULL) 
                 return;
 
@@ -42,6 +37,7 @@
 
         //  *** rewrite-noms-export
         //  test sans "de" : $attr pour $attribut 
+        //  test sans_accents : $no_accent = true pour prendre le nom sans les accents 
         public function to_string($no_accent = FALSE, $attr = FALSE){
             $attr = "";
             if(isset($this->attribut))
