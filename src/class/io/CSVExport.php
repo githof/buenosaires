@@ -95,8 +95,10 @@ class CSVExport implements ExportInterface {
         $personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);
 
         //  *** rewrite-noms-export 
+        echo '<br>'.__METHOD__.'<br>$attr : ';
+        var_dump($attr); // 
         echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        var_dump($no_accent);
+        var_dump($no_accent); // 
         //  fin test 
 
         foreach($personnes as $id => $personne) {
@@ -118,7 +120,7 @@ class CSVExport implements ExportInterface {
             $noms = [];
             foreach($personne->noms as $nom)
                 // $noms[] = $nom->to_string(); 
-                $noms[] = $nom->to_string($no_accent, $attr);
+                $noms[] = $nom->to_string($attr, $no_accent);
 
             $prenoms = implode(' ', $prenoms);
             $noms = implode(' ', $noms);
@@ -150,9 +152,9 @@ class CSVExport implements ExportInterface {
 
                 $line[] = $personne->prenoms_str;
                 $line[] = $personne->noms_str;
-                // echo '<br>'.__METHOD__;
-                // echo '<br>$personne->noms_str : ';
-                // var_dump($personne->noms_str);
+                echo '<br>'.__METHOD__;
+                echo '<br>$personne->noms_str : ';
+                var_dump($personne->noms_str);
             } 
         // } elseif(is_string($p)) {
         } else {

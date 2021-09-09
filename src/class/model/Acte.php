@@ -69,16 +69,23 @@ class Acte extends DatabaseEntity {
 
     //  *** rewrite-noms-export
     //  test sans "de" : $attr pour $attribut, param indisp pour compatibilité avec DatabaseIO 
+    // public function from_db(
+    //         $update_obj = FALSE,
+    //         $get_relations_conditions = TRUE, 
+    //         $attr = TRUE)
     public function from_db(
-            $update_obj = FALSE,
-            $get_relations_conditions = TRUE, 
-            $attr = TRUE)
+        $update_obj = FALSE,
+        $get_relations_conditions = TRUE, 
+        $attr,
+        $no_accent)
     {
         global $log, $mysqli; 
 
         if(isset($this->id)) {
             $row = parent::from_db($update_obj,
-                $get_relations_conditions);
+                $get_relations_conditions, 
+                $attr, 
+                $no_accent);
 
             if($get_relations_conditions) {
                 $mysqli->from_db_acte_conditions($this);
@@ -139,7 +146,7 @@ class Acte extends DatabaseEntity {
 	public function get_date() {
         global $mysqli;
         // $mysqli->from_db($this, TRUE, FALSE);
-        $this->from_db($this, TRUE, FALSE);
+        $this->from_db($this, TRUE, $attr, $no_accent);
         return $this->date_start;
 	}
 
@@ -315,7 +322,7 @@ class Acte extends DatabaseEntity {
 
         // $mysqli->from_db($this);
         // ^ remplit les champs conditions et relations
-        $this->from_db($this);
+        $this->from_db($this, $attr, $no_accent);
         $personnes = $this->personnes();
 
         $mysqli->start_transaction();

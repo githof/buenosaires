@@ -207,10 +207,12 @@
             while($row = $results->fetch_assoc()){
                 $id = $row["id"];
                 $personne = new Personne($id);
-                if($attr == TRUE)
-                  $personne->from_db(FALSE, $get_relations_conditions);
-                else 
-                  $personne->from_db(FALSE, $get_relations_conditions, FALSE);
+                // if($attr == TRUE)
+                //   $personne->from_db(FALSE, $get_relations_conditions);
+                // else 
+                //   $personne->from_db(FALSE, $get_relations_conditions, FALSE);
+                $personne->from_db(FALSE, $get_relations_conditions, $attr, $no_accent);
+
                 $personnes[$id] = $personne;
             }
         }
@@ -362,12 +364,14 @@
     // private function from_db_personne_noms_prenoms($personne)'{'
     // public function from_db_personne_noms_prenoms($personne){ 
     // public function from_db_personne_noms_prenoms($personne, $attr = FALSE){ 
-    public function from_db_personne_noms_prenoms($personne, $no_accent, $attr = FALSE){ 
+    public function from_db_personne_noms_prenoms($personne, $no_accent, $attr){ 
 
-        //  *** rewrite-noms-export 
-        echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        var_dump($no_accent);    //  
-        //  fin test 
+        // //  *** rewrite-noms-export 
+        // echo '<br>'.__METHOD__.'<br>$attr : ';
+        // var_dump($attr);    //  
+        // echo '<br>'.__METHOD__.'<br>$no_accent : ';
+        // var_dump($no_accent);    //  
+        // //  fin test 
 
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
@@ -384,47 +388,32 @@
           $personne->add_prenom(new Prenom($row["p_id"], 
                                           $row["prenom"], 
                                           $row["no_accent"]), 
-                                $no_accent, 
-                                $attr); 
+                                $no_accent); 
       }
 
-      if($attr == TRUE) {
-        $result = $this->query("
-          SELECT nom.id as n_id, nom, no_accent, attribut, ordre
-          FROM nom_personne INNER JOIN nom
-          ON nom_personne.nom_id = nom.id
-          WHERE nom_personne.personne_id = '$personne->id'
-          ORDER BY nom_personne.ordre"
-        );  
-        if($result != FALSE && $result->num_rows > 0){
-          while($row = $result->fetch_assoc()){
-            $personne->add_nom( new Nom($row["n_id"],
-                                        $row["nom"],
-                                        $row["no_accent"],
-                                        $row["attribut"]));
-          }
+      $result = $this->query("
+        SELECT nom.id as n_id, nom, no_accent, attribut, ordre
+        FROM nom_personne INNER JOIN nom
+        ON nom_personne.nom_id = nom.id
+        WHERE nom_personne.personne_id = '$personne->id'
+        ORDER BY nom_personne.ordre"
+      );  
+      if($result != FALSE && $result->num_rows > 0){
+        
+        while($row = $result->fetch_assoc()){
+          $personne->add_nom( new Nom($row["n_id"],
+                                      $row["nom"],
+                                      $row["no_accent"],
+                                      $row["attribut"]), 
+                              $attr, 
+                              $no_accent); 
         }
-      } else {
-        $result = $this->query("
-          SELECT nom.id as n_id, nom, no_accent, ordre
-          FROM nom_personne INNER JOIN nom
-          ON nom_personne.nom_id = nom.id
-          WHERE nom_personne.personne_id = '$personne->id'
-          ORDER BY nom_personne.ordre"
-        );  
-        if($result != FALSE && $result->num_rows > 0){
-          while($row = $result->fetch_assoc()){
-            // $personne->add_nom( new Nom($row["n_id"],
-            //                             $row["nom"],
-            //                             $row["no_accent"])); 
-            $personne->add_nom( new Nom($row["n_id"],
-                                        $row["nom"],
-                                        $row["no_accent"]), 
-                                $no_accent, 
-                                $attr); 
-          }
-        }
-      }
+      } 
+
+      // //  *** rewrite-noms-export 
+        // echo '<br>'.__METHOD__.'<br>$personne : ';
+        // var_dump($personne);    //  
+        // //  fin test 
     }
     
     //  *** tests-has-memory 

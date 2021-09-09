@@ -38,21 +38,29 @@
         //  *** rewrite-noms-export
         //  test sans "de" : $attr pour $attribut 
         //  test sans_accents : $no_accent = true pour prendre le nom sans les accents 
-        public function to_string(
-        // $no_accent = FALSE, $attr = FALSE){
-        $no_accent, $attr = FALSE){ 
+        public function to_string($attr, $no_accent){ //    true, false 
+        // public function to_string($no_accent = FALSE, $attr = FALSE){
 
             //  *** rewrite-noms-export 
-            echo '<br>'.__METHOD__.'<br>$no_accent : ';
-            var_dump($no_accent);    //  
+            // echo '<br>'.__METHOD__.' $no_accent : ';
+            // var_dump($no_accent);    //  false :( 
+            // echo '<br>'.__METHOD__.' $attr : ';
+            // var_dump($attr);
             //  fin test
 
-            $attr = "";
-            if(isset($this->attribut))
-                $attr = $this->attribut . " ";
-            $nom = $no_accent ?
-                $this->nom :
-                $this->no_accent;
+            $nom = $no_accent ? $this->no_accent : $this->nom;  
+            // $attr = "";
+            // if(isset($this->attribut))
+            // if(isset($this->attribut, $attr) && $attr == true)
+            //     $attr = $this->attribut . " ";
+            if(isset($this->attribut)) {
+                if(isset($attr) && $attr == true)
+                    $attr = $this->attribut . ' ';
+                else 
+                    $attr = null;
+            } else {    //  !isset($this->attribut) 
+                $attr = null;
+            }
 
             return $attr . $nom;
         }

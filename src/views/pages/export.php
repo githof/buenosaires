@@ -55,13 +55,15 @@ function html_export_actes() {
     return $contents;
 }
 
+//  *** rewrite-noms-export
+//  par défaut : no_accent = true 
 function html_export_personnes() {
     $contents = '<h4>Toutes les personnes</h4> 
     <p>Section Personnes en travaux. Merci de votre compréhension :)</p>';
     // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'))
     // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
     $contents .= html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'))
-                . html_form_group_export(html_radio_export('no_accent', '1', 'Sans accents'));
+                . html_form_group_export(html_radio_export('no_accent', '0', 'Avec accents'));
     
     return $contents;
 }
@@ -124,20 +126,20 @@ function page_export() {
             case "all_actes":
                 echo appel_export_actes('XMLExport', 'export_all');  //  export, '4968',
                 // echo '<br>'.__METHOD__.'<br>post : ';
-                // var_dump($_POST);
+                // var_dump($_POST); // 
                 break;
             case "all_personnes":
-                $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '1') ? $_POST["s"] : TRUE; 
+                $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
                 // $attr = isset($_POST["attr"]) ? $_POST["attr"] : FALSE;
                 $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
-                    echo appel_export_personnes('CSVExport', 'export_personnes', $no_accent, $attr);
+                    echo appel_export_personnes('CSVExport', 'export_personnes', $attr, $no_accent);
                     // echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE);
                     //  *** rewrite-noms-export 
                     echo '<br>'.__METHOD__.'<br>post : ';
                     var_dump($_POST);
-                    // echo '<br>'.__METHOD__.'<br>attr : ';
-                    // if(isset($attr))
-                    //     var_dump($attr);
+                    echo '<br>'.__METHOD__.'<br>$no_accent : ';
+                    if(isset($no_accent))
+                        var_dump($no_accent);
                     //  fin test 
                 break;
             case "all_relations":

@@ -191,24 +191,37 @@ class Personne extends DatabaseEntity {
 
     //  *** rewrite-noms-export
     //  test noms sans "de" 
+    //  test noms et prénoms sans accent 
+    // public function from_db(
+    //         $update_obj = FALSE,
+    //         $get_relations_conditions = TRUE, 
+    //         $attr = TRUE)
     public function from_db(
-            $update_obj = FALSE,
-            $get_relations_conditions = TRUE, 
-            $attr = TRUE)
+        $update_obj = FALSE,
+        $get_relations_conditions = TRUE, 
+        $attr, 
+        $no_accent)
     {
         global $log, $mysqli; 
         // //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>attr : ';
-        // var_dump($attr);    //  false 
+        echo '<br>'.__METHOD__.'<br>attr : ';
+        var_dump($attr);    //  
+        echo '<br>'.__METHOD__.'<br>no_accent : ';
+        var_dump($no_accent);    //  false 
         // //  fin test 
         if(isset($this->id)) {
+            // $row = parent::from_db($update_obj,
             $row = parent::from_db($update_obj,
-                $get_relations_conditions);
+                $get_relations_conditions,
+                $attr,
+                $no_accent);
+            //     $get_relations_conditions);
             // $mysqli->from_db_personne_noms_prenoms($this);
-            if($attr == TRUE)
-                $mysqli->from_db_personne_noms_prenoms($this, TRUE);
-            else 
-                $mysqli->from_db_personne_noms_prenoms($this, FALSE);
+            // if($attr == TRUE)
+            //     $mysqli->from_db_personne_noms_prenoms($this, TRUE);
+            // else 
+            //     $mysqli->from_db_personne_noms_prenoms($this, FALSE);
+            $mysqli->from_db_personne_noms_prenoms($this, $attr, $no_accent);
             if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
                 $mysqli->from_db_personne_relations($this);
                 $mysqli->from_db_personne_conditions($this);
