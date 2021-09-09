@@ -60,7 +60,8 @@ function html_export_personnes() {
     <p>Section Personnes en travaux. Merci de votre compréhension :)</p>';
     // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'))
     // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
-    $contents .= html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'));
+    $contents .= html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'))
+                . html_form_group_export(html_radio_export('no_accent', '1', 'Sans accents'));
     
     return $contents;
 }
@@ -126,14 +127,14 @@ function page_export() {
                 // var_dump($_POST);
                 break;
             case "all_personnes":
-                $accents = isset($_POST["accents"]) ? $_POST["accents"] : TRUE;
+                $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '1') ? $_POST["s"] : TRUE; 
                 // $attr = isset($_POST["attr"]) ? $_POST["attr"] : FALSE;
                 $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
-                    echo appel_export_personnes('CSVExport', 'export_personnes', $accents, $attr);
+                    echo appel_export_personnes('CSVExport', 'export_personnes', $no_accent, $attr);
                     // echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE);
                     //  *** rewrite-noms-export 
-                    // echo '<br>'.__METHOD__.'<br>post : ';
-                    // var_dump($_POST);
+                    echo '<br>'.__METHOD__.'<br>post : ';
+                    var_dump($_POST);
                     // echo '<br>'.__METHOD__.'<br>attr : ';
                     // if(isset($attr))
                     //     var_dump($attr);

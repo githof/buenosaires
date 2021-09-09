@@ -50,7 +50,8 @@ class Personne extends DatabaseEntity {
         $this->add_prenom(new Prenom(NULL, $s));
     }
 
-    public function add_prenom($prenom){
+    // public function add_prenom($prenom){
+    public function add_prenom($prenom, $no_accent){
         foreach($this->prenoms as $_prenom){
             if((isset($_prenom->id, $prenom->id)
                     && $_prenom->id == $prenom->id)
@@ -59,7 +60,8 @@ class Personne extends DatabaseEntity {
         }
         $this->prenoms[] = $prenom;
         $str = $this->prenoms_str;
-        $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
+        // $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
+        $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string($no_accent); 
     }
 
     public function add_nom_str($s, $attributes){
@@ -68,7 +70,8 @@ class Personne extends DatabaseEntity {
 
     //  *** rewrite-noms-export
     //  test sans "de" : $attr pour $attribut 
-    public function add_nom($nom, $attr = FALSE){
+    // public function add_nom($nom, $attr = FALSE){
+    public function add_nom($nom, $attr = FALSE, $no_accent){
         foreach($this->noms as $_nom){
             if((isset($_nom->id, $nom->id)
             && $_nom->id == $nom->id)
@@ -85,7 +88,7 @@ class Personne extends DatabaseEntity {
         }
         $this->noms[] = $nom;
         $str = $this->noms_str;
-        $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string();
+        $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string($no_accent, $attr);
     }
 
     public function add_condition($text, $source_id){

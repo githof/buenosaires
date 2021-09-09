@@ -1,8 +1,8 @@
 <?php
 
 // afficher les erreurs /!\ #devOnly /!\  ***
-// error_reporting(E_ALL);
-// ini_set("display_errors", 1);
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 // end #devOnly
 
 $exec_time_script = microtime(TRUE);

@@ -32,8 +32,16 @@ class Prenom extends DatabaseEntity {
         $this->prenom = $default;
         $this->no_accent = $no_accent;
     }
+    //  *** rewrite-noms-export 
+    //  test export sans accents 
+    //  public function to_string($no_accent = FALSE){ 
+    public function to_string($no_accent){ 
 
-    public function to_string($no_accent = FALSE){
+        //  *** rewrite-noms-export 
+        echo '<br>'.__METHOD__.'<br>$no_accent : ';
+        var_dump($no_accent);    //  
+        //  fin test
+
         return $no_accent ?
         $this->no_accent :
         $this->prenom;

@@ -38,7 +38,15 @@
         //  *** rewrite-noms-export
         //  test sans "de" : $attr pour $attribut 
         //  test sans_accents : $no_accent = true pour prendre le nom sans les accents 
-        public function to_string($no_accent = FALSE, $attr = FALSE){
+        public function to_string(
+        // $no_accent = FALSE, $attr = FALSE){
+        $no_accent, $attr = FALSE){ 
+
+            //  *** rewrite-noms-export 
+            echo '<br>'.__METHOD__.'<br>$no_accent : ';
+            var_dump($no_accent);    //  
+            //  fin test
+
             $attr = "";
             if(isset($this->attribut))
                 $attr = $this->attribut . " ";

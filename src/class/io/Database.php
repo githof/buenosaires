@@ -189,11 +189,12 @@
     // À généraliser, j'en avais besoin je l'ai mis là tant qu'à
     // faire
     // [ id => personne ]
-    public function get_personnes($get_relations_conditions = TRUE, $attr = TRUE) {
+    // public function get_personnes($get_relations_conditions = TRUE, $attr = TRUE) {
+    public function get_personnes($get_relations_conditions = TRUE, $no_accent, $attr = TRUE) {
         $personnes = [];
         //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>attr : ';
-        // var_dump($attr);
+        echo '<br>'.__METHOD__.'<br>$no_accent : ';
+        var_dump($no_accent);
         //  fin test 
         /*
             pas du tout optimal : je fais un premier select pour
@@ -360,11 +361,12 @@
     //  SELECT personne by nom ou prenom 
     // private function from_db_personne_noms_prenoms($personne)'{'
     // public function from_db_personne_noms_prenoms($personne){ 
-      public function from_db_personne_noms_prenoms($personne, $attr = FALSE){ 
+    // public function from_db_personne_noms_prenoms($personne, $attr = FALSE){ 
+    public function from_db_personne_noms_prenoms($personne, $no_accent, $attr = FALSE){ 
 
         //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>attr : ';
-        // var_dump($attr);    //  false, ok :)
+        echo '<br>'.__METHOD__.'<br>$no_accent : ';
+        var_dump($no_accent);    //  
         //  fin test 
 
       $result = $this->query("
@@ -376,7 +378,14 @@
       );  
       if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc())
-          $personne->add_prenom(new Prenom($row["p_id"], $row["prenom"], $row["no_accent"]));
+          // $personne->add_prenom(new Prenom($row["p_id"], 
+          //                                 $row["prenom"], 
+          //                                 $row["no_accent"])); 
+          $personne->add_prenom(new Prenom($row["p_id"], 
+                                          $row["prenom"], 
+                                          $row["no_accent"]), 
+                                $no_accent, 
+                                $attr); 
       }
 
       if($attr == TRUE) {
@@ -405,9 +414,14 @@
         );  
         if($result != FALSE && $result->num_rows > 0){
           while($row = $result->fetch_assoc()){
+            // $personne->add_nom( new Nom($row["n_id"],
+            //                             $row["nom"],
+            //                             $row["no_accent"])); 
             $personne->add_nom( new Nom($row["n_id"],
                                         $row["nom"],
-                                        $row["no_accent"]));
+                                        $row["no_accent"]), 
+                                $no_accent, 
+                                $attr); 
           }
         }
       }
