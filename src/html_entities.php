@@ -41,7 +41,13 @@ function has_memory($class, $id){
             //     $obj = new Condition($id);
             //     break;
         }
-        $obj->from_db(TRUE);   
+        /* signature : public function from_db(
+            $update_obj = TRUE,
+            $get_relations_conditions = TRUE, 
+            $attr,
+            $no_accent);
+        */
+        $obj->from_db(TRUE, TRUE, TRUE, FALSE);   
         $memory[$class][$id] = $obj;
         return $obj;
     }
@@ -297,11 +303,11 @@ function html_personne($personne,
 
     $html = "";
     foreach($personne->prenoms as $prenom)
-        $html .= "<div class='prenom'>".$prenom->to_string()."</div>";
+        $html .= "<div class='prenom'>".$prenom->to_string(FALSE)."</div>";
 
     $html_noms = "";
     foreach($personne->noms as $nom)
-        $html .= "<div class='nom'>".$nom->to_string()."</div>";
+        $html .= "<div class='nom'>".$nom->to_string(TRUE, FALSE)."</div>";
 
     if($with_url)
         $html = "<a href='personne/$personne->id'>$html</a>";

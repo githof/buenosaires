@@ -44,12 +44,14 @@ function html_actions_personne($page) {
 function html_personne_name() {
     global $personne, $page_title; 
 
+    /*  signature : public function to_string($no_accent) */
     $page_title = "";
     foreach($personne->prenoms as $prenom)
-        $page_title .= $prenom->to_string() . " ";
+        $page_title .= $prenom->to_string(FALSE) . " ";
 
+    /*  public function to_string($attr, $no_accent) */ 
     foreach($personne->noms as $nom)
-        $page_title .= $nom->to_string() . " ";
+        $page_title .= $nom->to_string(TRUE, FALSE) . " ";
 
     return $page_title;
 }
@@ -70,7 +72,13 @@ function html_personne_name() {
 function html_affichage_personne() {
     global $personne, $access_pages; 
 
-    $result = $personne->from_db(TRUE, TRUE, TRUE); 
+    /* signature : public function from_db(
+        $update_obj = TRUE,
+        $get_relations_conditions = TRUE, 
+        $attr,
+        $no_accent);
+    */
+    $result = $personne->from_db(TRUE, TRUE, TRUE, FALSE); 
 
     if($result == NULL){
         $html = "Aucune personne enregistrée avec cet id";
