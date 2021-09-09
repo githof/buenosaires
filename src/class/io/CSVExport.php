@@ -79,7 +79,7 @@ class CSVExport implements ExportInterface {
     //  *** rewrite-noms-export
     //  no_accent
     // public static function export_personnes($no_accent = TRUE, $attr = FALSE){ //   $no_accent 
-    public static function export_personnes($no_accent, $attr = FALSE){ //   $no_accent 
+    public static function export_personnes($attr, $no_accent){ //   $no_accent 
         global $mysqli;
 
         // self::entete();
@@ -88,18 +88,7 @@ class CSVExport implements ExportInterface {
         // self::export_line(array("id","noms","prenoms"));
         fputcsv(self::$out, array("id","noms","prenoms"));
 
-        /*  *** modifier get_personnes() ou utiliser une méthode plus simple :
-            elle récupère toutes les infos des personnes, 
-            même quand on n'en a pas besoin
-        */
         $personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);
-
-        //  *** rewrite-noms-export 
-        echo '<br>'.__METHOD__.'<br>$attr : ';
-        var_dump($attr); // 
-        echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        var_dump($no_accent); // 
-        //  fin test 
 
         foreach($personnes as $id => $personne) {
             /*
@@ -108,10 +97,6 @@ class CSVExport implements ExportInterface {
             Prenom,
             qui d'ailleurs pourraient hériter d'une même classe
             */
-            // if($no_accent) {
-            //     $prenoms = [];
-                
-            // }
             $prenoms = [];
             foreach($personne->prenoms as $prenom)
                 // $prenoms[] = $prenom->to_string();
@@ -124,8 +109,6 @@ class CSVExport implements ExportInterface {
 
             $prenoms = implode(' ', $prenoms);
             $noms = implode(' ', $noms);
-            // $prenoms = array_to_string($prenoms, " ");
-            // $noms = array_to_string($noms, " ");
 
             // self::export_line(array($id, $noms, $prenoms));
             fputcsv(self::$out, array($id, $noms, $prenoms));

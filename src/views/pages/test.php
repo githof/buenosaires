@@ -61,19 +61,6 @@ $acte = new Acte(5598);
 $acte->remove_from_db();
 */
 
-$nom = new Nom('', 'nommé', 'nomme', 'de');
-echo 'signature : Nom($id, $nom, $no_accent$, attr) <br>';
-echo '$nom = new Nom(\'\', \'nommé\', \'nomme\', \'de\')<br>';
-echo 'appel : Nom->to_string($attr = true, $no_accent = false)<br>'; 
-echo '<br>'.$nom->to_string(true, false).'<br>';   
-
-echo '<br>';
-echo '$nom::nom : '. $nom->nom;
-echo '<br>$nom->attribut : '. $nom->attribut;
-
-$pers = new Personne('4');
-// echo $pers->add_nom_sans_de($nom); 
-
 
 // $pers = new Personne(15794);
 // $pers->remove_from_db(TRUE);

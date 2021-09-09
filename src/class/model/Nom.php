@@ -42,10 +42,10 @@
         // public function to_string($no_accent = FALSE, $attr = FALSE){
 
             //  *** rewrite-noms-export 
-            // echo '<br>'.__METHOD__.' $no_accent : ';
-            // var_dump($no_accent);    //  false :( 
             // echo '<br>'.__METHOD__.' $attr : ';
             // var_dump($attr);
+            // echo '<br>'.__METHOD__.' $no_accent : ';
+            // var_dump($no_accent);    //  
             //  fin test
 
             $nom = $no_accent ? $this->no_accent : $this->nom;  

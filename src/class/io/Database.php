@@ -193,8 +193,10 @@
     public function get_personnes($get_relations_conditions = TRUE, $no_accent, $attr = TRUE) {
         $personnes = [];
         //  *** rewrite-noms-export 
-        echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        var_dump($no_accent);
+        // echo '<br>'.__METHOD__.'<br>$no_accent : ';
+        // var_dump($no_accent);
+        // echo '<br>'.__METHOD__.'<br>$attr : ';
+        // var_dump($attr);
         //  fin test 
         /*
             pas du tout optimal : je fais un premier select pour
@@ -364,7 +366,7 @@
     // private function from_db_personne_noms_prenoms($personne)'{'
     // public function from_db_personne_noms_prenoms($personne){ 
     // public function from_db_personne_noms_prenoms($personne, $attr = FALSE){ 
-    public function from_db_personne_noms_prenoms($personne, $no_accent, $attr){ 
+    public function from_db_personne_noms_prenoms($personne, $attr, $no_accent){ 
 
         // //  *** rewrite-noms-export 
         // echo '<br>'.__METHOD__.'<br>$attr : ';

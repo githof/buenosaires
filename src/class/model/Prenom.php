@@ -38,8 +38,10 @@ class Prenom extends DatabaseEntity {
     public function to_string($no_accent){ 
 
         //  *** rewrite-noms-export 
-        echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        var_dump($no_accent);    //  true :) 
+        // echo '<br>'.__METHOD__.'<br>$attr : ';
+        // var_dump($attr);    //  
+        // echo '<br>'.__METHOD__.'<br>$no_accent : ';
+        // var_dump($no_accent);    //  
         //  fin test
 
         return $no_accent ? $this->no_accent : $this->prenom; 

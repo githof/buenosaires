@@ -71,7 +71,7 @@ class Personne extends DatabaseEntity {
     //  *** rewrite-noms-export
     //  test sans "de" : $attr pour $attribut 
     // public function add_nom($nom, $attr = FALSE){
-    public function add_nom($nom, $attr = FALSE, $no_accent){
+    public function add_nom($nom, $attr, $no_accent){
         foreach($this->noms as $_nom){
             if((isset($_nom->id, $nom->id)
             && $_nom->id == $nom->id)
@@ -88,7 +88,7 @@ class Personne extends DatabaseEntity {
         }
         $this->noms[] = $nom;
         $str = $this->noms_str;
-        $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string($no_accent, $attr);
+        $this->noms_str = ($str == "" ? "" : $str . " ") . $nom->to_string($attr, $no_accent);
     }
 
     public function add_condition($text, $source_id){
@@ -204,10 +204,10 @@ class Personne extends DatabaseEntity {
     {
         global $log, $mysqli; 
         // //  *** rewrite-noms-export 
-        echo '<br>'.__METHOD__.'<br>attr : ';
-        var_dump($attr);    //  
-        echo '<br>'.__METHOD__.'<br>no_accent : ';
-        var_dump($no_accent);    //  false 
+        // echo '<br>'.__METHOD__.'<br>attr : ';
+        // var_dump($attr);    //  
+        // echo '<br>'.__METHOD__.'<br>no_accent : ';
+        // var_dump($no_accent);    //  
         // //  fin test 
         if(isset($this->id)) {
             // $row = parent::from_db($update_obj,
@@ -215,6 +215,12 @@ class Personne extends DatabaseEntity {
                 $get_relations_conditions,
                 $attr,
                 $no_accent);
+            // //  *** rewrite-noms-export 
+            // echo '<br>'.__METHOD__.'<br>attr : ';
+            // var_dump($attr);    //  
+            // echo '<br>'.__METHOD__.'<br>no_accent : ';
+            // var_dump($no_accent);    //  
+            // //  fin test 
             //     $get_relations_conditions);
             // $mysqli->from_db_personne_noms_prenoms($this);
             // if($attr == TRUE)

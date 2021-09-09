@@ -135,11 +135,11 @@ function page_export() {
                     echo appel_export_personnes('CSVExport', 'export_personnes', $attr, $no_accent);
                     // echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE);
                     //  *** rewrite-noms-export 
-                    echo '<br>'.__METHOD__.'<br>post : ';
-                    var_dump($_POST);
-                    echo '<br>'.__METHOD__.'<br>$no_accent : ';
-                    if(isset($no_accent))
-                        var_dump($no_accent);
+                    // echo '<br>'.__METHOD__.'<br>post : ';
+                    // var_dump($_POST);
+                    // echo '<br>'.__METHOD__.'<br>$no_accent : ';
+                    // if(isset($no_accent))
+                    //     var_dump($no_accent);
                     //  fin test 
                 break;
             case "all_relations":
