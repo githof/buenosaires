@@ -47,7 +47,8 @@ class Personne extends DatabaseEntity {
     }
 
     public function add_prenom_str($s){
-        $this->add_prenom(new Prenom(NULL, $s));
+        // $this->add_prenom(new Prenom(NULL, $s));
+        $this->add_prenom(new Prenom(NULL, $s), FALSE);
     }
 
     // public function add_prenom($prenom){
@@ -65,7 +66,8 @@ class Personne extends DatabaseEntity {
     }
 
     public function add_nom_str($s, $attributes){
-        $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
+        // $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
+        $this->add_nom(new Nom(NULL, $s, NULL, $attributes), TRUE, FALSE);
     }
 
     //  *** rewrite-noms-export

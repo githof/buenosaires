@@ -90,7 +90,7 @@ abstract class DatabaseEntity implements DatabaseIO {
     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db() 
     if(!$skip_check_same) {
         // $values_db = $mysqli->from_db($obj, FALSE, FALSE);
-        $values_db = $obj->from_db(FALSE, FALSE);
+        $values_db = $obj->from_db(FALSE, FALSE, TRUE, FALSE);
     }
     
     if(isset($values_db["id"])) { 

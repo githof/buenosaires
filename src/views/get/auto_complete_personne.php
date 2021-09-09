@@ -4,11 +4,13 @@ function list_personne(){
     global $mysqli;
     $personnes = [];
 
+    //  ***  rewrite-noms-export 
     $results = $mysqli->select("personne", ["*"]);
     if($results != FALSE && $results->num_rows > 0){
         while($row = $results->fetch_assoc()){
             $personne = new Personne($row["id"]);
-            $personne->from_db(TRUE);
+            // $personne->from_db(TRUE);
+            $personne->from_db(TRUE, TRUE, TRUE, FALSE);
             $str = "";
 
             $str .= " [$personne->id]";

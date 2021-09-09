@@ -192,7 +192,8 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     // $personne = new Personne($personne_id_old);
     $obj = new Personne($personne_id_old);
     // $mysqli->from_db($personne);
-    $obj->from_db($personne);
+    // $obj->from_db($personne);
+    $obj->from_db(false, true, true, false);    //  $personne, 
 
     $actes = [];
 
@@ -621,9 +622,11 @@ if(isset($ARGS["personne-A"],
     $personne_B = new Personne($ARGS["personne-B"]);
 
     // $mysqli->from_db($personne_A);
-    $personne_A->from_db($personne_A);
+    // $personne_A->from_db($personne_A);
+    $personne_A->from_db($personne_A, FALSE, TRUE, TRUE, FALSE);
     // $mysqli->from_db($personne_B);
-    $personne_B->from_db($personne_B);
+    // $personne_B->from_db($personne_B);
+    $personne_B->from_db($personne_B, FALSE, TRUE, TRUE, FALSE);
 
     $noms = parse_noms($ARGS["noms"]);
     $prenoms = parse_prenoms($ARGS["prenoms"]);
@@ -645,8 +648,10 @@ if(isset($ARGS["personne-A"],
     $personne_B = new Personne($ARGS["personne-B"]);
     // $mysqli->from_db($personne_A);
     // $mysqli->from_db($personne_B);
-    $personne_A->from_db($personne_A);
-    $personne_B->from_db($personne_B);
+    // $personne_A->from_db($personne_A);
+    // $personne_B->from_db($personne_B);
+    $personne_A->from_db($personne_A, FALSE, TRUE, TRUE, FALSE);
+    $personne_B->from_db($personne_B, FALSE, TRUE, TRUE, FALSE);
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{

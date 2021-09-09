@@ -34,9 +34,11 @@ function html_personne_fusion($personne){
 
 $html = "";
 
+//  *** rewrite-noms-export 
 if(isset($ARGS["id"])){
     $personne = new Personne($ARGS["id"]);
-    if($personne->from_db() != NULL){
+    // if($personne->from_db() != NULL){
+        if($personne->from_db(FALSE, TRUE, TRUE, FALSE) != NULL){
         $html = html_personne_fusion($personne);
     }
 }

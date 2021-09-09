@@ -78,7 +78,7 @@ function html_affichage_personne() {
         $attr,
         $no_accent);
     */
-    $result = $personne->from_db(TRUE, TRUE, TRUE, FALSE); 
+    $result = $personne->from_db(FALSE, TRUE, TRUE, FALSE); 
 
     if($result == NULL){
         $html = "Aucune personne enregistrée avec cet id";

@@ -11,7 +11,8 @@ function all_personnes(){
     if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             $personne = new Personne($row["id"]);
-            $personne->from_db();
+            // $personne->from_db();
+            $personne->from_db(FALSE, TRUE, TRUE, FALSE); 
             $html = "";
 
             $html .= " [$personne->id]";

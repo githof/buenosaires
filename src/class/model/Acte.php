@@ -322,7 +322,7 @@ class Acte extends DatabaseEntity {
 
         // $mysqli->from_db($this);
         // ^ remplit les champs conditions et relations
-        $this->from_db($this, $attr, $no_accent);
+        $this->from_db(FALSE, TRUE, TRUE, FALSE);
         $personnes = $this->personnes();
 
         $mysqli->start_transaction();
