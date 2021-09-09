@@ -47,6 +47,7 @@ function setup_button_delete_acte(){
 }
 
 //  *** test-personne-suppr 
+//  ne peut supprimer que des personnes orphelines 
 function setup_button_delete_personne() {
     $("#personne-suppr-2").hide();
     $("#personne-suppr-3").hide();
@@ -65,13 +66,11 @@ function setup_button_delete_personne() {
         $("#personne-suppr-3").hide();
         $("#personne-suppr-4").show();
     });
-
     $("#personne-suppr-4").click(function() {
         $("#personne-suppr-4").hide();
         $("#personne-suppr-5").show();
     });
 }
-setup_button_delete_personne();
 
 function add_personne_auto_complete_personne(id, html, $div_form, max){
     var pers = "A";
@@ -185,6 +184,9 @@ $(document).ready(function(){
 
     /* ACTE SUPPR BUTTONS */
     setup_button_delete_acte();
+    
+    /* PERSONNE SUPPR BUTTONS */
+    setup_button_delete_personne();
 
 
     /* IMPORT FORM */
@@ -200,7 +202,6 @@ $(document).ready(function(){
     $(".autocomplete-search").hide();
     $("input[name='autocomplete']").bind('input keyup', function(){
         var $this = $(this);
-        // console.log(`$this : ${this}`); 
         var delay = 1000;
         var val = $this.val();
 

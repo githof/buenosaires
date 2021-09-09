@@ -168,7 +168,8 @@ function default_input_prenoms($prenoms_A, $prenoms_B = []){
             $start = FALSE;
         else
             $str .= ", ";
-        $str .= $prenom->to_string();
+        // $str .= $prenom->to_string();
+        $str .= $prenom->to_string(FALSE);
     }
     foreach($prenoms_B as $prenom){
         if(has_prenom($prenoms_A, $prenom))

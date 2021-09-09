@@ -97,6 +97,8 @@ abstract class DatabaseEntity implements DatabaseIO {
             $obj->id = $values_db["id"];
     }
     $values_obj = $obj->values_into_db();
+    //  *** dissocier.php : 
+    //  Notice: Undefined variable: values_db in /home/morgan/internet/buenosaires/src/class/io/DatabaseEntity.php on line 100 
     $values_updated = $mysqli->updated_values($values_db, $values_obj);
 
     if(isset($values_db, $obj->id))

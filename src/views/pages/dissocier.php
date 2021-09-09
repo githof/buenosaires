@@ -301,12 +301,14 @@ function html_dissocier_noms($noms){
     return $html;
 }
 
+//  *** rewrite-nomms-export 
 function html_dissocier_prenoms($prenoms){
     $html = "";
     foreach($prenoms as $prenom){
         $html .=
             "<div id='prenom-$prenom->id' class='prenom'>"
-            .$prenom->to_string().
+            // .$prenom->to_string().
+            .$prenom->to_string(FALSE).
             "</div>";
     }
     return $html;
@@ -323,12 +325,20 @@ function html_form_per_acte($entity, $personne_id){
         $html_entity = html_relation($entity, FALSE);
     }
 
+    // foreach($actes as $acte) {
+    // foreach($actes as $acte_id) {
+    //     // $html .= "<a href='acte/$acte->id'>[<span class='acte-ref'>$acte->id</span>]</a>";
+    //     $html .= "<a href='acte/$acte_id'>[<span class='acte-ref'>$acte_id</span>]</a>";
+    // }
     $html_actes = "";
-    foreach($entity->actes as $acte){
-        $name_acte = $name."-".$acte->id;
+    // foreach($entity->actes as $acte){
+        foreach($entity->actes as $acte_id){ 
+        // $name_acte = $name."-".$acte->id;
+        $name_acte = $name."-".$acte_id;
         $html_actes .= "
                 <div class='dissocier-radios'>
-                    <div>Acte $acte->id</div>
+                    
+                <div>Acte $acte_id</div>
                     <div>
                         <input type='radio' id='$name_acte-A' name='$name_acte' value='a' checked>
                         <label for='$name_acte-A'>$personne_id</label>

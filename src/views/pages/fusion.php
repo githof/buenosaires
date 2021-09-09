@@ -519,7 +519,8 @@ function html_fusion_div_prenoms($prenoms){
     foreach($prenoms as $prenom){
         $html .=
             "<div id='prenom-$prenom->id' class='prenom'>"
-            .$prenom->to_string().
+            // .$prenom->to_string().
+            .$prenom->to_string(FALSE).
             "</div>";
     }
     return $html;
