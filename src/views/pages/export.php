@@ -49,17 +49,13 @@ function html_form_group_export($contents) {
 
 function html_export_actes() {
     $contents = '<h4>Tous les actes</h4>';
-                // <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
-    // $contents .= html_form_group_export(html_radio_export('', '1', 'Tous les actes'));
-
     return $contents;
 }
 
 //  *** rewrite-noms-export
 //  par défaut : no_accent = true 
 function html_export_personnes() {
-    $contents = '<h4>Toutes les personnes</h4> 
-    <p>Section Personnes en travaux. Merci de votre compréhension :)</p>';
+    $contents = '<h4>Toutes les personnes</h4>';
     // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'))
     // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
     $contents .= html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'))
