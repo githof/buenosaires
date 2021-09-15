@@ -324,7 +324,7 @@ class Acte extends DatabaseEntity {
     public function remove_from_db() {
         global $mysqli;
 
-        // $mysqli->from_db($this);
+        // $this->from_db($this);
         // ^ remplit les champs conditions et relations
         $this->from_db(FALSE, TRUE, TRUE, FALSE);
         $personnes = $this->personnes();

@@ -193,7 +193,8 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     $obj = new Personne($personne_id_old);
     // $mysqli->from_db($personne);
     // $obj->from_db($personne);
-    $obj->from_db(false, true, true, false);    //  $personne, 
+    // $obj->from_db(false, true, true, false); 
+    $obj->from_db(); 
 
     $actes = [];
 
@@ -263,9 +264,9 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     }
 }
 
-function change_prenoms_ou_noms($field, $noms, $personne)
-// function change_prenoms_ou_noms($field, $noms, $obj)
 // $field = 'prenom' ou 'nom'
+// function change_prenoms_ou_noms($field, $noms, $obj)
+function change_prenoms_ou_noms($field, $noms, $personne)
 {
     global $mysqli;
 

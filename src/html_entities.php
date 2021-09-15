@@ -47,7 +47,8 @@ function has_memory($class, $id){
             $attr,
             $no_accent);
         */
-        $obj->from_db(TRUE, TRUE, TRUE, FALSE);   
+        // $obj->from_db(TRUE, TRUE, TRUE, FALSE);
+        $obj->from_db();   
         $memory[$class][$id] = $obj;
         return $obj;
     }

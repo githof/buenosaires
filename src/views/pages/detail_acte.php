@@ -111,7 +111,7 @@ function appel_export_acte($class, $method, $acte_id) {
 function html_affichage_acte() {
     global $acte, $ARGS, $url_parsed;
 
-    /*  public function from_db(
+    /* Signature  : public function from_db(
         $update_obj = FALSE,
         $get_relations_conditions = TRUE, 
         $attr,

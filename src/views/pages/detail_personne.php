@@ -73,12 +73,13 @@ function html_affichage_personne() {
     global $personne, $access_pages; 
 
     /* signature : public function from_db(
-        $update_obj = TRUE,
+        $update_obj = FALSE,
         $get_relations_conditions = TRUE, 
-        $attr,
-        $no_accent);
+        $attr = TRUE,
+        $no_accent = FALSE);
     */
-    $result = $personne->from_db(FALSE, TRUE, TRUE, FALSE); 
+    // $result = $personne->from_db(FALSE, TRUE, TRUE, FALSE); 
+    $result = $personne->from_db(); 
 
     if($result == NULL){
         $html = "Aucune personne enregistrée avec cet id";
