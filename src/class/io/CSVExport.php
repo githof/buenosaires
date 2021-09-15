@@ -191,7 +191,8 @@ class CSVExport implements ExportInterface {
 
     //  PUBLIC  //
 
-    public static function export_relations($names, $dates, $deux_sens) {  // $names = TRUE, $dates = TRUE, $deux_sens = TRUE
+    // public static function export_relations($names, $dates, $deux_sens) { 
+    public static function export_relations($names, $dates, $deux_sens, $attr, $no_accent) { 
         global $mysqli, $line; 
 
         self::attr_nom_fichier('relations');
@@ -212,6 +213,10 @@ class CSVExport implements ExportInterface {
         fputcsv(self::$out, $line);
 
         // self::$personnes = $mysqli->get_personnes(FALSE);
+        // self::$personnes = $mysqli->get_personnes(FALSE, TRUE, FALSE);
+        // ***  Signature : 
+        //  public function get_personnes(
+        //    $get_relations_conditions = TRUE, $attr, $no_accent) 
         self::$personnes = $mysqli->get_personnes(FALSE, TRUE, FALSE);
 
         // faire un Database->get_relations() comme get_personnes 

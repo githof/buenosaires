@@ -49,26 +49,21 @@ function html_form_group_export($contents) {
 
 function html_export_actes() {
     $contents = '<h4>Tous les actes</h4>';
-                // <p>Section Actes en travaux, veuillez revenir dans quelques jours. Merci de votre compréhension :)</p>';
-    // $contents .= html_form_group_export(html_radio_export('', '1', 'Tous les actes'));
-
     return $contents;
 }
 
 //  *** rewrite-noms-export
-//  par défaut : no_accent = true 
+//  par défaut : $attr = false et $no_accent = true 
 function html_export_personnes() {
     $contents = '<h4>Toutes les personnes</h4> 
     <p>Section Personnes en travaux. Merci de votre compréhension :)</p>';
-    // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'))
-    // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
     $contents .= html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'))
                 . html_form_group_export(html_radio_export('no_accent', '0', 'Avec accents'));
-    
     return $contents;
 }
 
-
+//  *** rewrite-noms-export
+//  par défaut : $attr = false et $no_accent = true 
 function html_export_relations() {
     $contents = '<h4>Toutes les relations</h4>
                 
@@ -76,9 +71,11 @@ function html_export_relations() {
                 Attention : les dates risquent de provoquer un dépassement du timout, ce problème n\'est pas encore réglé.</p>';
     $contents .= '<div class="row">';   //  <p>Section Relations en travaux, les résultats ne seront pas systématiquement ceux que vous attendez. Merci de votre compréhension :)</p> 
     
-    $contents .= html_form_group_export(html_radio_export('names', 0, 'Sans les noms')) 
-                . html_form_group_export(html_radio_export('dates', 1, 'Avec les dates')) 
-                . html_form_group_export(html_radio_export('deux_sens', 0, 'Dans 1 seul sens'));
+    $contents .= //html_form_group_export(html_radio_export('names', 0, 'Sans les noms')) 
+                 html_form_group_export(html_radio_export('dates', 1, 'Avec les dates')) 
+                . html_form_group_export(html_radio_export('deux_sens', 0, 'Dans 1 seul sens'))
+                . html_form_group_export(html_radio_export('attr', 1, 'Avec les attributs aux noms'))
+                . html_form_group_export(html_radio_export('no_accent', 0, 'Avec les accents'));
     $contents .= '</div>';
 
     return $contents;
@@ -124,30 +121,36 @@ function page_export() {
     if(isset($_POST["data_export"])){
         switch($_POST["data_export"]){
             case "all_actes":
-                echo appel_export_actes('XMLExport', 'export_all');  //  export, '4968',
-                // echo '<br>'.__METHOD__.'<br>post : ';
-                // var_dump($_POST); // 
+                echo appel_export_actes('XMLExport', 'export_all'); 
                 break;
             case "all_personnes":
-                $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
-                // $attr = isset($_POST["attr"]) ? $_POST["attr"] : FALSE;
                 $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
-                    echo appel_export_personnes('CSVExport', 'export_personnes', $attr, $no_accent);
-                    // echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE);
-                    //  *** rewrite-noms-export 
-                    // echo '<br>'.__METHOD__.'<br>post : ';
-                    // var_dump($_POST);
-                    // echo '<br>'.__METHOD__.'<br>$no_accent : ';
-                    // if(isset($no_accent))
-                    //     var_dump($no_accent);
-                    //  fin test 
+                $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
+                echo appel_export_personnes('CSVExport', 'export_personnes', $attr, $no_accent);
                 break;
             case "all_relations":
                 //  *** envoyer la valeur de $start et de $end 
                 $names = isset($_POST["names"]) ? $_POST["names"] : TRUE;
                 $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
                 $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : TRUE;
-                    echo appel_export_relations('CSVExport', 'export_relations', $names, $dates, $deux_sens);    //   1, 50,
+                $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
+                $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
+                echo appel_export_relations(
+                    'CSVExport', 
+                    'export_relations', 
+                    $names, 
+                    $dates, 
+                    $deux_sens,
+                    $attr,
+                    $no_accent 
+                ); 
+                //  *** rewrite-noms-export 
+                echo '<br>'.__METHOD__.'<br>post : ';
+                var_dump($_POST);
+                // echo '<br>'.__METHOD__.'<br>$no_accent : ';
+                // if(isset($no_accent))
+                //     var_dump($no_accent);
+                //  fin test 
                     
                 // break;
             /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
