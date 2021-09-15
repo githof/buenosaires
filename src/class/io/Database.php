@@ -190,7 +190,7 @@
     // faire
     // [ id => personne ]
     // public function get_personnes($get_relations_conditions = TRUE, $attr = TRUE) {
-    public function get_personnes($get_relations_conditions = TRUE, $no_accent, $attr = TRUE) {
+    public function get_personnes($get_relations_conditions = TRUE, $attr, $no_accent) {
         $personnes = [];
         //  *** rewrite-noms-export 
         // echo '<br>'.__METHOD__.'<br>$no_accent : ';

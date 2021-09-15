@@ -16,8 +16,10 @@
         public function from_db(
             $update_obj = TRUE,
             $get_relations_conditions = TRUE, 
-            $attr,
-            $no_accent);
+            // $attr,
+            // $no_accent);
+            $attr = TRUE,
+            $no_accent = FALSE);
     }
 
 ?>

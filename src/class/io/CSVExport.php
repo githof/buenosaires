@@ -135,9 +135,10 @@ class CSVExport implements ExportInterface {
 
                 $line[] = $personne->prenoms_str;
                 $line[] = $personne->noms_str;
-                echo '<br>'.__METHOD__;
-                echo '<br>$personne->noms_str : ';
-                var_dump($personne->noms_str);
+
+                // echo '<br>'.__METHOD__;
+                // echo '<br>$personne->noms_str : ';
+                // var_dump($personne->noms_str);
             } 
         // } elseif(is_string($p)) {
         } else {
@@ -210,7 +211,8 @@ class CSVExport implements ExportInterface {
         // self::export_line($line);
         fputcsv(self::$out, $line);
 
-        self::$personnes = $mysqli->get_personnes(FALSE);
+        // self::$personnes = $mysqli->get_personnes(FALSE);
+        self::$personnes = $mysqli->get_personnes(FALSE, TRUE, FALSE);
 
         // faire un Database->get_relations() comme get_personnes 
         $results = $mysqli->select("relation", ["*"]);

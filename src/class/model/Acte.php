@@ -76,16 +76,20 @@ class Acte extends DatabaseEntity {
     public function from_db(
         $update_obj = FALSE,
         $get_relations_conditions = TRUE, 
-        $attr,
-        $no_accent)
+        // $attr,
+        // $no_accent)
+        $attr = TRUE,
+        $no_accent = FALSE)
     {
         global $log, $mysqli; 
 
         if(isset($this->id)) {
             $row = parent::from_db($update_obj,
                 $get_relations_conditions, 
-                $attr, 
-                $no_accent);
+                // $attr, 
+                // $no_accent);
+                $attr = TRUE,
+                $no_accent = FALSE);
 
             if($get_relations_conditions) {
                 $mysqli->from_db_acte_conditions($this);

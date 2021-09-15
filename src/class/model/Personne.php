@@ -201,8 +201,10 @@ class Personne extends DatabaseEntity {
     public function from_db(
         $update_obj = FALSE,
         $get_relations_conditions = TRUE, 
-        $attr, 
-        $no_accent)
+        // $attr, 
+        // $no_accent)
+        $attr = TRUE,
+        $no_accent = FALSE)
     {
         global $log, $mysqli; 
         // //  *** rewrite-noms-export 

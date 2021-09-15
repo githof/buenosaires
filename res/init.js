@@ -21,7 +21,7 @@ function alert_add(alert){
     alert_show(alert);
 }
 
-
+//  *** pour delete acte 
 function setup_button_delete_acte(){
     $("#acte-suppr-2").hide();
     $("#acte-suppr-3").hide();
@@ -72,6 +72,7 @@ function setup_button_delete_personne() {
     });
 }
 
+//  *** puor dissocier 
 function add_personne_auto_complete_personne(id, html, $div_form, max){
     var pers = "A";
     if($("input[name='personne-A']").length > 0){
@@ -113,11 +114,12 @@ function add_personne_auto_complete_personne(id, html, $div_form, max){
     );
 }
 
+//  ***  pour fusion 
 function send_auto_complete_personne_query(findme, $div_results, $div_form, max){
     $(".autocomplete-search").show();
     $.get("get?s=auto_complete_personne&str="+findme, function(data, status){
         console.log(`findme : ${findme}`);  //  ok 
-        console.log(`data : ${data}`);  //  *** ne récupère pas les données de la bdd
+        console.log(`data : ${data}`);  //  *** ne récupère pas les données de la bdd 
         $div_results.html("");
         var $data = $("<div>"+data+"</div>");
         $.each($data.children().toArray(), function(index, value){
