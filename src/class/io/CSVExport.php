@@ -161,7 +161,7 @@ class CSVExport implements ExportInterface {
         $line[] = "$date";
     }
 
-    private static function export_relation($relation, $names, $dates, $reverse) { 
+    private static function export_relation($relation, $names, $dates, $reverse, $attr, $no_accent) { 
         $line = [];
         $line[] = $reverse ? -$relation->id : $relation->id;  
 
@@ -191,7 +191,7 @@ class CSVExport implements ExportInterface {
 
     //  PUBLIC  //
 
-    public static function export_relations($names, $dates, $deux_sens) {  // $names = TRUE, $dates = TRUE, $deux_sens = TRUE
+    public static function export_relations($names, $dates, $deux_sens, $attr, $no_accent) {  // $names = TRUE, $dates = TRUE, $deux_sens = TRUE
         global $mysqli, $line; 
 
         self::attr_nom_fichier('relations');
@@ -212,11 +212,11 @@ class CSVExport implements ExportInterface {
         fputcsv(self::$out, $line);
 
         // self::$personnes = $mysqli->get_personnes(FALSE);
-        self::$personnes = $mysqli->get_personnes(FALSE, TRUE, FALSE);
+        self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);    //  , FALSE, TRUE);  //
 
         // faire un Database->get_relations() comme get_personnes 
         $results = $mysqli->select("relation", ["*"]);
-        if($results != FALSE && $results->num_rows){
+        if($results != FALSE && $results->num_rows){ 
             while($row = $results->fetch_assoc()){
                 $relation = new Relation();
                 $relation->result_from_db($row);
@@ -233,24 +233,27 @@ class CSVExport implements ExportInterface {
                         $relation, 
                         $names, 
                         $dates, 
-                        FALSE);     //   !reverse 
+                        FALSE,
+                        $attr, 
+                        $no_accent);     //   !reverse 
                 } else {
                     self::export_relation(
                         $relation, 
                         $names, 
                         $dates, 
-                        FALSE);     //   !reverse 
+                        FALSE,
+                        $attr, 
+                        $no_accent);     //   !reverse 
                     self::export_relation(
                         $relation, 
                         $names, 
                         $dates, 
-                        TRUE);      //  reverse 
+                        TRUE,
+                        $attr, 
+                        $no_accent);      //  reverse 
                 }
             }
         }
-
-        //  timeline 
-        // fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
         
         fclose(self::$out);
         

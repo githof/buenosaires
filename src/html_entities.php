@@ -400,7 +400,7 @@ function html_form_group($contents) {
   ';
 }
 
-//  sert dans import.php (+ header.php, detail_acte.php, search.php)
+//  sert dans import.php, header.php, detail_acte.php, search.php, export.php 
 function html_hidden_type($name, $value) {
     return '
         <input type="hidden"'
