@@ -118,8 +118,16 @@ class CSVExport implements ExportInterface {
         // fputcsv(self::$out, array(date('Y-m-d_H-i-s')));
         
         fclose(self::$out);
-        
-        self::entete('personnes');
+
+        //  *** rewrite-noms-export : adapter nom fichier
+        if($attr==TRUE) {
+            $object = 'personnes-avec-de';
+        } else {
+            $object = 'personnes-sans-de';
+        }
+        $object .= ($no_accent==FALSE) ? '-avec-accents' : '-sans-accent';
+
+        self::entete($object);
     }
 
     //  PRIVATE METHODS //
@@ -257,7 +265,45 @@ class CSVExport implements ExportInterface {
         
         fclose(self::$out);
         
-        self::entete('relations');
+        //  *** rewrite-noms-export : adapter nom fichier
+        if($dates==TRUE) {
+            $object = 'relations-avec-dates';
+            if($deux_sens==TRUE) {
+                $object .= '-2-sens';
+                if($attr==TRUE) {
+                    $object .= '-avec-de';
+                } else {
+                    $object .= '-sans-de';
+                }
+            } else {
+                $object .= '-1-sens';
+                if($attr==TRUE) {
+                    $object .= '-avec-de';
+                } else {
+                    $object .= '-sans-de';
+                }
+            }
+        } else {
+            $object = 'relations-sans-dates';
+            if($deux_sens==TRUE) {
+                $object .= '-2-sens';
+                if($attr==TRUE) {
+                    $object .= '-avec-de';
+                } else {
+                    $object .= '-sans-de';
+                }
+            } else {
+                $object .= '-1-sens';
+                if($attr==TRUE) {
+                    $object .= '-avec-de';
+                } else {
+                    $object .= '-sans-de';
+                }
+            }
+        }
+        $object .= ($no_accent==FALSE) ? '-avec-accents' : '-sans-accent';
+        // self::entete('relations');
+        self::entete($object);
     }
 
     
