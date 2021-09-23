@@ -133,9 +133,6 @@ function page_export() {
                 // $view = ROOT."src/views/pages/404.php";
                 // $page_title = "Page introuvable";
         }
-    } elseif(isset($_ARGS["xml"])) {
-        echo '<br>export $_args : ';
-        var_dump($_ARGS);
     } else {
         echo html_tab_titles();
         echo html_tab_contents();

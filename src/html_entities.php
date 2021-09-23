@@ -191,7 +191,7 @@ function html_personne_relation($personne, $statut_name, $actes){
 //  *** ici $personne est la personne appelée dans l'url 
 function html_personne_relations($personne){
     $rel_btype = $personne->get_relations_by_type();
-    //  *** test rewrite-requete
+    //  *** pers-rel-by-type
     // echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
     // var_dump($rel_btype["mariage"]);
     //  fin test
@@ -441,6 +441,40 @@ function html_div_actions($contents) {
     return '<div class="detail_options">'
         . $contents . 
     '</div>';
+}
+
+//  FUSION + DISSOCIER  // 
+
+//  *** Sert dans fusion.php et dans dissocier.php 
+function html_select_personnes($operation){
+    //  $operation = 'fusion' ou 'dissoc' 
+    if($operation == 'fusion') {
+        $class = 'max-2';
+        $titre = 'Choisir deux personnes à fusionner';
+        $form_id = 'form-fusion-select-personnes';
+        $button_label = 'Prévisualisez la fusion';
+    } else {
+        $class = 'max-1';
+        $titre = 'Choisir une personne à dissocier';
+        $form_id = 'form-dissocier-select-personnes';
+        $button_label = 'Dissocier';
+    }
+        
+    return "
+        <section class='$class'>
+            <h4>$titre</h4>
+            <div>
+                <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
+                <span class='autocomplete-search'>recherche en cours ...</span>
+            </div>
+            <div id='auto-complete-results'>
+            </div>
+            <form id='$form_id' method='get'>
+                <div></div>
+                <input type='submit' value='$button_label'>
+            </form>
+        </section>
+    ";
 }
 
 

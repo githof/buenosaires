@@ -424,24 +424,24 @@ function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
 
 /*__ SELCTION PERSONNES __ */
 
-//  *** à mettre dans html_entities.php (elle sert aussi dans dissocier.php)
-function html_select_personnes(){
-    return "
-        <section class='max-2'>
-            <h4>Choisir deux personnes à fusionner</h4>
-            <div>
-                <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
-                <span class='autocomplete-search'>recherche en cours ...</span>
-            </div>
-            <div id='auto-complete-results'>
-            </div>
-            <form id='form-fusion-select-personnes' method='get'>
-                <div></div>
-                <input type='submit' value='Prévisualisez la fusion'>
-            </form>
-        </section>
-    ";
-}
+// *** Déplacée dans html_entities.php (elle sert aussi dans dissocier.php)
+// function html_select_personnes(){
+//     return "
+//         <section class='max-2'>
+//             <h4>Choisir deux personnes à fusionner</h4>
+//             <div>
+//                 <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
+//                 <span class='autocomplete-search'>recherche en cours ...</span>
+//             </div>
+//             <div id='auto-complete-results'>
+//             </div>
+//             <form id='form-fusion-select-personnes' method='get'>
+//                 <div></div>
+//                 <input type='submit' value='Prévisualisez la fusion'>
+//             </form>
+//         </section>
+//     ";
+// }
 
 /*__ PREVIEW_FUSION __ */
 /*
@@ -641,7 +641,7 @@ if(isset($ARGS["personne-A"],
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{
-    echo html_select_personnes();
+    echo html_select_personnes('fusion');
 }
 
 ?>

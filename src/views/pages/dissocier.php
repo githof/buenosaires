@@ -262,9 +262,9 @@ $relations_new) {
 }
 
 //  *** à mettre dans html_entities.php (elle sert aussi dans fusion.php) 
-function html_select_personne(){
+// function html_select_personne(){
     ?>
-    <section class='max-1'>
+    <!-- <section class='max-1'>
         <h4>Choisir une personne à dissocier</h4>
         <div>
             <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
@@ -276,9 +276,9 @@ function html_select_personne(){
             <div></div>
             <input type='submit' value='Dissocier'>
         </form>
-    </section>
+    </section> -->
     <?php
-}
+// }
 
 function html_dissocier_ids($id_personne){
     return "
@@ -479,7 +479,8 @@ if(isset($ARGS["id"])){
     // $personne->from_db(FALSE, TRUE, TRUE, FALSE);
     html_dissocier($personne);
 }else{
-    html_select_personne();
+    // html_select_personne();
+    echo html_select_personnes('dissoc');
 }
 
 ?>
