@@ -21,6 +21,7 @@
 
         // DATABASE IO
 
+        //  *** implémentée dans DatabaseEntity 
         // public function get_table_name(){
         //     return "attribut";
         // }
@@ -44,11 +45,12 @@
             ];
         }
 
+        //  *** implémentées dans DatabaseEntity 
         // public function pre_into_db(){
         //     return TRUE;
         // }
 
-        public function post_into_db(){}
+        // public function post_into_db(){}
     }
 
 ?>

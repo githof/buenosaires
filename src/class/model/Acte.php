@@ -68,28 +68,18 @@ class Acte extends DatabaseEntity {
     }
 
     //  *** rewrite-noms-export
-    //  test sans "de" : $attr pour $attribut, param indisp pour compatibilité avec DatabaseIO 
-    // public function from_db(
-    //         $update_obj = FALSE,
-    //         $get_relations_conditions = TRUE, 
-    //         $attr = TRUE)
+    //  test sans "de" : $attr pour $attribut, 
+    //  param indisp pour compatibilité avec DatabaseIO 
     public function from_db(
         $update_obj = FALSE,
         $get_relations_conditions = TRUE, 
-        // $attr,
-        // $no_accent)
         $attr = TRUE,
         $no_accent = FALSE)
     {
         global $log, $mysqli; 
 
         if(isset($this->id)) {
-            $row = parent::from_db($update_obj,
-                $get_relations_conditions, 
-                // $attr, 
-                // $no_accent);
-                $attr = TRUE,
-                $no_accent = FALSE);
+            $row = parent::from_db();
 
             if($get_relations_conditions) {
                 $mysqli->from_db_acte_conditions($this);
@@ -149,13 +139,14 @@ class Acte extends DatabaseEntity {
     //  qui utilise ce $acte->get_date()  
 	public function get_date() {
         global $mysqli;
-        // $mysqli->from_db($this, TRUE, FALSE);
-        $this->from_db($this, TRUE, $attr, $no_accent);
+        //  *** un peu lourd d'appeler from_db() juste pour avoir la date  
+        $this->from_db(FALSE, TRUE, $attr, $no_accent);
         return $this->date_start;
 	}
 
     // DATABASE IO
 
+    //  *** implémentées dans DatabaseEntity 
     // public function get_table_name(){
     //     return "acte";
     // }
@@ -181,7 +172,7 @@ class Acte extends DatabaseEntity {
     }
 
     public function values_into_db(){
-        // $values = [];
+        $values = array();
 
         if(isset($this->epoux, $this->epoux->id) && $this->epoux->is_valid())
             $values["epoux"] = $this->epoux->id;
@@ -230,19 +221,15 @@ class Acte extends DatabaseEntity {
         }
 
         if(isset($this->epoux)) 
-            // $mysqli->into_db($this->epoux);
             $this->into_db($this->epoux);
 
         if(isset($this->epouse))
-            // $mysqli->into_db($this->epouse);
             $this->into_db($this->epouse);
 
         foreach($this->temoins as $temoin)
-            // $mysqli->into_db($temoin);
             $this->into_db($temoin);
 
         foreach($this->parrains as $parrain)
-            // $mysqli->into_db($parrain);
             $this->into_db($parrain);
 
         return TRUE;
@@ -251,7 +238,7 @@ class Acte extends DatabaseEntity {
     public function post_into_db(){
         global $mysqli;
 
-        $personnes = [];
+        $personnes = array();
         if(isset($this->epoux))
             $personnes[] = $this->epoux;
         if(isset($this->epouse))
@@ -271,11 +258,12 @@ class Acte extends DatabaseEntity {
         $mysqli->end_transaction();
     }
 
+
     //  PRIVATE METHODS     //
 
     private function personnes()     {
         global $mysqli;
-        $personnes = [];
+        $personnes = array();
 
         foreach($this->conditions as $condition)
             $personnes[] = $condition->personne;
@@ -302,12 +290,11 @@ class Acte extends DatabaseEntity {
         $mysqli->delete($field, $test);
     }
 
-    //  *** Pas besoin de ça, on peut appeler directement delete_conditions_or_relations($field) je pense // 
+    //  *** jamais appelées ? Pourrait servir pour supprimer des personnes 
     private function delete_conditions() {
         $this->delete_conditions_or_relations('condition');
     }
 
-    //  *** idem // 
     private function delete_relations() {
         $this->delete_conditions_or_relations('relation');
     }
@@ -326,7 +313,8 @@ class Acte extends DatabaseEntity {
 
         // $this->from_db($this);
         // ^ remplit les champs conditions et relations
-        $this->from_db(FALSE, TRUE, TRUE, FALSE);
+        // $this->from_db(FALSE, TRUE, TRUE, FALSE);
+        $this->from_db();
         $personnes = $this->personnes();
 
         $mysqli->start_transaction();
@@ -338,10 +326,7 @@ class Acte extends DatabaseEntity {
         $this->delete_acte();
         $mysqli->end_transaction();
 
-        //  *** tests-dispatch-database :
-        //  Remplacé $mysqli->remove_from_db() par $personne->purge_personne()
         foreach($personnes as $personne) {
-        // foreach($personnes as $personne)
             $personne->remove_from_db(TRUE);
             $personne->purge_personnes($personne);
         }

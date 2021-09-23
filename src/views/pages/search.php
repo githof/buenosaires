@@ -170,8 +170,10 @@ function html_form_letters($acte_or_personne) {
 
 //  divs "Actes" et "Personnes"
 function html_tabpanel($class, $name, $acte_or_personne) {
-  /* Le deuxième div, après la section, ce serait bien qu'on puisse s'en passer (faut voir si y'a pas un truc en js qui le prend en compte)
-      ==> Il suffit de le retirer, c'est du Bootstrap ; mais ça rapproche les inputs du coin haut-gauche du from-group, c'est moins beau ;) 
+  /* Le deuxième div, après la section, ce serait bien qu'on puisse s'en passer 
+    (faut voir si y'a pas un truc en js qui le prend en compte)
+      ==> Il suffit de le retirer, c'est du Bootstrap ; 
+      mais ça rapproche les inputs du coin haut-gauche du from-group, c'est moins beau ;) 
   */
 
     if(isset($_GET["letter_nom"])) {  //  || $_GET["letter_prenom"] --> error isset with expression ??? 

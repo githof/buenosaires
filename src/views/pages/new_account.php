@@ -31,8 +31,8 @@ function check_post_values(){
     return !$email_error && !$password_error && !$prenom_error && !$nom_error;
 }
 
-//  inputs ont une classe "has-error" si un champ n'est pas rempli correctement
-/*  Pour que la class "has-error" soit prise en charge par Bootstrap elle doit
+/*  Les inputs ont une classe "has-error" si un champ n'est pas rempli correctement.
+    Or pour que la class "has-error" soit prise en compte par Bootstrap elle doit
     être placée sur form-group, pas sur l'input    */
 function html_input_if($label, $type, $name) {
     global $email_error, $password_error, $prenom_error, $nom_error;
@@ -50,8 +50,8 @@ function html_input_if($label, $type, $name) {
       $info = '<p>Doit contenir au moins 6 caractères</p>';
       $value = '';
       /*
-          La valeur de 'password' n'est pas conservée si le form contient une/des erreurs.
-          Pour les autres champs, afficher de nouveau la valeur saisie
+        La valeur de 'password' n'est pas conservée si le form contient une/des erreurs.
+        Pour les autres champs, afficher de nouveau la valeur saisie
       */
     }
     else

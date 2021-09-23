@@ -45,10 +45,12 @@ function accent_uppercase($string){
     );
 }
 
+//  *** remplace retours à la ligne par espace 
 function pre_process_acte_xml($acte_xml){
     return preg_replace('!\s+!', ' ', $acte_xml);
 }
 
+//  ***  à voir pour le problème de get_date() 
 function read_date($date){
     $split = explode('-', trim($date));
     if(count($split) == 3){
@@ -88,11 +90,12 @@ function endsWith($str, $end){
     return (substr($str, -$length) === $end);
 }
 
+//  ***  un moyen de supprimer cette fonction ? 
 function array_to_string_with_separator($tab, $separator){
     return implode($separator, $tab);
 }
 
-//  *** attribue un id déjà existant à une nouvelle personne enregistrée ? 
+//  *** attribue un id déjà existant à une nouvelle personne enregistrée. Jamais appelée ? 
 function renommer_personne($personne, $noms, $prenoms) {
     global $mysqli;
 
@@ -168,7 +171,7 @@ function default_input_prenoms($prenoms_A, $prenoms_B = []){
             $start = FALSE;
         else
             $str .= ", ";
-        // $str .= $prenom->to_string();
+        //  *** prenoms avec accents. Branche rewrite-noms-export 
         $str .= $prenom->to_string(FALSE);
     }
     foreach($prenoms_B as $prenom){
@@ -345,7 +348,7 @@ function string_list_of_ids($liste) {
 }
 
 //  EXPORT  // 
-//  fonction d'appel aux méthodes d'export  //  
+//  fonctions d'appel aux méthodes d'export  //  
 function appel_export_actes($class, $method) { 
     return $class::$method(); 
 }

@@ -27,8 +27,6 @@ function has_memory($class, $id){
             // case "acte":
             //     $obj = new Acte($id);
             //     break;
-            /*  *** Pour l'instant new Personne n'est pas une $personne déjà créée 
-            */
             case "personne": 
                 $obj = new Personne($id);
                 break;
@@ -41,21 +39,20 @@ function has_memory($class, $id){
             //     $obj = new Condition($id);
             //     break;
         }
-        /* signature : public function from_db(
-            $update_obj = TRUE,
-            $get_relations_conditions = TRUE, 
-            $attr,
-            $no_accent);
+        /* signature : 
+        public function from_db($update_obj = TRUE,
+                                $get_relations_conditions = TRUE, 
+                                $attr,
+                                $no_accent);
         */
-        // $obj->from_db(TRUE, TRUE, TRUE, FALSE);
         $obj->from_db();   
         $memory[$class][$id] = $obj;
         return $obj;
     }
 }
 
-//  *** [tests-has-memory] décommenter si ça manque qqpart 
-//  acte_memory() appelée nulle part 
+//  *** [tests-has-memory] acte_memory() appelée nulle part 
+// décommenter si ça manque qqpart 
 // function acte_memory($id){
 //     return has_memory("acte", $id);
 // }
@@ -64,14 +61,14 @@ function personne_memory($id){
     return has_memory("personne", $id);
 }
 
-//  *** [tests-has-memory] décommenter si ça manque qqpart 
-//  relation_memory() appelée nulle part 
+//  *** [tests-has-memory] relation_memory() appelée nulle part 
+//  décommenter si ça manque qqpart 
 // function relation_memory($id){
 //     return has_memory("Relation", $id);
 // }
 
-//  *** [tests-has-memory] décommenter si ça manque qqpart 
-//  condition_memory() appelée nulle part 
+//  *** [tests-has-memory] condition_memory() appelée nulle part 
+//  décommenter si ça manque qqpart 
 // function condition_memory($id){
 //     return has_memory("condition", $id);
 // }
@@ -79,7 +76,6 @@ function personne_memory($id){
 //  *** tests-dispatch-database --> non utilisée ? 
 // function html_acte_small($acte){
 //     $periode = html_periode(periode_memory($acte->values["periode_id"]));
-
 //     return "
 //     <div class='acte_small'>
 //         <div class='acte_small_id'>
@@ -257,20 +253,10 @@ function html_personne_relations($personne){
     return "<div class='relations'>$str</div>";
 }
 
-
-//  *** tests-has-memory
-/*  Pour l'instant on ne peut pas contourner personne_memory, 
-    on en a besoin pour afficher ses infos, 
-    et le code ne les récupèrera que pour la section Relations.
-    Il faudrait récupérer les infos de la personne en cours avant de les afficher 
-    (utiliser l'objet comme il est prévu pour fonctionner, en fait)
-*/
 function html_condition($condition, $show_personne = TRUE, $show_actes = TRUE){
     $html_text = html_condition_text($condition->text);
     $html_personne = ($show_personne)?
-        //  *** tests-has-memory 210531 
         html_personne(personne_memory($condition->personne->id)) :
-        // html_personne($condition->personne->id) :
         "";
     $html_source = html_condition_source($condition->get_source_name());
     $html_actes = ($show_actes)?
@@ -384,8 +370,9 @@ function html_personne_periode($personne_id){
             </div>";
 }
 
-//  sert dans import.php (+ header.php (new_account.php) search.php)
-/*  Sans Bootstrap si y a des problèmes :
+
+//  sert dans import.php, header.php, new_account.php, search.php)
+/*  Si Bootstrap pose des problèmes, remplacer par ça :
   <div class="form-group ">
         ' . "$contents" . '
         </div>
@@ -419,7 +406,7 @@ function html_submit($class, $message) {
 }
 
 //  *** Tabs pour search.php et export.php // 
-//  onglets "Actes" et "Personnes"
+//  onglets "Actes", "Personnes" et "Relations" 
 function html_tab_title($href, $class, $label) {
 
     return '<li role="presentation" class="' . $class . '">
