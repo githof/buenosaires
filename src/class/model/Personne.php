@@ -199,7 +199,7 @@ class Personne extends DatabaseEntity {
                 $attr,
                 $no_accent);
             $mysqli->from_db_personne_noms_prenoms($this, $attr, $no_accent);
-            if(($get_relations_conditions) && ($this->id == $post_id)){   
+            if(($get_relations_conditions)){    //  && ($this->id == $post_id)
                 $mysqli->from_db_personne_relations($this);
                 $mysqli->from_db_personne_conditions($this);
             }

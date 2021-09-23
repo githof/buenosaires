@@ -117,11 +117,6 @@ class CSVExport implements ExportInterface {
 
                 $line[] = $personne->prenoms_str;
                 $line[] = $personne->noms_str;
-
-                //  *** tests-dispatch-database 
-                // echo '<br>'.__METHOD__.'<br>$personne->noms_str : ';
-                // var_dump($personne->noms_str);
-                //  fin test 
             } 
         // } elseif(is_string($p)) {
         } else {
@@ -134,7 +129,7 @@ class CSVExport implements ExportInterface {
         }
     }
 
-    //  *** méthode à revoir : elle prend trop de ressources 
+    //  *** méthode add_date() à revoir : elle prend trop de ressources 
     private static function add_date(&$line, $relation) {
         
         $date = $relation->get_date();
@@ -201,10 +196,8 @@ class CSVExport implements ExportInterface {
 
         self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent); 
 
-        //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.'<br>$personne->noms_str : ';
-        // var_dump($personne->noms_str);
-        //  fin test 
+        //  ==> on récupère seulement les noms et prénoms, pour ensuite aller les chercher via select("relation")
+        //  on devrait pouvoir faire plus simple 
 
         // faire un Database->get_relations() comme get_personnes ? 
         $results = $mysqli->select("relation", ["*"]);
