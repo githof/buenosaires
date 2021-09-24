@@ -34,13 +34,13 @@ class Personne extends DatabaseEntity {
         global $personne;
 
         $this->id = $id;
-        $this->prenoms = [];
+        $this->prenoms array();
         $this->prenoms_str = "";
-        $this->noms = [];
+        $this->noms array();
         $this->noms_str = "";
-        $this->conditions = [];
-        $this->relations = [];
-        $this->relations_by_type = [];
+        $this->conditions array();
+        $this->relations array();
+        $this->relations_by_type array();
         $this->pere = NULL;
         $this->mere = NULL;
         $this->is_updated_in_db = FALSE;
@@ -125,13 +125,13 @@ class Personne extends DatabaseEntity {
 	// Pour le moment je vais appeler systématiquement cette
 	// fonction à chaque requête de liste de relations
     private function dispatch_relations_by_type() {
-        $mariage = [];
-        $parents = [];
-        $enfants = [];
-        $a_temoins = [];
-        $est_temoin = [];
-        $a_parrains = [];
-        $est_parrain = [];
+        $mariage = array();
+        $parents = array();
+        $enfants = array();
+        $a_temoins = array();
+        $est_temoin = array();
+        $a_parrains = array();
+        $est_parrain = array();
 
         foreach($this->relations as $relation) {
             $is_source = ($this->id == $relation->personne_source->id);
