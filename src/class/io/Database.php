@@ -33,14 +33,12 @@
       /*  Warning: count(): Parameter must be an array or an object 
           that implements Countable 
           $columns est un string 
-      ***/
-      //  *** tests-dispatch-database  
-    //   echo '<br>'.__METHOD__.' $columns : ';
-    //   var_dump($columns);
-      //    ==> $columns : string(1) "*" 
-      //    Alors qu'un tableau est envoyé : Database::from_db_by_id() 
-      //  fin test 
-
+      echo '<br>'.__METHOD__.' $columns : ';
+      var_dump($columns);
+         ==> $columns : string(1) "*" 
+         Alors qu'un tableau est envoyé : Database::from_db_by_id() 
+       fin test 
+      */
       for($i = 0; $i < count([$columns]); $i++){
           $s .= $columns[$i];
           if($i < count($columns) -1)
@@ -70,13 +68,13 @@
         //  il faut exclure la colonne qui stocke l'id
         //  pour les tables qui ont l'auto_increment
 
-        //  insérer un enregistrement sans données (1 seule colonne qui a AI) :
+        //  Pour insérer un enregistrement sans données (1 seule colonne qui a AI, tapble `personne` par exemple) :
         //  insert into personne (`id`) values (null);
         foreach($values as $key => $value){
         
             $keys .= $key;
             
-            //  pour utilisateur
+            //  pour `utilisateur`
             if(strcmp($value, "now()") == 0)
                 $vals .= $value;
             //  *** pour toutes les autres tables : 
@@ -150,11 +148,12 @@
     }
 
     //  Warning: Declaration of Database::query($requete) should be compatible with mysqli::query($query, $resultmode = NULL)
-    //  Depuis PHP7 il faut préciser quelle utilisation de $resultmode on va faire : MYSQLI_USE_RESULT ou MYSQLI_STORE_RESULT 
-    //  Avant $resultmode = MYSQLI_USE_RESULT était appliqué par défaut
-    //  mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
-
-    /*  J'ai mis MYSQLI_USE_RESULT, je sais pas si c'est le cas. A changer quand je saurai ***/
+    /*  Depuis PHP7 il faut préciser quelle utilisation de $resultmode on va faire : MYSQLI_USE_RESULT ou MYSQLI_STORE_RESULT 
+        Avant $resultmode = MYSQLI_USE_RESULT était appliqué par défaut
+        mysqli::query ( string $query [, int $resultmode = MYSQLI_STORE_RESULT ] )
+        J'ai mis MYSQLI_USE_RESULT, je sais pas si c'est le cas. 
+        A changer si on voit que c'est pas bon 
+    ***/
     public function query($requete, $resultmode = MYSQLI_USE_RESULT) {
         global $log;
 
@@ -162,7 +161,7 @@
         $m = microtime(TRUE);
         
         //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $requete : ';
+        // echo '<br>'.__METHOD__.'<br>$requete : ';
         // var_dump($requete);
         //  fin test 
 
@@ -190,14 +189,11 @@
     // faire
     // [ id => personne ]
     // public function get_personnes($get_relations_conditions = TRUE, $attr = TRUE) {
-    public function get_personnes($get_relations_conditions = TRUE, $attr, $no_accent) {
-        $personnes = [];
-        //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        // var_dump($no_accent);
-        // echo '<br>'.__METHOD__.'<br>$attr : ';
-        // var_dump($attr);
-        //  fin test 
+    public function get_personnes($get_relations_conditions = TRUE, 
+                                  $attr, 
+                                  $no_accent) {
+        $personnes = array();
+
         /*
             pas du tout optimal : je fais un premier select pour
             avoir la liste des ids, puis un select par id
@@ -209,16 +205,13 @@
             while($row = $results->fetch_assoc()){
                 $id = $row["id"];
                 $personne = new Personne($id);
-                // if($attr == TRUE)
-                //   $personne->from_db(FALSE, $get_relations_conditions);
-                // else 
-                //   $personne->from_db(FALSE, $get_relations_conditions, FALSE);
-                $personne->from_db(FALSE, $get_relations_conditions, $attr, $no_accent);
-
+                $personne->from_db(FALSE, 
+                                    $get_relations_conditions, 
+                                    $attr, 
+                                    $no_accent);
                 $personnes[$id] = $personne;
             }
         }
-
         return $personnes;
     }
 
@@ -239,7 +232,7 @@
     // }
 
     /*  (fix ok) 
-    Testé sans succès, mais j'ai avant de me casser la tête
+    Testé sans succès, mais avant de me casser la tête
     à savoir pourquoi, j'ai fait avec Acte->get_contenu
     */
     //  *** Corrigé  // 
@@ -254,60 +247,8 @@
       return $result->fetch_assoc()["contenu"];
     }
 
-    //  tous les cas de SELECT avant d'envoyer la requete INSERT 
-    // public function from_db($obj,
-    //   $update_obj = FALSE,
-    //   $get_relations_conditions = TRUE){
-    //   /*
-    //     De ce qu'il me semble, $update_obj sert à renseigner l'id
-    //     de $obj s'il ne l'est pas.
-    //     En tout cas il ne sert à pas à indiquer si on veut
-    //     modifier $obj :
-    //     en pratique $obj est toujours rempli par les fonctions
-    //     appelées ici.
-    //   */
-    //   global $log;
-
-    //   $log->d("from database: ".get_class($obj)." id=$obj->id");
-    //   $row = NULL;
-    //   //  *** tests-dispatch-database
-    // //   if(isset($obj->id)){
-    // //     $row = $this->from_db_by_id($obj);
-    //     /*  Déplacer les méthodes de from_db() qui son apparentées à des modèles en particulier, 
-    //       pour pas avoir à tester si $obj est une personne par ex
-    //       Test export personnes  
-    //       Test detail_personne et detail_acte 
-    //       Test import acte 
-    //       Test export relations 
-    //       Test fusion et dissocier --> bloquées par cors *** 
-    //     */
-    //     // if($obj instanceof Personne){
-    //     //   $this->from_db_personne_noms_prenoms($obj);
-    //     //   if($get_relations_conditions){
-    //     //     $this->from_db_personne_relations($obj);
-    //     //     $this->from_db_personne_conditions($obj);
-    //     //   }
-    //     // } else 
-    //     // if($obj instanceof Acte && $get_relations_conditions){
-    //     //   $this->from_db_acte_conditions($obj);
-    //     //   $this->from_db_acte_relations($obj);
-    //     // }
-    //   // }else{ 
-    //     // Pour import d'actes 
-    //     //  *** tests-dispatch-database 
-    //     // if($obj instanceof Personne)
-    //     //   $row = $this->from_db_by_same_personne($obj);
-    //     // else
-    //       // $row = $this->from_db_by_same($obj);
-    //   // }
-
-    //   if($update_obj)
-    //     $obj->result_from_db($row);
-    //   return $row;
-    // }
 
     //  PRIVATE METHODS   //
-
 
     //  SELECT by id 
     // return NULL si rien trouvé
@@ -327,6 +268,7 @@
 
 
     //  SELECT by value 
+    //  mis en public en déplaçant from_db() dans DatabaseEntity 
     // private function from_db_by_same($obj){
     public function from_db_by_same($obj){
       $row = NULL;
@@ -358,23 +300,11 @@
       return $row;
     }
 
-    //  *** tests-dispatch-database
-
     //  *** rewrite-noms-export
-    //  test $attr = FALSE 
-    //  SELECT personne by nom ou prenom 
-    // private function from_db_personne_noms_prenoms($personne)'{'
-    // public function from_db_personne_noms_prenoms($personne){ 
-    // public function from_db_personne_noms_prenoms($personne, $attr = FALSE){ 
     public function from_db_personne_noms_prenoms($personne, $attr, $no_accent){ 
 
-        // //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>$attr : ';
-        // var_dump($attr);    //  
-        // echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        // var_dump($no_accent);    //  
-        // //  fin test 
-
+      //  *** $no_accent est le param de add_prenom() pour indiquer 
+      //  si on veut les accents ou pas. C'est != de $row["no_accent"]'  
       $result = $this->query("
         SELECT prenom.id AS p_id, prenom, no_accent
         FROM prenom_personne INNER JOIN prenom
@@ -384,9 +314,6 @@
       );  
       if($result != FALSE && $result->num_rows > 0){
         while($row = $result->fetch_assoc())
-          // $personne->add_prenom(new Prenom($row["p_id"], 
-          //                                 $row["prenom"], 
-          //                                 $row["no_accent"])); 
           $personne->add_prenom(new Prenom($row["p_id"], 
                                           $row["prenom"], 
                                           $row["no_accent"]), 
@@ -411,11 +338,6 @@
                               $no_accent); 
         }
       } 
-
-      // //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>$personne : ';
-        // var_dump($personne);    //  
-        // //  fin test 
     }
     
     //  *** tests-has-memory 
@@ -424,7 +346,6 @@
     on crée une new Personne($id) (has_memory()) pour récupérer les infos de la pers_destination, 
     from_db_personne_relations() crée une nouvelle personne pour la pers_destination.
     */
-    //  *** tests-dispatch-database
     //  SELECT relations by personne 
     // private function from_db_personne_relations($personne){
     public function from_db_personne_relations($personne){
@@ -472,8 +393,7 @@
       }
     }
 
-    //  *** tests-dispatch-database
-    //  SELECT acte_has_condition conditions by acte  
+    //  SELECT acte_has_condition conditions == acte  
     // private function from_db_acte_conditions($acte){
     public function from_db_acte_conditions($acte){
       $result = $this->query("
@@ -498,7 +418,7 @@
     }
 
     //  *** tests-dispatch-database
-    //  SELECT acte_has_relation relations by acte 
+    //  SELECT acte_has_relation relations == acte 
     // private function from_db_acte_relations($acte){
     public function from_db_acte_relations($acte){
       $result = $this->query("
@@ -543,7 +463,8 @@
     //  *** tests-dispatch-database 
     //  new Acte() manque pour CSVExport.php 
     //  corrigé dans Relation->get_date() 
-    //  SELECT  actes by relation 
+    //  ==> causé problème ou il y était avant ? 
+    //  SELECT actes by relation 
     public function from_db_relation_list_actes($relation){
       $result = $this->select(
         "acte_has_relation",
@@ -560,9 +481,10 @@
     //  PRIVATE METHODS   //
 
     //  SELECT personne by nom + prenom  
-    //  Pour l'instant : retourne les ids des personnes prénoms+noms identiques
+    //  Si prenom seul ou prénom + nom identiques : 
+    //  retourne les ids des personnes prénoms+noms identiques
     //  pour alerte dans log.txt via from_db()
-    //  mais crée une nouvelle personne 
+    //  et crée une nouvelle personne 
     // private function from_db_by_same_personne($personne){
     public function from_db_by_same_personne($personne){
         $ids = NULL;
@@ -578,11 +500,11 @@
             if($result === FALSE || $result->num_rows == 0)
                 return FALSE;
 
-            $ids_tmp = [];
+            $ids_tmp = array();
             while($row = $result->fetch_assoc())
                 $ids_tmp[] = $row["personne_id"];   
 
-            //  ==> pourquoi cette condition ? $ids est toujours NULL, 
+            //  *** pourquoi cette condition ? $ids est toujours NULL, 
             //  il n'a pas bougé depuis son init à NULL 
             if(isset($ids)) 
                 $ids = array_intersect($ids, $ids_tmp);
@@ -603,7 +525,7 @@
             if($result === FALSE || $result->num_rows == 0)
             return NULL;
 
-            $ids_tmp = [];
+            $ids_tmp = array();
             while($row = $result->fetch_assoc())
                 $ids_tmp[] = $row["personne_id"];
 
@@ -617,24 +539,14 @@
                 return NULL;
         } 
 
-        //  *** test sans-nom 
-        // if(isset($ids)){
-        //     //  *** array_shift($ids) retire le 1er mais du coup attribue l'id du 2è 
-        //     //  il faut ou créer une nouvelle personne et alerter via log.txt 
-
-        //     return ["id" => array_shift($ids)];     //  ==> remplacer array_shift ? 
-
-        // }
-        
-        // return NULL;
         //  retourne les ids des identiques pour l'alerte 
         return $ids;
     }
 
-    //  *** Cette méthode renvoie $values_obj 
+    //  *** passée en public par le déplacement de from_db() dans DatabaseEntity  
     // private function updated_values($values_db, $values_obj){
     public function updated_values($values_db, $values_obj){
-        $updated = [];
+        $updated = array();
 
         if($values_db == NULL)
             return $values_obj;
@@ -649,39 +561,11 @@
 
     //  PUBLIC  //
 
-    // public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
-    //     $result = FALSE;
-
-    //     if(!$force_insert && !$obj->pre_into_db())
-    //         return;
-
-    //     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db()
-    //     // if(!$skip_check_same) {
-    //     //     $values_db = $this->from_db($obj, FALSE, FALSE);
-    //     // }
-    //     if(isset($values_db["id"])) {
-    //         $obj->id = $values_db["id"];
-    //     }
-    //     $values_obj = $obj->values_into_db();
-    //     $values_updated = $this->updated_values($values_db, $values_obj);
-
-    //     if(isset($values_db, $obj->id))
-    //         $result = $this->into_db_update($obj, $values_updated);
-    //     else
-    //         $result = $this->into_db_insert($obj, $values_updated);
-
-    //     $obj->post_into_db();
-
-    //     if($result === FALSE)
-    //         return FALSE;
-        
-    //     return $obj->id;
-    // }
 
     //  PRIVATE METHODS   //
 
     //  *** ne sert que là, on peut pas la défactoriser ? 
-    //  Non : elle appelle get_table_name() de toutes les classes 
+    //  Non : elle appelle get_table_name() de toutes les classes' 
     //  et c'est préférable de n'avoir que des variables et méthodes dans into_db() 
     // private function into_db_update($obj, $values){
     public function into_db_update($obj, $values){
@@ -709,9 +593,8 @@
         return $result;
     }
 
-    //  PUBLIC  //
 
-
+    
     public function into_db_prenom_personne($personne, $prenom, $ordre){
 
         $values = [
@@ -758,22 +641,6 @@
             INSERT IGNORE `acte_has_condition` (acte_id, condition_id) VALUES ('$acte->id', '$condition->id')
         ");
     }
-
-    // //  *** tests-dispatch-database
-    // //  déplacé dans Personne  
-    // /*
-    // Supprime de la base les personnes de la liste qui n'apparaissent dans aucune table.
-    // Renvoie la liste des personnes supprimées.
-    // */
-    // public function purge_personnes($personnes) {
-    //     $removed = [];
-
-    //     foreach($personnes as $personne) {
-    //         if($personne->remove_from_db(FALSE))
-    //         $removed[] = $personne;
-    //     }
-    //     return $removed;
-    // }
 
     //  *** Appelée dans Acte::remove_from_db() 
     public function remove_unused_prenoms_noms(){

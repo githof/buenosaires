@@ -56,7 +56,7 @@ foreach($urls as $url => $infos){
         $url_parsed = $params;
         $url_parsed["include"] = $infos[0];
         $url_parsed["title"] = $infos[1];
-        break;  //  *** pourquoi break ? 
+        // break;  //  *** pourquoi break ? 
     }
 }
 

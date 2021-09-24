@@ -52,6 +52,7 @@
 
         // DATABASE IO
 
+        //  *** implémentée dans DatabaseEntity 
         // public function get_table_name(){
         //     return "condition";
         // }
@@ -82,6 +83,7 @@
             ];
         }
 
+        //  *** implémentées dans DatabaseEntity 
         // public function pre_into_db(){
         //     return TRUE;
         // }

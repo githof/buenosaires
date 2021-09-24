@@ -26,7 +26,8 @@ isset($_POST["raw_xml"], $_POST["source_id"])){
 $post_id = $url_parsed["id"];
 
 $page_title = "Acte {$url_parsed["id"]}";
-$acte = new Acte($url_parsed["id"]);    //  *** création objet new Acte() (pas de redondance ici) 
+//  *** création objet new Acte() (pas de redondance ici) 
+$acte = new Acte($url_parsed["id"]);    
 
 
 //  *** pour boutons d'actions 
@@ -59,20 +60,20 @@ function html_actions_acte($page) {
 }
 
 // //  *** pour aligner boutons d'actions (déplacé dans html_entities.php) 
-// function html_div_actions($contents) {
-//     return '<div class="detail_options">'
-//         . $contents . 
-//     '</div>';
-// }
+/* function html_div_actions($contents) {
+     return '<div class="detail_options">'
+         . $contents . 
+     '</div>';
+}
+*/
 
-//  *** pour affichage section contenu balisé 
+//  *** pour affichage section contenu  
 function html_affichage_contenu_balise() {
     global $acte; 
     $html =
     '<section>
         <h4>CONTENU BALISÉ'
         . html_button('', 'btn-section-title', 'id="btn-copy-xml"', 'Copier XML') 
-        // <button class="btn-section-title" id="btn-copy-xml">Copier XML</button>' 
             . html_actions_acte('fusion') . 
         '</h4>
         <div>
@@ -91,16 +92,17 @@ function html_affichage_contenu_balise() {
 }
 
 //  *** pour affichage sections (déplacé dans html_entities.php) 
-// function html_section($title, $id, $contents) {
-//     $html =
-//         '<section>
-//             <h4>'.$title.'</h4>
-//             <div id="'.$id.'">'
-//                 . $contents . 
-//             '</div>
-//         </section>'; 
-//     return $html; 
-// }
+/* function html_section($title, $id, $contents) {
+     $html =
+         '<section>
+             <h4>'.$title.'</h4>
+             <div id="'.$id.'">'
+                 . $contents . 
+             '</div>
+         </section>'; 
+     return $html; 
+}
+*/
 
 //  *** appel à la méthode XMLExport::export // 
 function appel_export_acte($class, $method, $acte_id) { 
@@ -111,11 +113,12 @@ function appel_export_acte($class, $method, $acte_id) {
 function html_affichage_acte() {
     global $acte, $ARGS, $url_parsed;
 
-    /* Signature  : public function from_db(
-        $update_obj = FALSE,
-        $get_relations_conditions = TRUE, 
-        $attr,
-        $no_accent) 
+    /* Signature  : 
+        public function from_db(
+            $update_obj = FALSE,
+            $get_relations_conditions = TRUE, 
+            $attr = TRUE,
+            $no_accent = FALSE) 
     */
     $result = $acte->from_db(TRUE, TRUE, TRUE, FALSE); 
 
@@ -127,8 +130,6 @@ function html_affichage_acte() {
     }else{
         if(isset($ARGS["export"])){
             if($ARGS["export"] == "xml"){
-                // $export = new XMLExport([$acte->id]);
-                // $export->export();
                 echo appel_export_acte('XMLExport', 'export', $acte->id);
             }else if($ARGS["export"] == "gdf"){
 

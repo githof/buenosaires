@@ -20,7 +20,7 @@ class Relation extends DatabaseEntity {
         $this->set_personne_source($personne_source);
         $this->set_personne_destination($personne_destination);
         $this->set_statut_id($statut_id);
-        $this->actes = [];
+        $this->actes = array();
     }
 
     public function set_personne_source($personne_source){
@@ -57,7 +57,8 @@ class Relation extends DatabaseEntity {
     
     //  *** bug-csvexport
     //  ajouté création new Acte() 
-    //  méthode appelée nulle part ailleurs : pas de bug à cause de ça . 
+    //  méthode appelée nulle part ailleurs : pas de bug à cause de ça 
+    //  ==> voir si ça joue pas sur la longueur de l'export des relations avec dates ? 
     public function get_date(){
         global $mysqli;
         
@@ -79,6 +80,7 @@ class Relation extends DatabaseEntity {
 
     // DATABASE IO
 
+    //  *** implémentée dans DatabaseEntity 
     // public function get_table_name(){
     //     return "relation";
     // }
@@ -113,11 +115,9 @@ class Relation extends DatabaseEntity {
         global $mysqli;
 
         if(!$this->personne_source->is_updated_in_db)
-            // $mysqli->into_db($this->personne_source);
             $this->into_db($this->personne_source);
 
         if(!$this->personne_destination->is_updated_in_db)
-            // $mysqli->into_db($this->personne_destination);
             $this->into_db($this->personne_destination);
 
         if(!$this->personne_source->is_valid() ||
@@ -127,6 +127,7 @@ class Relation extends DatabaseEntity {
         return TRUE;
     }
 
+    //  *** implémentée dans DatabaseEntity 
     // public function post_into_db(){
     //     global $mysqli;
 

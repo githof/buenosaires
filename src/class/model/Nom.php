@@ -36,38 +36,25 @@
         }
 
         //  *** rewrite-noms-export
-        //  test sans "de" : $attr pour $attribut 
-        //  test sans_accents : $no_accent = true pour prendre le nom sans les accents 
-        // public function to_string($no_accent = FALSE, $attr = FALSE){
-        public function to_string($attr, $no_accent){ //    true, false 
-
-            //  *** rewrite-noms-export 
-            // echo '<br>'.__METHOD__.' $attr : ';
-            // var_dump($attr);
-            // echo '<br>'.__METHOD__.' $no_accent : ';
-            // var_dump($no_accent);    //  
-            //  fin test
-
+        //  $attr pour $attribut ("de")
+        //  $no_accent pour prendre le nom sans les accents 
+        public function to_string($attr, $no_accent){ 
             $nom = $no_accent ? $this->no_accent : $this->nom;  
-            // $attr = "";
-            // if(isset($this->attribut))
-            // if(isset($this->attribut, $attr) && $attr == true)
-            //     $attr = $this->attribut . " ";
             if(isset($this->attribut)) {
                 if(isset($attr) && $attr == true)
                     $attr = $this->attribut . ' ';
                 else 
                     $attr = null;
-            } else {    //  !isset($this->attribut) 
+            } else {    
                 $attr = null;
             }
-
             return $attr . $nom;
         }
 
 
         // DATABASE IO
 
+        //  *** implémentée dans DatabaseEntity 
         // public function get_table_name(){
         //     return "nom";
         // }
@@ -87,13 +74,14 @@
         }
 
         public function values_into_db(){
-            // $values = [];
+            $values = array();
 
             $values["nom"] = $this->nom;
             $values["no_accent"] = $this->no_accent;
             return $values;
         }
 
+        //  *** implémentées dans DatabaseEntity 
         // public function pre_into_db(){
         //     return TRUE;
         // }

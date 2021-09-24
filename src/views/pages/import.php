@@ -4,15 +4,16 @@ include_once(ROOT."src/class/io/XMLActeReader.php");
 include_once(ROOT."src/utils.php");
 include_once(ROOT."src/html_entities.php");
 
-
-// function html_form_group($contents)
-// {
-//   return '
-//     <div class="form-group">
-//       '."$contents".'
-//     </div>
-//   ';
-// }
+//  déplacée dans html_entities.php 
+/* function html_form_group($contents)
+ {
+   return '
+     <div class="form-group">
+       '."$contents".'
+     </div>
+   ';
+}
+*/
 
 function html_available_sources(){
     global $mysqli, $alert;
@@ -66,7 +67,7 @@ function html_check_ignore($file_or_text)
     return html_form_group("$input\n  $label");
 }
 
-//  ***  Remplacée par html_select_sources($file_or_text)   // 
+//  ***  Remplacée par html_select_source($file_or_text)   // 
 // function html_import_source($file_or_text) {
 
 //     return html_form_group('
@@ -113,7 +114,6 @@ if(isset($_POST["form_type"])){
     else
     {
         $receive_method = "receive_$file_or_text";
-        // $str_import = "import_$file_or_text";
         $str_import = ($receive_method == "receive_file") ? 
           "import_file" : 
           $_POST['import_text'];

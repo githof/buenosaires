@@ -44,12 +44,15 @@ function html_actions_personne($page) {
 function html_personne_name() {
     global $personne, $page_title; 
 
-    /*  signature : public function to_string($no_accent) */
+    /*  signature : 
+        public function to_string($no_accent) 
+    */
     $page_title = "";
     foreach($personne->prenoms as $prenom)
         $page_title .= $prenom->to_string(FALSE) . " ";
 
-    /*  public function to_string($attr, $no_accent) */ 
+    /*  signature : 
+        public function to_string($attr, $no_accent) */ 
     foreach($personne->noms as $nom)
         $page_title .= $nom->to_string(TRUE, FALSE) . " ";
 
@@ -72,13 +75,13 @@ function html_personne_name() {
 function html_affichage_personne() {
     global $personne, $access_pages; 
 
-    /* signature : public function from_db(
-        $update_obj = FALSE,
-        $get_relations_conditions = TRUE, 
-        $attr = TRUE,
-        $no_accent = FALSE);
+    /* signature : 
+        public function from_db(
+            $update_obj = FALSE,
+            $get_relations_conditions = TRUE, 
+            $attr = TRUE,
+            $no_accent = FALSE);
     */
-    // $result = $personne->from_db(FALSE, TRUE, TRUE, FALSE); 
     $result = $personne->from_db(); 
 
     if($result == NULL){
