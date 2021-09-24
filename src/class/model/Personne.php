@@ -34,13 +34,13 @@ class Personne extends DatabaseEntity {
         global $personne;
 
         $this->id = $id;
-        $this->prenoms array();
+        $this->prenoms = array();
         $this->prenoms_str = "";
-        $this->noms array();
+        $this->noms = array();
         $this->noms_str = "";
-        $this->conditions array();
-        $this->relations array();
-        $this->relations_by_type array();
+        $this->conditions = array();
+        $this->relations = array();
+        $this->relations_by_type = array();
         $this->pere = NULL;
         $this->mere = NULL;
         $this->is_updated_in_db = FALSE;
