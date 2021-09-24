@@ -9,15 +9,11 @@
         public function pre_into_db();
         public function post_into_db();
         
-        // public function from_db(
-        //     $update_obj = TRUE,
-        //     $get_relations_conditions = TRUE, 
-        //     $attr);
+        //  Méthode "guichet" qui traite tous les cas de SELECT 
+        //  implémentée dans DatabaseEntity 
         public function from_db(
             $update_obj = TRUE,
             $get_relations_conditions = TRUE, 
-            // $attr,
-            // $no_accent);
             $attr = TRUE,
             $no_accent = FALSE);
     }

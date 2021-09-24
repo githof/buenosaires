@@ -32,24 +32,17 @@ class Prenom extends DatabaseEntity {
         $this->prenom = $default;
         $this->no_accent = $no_accent;
     }
+
     //  *** rewrite-noms-export 
-    //  test export sans accents 
-    //  public function to_string($no_accent = FALSE){ 
+    //  export sans accents 
     public function to_string($no_accent){ 
-
-        //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>$attr : ';
-        // var_dump($attr);    //  
-        // echo '<br>'.__METHOD__.'<br>$no_accent : ';
-        // var_dump($no_accent);    //  
-        //  fin test
-
         return $no_accent ? $this->no_accent : $this->prenom; 
     }
 
 
     // DATABASE IO
 
+    //  *** implémentée dans DatabaseEntity 
     // public function get_table_name(){
     //     return "prenom";
     // }
@@ -74,6 +67,7 @@ class Prenom extends DatabaseEntity {
         ];
     }
 
+    //  *** implémentées dans DatabaseEntity 
     // public function pre_into_db(){
     //     return TRUE;
     // }

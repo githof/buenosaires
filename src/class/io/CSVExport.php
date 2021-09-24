@@ -1,9 +1,10 @@
 <?php
 
+//  *** ExportInterface sert à attribuer une entête d'export et un nom au fichier exporté 
 include_once(ROOT."src/class/io/ExportInterface.php");
 include_once(ROOT."src/class/model/Acte.php");
 
-//  *** implode() remplace cette fct  // 
+//  *** implode() remplace la fct array_to_string()  // 
 /*  function array_to_string($array, $separator){
     $str = "";
     $i = 0;
@@ -51,41 +52,16 @@ class CSVExport implements ExportInterface {
     //  PRIVATE METHODS //
 
     // *** fputcsv remplace la fct export_line()  // 
-    /* private static function export_line($line) {
-
-        // //  *** Pour fractionnement des fichiers à chaque ms :
-        //  crée un nouveau fichier avec le nom de la ms courante 
-        self::$out = fopen(ROOT.'exports/export_'.time().'.csv', 'a');
-
-        $first = TRUE;
-
-        foreach($line as $field) {
-            if($first)
-                $first = FALSE;
-            else
-                echo self::$CSV_SEPARATOR;
-
-            echo $field;
-        }
-        echo PHP_EOL;
-
-        fputcsv(self::$out, $line);
-    }
-    */
-
+    
 
     //  PUBLIC //
 
     //  *** rewrite-noms-export
-    //  no_accent
-    // public static function export_personnes($no_accent = TRUE, $attr = FALSE){ //   $no_accent 
-    public static function export_personnes($attr, $no_accent){ //   $no_accent 
+    public static function export_personnes($attr, $no_accent){ 
         global $mysqli;
 
-        // self::entete();
         self::attr_nom_fichier('personnes');
 
-        // self::export_line(array("id","noms","prenoms"));
         fputcsv(self::$out, array("id","noms","prenoms"));
 
         $personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);
@@ -99,18 +75,15 @@ class CSVExport implements ExportInterface {
             */
             $prenoms = [];
             foreach($personne->prenoms as $prenom)
-                // $prenoms[] = $prenom->to_string();
                 $prenoms[] = $prenom->to_string($no_accent); 
 
             $noms = [];
             foreach($personne->noms as $nom)
-                // $noms[] = $nom->to_string(); 
                 $noms[] = $nom->to_string($attr, $no_accent);
 
             $prenoms = implode(' ', $prenoms);
             $noms = implode(' ', $noms);
 
-            // self::export_line(array($id, $noms, $prenoms));
             fputcsv(self::$out, array($id, $noms, $prenoms));
         }
 
@@ -134,6 +107,7 @@ class CSVExport implements ExportInterface {
 
     private static function add_personne_to_line(&$line, $p, $names) {
 
+        //  *** utiliser autre chose que gettype() ou instanceof() 
         // if($p instanceof Personne) {
         if(gettype($p) != 'string') {
             $line[] = $p->id;
@@ -143,10 +117,6 @@ class CSVExport implements ExportInterface {
 
                 $line[] = $personne->prenoms_str;
                 $line[] = $personne->noms_str;
-
-                // echo '<br>'.__METHOD__;
-                // echo '<br>$personne->noms_str : ';
-                // var_dump($personne->noms_str);
             } 
         // } elseif(is_string($p)) {
         } else {
@@ -159,55 +129,61 @@ class CSVExport implements ExportInterface {
         }
     }
 
-    //  *** méthode à revoir : elle prend trop de ressources 
+    //  *** méthode add_date() à revoir : elle prend trop de ressources 
     private static function add_date(&$line, $relation) {
-        //  *** tests-dispatch-database 
-        // echo '<br>'.__METHOD__.' $relation : ';
-        // var_dump($relation);
-        //  fin test 
+        
         $date = $relation->get_date();
         $line[] = "$date";
     }
 
-    private static function export_relation($relation, $names, $dates, $reverse, $attr, $no_accent) { 
-        $line = [];
+
+    private static function export_relation($relation, 
+                                            $names, 
+                                            $dates, 
+                                            $reverse, 
+                                            $attr, 
+                                            $no_accent) { 
+        $line = array();
         $line[] = $reverse ? -$relation->id : $relation->id;  
 
             if($reverse){
                 self::add_personne_to_line($line,
-                    $relation->personne_destination,
-                    $names);
+                                            $relation->personne_destination,
+                                            $names);
                 self::add_personne_to_line($line,
-                    $relation->personne_source,
-                    $names);
+                                            $relation->personne_source,
+                                            $names);
             } else {
                 self::add_personne_to_line($line,
-                    $relation->personne_source,
-                    $names);
+                                            $relation->personne_source,
+                                            $names);
                 self::add_personne_to_line($line,
-                    $relation->personne_destination,
-                    $names);
+                                            $relation->personne_destination,
+                                            $names);
             }
             $line[] = $relation->get_statut_name();
             if($dates)
                 self::add_date($line, $relation);
 
-            // self::export_line($line);
             fputcsv(self::$out, $line);
     }
 
 
     //  PUBLIC  //
 
-    public static function export_relations($names, $dates, $deux_sens, $attr, $no_accent) {  // $names = TRUE, $dates = TRUE, $deux_sens = TRUE
+    public static function export_relations($names, 
+                                            $dates, 
+                                            $deux_sens, 
+                                            $attr, 
+                                            $no_accent) { 
         global $mysqli, $line; 
 
         self::attr_nom_fichier('relations');
 
-        //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier (à voir ?) *** // 
+        //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier *** // 
         // self::entete();
 
-        $line = [];
+        $line = array();
         $line[] = "id";
 
         self::add_personne_to_line($line, "src", $names);
@@ -216,24 +192,19 @@ class CSVExport implements ExportInterface {
         if($dates)
             $line[] = "date";
 
-        // self::export_line($line);
         fputcsv(self::$out, $line);
 
-        // self::$personnes = $mysqli->get_personnes(FALSE);
-        self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);    //  , FALSE, TRUE);  //
+        self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent); 
 
-        // faire un Database->get_relations() comme get_personnes 
+        //  ==> on récupère seulement les noms et prénoms, pour ensuite aller les chercher via select("relation")
+        //  on devrait pouvoir faire plus simple 
+
+        // faire un Database->get_relations() comme get_personnes ? 
         $results = $mysqli->select("relation", ["*"]);
         if($results != FALSE && $results->num_rows){ 
             while($row = $results->fetch_assoc()){
                 $relation = new Relation();
                 $relation->result_from_db($row);
-
-                //  *** test export 
-                // echo '<br>'.__METHOD__.' $relation->id == 1 : ';
-                // if($relation->id == '1') 
-                //     var_dump($relation);
-                //  fin test 
 
                 //  *** par défaut relations dans les 2 sens 
                 if(!$deux_sens) {
@@ -241,24 +212,24 @@ class CSVExport implements ExportInterface {
                         $relation, 
                         $names, 
                         $dates, 
-                        FALSE,
+                        FALSE,      //   !reverse 
                         $attr, 
-                        $no_accent);     //   !reverse 
+                        $no_accent);     
                 } else {
                     self::export_relation(
                         $relation, 
                         $names, 
                         $dates, 
-                        FALSE,
+                        FALSE,     //   !reverse 
                         $attr, 
-                        $no_accent);     //   !reverse 
+                        $no_accent);
                     self::export_relation(
                         $relation, 
                         $names, 
                         $dates, 
-                        TRUE,
+                        TRUE,       //  reverse 
                         $attr, 
-                        $no_accent);      //  reverse 
+                        $no_accent);      
                 }
             }
         }
@@ -302,11 +273,8 @@ class CSVExport implements ExportInterface {
             }
         }
         $object .= ($no_accent==FALSE) ? '-avec-accents' : '-sans-accent';
-        // self::entete('relations');
         self::entete($object);
-    }
-
-    
+    }   
 }
 
 

@@ -34,24 +34,22 @@ class Personne extends DatabaseEntity {
         global $personne;
 
         $this->id = $id;
-        $this->prenoms = [];
+        $this->prenoms array();
         $this->prenoms_str = "";
-        $this->noms = [];
+        $this->noms array();
         $this->noms_str = "";
-        $this->conditions = [];
-        $this->relations = [];
-        $this->relations_by_type = [];
+        $this->conditions array();
+        $this->relations array();
+        $this->relations_by_type array();
         $this->pere = NULL;
         $this->mere = NULL;
         $this->is_updated_in_db = FALSE;
     }
 
     public function add_prenom_str($s){
-        // $this->add_prenom(new Prenom(NULL, $s));
         $this->add_prenom(new Prenom(NULL, $s), FALSE);
     }
 
-    // public function add_prenom($prenom){
     public function add_prenom($prenom, $no_accent){
         foreach($this->prenoms as $_prenom){
             if((isset($_prenom->id, $prenom->id)
@@ -61,18 +59,15 @@ class Personne extends DatabaseEntity {
         }
         $this->prenoms[] = $prenom;
         $str = $this->prenoms_str;
-        // $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string();
         $this->prenoms_str = ($str == "" ? "" : $str . " ") . $prenom->to_string($no_accent); 
     }
 
     public function add_nom_str($s, $attributes){
-        // $this->add_nom(new Nom(NULL, $s, NULL, $attributes));
         $this->add_nom(new Nom(NULL, $s, NULL, $attributes), TRUE, FALSE);
     }
 
     //  *** rewrite-noms-export
-    //  test sans "de" : $attr pour $attribut 
-    // public function add_nom($nom, $attr = FALSE){
+    //  sans "de" : $attr pour $attribut 
     public function add_nom($nom, $attr, $no_accent){
         foreach($this->noms as $_nom){
             if((isset($_nom->id, $nom->id)
@@ -85,7 +80,6 @@ class Personne extends DatabaseEntity {
                         $_nom->attribut = $nom->attribut;
                     }
                 }
-                // return;
             }
         }
         $this->noms[] = $nom;
@@ -131,13 +125,13 @@ class Personne extends DatabaseEntity {
 	// Pour le moment je vais appeler systématiquement cette
 	// fonction à chaque requête de liste de relations
     private function dispatch_relations_by_type() {
-        $mariage = [];
-        $parents = [];
-        $enfants = [];
-        $a_temoins = [];
-        $est_temoin = [];
-        $a_parrains = [];
-        $est_parrain = [];
+        $mariage = array();
+        $parents = array();
+        $enfants = array();
+        $a_temoins = array();
+        $est_temoin = array();
+        $a_parrains = array();
+        $est_parrain = array();
 
         foreach($this->relations as $relation) {
             $is_source = ($this->id == $relation->personne_source->id);
@@ -192,47 +186,21 @@ class Personne extends DatabaseEntity {
     }
 
     //  *** rewrite-noms-export
-    //  test noms sans "de" 
-    //  test noms et prénoms sans accent 
-    // public function from_db(
-    //         $update_obj = FALSE,
-    //         $get_relations_conditions = TRUE, 
-    //         $attr = TRUE)
     public function from_db(
         $update_obj = FALSE,
         $get_relations_conditions = TRUE, 
-        // $attr, 
-        // $no_accent)
         $attr = TRUE,
         $no_accent = FALSE)
     {
-        global $log, $mysqli; 
-        // //  *** rewrite-noms-export 
-        // echo '<br>'.__METHOD__.'<br>attr : ';
-        // var_dump($attr);    //  
-        // echo '<br>'.__METHOD__.'<br>no_accent : ';
-        // var_dump($no_accent);    //  
-        // //  fin test 
+        global $log, $mysqli, $post_id; 
         if(isset($this->id)) {
-            // $row = parent::from_db($update_obj,
             $row = parent::from_db($update_obj,
                 $get_relations_conditions,
                 $attr,
                 $no_accent);
-            // //  *** rewrite-noms-export 
-            // echo '<br>'.__METHOD__.'<br>attr : ';
-            // var_dump($attr);    //  
-            // echo '<br>'.__METHOD__.'<br>no_accent : ';
-            // var_dump($no_accent);    //  
-            // //  fin test 
-            //     $get_relations_conditions);
-            // $mysqli->from_db_personne_noms_prenoms($this);
-            // if($attr == TRUE)
-            //     $mysqli->from_db_personne_noms_prenoms($this, TRUE);
-            // else 
-            //     $mysqli->from_db_personne_noms_prenoms($this, FALSE);
             $mysqli->from_db_personne_noms_prenoms($this, $attr, $no_accent);
-            if($get_relations_conditions){  //  *** && ($this->id == $post_id) 
+
+            if(($get_relations_conditions) && ($this->id == $post_id)){    // 
                 $mysqli->from_db_personne_relations($this);
                 $mysqli->from_db_personne_conditions($this);
             }
@@ -242,39 +210,10 @@ class Personne extends DatabaseEntity {
         return $row;
     }
 
-    // public function into_db($obj, $force_insert = FALSE, $skip_check_same = FALSE) {
-    //     global $mysqli;
-    //     $result = FALSE;
-
-    //     if(!$force_insert && !$obj->pre_into_db())
-    //         return;
-
-    //     //  *** Tester si $obj == quelle classe, pour appeler le bon from_db()
-    //     if(!$skip_check_same) {
-    //         $values_db = $personne->from_db($obj, FALSE, FALSE);
-    //     }
-    //     if(isset($values_db["id"])) {
-    //         $obj->id = $values_db["id"];
-    //     }
-    //     $values_obj = $obj->values_into_db();
-    //     $values_updated = $mysqli->updated_values($values_db, $values_obj);
-
-    //     if(isset($values_db, $obj->id))
-    //         $result = $this->into_db_update($obj, $values_updated);
-    //     else
-    //         $result = $this->into_db_insert($obj, $values_updated);
-
-    //     $obj->post_into_db();
-
-    //     if($result === FALSE)
-    //         return FALSE;
-        
-    //     return $obj->id;
-    // }
-
     
     // DATABASE IO
 
+    //  *** implémentées dans DatabaseEntity 
     // public function get_table_name(){
     //     return "personne";
     // }
@@ -289,6 +228,7 @@ class Personne extends DatabaseEntity {
         $this->id = $row["id"];
     }
 
+    //  *** implémentée dans DatabaseEntity 
     // public function values_into_db(){
     //     return [];
     // }
@@ -300,12 +240,10 @@ class Personne extends DatabaseEntity {
             return FALSE;
 
         foreach($this->prenoms as $prenom){
-            // $mysqli->into_db($prenom);
             $this->into_db($prenom);
         }
 
         foreach($this->noms as $nom){
-            // $mysqli->into_db($nom);
             $this->into_db($nom);
         }
 
@@ -322,9 +260,12 @@ class Personne extends DatabaseEntity {
 
         $this->is_updated_in_db = TRUE;
         
-        /* *** Je comprends pas pourquoi on supprime la personne avant de l'enregistrer (pour nom et prenom).
-          Avant mes modifs sur la branche "fix-bug-sans-nom", c'est ce qui remplaçait les mêmes prénoms par la nouvelle personne. 
-          De toute façon c'est toujours risqué de faire ça, au minimum il faut faire des vérifs sûres avant.  
+        /* *** Je comprends pas pourquoi on supprime la personne avant de l'enregistrer 
+            (pour nom et prenom).
+          Avant mes modifs sur la branche "fix-bug-sans-nom", c'est ce qui remplaçait les mêmes 
+          prénoms par la nouvelle personne. 
+          De toute façon c'est toujours risqué de faire ça, au minimum il faut faire des vérifs 
+          sûres avant.  
         */
         $mysqli->start_transaction();
         $i = 1;
@@ -343,11 +284,9 @@ class Personne extends DatabaseEntity {
         $mysqli->end_transaction();
 
         foreach($this->relations as $relation)
-            // $mysqli->into_db($relation);
             $this->into_db($relation);
 
         foreach($this->conditions as $condition)
-            // $mysqli->into_db($condition);
             $this->into_db($condition);
 
         if(isset($this->xml)){
@@ -396,9 +335,6 @@ class Personne extends DatabaseEntity {
 
     //  PUBLIC  //
 
-    //  *** tests-dispatch-database
-    //  ajouté purge_personne() à $acte->remove_from_db()
-    //  à la place de $personne->remove_from_db() 
     public function remove_from_db($anyway = FALSE) {
         global $mysqli;
         
@@ -421,7 +357,9 @@ class Personne extends DatabaseEntity {
             $mysqli->delete($table, "personne_id=$this->id");
         } 
         //  *** test-personne-suppr 
-        //  Impossible à supprimer de cette façon, il faut d'abord supprimer acte_condition/acte_relation 
+        /*  Impossible à supprimer de cette façon, il faut d'abord supprimer 
+            acte_condition/acte_relation 
+        */
         foreach(['condition', 'relation'] as $field) {
             $table = $field;
             $mysqli->delete($table, "personne_id=$this->id");
@@ -441,20 +379,13 @@ class Personne extends DatabaseEntity {
     public function purge_personnes($personne) {
         global $mysqli; 
 
-        $removed = [];
+        $removed = array();
 
         if($personne->remove_from_db(TRUE))
             $removed[] = $personne;
 
         return $removed;
     }
-
-	/*
-	  Import from db is in src/io/IO/Database.php from_db()
-	  (which is ugly i know)
-	 */
-    //  *** Commentaire périmé non ? 
-
 }
 
 ?>

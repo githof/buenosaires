@@ -5,6 +5,7 @@ abstract class DatabaseEntity implements DatabaseIO {
 
   //  DATABASEIO  
 
+  //  Récupérer le nom de la classe pour les requêtes sql 
   public function get_table_name(){
     return strtolower(get_class($this));
   }
@@ -16,11 +17,7 @@ abstract class DatabaseEntity implements DatabaseIO {
   }
 
   //  *** Pas d'implémentation commune 
-  // public function result_from_db($row){
-  //   if($row == NULL) {
-  //     return;
-  //   }
-  // }
+  // public function result_from_db($row)
 
   //  *** Implémentation minimale pour Personne, 
   // ajout de propriétés dans les autres classes 
@@ -42,16 +39,10 @@ abstract class DatabaseEntity implements DatabaseIO {
     }
   }
 
-
-  //  public function from_db(
-  //       $update_obj = TRUE,
-  //       $get_relations_conditions = TRUE, 
-  //       $attr = TRUE)
+  //  tous les cas de SELECT 
   public function from_db(
   $update_obj = TRUE,
   $get_relations_conditions = TRUE, 
-  // $attr,
-  // $no_accent)
   $attr = TRUE,
   $no_accent = FALSE)
   {
@@ -89,9 +80,7 @@ abstract class DatabaseEntity implements DatabaseIO {
     if(!$force_insert && !$obj->pre_into_db())
         return;
 
-    //  *** Tester si $obj == quelle classe, pour appeler le bon from_db() 
     if(!$skip_check_same) {
-        // $values_db = $mysqli->from_db($obj, FALSE, FALSE);
         $values_db = $obj->from_db(FALSE, FALSE, TRUE, FALSE);
     }
     
@@ -115,10 +104,7 @@ abstract class DatabaseEntity implements DatabaseIO {
     
     return $obj->id;
   }
-
 }
-
-
 
 
 ?>

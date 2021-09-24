@@ -4,35 +4,20 @@ include_once(ROOT."src/class/io/XMLExport.php");
 include_once(ROOT."src/class/io/CSVExport.php");
 //  *** Pour fonctions d'affichage :
 include_once(ROOT."src/html_entities.php");
-//  *** Pour fonction d'export :
+//  *** Pour fonctions d'export :
 include_once(ROOT."src/utils.php");
-
-/*
-    TODO :
-    passer en POST pour pouvoir ajouter des options en checkbox
-    (par ex. pour l'export des relations : avec ou sans les noms, avec
-    ou sans la date)
-    Voir comment c'est fait dans import avec import_file_only_new par ex.
-*/
-//  *** Est-ce qu'on met une option pour fractionner les exports ? (les 100 premiers, ou de XX à XX pour les id...) 
-//  on verra comment on gère ça mais oui 
-
 
 
 //  *** onglets des tabs // 
 function html_tab_titles(){
-
     return '<ul class="nav nav-tabs" role="tablist">'
                 . html_tab_title('export#actes', 'active', 'Actes')
                 . html_tab_title('export#personnes', '', 'Personnes')
                 . html_tab_title('export#relations', '', 'Relations')
             . '</ul>';
-
 }
 
 //  OPTIONS  // 
-//  *** Mettre des <radio> pour chaque option sur le tab du form. 
-//     <input type="radio" id="dates" name="dates" value="TRUE">';
 function html_radio_export($option, $value, $label) {
     return '
         <label for="' . $option . '">' . $label . '</label>
@@ -48,17 +33,14 @@ function html_form_group_export($contents) {
 }
 
 function html_export_actes() {
-    $contents = '<h4>Tous les actes</h4>';
-    return $contents;
+    return '<h4>Tous les actes</h4>';
 }
 
 //  *** rewrite-noms-export
-//  par défaut : no_accent = true 
+//  par défaut : $attr = false, $no_accent = true 
 function html_export_personnes() {
-    $contents = '<h4>Toutes les personnes</h4>';
-    // $contents .= html_form_group_export(html_radio_export('', '1', 'Toutes les personnes'))
-    // $contents .= html_form_group_export(html_radio_personnes('accents', '1', 'Avec accents'))
-    $contents .= html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'))
+    $contents = '<h4>Toutes les personnes</h4>'
+                . html_form_group_export(html_radio_export('attr', '1', 'Avec attributs'))
                 . html_form_group_export(html_radio_export('no_accent', '0', 'Avec accents'));
     
     return $contents;
@@ -124,29 +106,17 @@ function html_tab_contents() {
 }
 
 function page_export() {
-
     if(isset($_POST["data_export"])){
         switch($_POST["data_export"]){
             case "all_actes":
                 echo appel_export_actes('XMLExport', 'export_all');  //  export, '4968',
-                // echo '<br>'.__METHOD__.'<br>post : ';
-                // var_dump($_POST); // 
                 break;
             case "all_personnes":
                 $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
                 $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
                 echo appel_export_personnes('CSVExport', 'export_personnes', $attr, $no_accent);
-                    // echo appel_export_personnes('CSVExport', 'export_personnes', TRUE, FALSE);
-                    //  *** rewrite-noms-export 
-                    // echo '<br>'.__METHOD__.'<br>post : ';
-                    // var_dump($_POST);
-                    // echo '<br>'.__METHOD__.'<br>$no_accent : ';
-                    // if(isset($no_accent))
-                    //     var_dump($no_accent);
-                    //  fin test 
                 break;
             case "all_relations":
-                //  *** envoyer la valeur de $start et de $end 
                 $names = isset($_POST["names"]) ? $_POST["names"] : TRUE;
                 $dates = isset($_POST["dates"]) ? $_POST["dates"] : FALSE;
                 $deux_sens = isset($_POST["deux_sens"]) ? $_POST["deux_sens"] : TRUE;
@@ -154,8 +124,8 @@ function page_export() {
                 $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
                 echo appel_export_relations('CSVExport', 'export_relations', $names, $dates, $deux_sens, $attr, $no_accent);    //   1, 50,
                     
-                // break;
-            /*  *** mettre index:define(ROOT...)et $view + if... (à factoriser) dans html_entities ou URLRewriter
+            /*  break;
+                *** mettre index:define(ROOT...) et $view + if... dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case ? 
             */
             // default:
@@ -163,9 +133,6 @@ function page_export() {
                 // $view = ROOT."src/views/pages/404.php";
                 // $page_title = "Page introuvable";
         }
-    } elseif(isset($_ARGS["xml"])) {
-        echo '<br>export $_args : ';
-        var_dump($_ARGS);
     } else {
         echo html_tab_titles();
         echo html_tab_contents();

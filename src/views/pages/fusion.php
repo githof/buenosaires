@@ -1,5 +1,7 @@
 <?php
 
+//  *** la recherche n'aboutit pas, voir trello (23/09/21) 
+
 include_once(ROOT."src/html_entities.php");
 include_once(ROOT."src/class/model/Personne.php");
 
@@ -35,8 +37,8 @@ function dispatch_actes($field, $id, $keep_actes)
     global $mysqli;
 
     $dispatch_actes = array(
-        'delete' => [],
-        'update' => []
+        'delete' => array(),
+        'update' => array()
     );
 
     $result = $mysqli->select("acte_has_$field",
@@ -91,7 +93,6 @@ function fusion_condition_ou_relation($which, $throw, $keep)
   $mysqli->delete($which, "id = '$throw->id'");
 }
 
-//  *** on peut pas réécrire cette étape comme dans import ? // 
 function fusion_condition($throw, $keep) {
   fusion_condition_ou_relation('condition', $throw, $keep);
 }
@@ -143,7 +144,6 @@ function has_relation($relation, $personne, $is_source)
     }
 }
 
-//  *** idem plus haut : on pourrait pas réécrire cette étape comme dans import ? // 
 function fusion_relation($throw, $keep) {
   fusion_condition_ou_relation('relation', $throw, $keep);
 }
@@ -185,18 +185,13 @@ function fusion_actes($throw, $keep) {
 
 //  *** Remplacée par change_id_personne_contenu ? 
 //  Voir commentaire Christophe plus bas // 
-
 function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
     global $mysqli;
 
-    // $personne = new Personne($personne_id_old);
     $obj = new Personne($personne_id_old);
-    // $mysqli->from_db($personne);
-    // $obj->from_db($personne);
-    // $obj->from_db(false, true, true, false); 
     $obj->from_db(); 
 
-    $actes = [];
+    $actes = array();
 
     /*
       Dans ce qui suit,
@@ -265,7 +260,6 @@ function fusion_update_contenu_acte($personne_id_old, $personne_id_new){
 }
 
 // $field = 'prenom' ou 'nom'
-// function change_prenoms_ou_noms($field, $noms, $obj)
 function change_prenoms_ou_noms($field, $noms, $personne)
 {
     global $mysqli;
@@ -273,15 +267,12 @@ function change_prenoms_ou_noms($field, $noms, $personne)
     if(count($noms) == 0) return;
 
     $cond = "personne_id='$personne->id'";
-    // $cond = "personne_id='$obj->id'";
     $mysqli->delete($field."_personne", $cond);
     $i = 1;
     foreach($noms as $nom){
-        // $mysqli->into_db($nom);
         $personne->into_db($nom);
         $into_db = 'into_db_'.$field.'_personne';
         $mysqli->{$into_db}($personne, $nom, $i);
-        // $mysqli->{$into_db}($obj, $nom, $i);
         $i++;
     }
 }
@@ -356,8 +347,8 @@ function change_id_personne_contenu($acte, $old_id, $new_id) {
                     );
 }
 
-function change_id_personne_contenus($personne, $new_id)
 // nouvelle version de fusion_update_contenu_acte (plus haut)
+function change_id_personne_contenus($personne, $new_id)
 /*
 Peut-être que pour dissoc on a besoin exactement de la même fonction,
 auquel cas il faudrait la mettre qq part genre utils.php:
@@ -433,24 +424,24 @@ function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
 
 /*__ SELCTION PERSONNES __ */
 
-//  *** à mettre dans html_entities.php (elle sert aussi dans dissocier.php)
-function html_select_personnes(){
-    return "
-        <section class='max-2'>
-            <h4>Choisir deux personnes à fusionner</h4>
-            <div>
-                <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
-                <span class='autocomplete-search'>recherche en cours ...</span>
-            </div>
-            <div id='auto-complete-results'>
-            </div>
-            <form id='form-fusion-select-personnes' method='get'>
-                <div></div>
-                <input type='submit' value='Prévisualisez la fusion'>
-            </form>
-        </section>
-    ";
-}
+// *** Déplacée dans html_entities.php (elle sert aussi dans dissocier.php)
+// function html_select_personnes(){
+//     return "
+//         <section class='max-2'>
+//             <h4>Choisir deux personnes à fusionner</h4>
+//             <div>
+//                 <input type='text' name='autocomplete' placeholder='Recherche parmi les personnes'>
+//                 <span class='autocomplete-search'>recherche en cours ...</span>
+//             </div>
+//             <div id='auto-complete-results'>
+//             </div>
+//             <form id='form-fusion-select-personnes' method='get'>
+//                 <div></div>
+//                 <input type='submit' value='Prévisualisez la fusion'>
+//             </form>
+//         </section>
+//     ";
+// }
 
 /*__ PREVIEW_FUSION __ */
 /*
@@ -470,10 +461,12 @@ function html_fusion_fin(){
     ";
 }
 
-function html_fusion_section($titre, $classe,
-                              $flex_orientation,
-                              $contenu,
-                              $input_suite = "", $help = ""){
+function html_fusion_section($titre, 
+                            $classe,
+                            $flex_orientation,
+                            $contenu,
+                            $input_suite = "", 
+                            $help = ""){
     if($input_suite != "")
         $div_suite = "
         <div>
@@ -520,7 +513,6 @@ function html_fusion_div_prenoms($prenoms){
     foreach($prenoms as $prenom){
         $html .=
             "<div id='prenom-$prenom->id' class='prenom'>"
-            // .$prenom->to_string().
             .$prenom->to_string(FALSE).
             "</div>";
     }
@@ -623,12 +615,8 @@ if(isset($ARGS["personne-A"],
     $personne_A = new Personne($ARGS["personne-A"]);
     $personne_B = new Personne($ARGS["personne-B"]);
 
-    // $mysqli->from_db($personne_A);
-    // $personne_A->from_db($personne_A);
-    $personne_A->from_db($personne_A, FALSE, TRUE, TRUE, FALSE);
-    // $mysqli->from_db($personne_B);
-    // $personne_B->from_db($personne_B);
-    $personne_B->from_db($personne_B, FALSE, TRUE, TRUE, FALSE);
+    $personne_A->from_db(FALSE, TRUE, TRUE, FALSE);
+    $personne_B->from_db(FALSE, TRUE, TRUE, FALSE);
 
     $noms = parse_noms($ARGS["noms"]);
     $prenoms = parse_prenoms($ARGS["prenoms"]);
@@ -648,16 +636,12 @@ if(isset($ARGS["personne-A"],
 }else if(isset($ARGS["personne-A"], $ARGS["personne-B"])){
     $personne_A = new Personne($ARGS["personne-A"]);
     $personne_B = new Personne($ARGS["personne-B"]);
-    // $mysqli->from_db($personne_A);
-    // $mysqli->from_db($personne_B);
-    // $personne_A->from_db($personne_A);
-    // $personne_B->from_db($personne_B);
-    $personne_A->from_db($personne_A, FALSE, TRUE, TRUE, FALSE);
-    $personne_B->from_db($personne_B, FALSE, TRUE, TRUE, FALSE);
+    $personne_A->from_db(FALSE, TRUE, TRUE, FALSE);
+    $personne_B->from_db(FALSE, TRUE, TRUE, FALSE);
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{
-    echo html_select_personnes();
+    echo html_select_personnes('fusion');
 }
 
 ?>
