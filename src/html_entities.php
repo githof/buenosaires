@@ -191,12 +191,15 @@ function html_personne_relation($personne, $statut_name, $actes){
 //  *** ici $personne est la personne appelée dans l'url 
 function html_personne_relations($personne){
     $rel_btype = $personne->get_relations_by_type();
-    //  *** pers-rel-by-type
-    // echo '<br>'.__METHOD__.' $rel_btype["mariage"] : ';
-    // var_dump($rel_btype["mariage"]);
-    //  fin test
+
     $str = "";
     foreach($rel_btype['mariage'] as $relation){
+
+        //  *** pers-rel-by-type
+        // echo '<br>'.__METHOD__.' $relation : ';
+        // var_dump($relation);
+        //  fin test
+
         $statut_name = "est mariée à";
         $pers = $relation->personne_destination;
         if($relation->personne_destination->id == $personne->id){
