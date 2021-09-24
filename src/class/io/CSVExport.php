@@ -60,7 +60,10 @@ class CSVExport implements ExportInterface {
     public static function export_personnes($attr, $no_accent){ 
         global $mysqli;
 
-        self::attr_nom_fichier('personnes');
+        //  *** rewrite-noms-export : adapter nom fichier
+        $object = ($attr == true) ? 'personne-avec-de' : 'personne-sans-de';
+        $object .= ($no_accent == false) ? '-avec-accents' : '-sans-accent';
+        self::attr_nom_fichier($object);
 
         fputcsv(self::$out, array("id","noms","prenoms"));
 
@@ -93,13 +96,6 @@ class CSVExport implements ExportInterface {
         fclose(self::$out);
 
         //  *** rewrite-noms-export : adapter nom fichier
-        if($attr==TRUE) {
-            $object = 'personnes-avec-de';
-        } else {
-            $object = 'personnes-sans-de';
-        }
-        $object .= ($no_accent==FALSE) ? '-avec-accents' : '-sans-accent';
-
         self::entete($object);
     }
 
@@ -178,7 +174,12 @@ class CSVExport implements ExportInterface {
                                             $no_accent) { 
         global $mysqli, $line; 
 
-        self::attr_nom_fichier('relations');
+        //  *** rewrite-noms-export : adapter nom fichier
+        $object = ($dates == true) ? 'relations-avec-dates' : 'relations-sans-dates';
+        $object .= ($deux_sens == true) ? '-2-sens' : '-1-sens';
+        $object .= ($attr == true) ? '-avec-de' : '-sans-de';
+        $object .= ($no_accent == false) ? '-avec-accents' : '-sans-accent';
+        self::attr_nom_fichier($object);
 
         //  ***  entete() déplacée après fclose() pour pouvoir avoir accès au fichier *** // 
         // self::entete();
@@ -236,43 +237,6 @@ class CSVExport implements ExportInterface {
         
         fclose(self::$out);
         
-        //  *** rewrite-noms-export : adapter nom fichier
-        if($dates==TRUE) {
-            $object = 'relations-avec-dates';
-            if($deux_sens==TRUE) {
-                $object .= '-2-sens';
-                if($attr==TRUE) {
-                    $object .= '-avec-de';
-                } else {
-                    $object .= '-sans-de';
-                }
-            } else {
-                $object .= '-1-sens';
-                if($attr==TRUE) {
-                    $object .= '-avec-de';
-                } else {
-                    $object .= '-sans-de';
-                }
-            }
-        } else {
-            $object = 'relations-sans-dates';
-            if($deux_sens==TRUE) {
-                $object .= '-2-sens';
-                if($attr==TRUE) {
-                    $object .= '-avec-de';
-                } else {
-                    $object .= '-sans-de';
-                }
-            } else {
-                $object .= '-1-sens';
-                if($attr==TRUE) {
-                    $object .= '-avec-de';
-                } else {
-                    $object .= '-sans-de';
-                }
-            }
-        }
-        $object .= ($no_accent==FALSE) ? '-avec-accents' : '-sans-accent';
         self::entete($object);
     }   
 }
