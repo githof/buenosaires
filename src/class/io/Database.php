@@ -499,7 +499,8 @@
 
     /*  *** fix-add-date
       Test avec propriété $date ajoutée à Relation 
-      Récupérer la date de chaque relation et l'attribuer à la propriété de l'objet 
+      Récupérer la date de chaque relation 
+      et l'attribuer à la propriété de l'objet : $relation->date 
     */
     public function from_db_relation_date($relation) {
       $result = $this->query(" 
@@ -514,12 +515,6 @@
           $relation->date = $row["date_start"];
         }
       }
-      //  *** fix-add-date 
-      // echo '<br>'.__METHOD__.'<br>$relation->date : ';
-      // var_dump($relation->date);
-      // echo '<br>'.__METHOD__.'<br>$relation : ';
-      // var_dump($relation);
-      //  fin test 
     }
 
 

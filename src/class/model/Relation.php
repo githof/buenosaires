@@ -18,7 +18,7 @@ class Relation extends DatabaseEntity {
     /*  *** fix-add-date
       Test avec propriété $date ajoutée à Relation 
       On a besoin de la date pour l'export en nombre des relations, 
-      et ça doit être facile et rapide d'accès. 
+      et elle doit être facile et rapide d'accès. 
     */
     public $date; 
 
@@ -26,15 +26,13 @@ class Relation extends DatabaseEntity {
     public function __construct($id = NULL, 
                                 $personne_source = NULL, 
                                 $personne_destination = NULL, 
-                                $statut_id = NULL   //  ,
-                                // $date   //  fix-add-date
+                                $statut_id = NULL 
                                 ){
         $this->id = $id;
         $this->set_personne_source($personne_source);
         $this->set_personne_destination($personne_destination);
         $this->set_statut_id($statut_id);
         $this->actes = array();
-        // $this->date ? $date : '';
     }
 
     public function set_personne_source($personne_source){
@@ -91,7 +89,11 @@ class Relation extends DatabaseEntity {
     //     return $this->date;
     // }
 
-    
+    //  *** fix-add-date
+    /*  Remplacée par un appel à $mysqli->from_db_relation_list_actes() 
+        dans result_from_db()
+        Voir si elle est utilisée autre part. 
+    */
     //  *** bug-csvexport
     //  ajouté création new Acte() 
     //  méthode appelée nulle part ailleurs : pas de bug à cause de ça 
@@ -104,11 +106,6 @@ class Relation extends DatabaseEntity {
         if(isset($this->actes[0])) {
             //  *** récupérer les ids des actes ss forme de string 
             $acte_str = $this->actes[0];
-
-            //  *** fix-add-date 
-            // echo '<br>'.__METHOD__.'<br>$acte_str : ';
-            // var_dump($acte_str);
-            //  fin test 
 
             /* je prends le premier qui vient
             tfaçon y'aura une date pour chaque type de relation
@@ -150,6 +147,7 @@ class Relation extends DatabaseEntity {
             Test avec propriété $date ajoutée à Relation 
             Récupérer la liste des actes des relations, 
             qui récupèrent les dates des actes via from_db_relation_date() 
+            et les stockent dans la propriété $this->date  
         */
         global $mysqli;
         $mysqli->from_db_relation_list_actes($this);
