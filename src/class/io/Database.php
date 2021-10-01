@@ -217,19 +217,30 @@
 
 
     //  *** à tester avec CSVExport::export_relations 
-    // public function get_relations() {
-    //   $relations = [];
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      Récupère toutes les relations et retourne une liste des id des relations 
+    */
+    public function get_relations($get_relations_conditions = TRUE) { //  , $attr = TRUE, $no_accent = FALSE 
+      $relations = array();
 
-    //   $results = $this->select("relation", ["*"]);
-    //   if($results != FALSE && $results->num_rows) {
-    //     while($row = $results->fetch_assoc()) {
-    //       $relation = new Relation();
-    //       $relation->result_from_db($row);
-    //       $relations[$id] = $relation;
-    //     }
-    //   }
-    //   return $relations;
-    // }
+      $results = $this->select("relation", ["*"]);
+      // $results = $this->query("
+      //   SELECT * FROM relation LIMIT 20
+      // ");
+      if($results != FALSE && $results->num_rows) {
+        while($row = $results->fetch_assoc()) {
+          $id = $row["id"];
+          $relation = new Relation($id, 
+                                    $row["pers_source"], 
+                                    $row["pers_destination"], 
+                                    $row["statut_id"]);
+          $relation->from_db();
+          $relations[$id] = $relation;
+        }
+      }
+      return $relations;
+    }
 
     /*  (fix ok) 
     Testé sans succès, mais avant de me casser la tête
@@ -442,7 +453,8 @@
       }
     }
 
-    //  public  //
+
+    //  ~~public~~  //
 
     //  *** tests-dispatch-database
     //  SELECT actes by condition 
@@ -472,13 +484,46 @@
         "relation_id='$relation->id'"
       );
       if($result != FALSE && $result->num_rows > 0){
-        while($row = $result->fetch_assoc())
+        while($row = $result->fetch_assoc()) {
           // $relation->actes[] = new Acte($row["acte_id"]);
           $relation->actes[] = $row["acte_id"];
+          /*  *** fix-add-date
+          Test avec propriété $date ajoutée à Relation 
+          L'objet $relation est déjà créé dans from_db_relation_list_actes() 
+          Pour chaque objet $elation, on récupère la date de la relation 
+          */
+          $this->from_db_relation_date($relation);
+        }
       }
     }
 
-    //  PRIVATE METHODS   //
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      Récupérer la date de chaque relation et l'attribuer à la propriété de l'objet 
+    */
+    public function from_db_relation_date($relation) {
+      $result = $this->query(" 
+        SELECT acte_has_relation.relation_id, acte.date_start 
+        FROM `acte_has_relation` 
+        INNER JOIN `acte`
+        ON `acte_has_relation`.`acte_id` = `acte`.`id` 
+        WHERE acte_has_relation.relation_id = '$relation->id'"
+      );
+      if($result != FALSE && $result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+          $relation->date = $row["date_start"];
+        }
+      }
+      //  *** fix-add-date 
+      // echo '<br>'.__METHOD__.'<br>$relation->date : ';
+      // var_dump($relation->date);
+      // echo '<br>'.__METHOD__.'<br>$relation : ';
+      // var_dump($relation);
+      //  fin test 
+    }
+
+
+    //  ~~PRIVATE METHODS~~   //
 
     //  SELECT personne by nom + prenom  
     //  Si prenom seul ou prénom + nom identiques : 
@@ -562,7 +607,7 @@
     //  PUBLIC  //
 
 
-    //  PRIVATE METHODS   //
+    //  ~~PRIVATE METHODS~~   //
 
     //  *** ne sert que là, on peut pas la défactoriser ? 
     //  Non : elle appelle get_table_name() de toutes les classes' 
@@ -634,6 +679,17 @@
             INSERT IGNORE `acte_has_relation` (acte_id, relation_id) VALUES ('$acte->id', '$relation->id')
         ");
     }
+
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      Insérer chaque relation avec sa date (en paramètres) dans la base 
+    */
+    // public function into_db_relation_date($relation, $acte) {
+    //     $mysqli->query("
+    //         INSERT INTO `relation_date` (relation_id, date_start) 
+    //         VALUES ('$relation->id', '$acte->date_start')
+    //     ");
+    // }
 
     //  INSERT données pour acte_has_condition
     public function into_db_acte_has_condition($acte, $condition){

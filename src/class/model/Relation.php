@@ -15,12 +15,26 @@ class Relation extends DatabaseEntity {
     public $statut_id;
     public $actes;
 
-    public function __construct($id = NULL, $personne_source = NULL, $personne_destination = NULL, $statut_id = NULL){
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      On a besoin de la date pour l'export en nombre des relations, 
+      et ça doit être facile et rapide d'accès. 
+    */
+    public $date; 
+
+
+    public function __construct($id = NULL, 
+                                $personne_source = NULL, 
+                                $personne_destination = NULL, 
+                                $statut_id = NULL   //  ,
+                                // $date   //  fix-add-date
+                                ){
         $this->id = $id;
         $this->set_personne_source($personne_source);
         $this->set_personne_destination($personne_destination);
         $this->set_statut_id($statut_id);
         $this->actes = array();
+        // $this->date ? $date : '';
     }
 
     public function set_personne_source($personne_source){
@@ -54,6 +68,29 @@ class Relation extends DatabaseEntity {
         return $this->personne_source->id == $id;
     }
 
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      Récupérer la date de la relation (si privée)
+      voir si on met les propriétés en privé, maintenant qu'on a 
+      déplacé les méthodes dans les classes
+    */
+    // public function set_relation_date($id) {
+    //     global $mysqli;
+    //     $mysqli->from_db_relation_list_actes($this);
+
+    //     $this->date = 
+    // }
+
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      Récupérer la date de la relation (si privée)
+      voir si on met les propriétés en privé, maintenant qu'on a 
+      déplacé les méthodes dans les classes
+    */
+    // public function get_relation_date($id) {
+    //     return $this->date;
+    // }
+
     
     //  *** bug-csvexport
     //  ajouté création new Acte() 
@@ -65,7 +102,14 @@ class Relation extends DatabaseEntity {
         $mysqli->from_db_relation_list_actes($this);
         //  *** tests-dispatch-database 
         if(isset($this->actes[0])) {
+            //  *** récupérer les ids des actes ss forme de string 
             $acte_str = $this->actes[0];
+
+            //  *** fix-add-date 
+            // echo '<br>'.__METHOD__.'<br>$acte_str : ';
+            // var_dump($acte_str);
+            //  fin test 
+
             /* je prends le premier qui vient
             tfaçon y'aura une date pour chaque type de relation
             donc pour la relation epoux/se y'aura juste l'acte qui va
@@ -101,6 +145,14 @@ class Relation extends DatabaseEntity {
         $this->set_personne_source(new Personne($row["pers_source_id"]));
         $this->set_personne_destination(new Personne($row["pers_destination_id"]));
         $this->set_statut_id($row["statut_id"]);
+
+        /*  *** fix-add-date
+            Test avec propriété $date ajoutée à Relation 
+            Récupérer la liste des actes des relations, 
+            qui récupèrent les dates des actes via from_db_relation_date() 
+        */
+        global $mysqli;
+        $mysqli->from_db_relation_list_actes($this);
     }
 
     public function values_into_db(){

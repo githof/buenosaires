@@ -91,12 +91,19 @@ class Personne extends DatabaseEntity {
         $this->conditions[] = new Condition(NULL, $text, $this, $source_id);
     }
 
-    public function add_relation($personne_source, $personne_destination, $statut_id){
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      Attribuer les valeurs en param aux propriétés de l'objet
+    */
+    public function add_relation($personne_source, 
+                                $personne_destination, 
+                                $statut_id){
         $this->relations[] = new Relation(
             NULL,
             $personne_source,
             $personne_destination,
-            $statut_id
+            $statut_id,
+            $date   //  fix-add-date 
         );
     }
 

@@ -23,7 +23,11 @@ class CSVExport implements ExportInterface {
 
     public static $CSV_SEPARATOR = ";";
     public static $personnes;
-
+    /*  *** fix-add-date
+        Ajout d'une propriété $relation à CSVExport
+    */
+    public static $relations; 
+    
     //  *** Pour stocker le chemin vers le fichier à créer sur le disque 
     public static $fichier;
     public static $out; 
@@ -103,6 +107,11 @@ class CSVExport implements ExportInterface {
 
     private static function add_personne_to_line(&$line, $p, $names) {
 
+        // *** fix-add-date 
+        // echo '<br>'.__METHOD__.'<br>$pers : ';
+        // var_dump($p);   //  $p = null 
+        //  fin test 
+
         //  *** utiliser autre chose que gettype() ou instanceof() 
         // if($p instanceof Personne) {
         if(gettype($p) != 'string') {
@@ -128,8 +137,14 @@ class CSVExport implements ExportInterface {
     //  *** méthode add_date() à revoir : elle prend trop de ressources 
     private static function add_date(&$line, $relation) {
         
-        $date = $relation->get_date();
+        // $date = $relation->get_date();
+        // *** fix-add-date 
+        // echo '<br>'.__METHOD__.'<br>$relation : ';
+        // var_dump($relation);
+        //  fin test 
+        $date = $relation->date;
         $line[] = "$date";
+
     }
 
 
@@ -139,6 +154,10 @@ class CSVExport implements ExportInterface {
                                             $reverse, 
                                             $attr, 
                                             $no_accent) { 
+        // *** fix-add-date 
+        // echo '<br>'.__METHOD__.'<br>$relation : ';
+        // var_dump($relation);
+        //  fin test 
         $line = array();
         $line[] = $reverse ? -$relation->id : $relation->id;  
 
@@ -164,6 +183,20 @@ class CSVExport implements ExportInterface {
             fputcsv(self::$out, $line);
     }
 
+    /*  *** fix-add-date
+      Test avec propriété $date ajoutée à Relation 
+      test get_relations() avec CSVExport 
+    */
+    // public function get_relations() {
+    //     global $mysqli;
+    //     $mysqli->get_relations();
+    //     // // *** fix-add-date 
+    //     // echo '<br>'.__METHOD__.'<br>$relation : ';
+    //     // var_dump($relation);
+    //     // //  fin test 
+    //     return;
+    // }
+    
 
     //  PUBLIC  //
 
@@ -175,6 +208,7 @@ class CSVExport implements ExportInterface {
         global $mysqli, $line; 
 
         //  *** rewrite-noms-export : adapter nom fichier
+        /*  *** Attribuer noms de fichiers en fonction des options choisies */ 
         $object = ($dates == true) ? 'relations-avec-dates' : 'relations-sans-dates';
         $object .= ($deux_sens == true) ? '-2-sens' : '-1-sens';
         $object .= ($attr == true) ? '-avec-de' : '-sans-de';
@@ -195,17 +229,31 @@ class CSVExport implements ExportInterface {
 
         fputcsv(self::$out, $line);
 
-        self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent); 
+        // self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);
+        self::$personnes = $mysqli->get_personnes(TRUE, $attr, $no_accent); 
 
         //  ==> on récupère seulement les noms et prénoms, pour ensuite aller les chercher via select("relation")
         //  on devrait pouvoir faire plus simple 
 
         // faire un Database->get_relations() comme get_personnes ? 
-        $results = $mysqli->select("relation", ["*"]);
-        if($results != FALSE && $results->num_rows){ 
-            while($row = $results->fetch_assoc()){
-                $relation = new Relation();
-                $relation->result_from_db($row);
+        $relations = $mysqli->get_relations(TRUE);
+        // $results = $mysqli->select("relation", ["*"]);
+        // $results = $mysqli->select("relation", ["*"], "id < 20");
+        // if($results != FALSE && $results->num_rows){ 
+        //     while($row = $results->fetch_assoc()){
+        //         $relation = new Relation($id, 
+        //                                 $row["pers_source"], 
+        //                                 $row["pers_destination"], 
+        //                                 $row["statut_id"], 
+        //                                 $row["date"]);
+        //         $relation->result_from_db($row);
+                // $relation->from_db();
+                // self::$relations = $mysqli->get_relations();
+            foreach($relations as $relation) {
+                // *** fix-add-date 
+                // echo '<br>'.__METHOD__.'<br>$relation : ';
+                // var_dump($relation);
+                //  fin test 
 
                 //  *** par défaut relations dans les 2 sens 
                 if(!$deux_sens) {
@@ -233,7 +281,7 @@ class CSVExport implements ExportInterface {
                         $no_accent);      
                 }
             }
-        }
+        // }
         
         fclose(self::$out);
         
