@@ -449,7 +449,8 @@ function html_div_actions($contents) {
 //  FUSION + DISSOCIER  // 
 
 //  *** Sert dans fusion.php et dans dissocier.php 
-function html_select_personnes($operation){
+//  remplace html_select_personnes() 
+function html_fusion_dissoc_select_personnes($operation){
     //  $operation = 'fusion' ou 'dissoc' 
     if($operation == 'fusion') {
         $class = 'max-2';

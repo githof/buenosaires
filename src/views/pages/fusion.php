@@ -424,7 +424,7 @@ function bugged_fusion($personne_keep, $personne_throw, $noms, $prenoms){
 
 /*__ SELCTION PERSONNES __ */
 
-// *** Déplacée dans html_entities.php (elle sert aussi dans dissocier.php)
+// *** Déplacée dans html_entities.php en html_fusion_dissoc_select_personnes() (elle sert aussi dans dissocier.php)
 // function html_select_personnes(){
 //     return "
 //         <section class='max-2'>
@@ -641,7 +641,8 @@ if(isset($ARGS["personne-A"],
 
     echo html_preview_fusion($personne_A, $personne_B);
 }else{
-    echo html_select_personnes('fusion');
+    // echo html_select_personnes('fusion');
+    echo html_fusion_dissoc_select_personnes('fusion');
 }
 
 ?>

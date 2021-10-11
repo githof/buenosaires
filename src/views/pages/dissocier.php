@@ -480,7 +480,8 @@ if(isset($ARGS["id"])){
     html_dissocier($personne);
 }else{
     // html_select_personne();
-    echo html_select_personnes('dissoc');
+    // echo html_select_personnes('dissoc');
+    echo html_fusion_dissoc_select_personnes('dissoc');
 }
 
 ?>
