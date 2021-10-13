@@ -185,7 +185,6 @@ class CSVExport implements ExportInterface {
         $sens .= ($deux_sens == true) ? '-2-sens' : '-1-sens';
         $de .= ($attr == true) ? '-avec-de' : '-sans-de';
         $accents .= ($no_accent == false) ? '-avec-accents' : '-sans-accent';
-
         $object = $date . $sens . $de . $accents;
         self::attr_nom_fichier($object);
 
@@ -203,12 +202,12 @@ class CSVExport implements ExportInterface {
         // self::$personnes = $mysqli->get_personnes(FALSE, $attr, $no_accent);
         self::$personnes = $mysqli->get_personnes(TRUE, $attr, $no_accent); 
 
-        /*  *** fix-add-date
-            Test avec propriété $date ajoutée à Relation 
-            Récupérer les objets Relation dans un array et les traiter un par un
-        */
-        $relations = $mysqli->get_relations(TRUE);
-            foreach($relations as $relation) {
+        $results = $mysqli->select("relation", ["*"]);
+        if($results != FALSE && $results->num_rows){ 
+            while($row = $results->fetch_assoc()){
+                $relation = new Relation();
+                $relation->result_from_db($row);
+
                 //  *** par défaut relations dans les 2 sens 
                 if(!$deux_sens) {
                     self::export_relation(
@@ -235,7 +234,7 @@ class CSVExport implements ExportInterface {
                         $no_accent);      
                 }
             }
-        // }
+        }
         
         fclose(self::$out);
         
