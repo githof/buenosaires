@@ -216,31 +216,6 @@
     }
 
 
-    //  *** à tester avec CSVExport::export_relations 
-    /*  *** fix-add-date
-      Test avec propriété $date ajoutée à Relation 
-      Récupère toutes les relations et retourne une liste des id des relations 
-      Trop lourd pour l'export : stocke toutes les relations dans un tableau, 
-      trop de données pour les stocker à la volée.
-    */
-    // public function get_relations($get_relations_conditions = TRUE) { //  , $attr = TRUE, $no_accent = FALSE 
-    //   $relations = array();
-
-    //   $results = $this->select("relation", ["*"]);
-    //   if($results != FALSE && $results->num_rows) {
-    //     while($row = $results->fetch_assoc()) {
-    //       $id = $row["id"];
-    //       $relation = new Relation($id, 
-    //                                 $row["pers_source"], 
-    //                                 $row["pers_destination"], 
-    //                                 $row["statut_id"]);
-    //       $relation->from_db();
-    //       $relations[$id] = $relation;
-    //     }
-    //   }
-    //   return $relations;
-    // }
-
     /*  (fix ok) 
     Testé sans succès, mais avant de me casser la tête
     à savoir pourquoi, j'ai fait avec Acte->get_contenu
