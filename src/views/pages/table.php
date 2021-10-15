@@ -2,6 +2,7 @@
 
 include_once(ROOT."src/html_entities.php");
 
+//  *** Affichages des contenus des tables 
 function print_table_acte($results){
     $rows = "";
     while($row = $results->fetch_assoc()){
@@ -264,6 +265,7 @@ function print_table_nom($results){
         </table>";
 }
 
+//  *** Affichage contenu de chaque table 
 function print_table($table_name, $page, $nb){
     global $mysqli, $alert, $page_title;
 
@@ -297,7 +299,7 @@ function print_table($table_name, $page, $nb){
     $print_table_name = 'print_table_'.$table_name;
     $str = $print_table_name($results) . $str;
 
-    
+
     return $str;
 }
 
@@ -360,7 +362,7 @@ function button_table($text, $nom_table){
         return "<a href='table/$nom_table'><div class='$class'>$text</div></a>";
 }
 
-$tables_available = [
+$tables_available = array(
     "Actes" => "acte",
     "Contenu des actes" => "acte_contenu",
     "Personnes" => "personne",
@@ -370,7 +372,7 @@ $tables_available = [
     "Statuts" => "statut",
     "Prenoms" => "prenom",
     "Noms" => "nom"
-];
+);
 
 $html_table = "";
 $page = 1;
