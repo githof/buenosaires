@@ -182,6 +182,9 @@ class CSVExport implements ExportInterface {
         //  *** rewrite-noms-export : adapter nom fichier
         /*  *** Attribuer noms de fichiers en fonction des options choisies */ 
         $date = ($dates == true) ? 'relations-avec-dates' : 'relations-sans-dates';
+        //  *** rewrite-index : 
+        //  J'ai découvert par hasard 3 notices php : Undefined variable sens, de, accent : 
+        //  mais les exports se font correctement et les fichiers ont les noms appropriés. 
         $sens .= ($deux_sens == true) ? '-2-sens' : '-1-sens';
         $de .= ($attr == true) ? '-avec-de' : '-sans-de';
         $accents .= ($no_accent == false) ? '-avec-accents' : '-sans-accent';

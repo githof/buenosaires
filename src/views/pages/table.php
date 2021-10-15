@@ -374,6 +374,7 @@ function button_table($text, $nom_table){
     else
         $class .= " btn-default";
 
+    //  *** rewrite-index 
     return "<a href='./table/$nom_table'><div class='$class'>$text</div></a>";
 }
 

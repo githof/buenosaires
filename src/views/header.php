@@ -13,11 +13,11 @@ function html_item($title, $icon, $url){
         $selected = "selected-page";
     return "
         <li data-toggle='tooltip' data-placement='bottom' title='$title' class='$selected'>
-            <a href='./$url'>
+            <a href='/$url'>
                 <span class='glyphicon glyphicon-$icon' aria-hidden='true'></span>
             </a>
         </li>
-    ";
+    ";  //  <a href='./$url'>   //  *** Modifié le lien de base sur branche rewrite-index 
 }
 
 //  FORMS   //
