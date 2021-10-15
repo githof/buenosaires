@@ -170,7 +170,7 @@ class Personne extends DatabaseEntity {
             }
         }
 
-        $match = [
+        $match = array(
             'mariage' => $mariage,
             'parents' => $parents,
             'enfants' => $enfants,
@@ -178,7 +178,7 @@ class Personne extends DatabaseEntity {
             'est_temoin' => $est_temoin,
             'a_parrains' => $a_parrains,
             'est_parrain' => $est_parrain
-        ];
+        );
         foreach($match as $word => $list) {
             $this->relations_by_type[$word] = $list;
         }
