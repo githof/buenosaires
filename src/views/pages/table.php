@@ -355,11 +355,7 @@ function button_table($text, $nom_table){
     else
         $class .= " btn-default";
 
-    //  *** rewrite-index 
-    if(isset($url_parsed) && $url_parsed["table"] != NULL)
-        return "<a href='./$nom_table'><div class='$class'>$text</div></a>"; 
-    else 
-        return "<a href='table/$nom_table'><div class='$class'>$text</div></a>";
+    return "<a href='table/$nom_table'><div class='$class'>$text</div></a>";
 }
 
 $tables_available = array(
