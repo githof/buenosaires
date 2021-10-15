@@ -6,12 +6,12 @@ include_once(ROOT."src/class/model/Condition.php");
 include_once(ROOT."src/class/model/Acte.php");
 include_once(ROOT."src/class/model/Relation.php");
 
-$memory = [
+$memory = array(
     "personne" => [],
     "acte" => [],
     "relation" => [],
     "condition" => []
-];
+);
 
 function has_memory($class, $id){
     global $memory, $mysqli;
@@ -130,11 +130,11 @@ function html_relation($relation, $show_actes = TRUE){
 }
 
 function html_relations($relations){
-    $mariage = [];
-    $famille = [];
-    $temoins = [];
-    $parrains = [];
-    $all = [];
+    $mariage = array();
+    $famille = array();
+    $temoins = array();
+    $parrains = array();
+    $all = array();
 
 // Là on va réordonner la liste de relations pour l'affichage
 // (enfin je crois que c'est ça...)
@@ -194,11 +194,6 @@ function html_personne_relations($personne){
 
     $str = "";
     foreach($rel_btype['mariage'] as $relation){
-
-        //  *** pers-rel-by-type
-        // echo '<br>'.__METHOD__.' $relation : ';
-        // var_dump($relation);
-        //  fin test
 
         $statut_name = "est mariée à";
         $pers = $relation->personne_destination;
@@ -456,7 +451,7 @@ function html_fusion_dissoc_select_personnes($operation){
         $class = 'max-2';
         $titre = 'Choisir deux personnes à fusionner';
         $form_id = 'form-fusion-select-personnes';
-        $button_label = 'Prévisualisez la fusion';
+        $button_label = 'Prévisualiser la fusion';
     } else {
         $class = 'max-1';
         $titre = 'Choisir une personne à dissocier';
