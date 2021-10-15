@@ -29,31 +29,9 @@ $account = new Account();
 
 include_once(ROOT."src/URLRewritter.php");
 
-if(!is_dir(TMP_DIRECTORY))
-    mkdir(TMP_DIRECTORY, 0777);
-
-if(isset($_POST["action"])){
-    if($_POST["action"] == "deconnexion" && $account->is_connected){
-        $account->disconnect();
-        $alert->success("Déconnexion réussie");
-    }else if($_POST["action"] == "connexion" && isset($_POST['connect_email'], $_POST['connect_pass']) && !$account->is_connected){
-        $account->set_email(safe($_POST['connect_email']));
-        $account->set_password(safe(md5($_POST['connect_pass'])));
-        if($account->connect())
-            $alert->success("Connexion réussie !");
-        else
-            $alert->warning("Echec de la connexion");
-    }
-}
-
-
-// VIEW SCRIPT
-$view = "";
-$is_get = FALSE;
-
 //  *** rewrite-index 
 function print_page() {
-    global $url_parsed, $access_pages, $view;
+    global $url_parsed, $access_pages, $view, $is_get;
 
     if(isset($url_parsed["page"])){
         if($url_parsed["page"] == "get"){
@@ -78,6 +56,30 @@ function print_page() {
     }
 }
 
+
+if(!is_dir(TMP_DIRECTORY))
+    mkdir(TMP_DIRECTORY, 0777);
+
+if(isset($_POST["action"])){
+    if($_POST["action"] == "deconnexion" && $account->is_connected){
+        $account->disconnect();
+        $alert->success("Déconnexion réussie");
+    }else if($_POST["action"] == "connexion" && isset($_POST['connect_email'], $_POST['connect_pass']) && !$account->is_connected){
+        $account->set_email(safe($_POST['connect_email']));
+        $account->set_password(safe(md5($_POST['connect_pass'])));
+        if($account->connect())
+            $alert->success("Connexion réussie !");
+        else
+            $alert->warning("Echec de la connexion");
+    }
+}
+
+
+// VIEW SCRIPT
+$view = "";
+$is_get = FALSE;
+
+//  *** rewrite-index 
 echo print_page();
 
 
@@ -108,14 +110,19 @@ if($is_get){
     <?php 
         include(ROOT."src/views/head.php"); 
     ?> 
-
         <div class="nav-bar">
             <div class="nav-bar-in">
-            <?php echo $header_output; ?>
+                <?php 
+                    echo $header_output; 
+                ?>
             </div>
         </div>
         <div class="main">
-            <h1><?php echo $page_title ?></h1>
+            <h1>
+                <?php 
+                    echo $page_title 
+                ?>
+            </h1>
             <div class="page">
                 <?php 
                     echo $page_output; 
@@ -123,7 +130,9 @@ if($is_get){
             </div>
         </div>
         <div id="alert-container">
-            <?php echo $alerts_output; ?>
+            <?php 
+                echo $alerts_output; 
+            ?>
         </div>
         <script src="res/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="res/quicksearch/jquery.quicksearch.js" type="text/javascript"></script>
@@ -138,7 +147,7 @@ if($is_get){
 
 $mysqli->close();
 $exec_time_script = microtime(TRUE) - $exec_time_script;
-$log->i("EXEC TIME SCRIPT PAGE ".($exec_time_script *1000)." ms");
+$log->i("EXEC TIME SCRIPT PAGE ".($exec_time_script * 1000)." ms");
 $log->write();
 
 

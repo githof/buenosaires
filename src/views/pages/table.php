@@ -325,16 +325,21 @@ function print_table($table_name, $page, $nb){
     return $str;
 }
 
+//  *** rewrite-index 
+// echo '<br>'.__METHOD__.'<br>$table : ';
+// var_dump($table);
+//  fin test 
+
 function button_pages($table, $current_page, $max_page){
     $button_start = "
-        <a class='btn btn-default table-nav-btn' href='table/$table'>
+        <a class='btn btn-default table-nav-btn' href='$table'>
             <span class='glyphicon glyphicon-fast-backward' aria-hidden='true'></span>
-        </a>";
+        </a>"; 
 
     $button_end = "
-        <a class='btn btn-default table-nav-btn' href='table/$table?page=$max_page'>
+        <a class='btn btn-default table-nav-btn' href='$table?page=$max_page'>
             <span class='glyphicon glyphicon-fast-forward' aria-hidden='true'></span>
-        </a>";
+        </a>"; 
 
     if($current_page < $max_page)
         $visible = "visible";
@@ -342,9 +347,9 @@ function button_pages($table, $current_page, $max_page){
         $visible = "hidden";
     $p = $current_page +1;
     $button_inc = "
-        <a class='btn btn-default table-nav-btn' href='table/$table?page=$p' style='visibility:$visible'>
+        <a class='btn btn-default table-nav-btn' href='$table?page=$p' style='visibility:$visible'>
             $p
-        </a>";
+        </a>"; 
 
     if($current_page > 1)
         $visible = "visible";
@@ -352,9 +357,9 @@ function button_pages($table, $current_page, $max_page){
         $visible = "hidden";
     $p = $current_page -1;
     $button_dec = "
-        <a class='btn btn-default table-nav-btn' href='table/$table?page=$p' style='visibility:$visible'>
+        <a class='btn btn-default table-nav-btn' href='$table?page=$p' style='visibility:$visible'>
             $p
-        </a>";
+        </a>"; 
 
     return "
         <div class='table-nav'>
@@ -375,7 +380,8 @@ function button_table($text, $nom_table){
         $class .= " btn-default";
 
     //  *** rewrite-index 
-    return "<a href='./table/$nom_table'><div class='$class'>$text</div></a>";
+    // return "<a href='./table/$nom_table'><div class='$class'>$text</div></a>";
+    return "<a href='./$nom_table'><div class='$class'>$text</div></a>";
 }
 
 $tables_available = [
