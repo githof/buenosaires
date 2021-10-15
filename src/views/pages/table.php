@@ -292,44 +292,17 @@ function print_table($table_name, $page, $nb){
         return;
     }
 
-    //  Si on laisse comme ça, remplacer par un switch ? ***    //
-    if($table_name == "acte"){
-        $page_title = "Table: Actes";
-        $str = print_table_acte($results) . $str;
-    }else if($table_name == "personne"){
-        $page_title = "Table: Personnes";
-        $str = print_table_personne($results) . $str;
-    }else if($table_name == "acte_contenu"){
-        $page_title = "Table: Contenu des actes";
-        $str = print_table_acte_contenu($results) . $str;
-    }else if($table_name == "relation"){
-        $page_title = "Table: Relations";
-        $str = print_table_relation($results) . $str;
-    }else if($table_name == "condition"){
-        $page_title = "Table: Conditions";
-        $str = print_table_condition($results) . $str;
-    }else if($table_name == "source"){
-        $page_title = "Table: Sources";
-        $str = print_table_source($results) . $str;
-    }else if($table_name == "statut"){
-        $page_title = "Table: Statuts";
-        $str = print_table_status($results) . $str;
-    }else if($table_name == "prenom"){
-        $page_title = "Table: Prenoms";
-        $str = print_table_prenom($results) . $str;
-    }else if($table_name == "nom"){
-        $page_title = "Table: Noms";
-        $str = print_table_nom($results) . $str;
-    }
+    //  *** rewrite-index 
+    $page_title = "Table : ".ucfirst($table_name);
+    $print_table_name = 'print_table_'.$table_name;
+    $str = $print_table_name($results) . $str;
 
+    
     return $str;
 }
 
-//  *** rewrite-index 
-// echo '<br>'.__METHOD__.'<br>$table : ';
-// var_dump($table);
-//  fin test 
 
+//  *** Boutons "page suviante / précédente 
 function button_pages($table, $current_page, $max_page){
     $button_start = "
         <a class='btn btn-default table-nav-btn' href='$table'>
@@ -370,18 +343,21 @@ function button_pages($table, $current_page, $max_page){
         </div>";
 }
 
+//  ***  boutons affichage table 
 function button_table($text, $nom_table){
     global $url_parsed;
 
     $class = "btn";
-    if(isset($url_parsed["table"]) && $url_parsed["table"] === $nom_table)
+    if(isset($url_parsed["table"]) && $url_parsed["table"] === $nom_table) 
         $class .= " btn-primary";
     else
         $class .= " btn-default";
 
     //  *** rewrite-index 
-    // return "<a href='./table/$nom_table'><div class='$class'>$text</div></a>";
-    return "<a href='./$nom_table'><div class='$class'>$text</div></a>";
+    if(isset($url_parsed) && $url_parsed["table"] != NULL)
+        return "<a href='./$nom_table'><div class='$class'>$text</div></a>"; 
+    else 
+        return "<a href='table/$nom_table'><div class='$class'>$text</div></a>";
 }
 
 $tables_available = [
