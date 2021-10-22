@@ -1,5 +1,10 @@
 <?php
 
+//  *** Pour fonction d'affichage de purge exports/ :
+include_once(ROOT."src/html_entities.php");
+//  *** Pour fonction de purge du dossier exports/ :
+include_once(ROOT."src/utils.php");
+
 function edit_rang($user_id, $rang){
     global $mysqli, $alert, $account;
     $previous_rang = 0;
@@ -119,6 +124,26 @@ function html_users(){
     ";
 }
 
+//  *** purge-exports 
+function html_export_purge() {
+
+    return '<form action="administration" method="POST">'  
+            . html_submit("", "Effacer") 
+            . html_hidden_type("data_export", "purge") . 
+            '</form>';
+}
+
+function affiche_purge_exports() {
+    if(isset($_POST["data_export"]) && ($_POST["data_export"] == 'purge')) {
+        $files = glob(ROOT."exports/*"); // get all file names
+        foreach($files as $file){ // iterate files
+            if(is_file($file))
+                unlink($file); // delete file
+        }
+    } else {
+        echo html_export_purge();
+    }
+}
 
 if(isset($ARGS["user"], $ARGS["rang"])){
     edit_rang($ARGS["user"], $ARGS["rang"]);
@@ -132,5 +157,12 @@ if(isset($ARGS["user"], $ARGS["rang"])){
             Il n'est pas possible de modifier le rang des administrateurs
         </div>
         <?php echo html_users(); ?>
+    </div>
+</section>
+
+<section>
+    <h4>Effacer dossier exports/ </h4>
+    <div> 
+        <?= affiche_purge_exports(); ?> 
     </div>
 </section>

@@ -123,7 +123,20 @@ function page_export() {
                 $attr = (isset($_POST["attr"]) && $_POST["attr"] == '1') ? TRUE : FALSE;
                 $no_accent = (isset($_POST["no_accent"]) && $_POST["no_accent"] == '0') ? FALSE : TRUE; 
                 echo appel_export_relations('CSVExport', 'export_relations', $names, $dates, $deux_sens, $attr, $no_accent);    //   1, 50,
-                    
+                break;
+            // case "purge":
+            //     //  *** purge-exports 
+            //     // echo '<br>'.__METHOD__.'<br>$_POST : ';
+            //     // var_dump($_POST);
+            //     // echo '<br>'.__METHOD__.'<br>$_SERVER["REQUEST_URI"] : ';
+            //     // var_dump($_SERVER["REQUEST_URI"]);
+            //     //  fin test 
+            //     $files = glob(ROOT.'exports/*'); // get all file names
+            //     foreach($files as $file){ // iterate files
+            //         if(is_file($file))
+            //             unlink($file); // delete file
+            //     }
+            //     header('Location: '. BASE_URL);
             /*  break;
                 *** mettre index:define(ROOT...) et $view + if... dans html_entities ou URLRewriter
                 pour renvoyer (ici) vers 404 en default case ? 
@@ -136,11 +149,17 @@ function page_export() {
     } else {
         echo html_tab_titles();
         echo html_tab_contents();
+        
     }
 }
 
 echo page_export(); 
 
+
+/* 
+delete a file : unlink(string $filename, resource $context = ?): bool 
+
+*/
 
 ?>
 

@@ -61,11 +61,6 @@ $acte = new Acte(5598);
 $acte->remove_from_db();
 */
 
-// $pers = new Personne(20112);
-$rel = new Relation(11168);
-echo '<br>'.__METHOD__.'<br>$rel : ';
-var_dump($rel);
-
 // $pers = new Personne(15794);
 // $pers->remove_from_db(TRUE);
 
